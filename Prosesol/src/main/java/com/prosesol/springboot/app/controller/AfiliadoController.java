@@ -78,7 +78,7 @@ public class AfiliadoController {
 		return "redirect:/ver";		
 	}
 	 
-	@RequestMapping(value = "/ver", method = RequestMethod.GET)
+	@RequestMapping(value = {"/ver", "/"}, method = RequestMethod.GET)
 	public String ver(Model model) {
 		
 		model.addAttribute("titulo", "Afiliados");
