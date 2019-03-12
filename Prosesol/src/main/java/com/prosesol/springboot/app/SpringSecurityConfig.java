@@ -3,40 +3,52 @@ package com.prosesol.springboot.app;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.prosesol.springboot.app.auth.handler.LoginSuccessHandler;
+import com.prosesol.springboot.app.service.JpaUserDetailService;
+
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
+	
+	@Autowired
+	private LoginSuccessHandler successHandler;
+		
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private JpaUserDetailService userDetailsService;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/catalogos/afiliados/ver").permitAll()
-			.antMatchers("/ver/**").hasAnyRole("USER")
-			.antMatchers("/crear/**").hasAnyRole("ADMIN")
+		http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/jquery/**", "/webfonts/**", "/catalogos/afiliados/ver").permitAll()
+//			.antMatchers("/ver/**").hasAnyRole("USER")
+//			.antMatchers("/crear/**").hasAnyRole("ADMIN")
 			.anyRequest().authenticated()
 			.and()
-			.formLogin().loginPage("/login")
+				.formLogin()
+					.successHandler(successHandler)
+					.loginPage("/login")
 			.permitAll()
 			.and()
-			.logout().permitAll();
+			.logout().permitAll()
+			.and()
+			.exceptionHandling().accessDeniedPage("/error_403");
 		
 	}
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder builder)throws Exception{
 		
-		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		UserBuilder users = User.builder().passwordEncoder(encoder::encode);
-		
-		builder.inMemoryAuthentication()
-			   .withUser(users.username("admin").password("12345").roles("ADMIN", "USER"))
-			   .withUser(users.username("luis").password("12345").roles("USER"));
+		builder.userDetailsService(userDetailsService)
+			   .passwordEncoder(passwordEncoder);
+
 	}
 	
 }

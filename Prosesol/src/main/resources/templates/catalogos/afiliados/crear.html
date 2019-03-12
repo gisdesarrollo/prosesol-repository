@@ -1,27 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="description" content="" />
-<meta name="author" content="" />
-
-<title>SB Admin - Register</title>
-
-<!-- Custom fonts for this template-->
-<link th:href="@{/css/all.min.css}" rel="stylesheet" />
-
-<!-- Custom styles for this template-->
-<link th:href="@{/css/sb-admin.css}" rel="stylesheet" />
-
-<!-- Custom Datetime picker -->
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<link rel="stylesheet"
-	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
-
-</head>
+<head th:replace="layout/layout :: head"></head>
 <body class="bg-dark">
 
 	<div class="container">
@@ -63,11 +42,13 @@
 						<div class="form-row">
 							<div class="col-md-6">
 								<div class="form-label-group">
-									<input type="text" th:field="*{apellidoMaterno}" class="form-control"
+									<input type="text" th:field="*{apellidoMaterno}"
+										class="form-control"
 										th:errorclass="'form-control alert-danger'" /><small
 										class="form-text text-danger"
-										th:if="${#fields.hasErrors('apellidoMaterno')}" th:errors="*{apellidoMaterno}"></small>
-									<label class="col-sm-6 col-form-label">Apellido Materno</label>
+										th:if="${#fields.hasErrors('apellidoMaterno')}"
+										th:errors="*{apellidoMaterno}"></small> <label
+										class="col-sm-6 col-form-label">Apellido Materno</label>
 								</div>
 							</div>
 							<div class="col-md-6">
@@ -327,7 +308,7 @@
 							<div class="col-md-6">
 								<div class="form-label-group">
 									<input type="text" th:field="*{fechaAlta}" class="form-control"
-										th:errorclass="'form-control alert-danger'" id="datepicker1"/><small
+										th:errorclass="'form-control alert-danger'" id="datepicker1" /><small
 										class="form-text text-danger"
 										th:if="${#fields.hasErrors('fechaAlta')}"
 										th:errors="*{fechaAlta}"></small> <label
@@ -423,6 +404,9 @@
 		</div>
 	</div>
 
+
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
 	<!-- Bootstrap core JavaScript-->
 	<script th:src="@{/jquery/jquery.min.js}"></script>
 	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
@@ -433,6 +417,8 @@
 	<!-- Datepicker function -->
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script th:src="@{/js/utils.js}"></script>
+
+
 </body>
 
 </html>

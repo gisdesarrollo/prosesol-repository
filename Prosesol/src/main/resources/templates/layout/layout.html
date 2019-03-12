@@ -1,29 +1,65 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:fragment="head">
-<meta charset="utf-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-<meta name="description" content=""/>
-<meta name="author" content=""/>
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
 
-<title>SB Admin - Register</title>
+<title>Prosesol</title>
 
 <!-- Custom fonts for this template-->
-<link th:href="@{/css/all.min.css}" rel="stylesheet"/>
+<link th:href="@{/css/all.min.css}" rel="stylesheet" type="text/css" />
+
+<!-- Page level plugin CSS-->
+<link th:href="@{/css/dataTables.bootstrap4.css}" rel="stylesheet" />
 
 <!-- Custom styles for this template-->
-<link th:href="@{/css/sb-admin.css}" rel="stylesheet"/>
+<link th:href="@{/css/sb-admin.css}" rel="stylesheet" />
+
+<!-- Custom Datetime picker -->
+<link rel="stylesheet"
+	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
 </head>
 <body>
+	<header th:fragment="header">
+		<div class="alert alert-success" th:if="${success != null}"
+			th:text="${success}"></div>
+		<div class="alert alert-danger" th:if="${error != null}"
+			th:text="${error}"></div>
+		<div class="alert alert-warning" th:if="${warning != null}"
+			th:text="${warning}"></div>
+		<div class="alert alert-info" th:if="${info != null}"
+			th:text="${info}"></div>
+	</header>
 	<footer th:fragment="footer">
+		<div class="container my-auto">
+			<div class="text-center my-auto">
+				<p sec:authorize="isAuthenticated()">
+					Usuario logeado: <span sec:authentication="name"></span> Roles: <span
+						sec:authentication="principal.authorities"></span>
+				</p>
+			</div>
+		</div>
 		<!-- Bootstrap core JavaScript-->
 		<script th:src="@{/jquery/jquery.min.js}"></script>
 		<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 
 		<!-- Core plugin JavaScript-->
 		<script th:src="@{/jquery/jquery.easing.min.js}"></script>
+
+		<!-- Page level plugin JavaScript-->
+		<script th:src="@{/jquery/jquery.dataTables.js}"></script>
+		<script th:src="@{/jquery/dataTables.bootstrap4.js}"></script>
+
+		<!-- Custom scripts for all pages-->
+		<script th:src="@{/js/sb-admin.min.js}"></script>
+
+		<!-- Demo scripts for this page-->
+		<script th:src="@{/js/datatables-demo.js}"></script>
 	</footer>
 </body>
 </html>
