@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body class="bg-dark">
+
+	<div class="container">
+		<div class="card card-register mx-auto mt-5">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+				<div th:object="${afiliado}" th:remove="tag">
+					<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
+						role="alert">
+						<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+					</ul>
+				</div>
+				<form th:action="@{/crear}" th:object="${beneficiario}" method="post">
+					<div class="form-group">
+						<div class="form-row">
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{nombre}" class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+									<label class="col-sm-6 col-form-label">Nombre</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{apellidoPaterno}"
+										class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('apellidoPaterno')}"
+										th:errors="*{apellidoPaterno}"></small> <label
+										class="col-sm-6 col-form-label">Apellido Paterno</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-row">
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{apellidoMaterno}"
+										class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('apellidoMaterno')}"
+										th:errors="*{apellidoMaterno}"></small> <label
+										class="col-sm-6 col-form-label">Apellido Materno</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{fechaNacimiento}"
+										class="form-control" id="datepicker"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('fechaNacimiento')}"
+										th:errors="*{fechaNacimiento}"></small> <label
+										class="col-sm-6 col-form-label">Fecha de Nacimiento</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-row">
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{curp}" class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('curp')}" th:errors="*{curp}"></small>
+									<label class="col-sm-6 col-form-label">CURP</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{nss}" class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('nss')}" th:errors="*{nss}"></small>
+									<label class="col-sm-12 col-form-label">Número de
+										Seguridad Social</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-row">
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{rfc}" class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('rfc')}" th:errors="*{rfc}"></small>
+									<label class="col-sm-12 col-form-label">Registro
+										Federal del Contribuyente (RFC)</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{telefonoFijo}"
+										class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('telefonoFijo')}"
+										th:errors="*{telefonoFijo}"></small> <label
+										class="col-sm-6 col-form-label">Teléfono Fijo</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-row">
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{telefonoMovil}"
+										class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('telefonoMovil')}"
+										th:errors="*{telefonoMovil}"></small> <label
+										class="col-sm-6 col-form-label">Teléfono Móvil</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="email" th:field="*{email}" class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+									<label class="col-sm-6 col-form-label">Correo
+										Electrónico</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-row">
+							<div class="col-md-12">
+								<div class="form-label-group">
+									<input type="text" th:field="*{direccion}" class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('direccion')}"
+										th:errors="*{direccion}"></small> <label
+										class="col-sm-6 col-form-label">Dirección</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-row">
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{codigoPostal}"
+										class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('codigoPostal')}"
+										th:errors="*{codigoPostal}"></small> <label
+										class="col-sm-6 col-form-label">Municipio</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{estatusVivienda}"
+										class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('estatusVivienda')}"
+										th:errors="*{estatusVivienda}"></small> <label
+										class="col-sm-6 col-form-label">Código Postal</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="form-row">
+							<div class="col-md-6">
+								<div class="form-label-group">
+									<input type="text" th:field="*{infonavit}" class="form-control"
+										th:errorclass="'form-control alert-danger'" /><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('infonavit')}"
+										th:errors="*{infonavit}"></small> <label
+										class="col-sm-12 col-form-label">Entidad Federativa</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-3">
+							<input type="submit" value="Crear Beneficiario"
+								class="btn btn-primary btn-xs" />
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+
+	<footer th:replace="/layout/layout :: footer"></footer>
+
+
+</body>
+
+</html>
