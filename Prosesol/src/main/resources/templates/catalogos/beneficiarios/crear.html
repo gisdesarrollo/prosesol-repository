@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout/layout :: head"></head>
 <body class="bg-dark">
@@ -7,13 +7,13 @@
 		<div class="card card-register mx-auto mt-5">
 			<div class="card-header" th:text="${titulo}"></div>
 			<div class="card-body">
-				<div th:object="${afiliado}" th:remove="tag">
+				<div th:object="${beneficiario}" th:remove="tag">
 					<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
 						role="alert">
 						<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
 					</ul>
 				</div>
-				<form th:action="@{/crear}" th:object="${beneficiario}" method="post">
+				<form th:action="@{/crearBeneficiario}" th:object="${beneficiario}" method="post">
 					<div class="form-group">
 						<div class="form-row">
 							<div class="col-md-6">
@@ -81,7 +81,7 @@
 										th:errorclass="'form-control alert-danger'" /><small
 										class="form-text text-danger"
 										th:if="${#fields.hasErrors('nss')}" th:errors="*{nss}"></small>
-									<label class="col-sm-12 col-form-label">Número de
+									<label class="col-sm-12 col-form-label">Nò­¥²o de
 										Seguridad Social</label>
 								</div>
 							</div>
@@ -107,7 +107,7 @@
 										class="form-text text-danger"
 										th:if="${#fields.hasErrors('telefonoFijo')}"
 										th:errors="*{telefonoFijo}"></small> <label
-										class="col-sm-6 col-form-label">Teléfono Fijo</label>
+										class="col-sm-6 col-form-label">Telê§¯no Fijo</label>
 								</div>
 							</div>
 						</div>
@@ -122,7 +122,7 @@
 										class="form-text text-danger"
 										th:if="${#fields.hasErrors('telefonoMovil')}"
 										th:errors="*{telefonoMovil}"></small> <label
-										class="col-sm-6 col-form-label">Teléfono Móvil</label>
+										class="col-sm-6 col-form-label">Telê§¯no Mó¶©¬</label>
 								</div>
 							</div>
 							<div class="col-md-6">
@@ -132,7 +132,7 @@
 										class="form-text text-danger"
 										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
 									<label class="col-sm-6 col-form-label">Correo
-										Electrónico</label>
+										Electró®©£o</label>
 								</div>
 							</div>
 						</div>
@@ -146,7 +146,7 @@
 										class="form-text text-danger"
 										th:if="${#fields.hasErrors('direccion')}"
 										th:errors="*{direccion}"></small> <label
-										class="col-sm-6 col-form-label">Dirección</label>
+										class="col-sm-6 col-form-label">Direcció®¼¯label>
 								</div>
 							</div>
 						</div>
@@ -166,13 +166,13 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-label-group">
-									<input type="text" th:field="*{estatusVivienda}"
+									<input type="text" th:field="*{codigoPostal}"
 										class="form-control"
 										th:errorclass="'form-control alert-danger'" /><small
 										class="form-text text-danger"
-										th:if="${#fields.hasErrors('estatusVivienda')}"
-										th:errors="*{estatusVivienda}"></small> <label
-										class="col-sm-6 col-form-label">Código Postal</label>
+										th:if="${#fields.hasErrors('codigoPostal')}"
+										th:errors="*{codigoPostal}"></small> <label
+										class="col-sm-6 col-form-label">Có¤©§o Postal</label>
 								</div>
 							</div>
 						</div>
@@ -181,11 +181,11 @@
 						<div class="form-row">
 							<div class="col-md-6">
 								<div class="form-label-group">
-									<input type="text" th:field="*{infonavit}" class="form-control"
+									<input type="text" th:field="*{entidadFederativa}" class="form-control"
 										th:errorclass="'form-control alert-danger'" /><small
 										class="form-text text-danger"
-										th:if="${#fields.hasErrors('infonavit')}"
-										th:errors="*{infonavit}"></small> <label
+										th:if="${#fields.hasErrors('entidadFederativa')}"
+										th:errors="*{entidadFederativa}"></small> <label
 										class="col-sm-12 col-form-label">Entidad Federativa</label>
 								</div>
 							</div>

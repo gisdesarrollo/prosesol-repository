@@ -15,16 +15,19 @@ import com.prosesol.springboot.app.entity.Beneficiario;
 public class BeneficiarioController {
 
 	protected Log logger = LogFactory.getLog(this.getClass());
-	
+
 	@RequestMapping(value = "/crearBeneficiario")
 	public String crear(Map<String, Object> model) {
-		
+
 		Beneficiario beneficiario = new Beneficiario();
+
+		System.out.println("Entrar al método crear afiliado desde el button Agregar Afiliado");
 		
 		model.put("beneficiario", beneficiario);
 		model.put("titulo", "Crear beneficiario");
-		
+
 		return "/catalogos/beneficiarios/crear";
 	}
+
 	
 }
