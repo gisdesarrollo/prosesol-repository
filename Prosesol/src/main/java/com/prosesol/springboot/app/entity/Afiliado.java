@@ -24,7 +24,7 @@ public class Afiliado implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1300544244858848226L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

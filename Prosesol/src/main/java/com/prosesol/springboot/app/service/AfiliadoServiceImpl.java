@@ -18,28 +18,24 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	@Override
 	@Transactional(readOnly=true)
 	public List<Afiliado> findAll() {
-		// TODO Auto-generated method stub
 		return (List<Afiliado>)iAfiliadoDao.findAll();
 	}
 
 	@Override
 	@Transactional
 	public void save(Afiliado afiliado) {
-		// TODO Auto-generated method stub
 		iAfiliadoDao.save(afiliado);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
 		iAfiliadoDao.findById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Afiliado findById(Long id) {
-		// TODO Auto-generated method stub
 		return iAfiliadoDao.findById(id).orElse(null);
 	}	
 
