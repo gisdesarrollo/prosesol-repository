@@ -14,7 +14,7 @@
 							<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
 						</ul>
 					</div>
-					<form th:action="@{/crear}" th:object="${afiliado}" method="post">
+					<form th:action="@{/afiliados/crear}" th:object="${afiliado}" method="post">
 						<div class="form-group">
 							<div class="form-row">
 								<div class="col-md-6">
@@ -407,7 +407,7 @@
 							</div>
 							<div class="col-sm-6">
 								<button type="submit" name="agregarBeneficiario"
-									class="btn btn-primary btn-xs">Agregar Afiliado</button>
+									class="btn btn-primary btn-xs">Agregar Beneficiario</button>
 							</div>
 						</div>
 

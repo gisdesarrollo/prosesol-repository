@@ -42,7 +42,7 @@ public class AfiliadoController {
 	private IAfiliadoService afiliadoService;
 
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/crear")
+	@RequestMapping(value = "/afiliados/crear")
 	public String crear(Map<String, Object> model) {
 
 		Afiliado afiliado = new Afiliado();
@@ -54,7 +54,7 @@ public class AfiliadoController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/crear/{id}")
+	@RequestMapping(value = "/afiliados/crear/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
 		Afiliado afiliado = null;
@@ -78,7 +78,7 @@ public class AfiliadoController {
 	}
 
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/crear", params="crearAfiliado", method = RequestMethod.POST)
+	@RequestMapping(value = "/afiliados/crear", params="crearAfiliado", method = RequestMethod.POST)
 	public String guardar(@Valid Afiliado afiliado, BindingResult result, Model model, RedirectAttributes redirect,
 			SessionStatus status) {
 
@@ -96,7 +96,7 @@ public class AfiliadoController {
 		return "redirect:/ver";
 	}
 
-	@RequestMapping(value = { "/ver", "/" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/afiliados/ver", method = RequestMethod.GET)
 	public String ver(Model model, Authentication authentication, HttpServletRequest request) {
 
 		if (authentication != null) {
@@ -164,17 +164,22 @@ public class AfiliadoController {
 
 	}
 
-	@RequestMapping(value = "/crear", params="agregarBeneficiario", method = RequestMethod.POST)
-	public String crearAfiliado( @ModelAttribute("beneficiario") Beneficiario beneficiario ,@Valid Afiliado afiliado, BindingResult result, Model model,
+	@RequestMapping(value = "/afiliados/crear", params="agregarBeneficiario", method = RequestMethod.POST)
+	public String crearAfiliado( @ModelAttribute("beneficiario") Beneficiario beneficiario, @Valid Afiliado afiliado, BindingResult result, Model model,
 			RedirectAttributes redirect, SessionStatus status) {
 
+		if (result.hasErrors()) {
+			model.addAttribute("titulo", "Crear Afiliado");
+			return "catalogos/afiliados/crear";
+		}
+		
+		this.guardar(afiliado, result, model, redirect, status);
+		
 		model.addAttribute("beneficiario", new Beneficiario());
 		
 		System.out.println("Entrar al método crear afiliado desde el button Agregar Afiliado");
 				
-		model.addAttribute("titulo", "Agregar Beneficiario");
-		
-		this.guardar(afiliado, result, model, redirect, status);
+		model.addAttribute("titulo", "Agregar Beneficiario");		
 
 		return "/catalogos/beneficiarios/crear";
 	}

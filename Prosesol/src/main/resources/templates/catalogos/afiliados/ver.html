@@ -4,20 +4,19 @@
 
 <head th:replace="layout/layout :: head"></head>
 
-<body id="page-top">
+<body class="bg-gradient-primary">	
 	<header th:replace="layout/layout :: header"></header>
-	
-	
-
 	<div id="wrapper">
+	
 		<ul th:replace="layout/layout :: sidebar"></ul>
 		<div id="content-wrapper">
+		
 		<nav th:replace="layout/layout :: nav-bar"></nav>
 			<div class="container-fluid">
-
+			<h1 class="h3 mb-2 text-gray-800">Afiliados</h1>
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/crear}">Crear
+					<li class="breadcrumb-item"><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/afiliados/crear}">Crear
 							Afiliado</a></li>
 					<li class="breadcrumb-item active">Tables</li>
 				</ol>
@@ -25,7 +24,7 @@
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Afiliados
+						<i class="fas fa-table"></i> Catálogo de afiliados
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -68,19 +67,15 @@
 										<td th:text="${afiliado.nss}"></td>
 										<td th:text="${afiliado.email}"></td>
 										<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-primary btn-xs"
-											th:href="@{/crear/} + ${afiliado.id}" th:text="'editar'"></a></td>
+											th:href="@{/afiliados/crear/} + ${afiliado.id}" th:text="'editar'"></a></td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
 					<div class="card-footer small text-muted">Updated yesterday
-						at 11:59 PM</div>
+						at <a th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a></div>
 				</div>
-
-				<p class="small text-center text-muted my-5">
-					<em>More table examples coming soon...</em>
-				</p>
 
 			</div>
 			<!-- /.container-fluid -->
