@@ -63,11 +63,11 @@ public class AfiliadoController {
 			afiliado = afiliadoService.findById(id);
 			if (afiliado == null) {
 				redirect.addFlashAttribute("Error: ", "El id del afiliado no existe");
-				return "redirect:/ver";
+				return "redirect:/afiliados/ver";
 			}
 		} else {
 			redirect.addFlashAttribute("Error: ", "El id del afiliado no puede ser cero");
-			return "redirect:/ver";
+			return "redirect:/afiliados/ver";
 		}
 
 		model.put("afiliado", afiliado);
@@ -93,7 +93,7 @@ public class AfiliadoController {
 		status.setComplete();
 		redirect.addFlashAttribute("success", mensajeFlash);
 
-		return "redirect:/ver";
+		return "redirect:/afiliados/ver";
 	}
 
 	@RequestMapping(value = "/afiliados/ver", method = RequestMethod.GET)

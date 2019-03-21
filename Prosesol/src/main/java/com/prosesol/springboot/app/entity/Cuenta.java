@@ -17,8 +17,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "promotores")
-public class Promotor implements Serializable{
+@Table(name = "cuentas_comerciales")
+public class Cuenta implements Serializable{
 
 	/**
 	 * 
@@ -29,30 +29,31 @@ public class Promotor implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty(message = "Proporcione el nombre del promotor")
-	@Column(name = "nombre")
-	private String nombre;
+	@NotEmpty(message = "Escriba el nombre de la empresa")
+	@Column(name = "razon_social")
+	private String razonSocial;
 	
-	@NotEmpty(message = "Proporcione el nombre del promotor")
-	@Column(name = "apellido_paterno")
-	private String apellidoPaterno;
+	@NotEmpty(message = "Proporcione el RFC de la empresa")
+	@Column(name = "rfc", length = 15)
+	private String rfc;
 	
-	@NotEmpty(message = "Proporcione el nombre del promotor")
-	@Column(name = "apellido_materno")
-	private String apellidoMaterno;
+	@Column(name = "direccion")
+	private String direccion;
+	
+	@Column(name = "codigo_postal")
+	private int codigoPostal;
+	
+	@Column(name = "pais")
+	private String pais;
+	
+	@Column(name = "email")
+	private String email;
 	
 	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_alta")
 	@DateTimeFormat(pattern="dd-MM-yyyy")
 	private Date fechaAlta;
-	
-	@Column(name = "edad")
-	private Integer edad;
-	
-	@NotEmpty(message = "Proporcione el email del promotor")
-	@Column(name = "email")
-	private String email;
 	
 	@Column(name = "estatus")
 	private String estatus;
@@ -65,44 +66,44 @@ public class Promotor implements Serializable{
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getRazonSocial() {
+		return razonSocial;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
 	}
 
-	public String getApellidoPaterno() {
-		return apellidoPaterno;
+	public String getRfc() {
+		return rfc;
 	}
 
-	public void setApellidoPaterno(String apellidoPaterno) {
-		this.apellidoPaterno = apellidoPaterno;
+	public void setRfc(String rfc) {
+		this.rfc = rfc;
 	}
 
-	public String getApellidoMaterno() {
-		return apellidoMaterno;
+	public String getDireccion() {
+		return direccion;
 	}
 
-	public void setApellidoMaterno(String apellidoMaterno) {
-		this.apellidoMaterno = apellidoMaterno;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
-	public Date getFechaAlta() {
-		return fechaAlta;
+	public int getCodigoPostal() {
+		return codigoPostal;
 	}
 
-	public void setFechaAlta(Date fechaAlta) {
-		this.fechaAlta = fechaAlta;
+	public void setCodigoPostal(int codigoPostal) {
+		this.codigoPostal = codigoPostal;
 	}
 
-	public Integer getEdad() {
-		return edad;
+	public String getPais() {
+		return pais;
 	}
 
-	public void setEdad(Integer edad) {
-		this.edad = edad;
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
 	public String getEmail() {
@@ -113,6 +114,14 @@ public class Promotor implements Serializable{
 		this.email = email;
 	}
 
+	public Date getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(Date fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
 	public String getEstatus() {
 		return estatus;
 	}
@@ -120,5 +129,6 @@ public class Promotor implements Serializable{
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
 	}
+	
 	
 }

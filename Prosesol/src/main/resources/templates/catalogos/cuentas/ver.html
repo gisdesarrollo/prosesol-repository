@@ -13,19 +13,19 @@
 
 			<nav th:replace="layout/layout :: nav-bar"></nav>
 			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Promotores</h1>
+				<h1 class="h3 mb-2 text-gray-800">Cuentas comerciales</h1>
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a
 						sec:authorize="hasRole('ROLE_ADMIN')"
-						th:href="@{/promotores/crear}">Crear Promotor</a></li>
+						th:href="@{/cuentas/crear}">Crear cuenta comercial</a></li>
 					<li class="breadcrumb-item active">Tables</li>
 				</ol>
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de promotores
+						<i class="fas fa-table"></i> Catálogo de cuentas
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -34,11 +34,11 @@
 								<thead>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Nombre</th>
-										<th>Apellido Paterno</th>
-										<th>Apellido Materno</th>
-										<th>Fecha de Alta</th>
-										<th>Correo electrónico</th>
+										<th>Razón social</th>
+										<th>RFC</th>
+										<th>Dirección</th>
+										<th>Fecha Alta</th>
+										<th>Email</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
 									</tr>
@@ -46,28 +46,28 @@
 								<tfoot>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Nombre</th>
-										<th>Apellido Paterno</th>
-										<th>Apellido Materno</th>
-										<th>Fecha de Alta</th>
-										<th>Correo electrónico</th>
+										<th>Razón social</th>
+										<th>RFC</th>
+										<th>Dirección</th>
+										<th>Fecha Alta</th>
+										<th>Email</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
 									</tr>
 								</tfoot>
 								<tbody>
-									<tr th:each="promotor : ${promotor}">
+									<tr th:each="cuenta : ${cuenta}">
 										<td sec:authorize="hasRole('ROLE_USER')"
-											th:text="${promotor.id}"></td>
-										<td th:text="${promotor.nombre}"></td>
-										<td th:text="${promotor.apellidoPaterno}"></td>
-										<td th:text="${promotor.apellidoMaterno}"></td>
-										<td th:text="${promotor.fechaAlta}"></td>
-										<td th:text="${promotor.email}"></td>
-										<td th:text="${promotor.estatus}"></td>
+											th:text="${cuenta.id}"></td>
+										<td th:text="${cuenta.razonSocial}"></td>
+										<td th:text="${cuenta.rfc}"></td>
+										<td th:text="${cuenta.direccion}"></td>
+										<td th:text="${cuenta.fechaAlta}"></td>
+										<td th:text="${cuenta.email}"></td>
+										<td th:text="${cuenta.estatus}"></td>
 										<td sec:authorize="hasRole('ROLE_ADMIN')"><a
 											class="btn btn-primary btn-xs"
-											th:href="@{/promotores/crear/} + ${promotor.id}"
+											th:href="@{/cuentas/crear/} + ${cuenta.id}"
 											th:text="'editar'"></a></td>
 									</tr>
 								</tbody>
@@ -75,7 +75,7 @@
 						</div>
 					</div>
 					<div class="card-footer small text-muted">
-						Updated yesterday at <a
+						Fecha de Actualización: <a
 							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
 					</div>
 				</div>

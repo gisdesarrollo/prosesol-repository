@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head></head>
+<body class="bg-gradient-primary">
+	<div id="wrapper" th:fragment="afiliado">
+	
+		<ul th:replace="layout/layout :: sidebar"></ul>
+		<div id="content-wrapper">
+		
+		<nav th:replace="layout/layout :: nav-bar"></nav>
+			<div class="container-fluid">
+			<h1 class="h3 mb-2 text-gray-800">Afiliados</h1>
+				<!-- Breadcrumbs-->
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/afiliados/crear}">Crear
+							Afiliado</a></li>
+					<li class="breadcrumb-item active">Tables</li>
+				</ol>
+
+				<!-- DataTables Example -->
+				<div class="card mb-3">
+					<div class="card-header">
+						<i class="fas fa-table"></i> Catálogo de afiliados
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered" id="dataTable" width="100%"
+								cellspacing="0">
+								<thead>
+									<tr>
+										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th>Nombre</th>
+										<th>Apellido Paterno</th>
+										<th>Apellido Materno</th>
+										<th>CURP</th>
+										<th>RFC</th>
+										<th>NSS</th>
+										<th>Email</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th>Nombre</th>
+										<th>Apellido Paterno</th>
+										<th>Apellido Materno</th>
+										<th>CURP</th>
+										<th>RFC</th>
+										<th>NSS</th>
+										<th>Email</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+									</tr>
+								</tfoot>
+								<tbody>
+									<tr th:each="afiliado : ${afiliado}">
+										<td sec:authorize="hasRole('ROLE_USER')" th:text="${afiliado.id}"></td>
+										<td th:text="${afiliado.nombre}"></td>
+										<td th:text="${afiliado.apellidoPaterno}"></td>
+										<td th:text="${afiliado.apellidoMaterno}"></td>
+										<td th:text="${afiliado.curp}"></td>
+										<td th:text="${afiliado.rfc}"></td>
+										<td th:text="${afiliado.nss}"></td>
+										<td th:text="${afiliado.email}"></td>
+										<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-primary btn-xs"
+											th:href="@{/afiliados/crear/} + ${afiliado.id}" th:text="'editar'"></a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-footer small text-muted">Updated yesterday
+						at <a th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a></div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+
+			<!-- Sticky Footer -->
+			<footer th:replace="/layout/layout :: footer"></footer>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+
+</body>
+
+</html>
