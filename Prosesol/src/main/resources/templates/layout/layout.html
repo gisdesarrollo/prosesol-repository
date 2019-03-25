@@ -64,7 +64,7 @@
 		<div class="sidebar-heading">Interface</div>
 
 		<!-- Nav Item - Pages Collapse Menu -->
-		<li class="nav-item"><a class="nav-link collapsed" href="#"
+		<li  sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a class="nav-link collapsed" href="#"
 			data-toggle="collapse" data-target="#collapseTwo"
 			aria-expanded="true" aria-controls="collapseTwo"> <i
 				class="fas fa-fw fa-cog"></i> <span>Sistema</span>
@@ -73,7 +73,7 @@
 				data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">Componentes del sistema:</h6>
-					<a class="collapse-item" href="buttons.html">Usuario</a> <a
+					<a class="collapse-item" th:href="@{/usuarios/ver}">Usuario</a> <a
 						class="collapse-item" href="cards.html">Roles</a>
 				</div>
 			</div></li>
@@ -151,7 +151,7 @@
 							onclick="document.getElementById('logoutform').submit();"
 							type="submit">
 							<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-							Salir del sistema</a> <input type="hidden"
+							Salir</a> <input type="hidden"
 							th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 						
 					</form>

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "membresias")
@@ -23,9 +24,11 @@ public class Membresia implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotEmpty(message = "Proporcione un nombre para la membresía")
 	@Column(name = "nombre")
 	private String nombre;
 	
+	@NotEmpty(message = "Proporcione el tipo de membresía")
 	@Column(name = "tipoMembresia")
 	private String tipoMembresia;
 	
