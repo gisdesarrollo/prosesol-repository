@@ -41,7 +41,7 @@ public class Cuenta implements Serializable{
 	private String direccion;
 	
 	@Column(name = "codigo_postal")
-	private int codigoPostal;
+	private Integer codigoPostal;
 	
 	@Column(name = "pais")
 	private String pais;
@@ -90,11 +90,11 @@ public class Cuenta implements Serializable{
 		this.direccion = direccion;
 	}
 
-	public int getCodigoPostal() {
+	public Integer getCodigoPostal() {
 		return codigoPostal;
 	}
 
-	public void setCodigoPostal(int codigoPostal) {
+	public void setCodigoPostal(Integer codigoPostal) {
 		this.codigoPostal = codigoPostal;
 	}
 

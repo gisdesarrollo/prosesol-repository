@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head></head>
 <body class="bg-gradient-primary">
-	<!-- Crear AFiliado -->
+	<!-- Editar AFiliado -->
 	<div id="wrapper" th:fragment="afiliado">
 
 		<ul th:replace="layout/layout :: sidebar"></ul>
@@ -15,15 +15,15 @@
 				<!-- DataTables Example -->
 				<div class="card shadow mb-4">
 					<div class="card-header py-3">
-						<h5 class="m-0 font-weight-bold text-primary">Crear afiliado</h5>
+						<h5 class="m-0 font-weight-bold text-primary">Editar afiliado</h5>
 					</div>
 					<div class="card-body">
-						<!-- <div th:object="${afiliado}" th:remove="tag">
+						<div th:object="${afiliado}" th:remove="tag">
 							<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
 								role="alert">
 								<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
 							</ul>
-						</div> -->
+						</div>
 						<form class="user" th:action="@{/afiliados/crear}"
 							th:object="${afiliado}" method="post">
 							<div class="form-group row">
@@ -69,13 +69,9 @@
 										th:errors="*{lugarNacimiento}"></small>
 								</div>
 								<div class="col-sm-6">
-								<select th:field="*{estadoCivil}" class="custom-select" id="inputGroupSelect01">
-	<option th:value="'Estado civil'" th:selected>Estado Civil</option>
-    <option th:value="'Soltero'" >Soltero(a)</option>
-    <option th:value="'Casado'" >Casado(a)</option>
-    <option th:value="'Viudo'" >Viudo(a)</option>
-    <option th:value="'Divorciado'" >Divorciado(a)</option>
-  </select><small
+									<input type="text" th:field="*{estadoCivil}"
+										class="form-control form-control-user"
+										placeholder="Estado Civil"> <small
 										class="form-text text-danger"
 										th:if="${#fields.hasErrors('estadoCivil')}"
 										th:errors="*{estadoCivil}"></small>
@@ -283,17 +279,10 @@
 										th:errors="*{comentarios}"></small>
 								</div>
 							</div>
-							<div class="form-group row">
-								<div class="col-sm-6 mb-3 mb-sm-0">
-									<button type="submit" name="crearAfiliado"
-										class="btn btn-primary btn-user btn-block">Crear
-										Afiliado</button>
-								</div>
-								<div class="col-sm-6">
-									<button type="submit" name="agregarBeneficiario"
-										class="btn btn-primary btn-user btn-block">Agregar
-										Beneficiario</button>
-								</div>
+							<div class="form-group">
+								<button type="submit" name="crearAfiliado"
+									class="btn btn-primary btn-user btn-block">Guardar
+									cambios</button>
 							</div>
 						</form>
 					</div>
@@ -314,9 +303,9 @@
 
 	</div>
 	<!-- /#wrapper -->
-	<!-- /Crear Afiliado -->
-
-	<!-- Crear Promotor -->
+	<!-- /Editar Afiliado -->
+	
+	<!-- Editar Promotor -->
 	<div id="wrapper" th:fragment="promotor">
 
 		<ul th:replace="layout/layout :: sidebar"></ul>
@@ -329,7 +318,7 @@
 				<!-- DataTables Example -->
 				<div class="card shadow mb-4">
 					<div class="card-header py-3">
-						<h5 class="m-0 font-weight-bold text-primary">Crear promotor</h5>
+						<h5 class="m-0 font-weight-bold text-primary">Editar promotor</h5>
 					</div>
 					<div class="card-body">
 						<div th:object="${promotor}" th:remove="tag">
@@ -389,8 +378,8 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<input type="submit" class="btn btn-primary btn-user btn-block"
-									value="Crear Promotor">
+								<input type="submit" class="btn btn-primary btn-user btn-block" name="crearPromotor"
+									value="Guardar cambios">
 							</div>
 						</form>
 					</div>
@@ -411,9 +400,9 @@
 
 	</div>
 	<!-- /#wrapper -->
-	<!-- /Crear Promotor -->
+	<!-- /Editar Promotor -->
 	
-	<!-- Crear Cuentas -->
+	<!-- Editar Cuentas -->
 	<div id="wrapper" th:fragment="cuentas">
 
 		<ul th:replace="layout/layout :: sidebar"></ul>
@@ -426,7 +415,7 @@
 				<!-- DataTables Example -->
 				<div class="card shadow mb-4">
 					<div class="card-header py-3">
-						<h5 class="m-0 font-weight-bold text-primary">Crear cuenta</h5>
+						<h5 class="m-0 font-weight-bold text-primary">Editar cuenta</h5>
 					</div>
 					<div class="card-body">
 						<div th:object="${cuenta}" th:remove="tag">
@@ -497,7 +486,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<input type="submit" class="btn btn-primary btn-user btn-block"
+								<input type="submit" class="btn btn-primary btn-user btn-block" name="crearCuenta"
 									value="Crear Cuenta">
 							</div>
 						</form>
@@ -519,9 +508,9 @@
 
 	</div>
 	<!-- /#wrapper -->
-	<!-- /Crear Cuentas -->
+	<!-- /Editar Cuentas -->
 	
-	<!-- Crear Membresía -->
+	<!-- Editar Membresía -->
 	<div id="wrapper" th:fragment="membresia">
 
 		<ul th:replace="layout/layout :: sidebar"></ul>
@@ -534,7 +523,7 @@
 				<!-- DataTables Example -->
 				<div class="card shadow mb-4">
 					<div class="card-header py-3">
-						<h5 class="m-0 font-weight-bold text-primary">Crear membresía</h5>
+						<h5 class="m-0 font-weight-bold text-primary">Editar membresía</h5>
 					</div>
 					<div class="card-body">
 						<div th:object="${membresia}" th:remove="tag">
@@ -571,7 +560,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<input type="submit" class="btn btn-primary btn-user btn-block"
+								<input type="submit" class="btn btn-primary btn-user btn-block" name="crearMembresia"
 									value="Crear Membresía">
 							</div>
 						</form>
@@ -593,9 +582,7 @@
 
 	</div>
 	<!-- /#wrapper -->
-	<!-- /Crear membresía -->
-
+	<!-- /Editar membresía -->
 
 </body>
-
 </html>

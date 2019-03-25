@@ -54,9 +54,11 @@ public class AfiliadoController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/afiliados/crear/{id}")
+	@RequestMapping(value = "/afiliados/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
+		System.out.println("Entra al método editar");
+		
 		Afiliado afiliado = null;
 
 		if (id > 0) {
@@ -73,7 +75,11 @@ public class AfiliadoController {
 		model.put("afiliado", afiliado);
 		model.put("titulo", "Editar afiliado");
 
-		return "catalogos/afiliados/crear";
+
+		System.out.println("Fin de editar");
+		
+		return "catalogos/afiliados/editar";
+		
 
 	}
 
@@ -82,6 +88,8 @@ public class AfiliadoController {
 	public String guardar(@Valid Afiliado afiliado, BindingResult result, Model model, RedirectAttributes redirect,
 			SessionStatus status) {
 
+		System.out.println("Entra al método guardar");
+		
 		if (result.hasErrors()) {
 			model.addAttribute("titulo", "Crear Afiliado");
 			return "catalogos/afiliados/crear";

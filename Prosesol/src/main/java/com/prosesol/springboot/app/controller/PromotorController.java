@@ -8,9 +8,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -57,7 +59,7 @@ public class PromotorController {
 						 SessionStatus status) {
 		
 		if(result.hasErrors()) {
-			model.addAttribute("promotor", "Crear Promotor");
+			model.addAttribute("titulo", "Crear Promotor");
 			return "catalogos/promotores/crear";
 		}
 		
@@ -70,6 +72,32 @@ public class PromotorController {
 		redirect.addFlashAttribute("success", flashMessage);
 		
 		return "redirect:/promotores/ver";
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/promotores/editar/{id}")
+	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
+
+		Promotor promotor = null;
+
+		if (id > 0) {
+			promotor = promotorService.findById(id);
+			if (promotor == null) {
+				redirect.addFlashAttribute("Error: ", "El id del promotor no existe");
+				return "redirect:/promotores/ver";
+			}
+		} else {
+			redirect.addFlashAttribute("Error: ", "El id del promotor no puede ser cero");
+			return "redirect:/promotores/ver";
+		}
+
+		model.put("promotor", promotor);
+		model.put("titulo", "Editar promotor");
+
+		
+		return "catalogos/promotores/editar";
+		
+
 	}
 	
 }

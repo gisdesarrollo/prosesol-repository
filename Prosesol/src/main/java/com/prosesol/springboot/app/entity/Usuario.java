@@ -27,13 +27,16 @@ public class Usuario implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column
+	private String nombre;
+	
 	@Column(unique = true, length = 30)
 	private String username;
 	
 	@Column(length = 60)
 	private String password;
 	
-	private Boolean enabled;
+	private Boolean estatus;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
@@ -45,6 +48,14 @@ public class Usuario implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public String getUsername() {
@@ -63,12 +74,12 @@ public class Usuario implements Serializable{
 		this.password = password;
 	}
 
-	public Boolean getEnabled() {
-		return enabled;
+	public Boolean getEstatus() {
+		return estatus;
 	}
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
+	public void setEstatus(Boolean estatus) {
+		this.estatus = estatus;
 	}
 
 	public Collection<Role> getRoles() {
