@@ -10,7 +10,7 @@ public interface IPromotorService {
 	
 	public void save(Promotor promotor);
 	
-	public void delete(Promotor promotor);
+	public void delete(Long id);
 	
 	public Promotor findById(Long id);
 	

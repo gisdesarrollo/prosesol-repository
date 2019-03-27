@@ -69,8 +69,6 @@
 													</a> 
 													<a class="dropdown-item" href="#">Borrar
 													</a> 
-													<a class="dropdown-item" href="#">Agregar Usuario
-													</a>
 												</div>
 											</div>
 										</td>
@@ -97,6 +95,94 @@
 	</div>
 	<!-- /#wrapper -->
 	<!-- Ver Usuarios -->
+	
+	<!-- Ver Roles -->
+	<div id="wrapper" th:fragment="perfil">
+
+		<ul th:replace="layout/layout :: sidebar"></ul>
+		<div id="content-wrapper">
+
+			<nav th:replace="layout/layout :: nav-bar"></nav>
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-gray-800">Perfiles</h1>
+				<!-- Breadcrumbs-->
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a
+						sec:authorize="hasRole('ROLE_ADMIN')"
+						th:href="@{/perfiles/crear}">Crear perfil</a></li>
+				</ol>
+
+				<!-- DataTables Example -->
+				<div class="card mb-3">
+					<div class="card-header">
+						<i class="fas fa-table"></i> Catálogo de perfiles
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered" id="dataTable" width="100%"
+								cellspacing="0">
+								<thead>
+									<tr>
+										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th>Id Usuario</th>
+										<th>Nombre del perfil</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th>Id Usuario</th>
+										<th>Nombre del perfil</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+									</tr>
+								</tfoot>
+								<tbody>
+									<tr th:each="perfil : ${perfil}">
+										<td sec:authorize="hasRole('ROLE_USER')"
+											th:text="${perfil.id}"></td>
+										<td th:text="${perfil.idUsuario}"></td>
+										<td th:text="${perfil.roleName}"></td>							
+										<td sec:authorize="hasRole('ROLE_ADMIN')">
+											<div class="dropdown mb-4">
+												<button class="btn btn-primary dropdown-toggle"
+													type="button" id="dropdownMenuButton"
+													data-toggle="dropdown" aria-haspopup="true"
+													aria-expanded="false">Opciones</button>
+												<div class="dropdown-menu animated--fade-in"
+													aria-labelledby="dropdownMenuButton">
+													<a class="dropdown-item" 
+														th:href="@{/perfiles/editar/} + ${perfil.id}"
+														th:text="'Editar'">
+													</a> 
+													<a class="dropdown-item" href="#">Borrar
+													</a> 
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-footer small text-muted">
+						Última actualización: <a
+							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
+					</div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+
+			<!-- Sticky Footer -->
+			<footer th:replace="/layout/layout :: footer"></footer>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+	<!-- Ver Roles -->
 
 	<!-- Ver AFiliado -->
 	<div id="wrapper" th:fragment="afiliado">
@@ -110,9 +196,7 @@
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a
-						sec:authorize="hasRole('ROLE_ADMIN')"
 						th:href="@{/afiliados/crear}">Crear Afiliado</a></li>
-					<li class="breadcrumb-item active">Tables</li>
 				</ol>
 
 				<!-- DataTables Example -->
@@ -134,7 +218,7 @@
 										<th>RFC</th>
 										<th>NSS</th>
 										<th>Email</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
 								</thead>
 								<tfoot>
@@ -147,7 +231,7 @@
 										<th>RFC</th>
 										<th>NSS</th>
 										<th>Email</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
@@ -173,7 +257,9 @@
 														th:href="@{/afiliados/editar/} + ${afiliado.id}"
 														th:text="'Editar'">
 													</a> 
-													<a class="dropdown-item" href="#">Borrar
+													<a class="dropdown-item" th:href="@{/afiliados/eliminar/} + ${afiliado.id}" 
+													   th:text="'Borrar'"
+													onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">
 													</a> 
 													<a class="dropdown-item" href="#">Agregar Beneficiario
 													</a>
@@ -218,7 +304,6 @@
 					<li class="breadcrumb-item"><a
 						sec:authorize="hasRole('ROLE_ADMIN')"
 						th:href="@{/promotores/crear}">Crear Promotor</a></li>
-					<li class="breadcrumb-item active">Tables</li>
 				</ol>
 
 				<!-- DataTables Example -->
@@ -239,7 +324,7 @@
 										<th>Fecha de Alta</th>
 										<th>Correo electrónico</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
 								</thead>
 								<tfoot>
@@ -251,7 +336,7 @@
 										<th>Fecha de Alta</th>
 										<th>Correo electrónico</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
@@ -276,10 +361,10 @@
 														th:href="@{/promotores/editar/} + ${promotor.id}"
 														th:text="'Editar'">
 													</a> 
-													<a class="dropdown-item" href="#">Borrar
+													<a class="dropdown-item" th:href="@{/promotores/eliminar/} + ${promotor.id}" 
+													   th:text="'Borrar'"
+													onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
 													</a> 
-													<a class="dropdown-item" href="#">Agregar Beneficiario
-													</a>
 												</div>
 											</div>
 										</td>
@@ -321,7 +406,6 @@
 					<li class="breadcrumb-item"><a
 						sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/cuentas/crear}">Crear
 							cuenta comercial</a></li>
-					<li class="breadcrumb-item active">Tables</li>
 				</ol>
 
 				<!-- DataTables Example -->
@@ -344,7 +428,7 @@
 										<th>Email</th>
 										<th>Fecha Alta</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
 								</thead>
 								<tfoot>
@@ -358,7 +442,7 @@
 										<th>Email</th>
 										<th>Fecha Alta</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
@@ -385,10 +469,10 @@
 														th:href="@{/cuentas/editar/} + ${cuenta.id}"
 														th:text="'Editar'">
 													</a> 
-													<a class="dropdown-item" href="#">Borrar
+													<a class="dropdown-item" th:href="@{/cuentas/eliminar/} + ${cuenta.id}" 
+													   th:text="'Borrar'"
+													onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
 													</a> 
-													<a class="dropdown-item" href="#">Agregar Beneficiario
-													</a>
 												</div>
 											</div>
 										</td>
@@ -430,7 +514,6 @@
 					<li class="breadcrumb-item"><a
 						sec:authorize="hasRole('ROLE_ADMIN')"
 						th:href="@{/membresias/crear}">Crear Membresía</a></li>
-					<li class="breadcrumb-item active">Tables</li>
 				</ol>
 
 				<!-- DataTables Example -->
@@ -449,7 +532,7 @@
 										<th>Tipo de membresía</th>
 										<th>Costo</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
 								</thead>
 								<tfoot>
@@ -459,7 +542,7 @@
 										<th>Tipo de membresía</th>
 										<th>Costo</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
@@ -482,10 +565,10 @@
 														th:href="@{/membresias/editar/} + ${membresia.id}"
 														th:text="'Editar'">
 													</a> 
-													<a class="dropdown-item" href="#">Borrar
+													<a class="dropdown-item" th:href="@{/membresias/eliminar/} + ${membresia.id}" 
+													   th:text="'Borrar'"
+													onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
 													</a> 
-													<a class="dropdown-item" href="#">Agregar Beneficiario
-													</a>
 												</div>
 											</div>
 										</td>

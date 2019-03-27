@@ -6,37 +6,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.prosesol.springboot.app.entity.Promotor;
-import com.prosesol.springboot.app.entity.dao.IPromotorDao;
+import com.prosesol.springboot.app.entity.Role;
+import com.prosesol.springboot.app.entity.dao.IRoleDao;
 
 @Service
-public class PromotorServiceImpl implements IPromotorService{
+public class RoleServiceImpl implements IRoleService{
 
 	@Autowired
-	private IPromotorDao promotorDao;
+	private IRoleDao roleDao;
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Promotor> findAll() {
-		return (List<Promotor>)promotorDao.findAll();
+	public List<Role> findAll() {	
+		return (List<Role>)roleDao.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void save(Promotor promotor) {
-		promotorDao.save(promotor);
+	public void save(Role role) {
+		roleDao.save(role);		
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		promotorDao.deleteById(id);
+		roleDao.deleteById(id);		
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Promotor findById(Long id) {
-		return promotorDao.findById(id).orElse(null);
+	public Role findById(Long id) {
+		return roleDao.findById(id).orElse(null);
 	}
+
 
 }

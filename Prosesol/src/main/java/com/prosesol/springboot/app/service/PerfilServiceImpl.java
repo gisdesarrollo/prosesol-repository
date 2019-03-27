@@ -6,37 +6,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.prosesol.springboot.app.entity.Promotor;
-import com.prosesol.springboot.app.entity.dao.IPromotorDao;
+import com.prosesol.springboot.app.entity.Perfil;
+import com.prosesol.springboot.app.entity.dao.IPerfilDao;
 
 @Service
-public class PromotorServiceImpl implements IPromotorService{
+public class PerfilServiceImpl implements IPerfilService{
 
 	@Autowired
-	private IPromotorDao promotorDao;
+	private IPerfilDao perfilDao;
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Promotor> findAll() {
-		return (List<Promotor>)promotorDao.findAll();
+	public List<Perfil> findAll() {
+		return (List<Perfil>)perfilDao.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void save(Promotor promotor) {
-		promotorDao.save(promotor);
+	public void save(Perfil perfil) {
+		perfilDao.save(perfil);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		promotorDao.deleteById(id);
+		perfilDao.deleteById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Promotor findById(Long id) {
-		return promotorDao.findById(id).orElse(null);
+	public Perfil findById(Long id) {
+		return perfilDao.findById(id).orElse(null);
 	}
 
 }

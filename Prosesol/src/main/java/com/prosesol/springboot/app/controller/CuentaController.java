@@ -18,14 +18,14 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Cuenta;
-import com.prosesol.springboot.app.service.CuentaServiceImpl;
+import com.prosesol.springboot.app.service.ICuentaService;
 
 @Controller
 @SessionAttributes("cuenta")
 public class CuentaController {
 
 	@Autowired
-	private CuentaServiceImpl cuentaService;
+	private ICuentaService cuentaService;
 	
 	@RequestMapping(value = "/cuentas/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
@@ -93,6 +93,17 @@ public class CuentaController {
 		return "catalogos/cuentas/editar";
 		
 
+	}
+	
+	@RequestMapping(value = "/cuentas/eliminar/{id}")
+	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
+		
+		if(id > 0) {
+			cuentaService.delete(id);
+			redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+		}
+		
+		return "redirect:/cuentas/ver";
 	}
 	
 }

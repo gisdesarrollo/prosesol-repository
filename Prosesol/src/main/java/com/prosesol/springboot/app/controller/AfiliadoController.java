@@ -41,7 +41,6 @@ public class AfiliadoController {
 	@Autowired
 	private IAfiliadoService afiliadoService;
 
-	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/afiliados/crear")
 	public String crear(Map<String, Object> model) {
 
@@ -192,4 +191,19 @@ public class AfiliadoController {
 		return "/catalogos/beneficiarios/crear";
 	}
 
+	@RequestMapping(value = "/afiliados/eliminar/{id}")
+	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
+		
+		logger.info("Entra el método de eliminación de afiliado");
+		
+		if(id > 0) {
+			afiliadoService.delete(id);
+			
+			logger.info("El registro con el id: " + id + " se eliminará");
+			redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+		}
+		
+		return "redirect:/afiliados/ver";
+	}
+	
 }

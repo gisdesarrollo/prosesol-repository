@@ -2,6 +2,7 @@ package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "authorities", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "authority"})})
+@Table(name = "roles", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_name"})})
 public class Role implements Serializable{
 
 	/**
@@ -22,7 +23,11 @@ public class Role implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String authority;
+	@Column(name = "user_id")
+	private Long idUsuario;
+	
+	@Column(name = "role_name")
+	private String roleName;
 
 	public Long getId() {
 		return id;
@@ -32,11 +37,36 @@ public class Role implements Serializable{
 		this.id = id;
 	}
 
-	public String getAuthority() {
-		return authority;
+	public Long getIdUsuario() {
+		return idUsuario;
 	}
 
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}	
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	@Override
+	public String toString() {
+		
+		final StringBuilder builder = new StringBuilder();
+		
+		builder.append("\nId Rol: [").append(idUsuario).append("]\n")
+			   .append("Role name: [")
+			   .append(roleName)
+			   .append("]\n");
+		
+		return builder.toString();
+	}
+
+	
+	
+	
 }

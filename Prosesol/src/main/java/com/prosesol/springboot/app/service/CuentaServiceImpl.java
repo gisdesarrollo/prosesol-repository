@@ -27,16 +27,18 @@ public class CuentaServiceImpl implements ICuentaService{
 		cuentaDao.save(cuenta);
 	}
 
-	@Override
-	@Transactional
-	public void delete(Cuenta cuenta) {
-		cuentaDao.delete(cuenta);
-	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Cuenta findById(Long id) {
 		return cuentaDao.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		cuentaDao.deleteById(id);;
+		
 	}
 
 }

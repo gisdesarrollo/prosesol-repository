@@ -94,4 +94,15 @@ public class MembresiaController {
 
 	}
 	
+	@RequestMapping(value = "/membresias/eliminar/{id}")
+	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
+		
+		if(id > 0) {
+			membresiaService.delete(id);
+			redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+		}
+		
+		return "redirect:/membresias/ver";
+	}
+	
 }

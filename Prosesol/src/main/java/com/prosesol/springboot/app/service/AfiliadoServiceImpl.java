@@ -30,7 +30,7 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		iAfiliadoDao.findById(id);
+		iAfiliadoDao.deleteById(id);
 	}
 
 	@Override

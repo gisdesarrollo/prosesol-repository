@@ -10,7 +10,7 @@ public interface IUsuarioService {
 	
 	public void save(Usuario usuario);
 	
-	public void delete(Usuario usuario);
+	public void delete(Long id);
 	
 	public Usuario findById(Long id);
 	
