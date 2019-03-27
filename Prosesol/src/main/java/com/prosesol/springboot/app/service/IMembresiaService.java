@@ -11,7 +11,7 @@ public interface IMembresiaService {
 	
 	public void save(Membresia membresia);
 	
-	public void delete(Membresia membresia);
+	public void delete(Long id);
 	
 	public Membresia findById(Long id);
 	

@@ -10,7 +10,7 @@ public interface ICuentaService {
 	
 	public void save(Cuenta cuenta);
 	
-	public void delete(Cuenta cuenta);
+	public void delete(Long id);
 	
 	public Cuenta findById(Long id);
 	

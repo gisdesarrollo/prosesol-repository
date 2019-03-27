@@ -30,7 +30,7 @@ public class BeneficiarioServiceImpl implements IBeneficiarioService{
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		beneficiarioDao.findById(id);
+		beneficiarioDao.deleteById(id);;
 	}
 
 	@Override

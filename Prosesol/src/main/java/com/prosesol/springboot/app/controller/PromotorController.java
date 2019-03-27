@@ -100,4 +100,15 @@ public class PromotorController {
 
 	}
 	
+	@RequestMapping(value = "/promotores/eliminar/{id}")
+	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
+		
+		if(id > 0) {
+			promotorService.delete(id);
+			redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+		}
+		
+		return "redirect:/promotores/ver";
+	}
+	
 }

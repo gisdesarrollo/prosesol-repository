@@ -2,6 +2,82 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head></head>
 <body class="bg-gradient-primary">
+
+	<!-- Crear Usuario -->
+	<div id="wrapper" th:fragment="usuario">
+
+		<ul th:replace="layout/layout :: sidebar"></ul>
+		<div id="content-wrapper">
+
+			<nav th:replace="layout/layout :: nav-bar"></nav>
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-gray-800">Usuarios</h1>
+
+				<!-- DataTables Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h5 class="m-0 font-weight-bold text-primary">Crear usuario</h5>
+					</div>
+					<div class="card-body">
+						<div th:object="${usuario}" th:remove="tag">
+							<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
+								role="alert">
+								<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+							</ul>
+						</div>
+						<form class="user" th:action="@{/usuarios/crear}"
+							th:object="${usuario}" method="post">
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{nombre}"
+										class="form-control form-control-user" placeholder="Nombre">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{username}"
+										class="form-control form-control-user"
+										placeholder="Nombre de usuario"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<select th:field="${perfiles}" class="custom-select">
+			                         <option value=""> Perfil </option>
+			                         <option th:each="perfil : ${perfiles}"
+			                                 th:value="${perfil}"
+			                                 th:text="${perfil.roleName}">
+			                         </option>
+			                    </select>
+								</div>
+							</div>
+							<div class="form-group">
+								<input type="submit" class="btn btn-primary btn-user btn-block"
+									value="Crear Usuario">
+							</div>
+						</form>
+					</div>
+					<div class="card-footer small text-muted">
+						Hora de actualización<a
+							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
+					</div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+
+			<!-- Sticky Footer -->
+			<footer th:replace="/layout/layout :: footer"></footer>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+	<!-- /Crear usuario -->
+
 	<!-- Crear AFiliado -->
 	<div id="wrapper" th:fragment="afiliado">
 
@@ -70,12 +146,12 @@
 								</div>
 								<div class="col-sm-6">
 								<select th:field="*{estadoCivil}" class="custom-select" id="inputGroupSelect01">
-	<option th:value="'Estado civil'" th:selected>Estado Civil</option>
-    <option th:value="'Soltero'" >Soltero(a)</option>
-    <option th:value="'Casado'" >Casado(a)</option>
-    <option th:value="'Viudo'" >Viudo(a)</option>
-    <option th:value="'Divorciado'" >Divorciado(a)</option>
-  </select><small
+									<option th:value="'Estado civil'" th:selected>Estado Civil</option>
+								    <option th:value="'Soltero'" >Soltero(a)</option>
+								    <option th:value="'Casado'" >Casado(a)</option>
+								    <option th:value="'Viudo'" >Viudo(a)</option>
+								    <option th:value="'Divorciado'" >Divorciado(a)</option>
+								  </select><small
 										class="form-text text-danger"
 										th:if="${#fields.hasErrors('estadoCivil')}"
 										th:errors="*{estadoCivil}"></small>

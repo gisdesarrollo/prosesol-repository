@@ -26,8 +26,8 @@ public class MembresiaServiceImpl implements IMembresiaService{
 	}
 
 	@Override
-	public void delete(Membresia membresia) {
-		membresiaDao.delete(membresia);
+	public void delete(Long id) {
+		membresiaDao.deleteById(id);;
 	}
 
 	@Override

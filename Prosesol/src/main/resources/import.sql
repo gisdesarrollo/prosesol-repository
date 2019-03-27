@@ -3,6 +3,6 @@ insert into afiliados values(1, 'Soriano', 'Morales', 52953, 'No cuenta con NSS'
 INSERT INTO `usuarios` (nombre, username, password, estatus) VALUES ('Luis Enrique Morales Soriano','luis','$2a$10$WkpRCpf0aldniENn8iNqwerl7FQTzaL.IhgLFE8NxK3b.RWZFEf0e',1);
 INSERT INTO `usuarios` (nombre, username, password, estatus) VALUES ('Administrador','admin','$2a$10$7fi8Xu09Nv.oxQb0cJ5xPOUBa/fueyDyHRtG9QwDIl85m0OCYO3Mm',1);
 
-INSERT INTO `authorities` (user_id, authority) VALUES (1,'ROLE_USER');
-INSERT INTO `authorities` (user_id, authority) VALUES (2,'ROLE_ADMIN');
-INSERT INTO `authorities` (user_id, authority) VALUES (2,'ROLE_USER');
+INSERT INTO `roles` (user_id, role_name) VALUES (1,'ROLE_USER');
+INSERT INTO `roles` (user_id, role_name) VALUES (2,'ROLE_ADMIN');
+INSERT INTO `roles` (user_id, role_name) VALUES (2,'ROLE_USER');
