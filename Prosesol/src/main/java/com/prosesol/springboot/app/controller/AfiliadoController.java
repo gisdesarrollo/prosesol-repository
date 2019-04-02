@@ -20,6 +20,7 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ import com.prosesol.springboot.app.service.IAfiliadoService;
 
 @Controller
 @SessionAttributes("afiliado")
+@RequestMapping("/afiliados")
 public class AfiliadoController {
 
 	protected final Log logger = LogFactory.getLog(this.getClass());
@@ -41,7 +43,7 @@ public class AfiliadoController {
 	@Autowired
 	private IAfiliadoService afiliadoService;
 
-	@RequestMapping(value = "/afiliados/crear")
+	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 
 		Afiliado afiliado = new Afiliado();
@@ -52,8 +54,25 @@ public class AfiliadoController {
 		return "catalogos/afiliados/crear";
 	}
 
+	@GetMapping(value = "/detalle/{id}")
+	public String detalle(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
+		
+		Afiliado afiliado = afiliadoService.findById(id);
+		
+		if(afiliado == null) {
+			redirect.addFlashAttribute("error", "El id del afiliado no existe");
+			return "redirect:/afiliados/ver";
+		}
+		
+		model.put("afiliado", afiliado);
+		model.put("titulo", "Detalle Afiliado" + ' ' + afiliado.getNombre());
+		
+		return "catalogos/afiliados/detalle";
+		
+	}
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/afiliados/editar/{id}")
+	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
 		System.out.println("Entra al método editar");
@@ -83,7 +102,7 @@ public class AfiliadoController {
 	}
 
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/afiliados/crear", params="crearAfiliado", method = RequestMethod.POST)
+	@RequestMapping(value = "/crear", params="crearAfiliado", method = RequestMethod.POST)
 	public String guardar(@Valid Afiliado afiliado, BindingResult result, Model model, RedirectAttributes redirect,
 			SessionStatus status) {
 
@@ -103,7 +122,7 @@ public class AfiliadoController {
 		return "redirect:/afiliados/ver";
 	}
 
-	@RequestMapping(value = "/afiliados/ver", method = RequestMethod.GET)
+	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model, Authentication authentication, HttpServletRequest request) {
 
 		if (authentication != null) {
@@ -171,7 +190,7 @@ public class AfiliadoController {
 
 	}
 
-	@RequestMapping(value = "/afiliados/crear", params="agregarBeneficiario", method = RequestMethod.POST)
+	@RequestMapping(value = "/crear", params="agregarBeneficiario", method = RequestMethod.POST)
 	public String crearAfiliado( @ModelAttribute("beneficiario") Beneficiario beneficiario, @Valid Afiliado afiliado, BindingResult result, Model model,
 			RedirectAttributes redirect, SessionStatus status) {
 
@@ -188,10 +207,10 @@ public class AfiliadoController {
 				
 		model.addAttribute("titulo", "Agregar Beneficiario");		
 
-		return "/catalogos/beneficiarios/crear";
+		return "redirect:/beneficiarios/crear/" + afiliado.getId();
 	}
 
-	@RequestMapping(value = "/afiliados/eliminar/{id}")
+	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 		
 		logger.info("Entra el método de eliminación de afiliado");
@@ -205,5 +224,6 @@ public class AfiliadoController {
 		
 		return "redirect:/afiliados/ver";
 	}
+	
 	
 }

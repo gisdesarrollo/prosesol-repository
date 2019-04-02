@@ -23,12 +23,6 @@ public class BeneficiarioServiceImpl implements IBeneficiarioService{
 
 	@Override
 	@Transactional
-	public void save(Beneficiario beneficiario) {
-		beneficiarioDao.save(beneficiario);
-	}
-
-	@Override
-	@Transactional
 	public void delete(Long id) {
 		beneficiarioDao.deleteById(id);;
 	}
@@ -38,5 +32,13 @@ public class BeneficiarioServiceImpl implements IBeneficiarioService{
 	public Beneficiario findById(Long id) {
 		return beneficiarioDao.findById(id).orElse(null);
 	}
+
+	@Override
+	@Transactional
+	public void save(Beneficiario beneficiario) {
+		beneficiarioDao.save(beneficiario);
+	}
+	
+	
 
 }

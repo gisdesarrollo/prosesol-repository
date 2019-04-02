@@ -2,12 +2,16 @@ package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,6 +31,7 @@ public class Beneficiario implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_beneficiario", unique = true, nullable = false)
 	private Long id;
 	
 	@NotEmpty(message = "El nombre no puede quedar vacío")
@@ -34,11 +39,11 @@ public class Beneficiario implements Serializable{
 	private String nombre;
 	
 	@NotEmpty(message = "El apellido paterno no puede quedar vacío")
-	@Column(name = "apellidoPaterno")
+	@Column(name = "apellido_paterno")
 	private String apellidoPaterno;
 	
 	@NotEmpty(message = "El apellido materno no puede quedart vacío")
-	@Column(name = "apellidoMaterno")
+	@Column(name = "apellido_materno")
 	private String apellidoMaterno;
 		
 	@NotNull
@@ -78,6 +83,35 @@ public class Beneficiario implements Serializable{
 	
 	@Column(name = "curp")
 	private String curp;
+
+	@ManyToMany(mappedBy = "beneficiarios", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private Set<Afiliado> afiliados = new HashSet<Afiliado>();
+	
+	public Beneficiario() {
+		
+	}
+
+	public Beneficiario(@NotEmpty(message = "El nombre no puede quedar vacío") String nombre) {
+		super();
+		this.nombre = nombre;
+	}
+	
+	public Beneficiario(@NotEmpty(message = "El nombre no puede quedar vacío") String nombre,
+			Set<Afiliado> afiliados) {
+		super();
+		this.nombre = nombre;
+		this.afiliados = afiliados;
+	}
+
+
+
+	public Set<Afiliado> getAfiliados() {
+		return afiliados;
+	}
+
+	public void setAfiliados(Set<Afiliado> afiliados) {
+		this.afiliados = afiliados;
+	}
 
 	public Long getId() {
 		return id;
@@ -197,6 +231,26 @@ public class Beneficiario implements Serializable{
 
 	public void setEntidadFederativa(String entidadFederativa) {
 		this.entidadFederativa = entidadFederativa;
+	}
+	
+	public void addAfiliado(Afiliado afiliado) {
+		
+		afiliados.add(afiliado);
+		afiliado.getBeneficiarios().add(this);
+		
+	}
+	
+	@Override
+	public String toString() {
+		
+		final StringBuilder builder = new StringBuilder();
+		
+		builder.append("Id Beneficiario: ").append("")
+			   .append(id).append("")
+			   .append(" Nombre Beneficiario: ").append("")
+			   .append(nombre);
+		
+		return builder.toString();
 	}
 	
 }

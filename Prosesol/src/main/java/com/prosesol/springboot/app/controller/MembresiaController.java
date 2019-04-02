@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +26,8 @@ import com.prosesol.springboot.app.service.IMembresiaService;
 @SessionAttributes("membresia")
 public class MembresiaController {
 
+	protected final Log logger = LogFactory.getLog(this.getClass());
+	
 	@Autowired
 	private IMembresiaService membresiaService;
 	
@@ -45,6 +49,8 @@ public class MembresiaController {
 		model.put("membresia", membresia);
 		model.put("titulo", "Crear Membresia");
 		
+		logger.info("Id membresía desde el método de crear: " + membresia.getId());
+		
 		return "catalogos/membresias/crear";
 				
 	}
@@ -60,9 +66,12 @@ public class MembresiaController {
 		
 		String flashMessage = (membresia.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
 		
+		
 		membresiaService.save(membresia);
 		status.setComplete();
 		redirect.addFlashAttribute("success", flashMessage);
+		
+		logger.info("Id membresía desde el método de guardar: " + membresia.getId());
 		
 		return "redirect:/membresias/ver";
 		
