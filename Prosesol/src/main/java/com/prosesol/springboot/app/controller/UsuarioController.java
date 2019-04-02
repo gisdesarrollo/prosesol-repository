@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.prosesol.springboot.app.entity.Role;
+import com.prosesol.springboot.app.entity.Perfil;
 import com.prosesol.springboot.app.entity.Usuario;
-import com.prosesol.springboot.app.service.IRoleService;
+import com.prosesol.springboot.app.service.IPerfilService;
 import com.prosesol.springboot.app.service.IUsuarioService;
 
 @Controller
@@ -35,7 +35,7 @@ public class UsuarioController {
 	private IUsuarioService usuarioService;
 	
 	@Autowired
-	private IRoleService roleService;
+	private IPerfilService perfilService;
 	
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/usuarios/ver", method = RequestMethod.GET)
@@ -119,8 +119,13 @@ public class UsuarioController {
 		return "redirect:/usuarios/ver";
 	}
 	
+	/**
+	 * Método para mostrar los perfiles
+	 * Dentro del list box de crear usuario 
+	 */
+	
 	@ModelAttribute("perfiles")
-	public List<Role> listaPerfiles(){
-		return roleService.findAll();
+	public List<Perfil> listaPerfiles(){
+		return perfilService.findAll();
 	}
 }

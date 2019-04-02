@@ -14,6 +14,7 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Autowired
 	private IAfiliadoDao iAfiliadoDao;
+	
 
 	@Override
 	@Transactional(readOnly=true)
@@ -37,6 +38,7 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	@Transactional(readOnly = true)
 	public Afiliado findById(Long id) {
 		return iAfiliadoDao.findById(id).orElse(null);
-	}	
+	}
+
 
 }

@@ -3,22 +3,30 @@ package com.prosesol.springboot.app.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="afiliados")
+@Table(name="afiliados", catalog = "db_prosesol")
 public class Afiliado implements Serializable{
 
 	/**
@@ -28,6 +36,7 @@ public class Afiliado implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_afiliado", unique = true, nullable = false)
 	private Long id;
 	
 	@NotEmpty(message = "El nombre no debe quedar vacío")
@@ -143,6 +152,38 @@ public class Afiliado implements Serializable{
 	
 	@Column(name="comentarios")
 	private String comentarios;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "rel_afiliado_beneficiario", catalog = "db_prosesol",
+			   joinColumns = @JoinColumn(name = "id_afiliado", nullable = false, updatable = false),
+			   inverseJoinColumns = @JoinColumn(name = "id_beneficiario", nullable = false, updatable = false),
+			   uniqueConstraints = {@UniqueConstraint(columnNames = {"id_afiliado", "id_beneficiario"})})
+	private Set<Beneficiario> beneficiarios = new HashSet<Beneficiario>(0);	
+	
+	public Afiliado() {
+		
+	}
+	
+	public Afiliado(@NotEmpty(message = "El nombre no debe quedar vacío") String nombre) {
+		super();
+		this.nombre = nombre;
+	}
+
+
+	public Afiliado(@NotEmpty(message = "El nombre no debe quedar vacío") String nombre,
+			Set<Beneficiario> beneficiarios) {
+		super();
+		this.nombre = nombre;
+		this.beneficiarios = beneficiarios;
+	}
+
+	public Set<Beneficiario> getBeneficiarios() {
+		return beneficiarios;
+	}
+
+	public void setBeneficiarios(Set<Beneficiario> beneficiarios) {
+		this.beneficiarios = beneficiarios;
+	}
 
 	public Long getId() {
 		return id;
@@ -414,6 +455,36 @@ public class Afiliado implements Serializable{
 
 	public void setComentarios(String comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	public void addBeneficiario(Beneficiario beneficiario) {
+		beneficiarios.add(beneficiario);
+		beneficiario.getAfiliados().add(this);		
+	}
+	
+	public void removeBeneficiario(Beneficiario beneficiario) {
+		beneficiarios.remove(beneficiario);
+		beneficiario.getAfiliados().add(this);
+	}
+	
+	@Override
+	public String toString() {
+		
+		final StringBuilder builder = new StringBuilder();
+		
+		for(Beneficiario beneficiario : beneficiarios) {
+			
+			builder.append("Id Afiliado: ").append("")
+			   .append(id).append("")
+			   .append("Nombre Afiliado: ").append("")
+			   .append(nombre)
+			   .append(beneficiario);
+			
+		}
+		
+		
+		
+		return builder.toString();
 	}
 	
 	

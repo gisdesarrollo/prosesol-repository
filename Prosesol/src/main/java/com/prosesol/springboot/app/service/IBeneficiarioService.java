@@ -8,10 +8,9 @@ public interface IBeneficiarioService {
 
 	public List<Beneficiario> findAll();
 	
-	public void save(Beneficiario beneficiario);
-	
 	public void delete(Long id);
 	
 	public Beneficiario findById(Long id);
 	
+	public void save(Beneficiario beneficiario);
 }

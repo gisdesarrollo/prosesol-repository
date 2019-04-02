@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
-public class ProsesolApplication implements CommandLineRunner{
+//@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
+public class ProsesolApplication{
 
 	@Autowired 
 	BCryptPasswordEncoder passwordEncoder;
@@ -19,16 +19,16 @@ public class ProsesolApplication implements CommandLineRunner{
 		SpringApplication.run(ProsesolApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		
-		String password = "12345";
-		for(int i = 0; i < 2; i++) {
-			String bCryptPassword = passwordEncoder.encode(password);
-			System.out.println(bCryptPassword);
-		}
-		
-	}
+//	@Override
+//	public void run(String... args) throws Exception {
+//		
+//		String password = "12345";
+//		for(int i = 0; i < 2; i++) {
+//			String bCryptPassword = passwordEncoder.encode(password);
+//			System.out.println(bCryptPassword);
+//		}
+//		
+//	}
 
 	
 	

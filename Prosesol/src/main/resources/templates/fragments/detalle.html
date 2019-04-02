@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head></head>
+<body class="bg-gradient-primary">
+
+	<div id="wrapper" th:fragment="afiliado">
+
+		<ul th:replace="layout/layout :: sidebar"></ul>
+		<div id="content-wrapper">
+
+			<nav th:replace="layout/layout :: nav-bar"></nav>
+			<div class="container py-4">
+				<div class="card bg-light">
+					<div class="card-header" th:text="${titulo}"></div>
+					<div class="card-body">
+
+						<h4 class="card-title">
+							<a class="btn btn-primary btn-xs"
+								th:href="@{'/beneficiario/crear/' + ${afiliado.id}}"
+								th:text="'Crear Beneficiario'"></a>
+						</h4>
+
+						<ul class="list-group">
+							<li class="list-group-item active"
+								th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}"></li>
+							<li class="list-group-item" th:text="${afiliado.fechaNacimiento}"></li>
+							<li class="list-group-item" th:text="${afiliado.lugarNacimiento}"></li>
+							<li class="list-group-item" th:text="${afiliado.estadoCivil}"></li>
+							<li class="list-group-item"
+								th:text="${afiliado.regimenMatrimonial}"></li>
+							<li class="list-group-item"
+								th:text="${afiliado.numeroDependientes}"></li>
+							<li class="list-group-item" th:text="${afiliado.ocupacion}"></li>
+							<li class="list-group-item" th:text="${afiliado.escolaridad}"></li>
+							<li class="list-group-item" th:text="${afiliado.sexo}"></li>
+							<li class="list-group-item" th:text="${afiliado.pais}"></li>
+							<li class="list-group-item" th:text="${afiliado.curp}"></li>
+							<li class="list-group-item" th:text="${afiliado.nss}"></li>
+							<li class="list-group-item" th:text="${afiliado.rfc}"></li>
+							<li class="list-group-item" th:text="${afiliado.telefonoFijo}"></li>
+							<li class="list-group-item" th:text="${afiliado.telefonoMovil}"></li>
+							<li class="list-group-item" th:text="${afiliado.email}"></li>
+							<li class="list-group-item"
+								th:text="${afiliado.direccion} + ' ' + ${afiliado.municipio} + ' ' + ${afiliado.codigoPostal} + ' ' + ${afiliado.entidadFederativa}"></li>
+						</ul>
+
+						<!-- <div th:if="${#lists.isEmpty(cliente.facturas)}"
+					class="alert alert-info my-4"
+					th:text="'No hay facturas asignadas para el cliente ' + ${cliente.nombre} + ' ' + ${cliente.apellido}"></div> -->
+						
+						<table class="table table-bordered table-striped my-4">
+							<caption>Beneficiarios</caption>
+							<thead class="thead-inverse" >
+								<tr>
+									<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+									<th>Nombre</th>
+									<th>Apellido Paterno</th>
+									<th>Apellido Materno</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="beneficiario: ${afiliado.beneficiarios}">
+									<td th:text="${beneficiario.id}"></td>
+									<td th:text="${beneficiario.nombre}"></td>
+									<td th:text="${beneficiario.apellidoPaterno}"></td>
+									<td th:text="${beneficiario.apellidoMaterno}"></td>
+									<!-- <td><a class="btn btn-primary btn-xs"
+								th:href="@{'/factura/ver/' + ${factura.id}}" th:text="'detalle'"></a></td>
+							<td><a class="btn btn-danger btn-xs"
+								th:href="@{'/factura/eliminar/' + ${factura.id}}"
+								th:text="'eliminar'"
+								onclick="return confirm('¿Estas seguro que desea eliminar la factura?');"></a></td> -->
+								</tr>
+							</tbody>
+
+						</table>
+
+					</div>
+				</div>
+
+			</div>
+			<!-- Sticky Footer -->
+		<footer th:replace="/layout/layout :: footer"></footer>
+		</div>
+		
+	</div>
+</body>
+</html>
