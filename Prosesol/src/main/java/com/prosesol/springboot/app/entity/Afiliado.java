@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="afiliados", catalog = "db_prosesol")
+@Table(name="afiliados")
 public class Afiliado implements Serializable{
 
 	/**
@@ -154,7 +154,7 @@ public class Afiliado implements Serializable{
 	private String comentarios;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "rel_afiliado_beneficiario", catalog = "db_prosesol",
+	@JoinTable(name = "rel_afiliado_beneficiario",
 			   joinColumns = @JoinColumn(name = "id_afiliado", nullable = false, updatable = false),
 			   inverseJoinColumns = @JoinColumn(name = "id_beneficiario", nullable = false, updatable = false),
 			   uniqueConstraints = {@UniqueConstraint(columnNames = {"id_afiliado", "id_beneficiario"})})
