@@ -49,7 +49,7 @@
 					class="alert alert-info my-4"
 					th:text="'No hay facturas asignadas para el cliente ' + ${cliente.nombre} + ' ' + ${cliente.apellido}"></div> -->
 						
-						<table class="table table-bordered table-striped my-4">
+						<table th:if="${not #lists.isEmpty(afiliado.beneficiarios)}" class="table table-bordered table-striped my-4">
 							<caption>Beneficiarios</caption>
 							<thead class="thead-inverse" >
 								<tr>
@@ -61,10 +61,10 @@
 							</thead>
 							<tbody>
 								<tr th:each="beneficiario: ${afiliado.beneficiarios}">
-									<td th:text="${beneficiario.id}"></td>
-									<td th:text="${beneficiario.nombre}"></td>
-									<td th:text="${beneficiario.apellidoPaterno}"></td>
-									<td th:text="${beneficiario.apellidoMaterno}"></td>
+									<td th:text="${beneficiario.idBeneficiario}"></td>
+									<td th:text="*{nombre}"></td>
+									<td th:text="*{apellidoPaterno}"></td>
+									<td th:text="*{apellidoMaterno}"></td>
 									<!-- <td><a class="btn btn-primary btn-xs"
 								th:href="@{'/factura/ver/' + ${factura.id}}" th:text="'detalle'"></a></td>
 							<td><a class="btn btn-danger btn-xs"

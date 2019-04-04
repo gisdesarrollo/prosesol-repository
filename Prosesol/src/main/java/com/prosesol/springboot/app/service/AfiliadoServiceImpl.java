@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.Beneficiario;
 import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
+import com.prosesol.springboot.app.entity.dao.IBeneficiarioDao;
 
 @Service
 public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Autowired
 	private IAfiliadoDao iAfiliadoDao;
+	
+	@Autowired
+	private IBeneficiarioDao iBeneficiarioDao;
 	
 
 	@Override
@@ -40,5 +45,18 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 		return iAfiliadoDao.findById(id).orElse(null);
 	}
 
+	@Override
+	public List<Afiliado> getBeneficiarioByIdByIsBeneficiario(Long idAfiliado) {
+		
+		for(Afiliado beneficiario : iAfiliadoDao.getBeneficiarioByIdByIsBeneficiario(idAfiliado)) {
+			System.out.println(beneficiario.toString());
+		}
+		
+		return iAfiliadoDao.getBeneficiarioByIdByIsBeneficiario(idAfiliado);
+	}
+
+	
+
+	
 
 }

@@ -1,6 +1,7 @@
 package com.prosesol.springboot.app.controller;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +59,7 @@ public class AfiliadoController {
 	public String detalle(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 		
 		Afiliado afiliado = afiliadoService.findById(id);
+		List<Afiliado> beneficiarios = afiliadoService.getBeneficiarioByIdByIsBeneficiario(id);
 		
 		if(afiliado == null) {
 			redirect.addFlashAttribute("error", "El id del afiliado no existe");
@@ -65,6 +67,13 @@ public class AfiliadoController {
 		}
 		
 		model.put("afiliado", afiliado);
+				
+		for(Afiliado beneficiario : beneficiarios) {
+			System.out.println(beneficiarios.toString());
+			model.put("beneficiarios", beneficiario);
+		}
+		
+		System.out.println(afiliado.toString());
 		model.put("titulo", "Detalle Afiliado" + ' ' + afiliado.getNombre());
 		
 		return "catalogos/afiliados/detalle";
