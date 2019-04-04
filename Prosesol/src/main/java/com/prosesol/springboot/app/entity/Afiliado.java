@@ -13,13 +13,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -138,7 +135,7 @@ public class Afiliado implements Serializable{
 	private String tipoBeneficiario;
 	
 	@Column(name="estatus", length = 1)
-	private String estatus;
+	private Boolean estatus;
 	
 //	@ManyToOne
 //	@JoinColumn(name = "id_membresia")
@@ -153,30 +150,16 @@ public class Afiliado implements Serializable{
 	@Column(name="comentarios")
 	private String comentarios;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "rel_afiliado_beneficiario",
-			   joinColumns = @JoinColumn(name = "id_afiliado", nullable = false, updatable = false),
-			   inverseJoinColumns = @JoinColumn(name = "id_beneficiario", nullable = false, updatable = false),
-			   uniqueConstraints = {@UniqueConstraint(columnNames = {"id_afiliado", "id_beneficiario"})})
-	private Set<Beneficiario> beneficiarios = new HashSet<Beneficiario>(0);	
+	@Column(name = "is_beneficiario")
+	private Boolean isBeneficiario;
 	
+	@OneToMany(mappedBy = "afiliado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Beneficiario> beneficiarios;
+
 	public Afiliado() {
-		
+		beneficiarios = new HashSet<Beneficiario>();
 	}
 	
-	public Afiliado(@NotEmpty(message = "El nombre no debe quedar vacío") String nombre) {
-		super();
-		this.nombre = nombre;
-	}
-
-
-	public Afiliado(@NotEmpty(message = "El nombre no debe quedar vacío") String nombre,
-			Set<Beneficiario> beneficiarios) {
-		super();
-		this.nombre = nombre;
-		this.beneficiarios = beneficiarios;
-	}
-
 	public Set<Beneficiario> getBeneficiarios() {
 		return beneficiarios;
 	}
@@ -417,14 +400,6 @@ public class Afiliado implements Serializable{
 		this.tipoBeneficiario = tipoBeneficiario;
 	}
 
-	public String getEstatus() {
-		return estatus;
-	}
-
-	public void setEstatus(String estatus) {
-		this.estatus = estatus;
-	}
-
 //	public Membresia getMembresia() {
 //		return membresia;
 //	}
@@ -432,6 +407,14 @@ public class Afiliado implements Serializable{
 //	public void setMembresia(Membresia membresia) {
 //		this.membresia = membresia;
 //	}
+
+	public Boolean getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(Boolean estatus) {
+		this.estatus = estatus;
+	}
 
 	public String getTipoAfiliacion() {
 		return tipoAfiliacion;
@@ -458,15 +441,17 @@ public class Afiliado implements Serializable{
 	}
 
 	public void addBeneficiario(Beneficiario beneficiario) {
-		beneficiarios.add(beneficiario);
-		beneficiario.getAfiliados().add(this);		
+		beneficiarios.add(beneficiario);	
 	}
-	
-	public void removeBeneficiario(Beneficiario beneficiario) {
-		beneficiarios.remove(beneficiario);
-		beneficiario.getAfiliados().add(this);
+
+	public Boolean getIsBeneficiario() {
+		return isBeneficiario;
 	}
-	
+
+	public void setIsBeneficiario(Boolean isBeneficiario) {
+		this.isBeneficiario = isBeneficiario;
+	}
+
 	@Override
 	public String toString() {
 		
