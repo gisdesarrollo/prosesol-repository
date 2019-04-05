@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prosesol.springboot.app.entity.Afiliado;
-import com.prosesol.springboot.app.entity.Beneficiario;
 import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
-import com.prosesol.springboot.app.entity.dao.IBeneficiarioDao;
+import com.prosesol.springboot.app.repository.BeneficiarioRepository;
 
 @Service
 public class AfiliadoServiceImpl implements IAfiliadoService{
@@ -18,8 +17,7 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	private IAfiliadoDao iAfiliadoDao;
 	
 	@Autowired
-	private IBeneficiarioDao iBeneficiarioDao;
-	
+	private BeneficiarioRepository beneficiarioRepository;
 
 	@Override
 	@Transactional(readOnly=true)
@@ -47,12 +45,13 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Override
 	public List<Afiliado> getBeneficiarioByIdByIsBeneficiario(Long idAfiliado) {
-		
-		for(Afiliado beneficiario : iAfiliadoDao.getBeneficiarioByIdByIsBeneficiario(idAfiliado)) {
-			System.out.println(beneficiario.toString());
-		}
-		
 		return iAfiliadoDao.getBeneficiarioByIdByIsBeneficiario(idAfiliado);
+	}
+
+	@Override
+	public void insertBeneficiarioUsingJpa(Afiliado beneficiario, Long id) {
+		beneficiarioRepository.insertBeneficiario(beneficiario, id);
+		
 	}
 
 	

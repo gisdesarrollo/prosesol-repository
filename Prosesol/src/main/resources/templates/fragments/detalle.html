@@ -15,9 +15,9 @@
 					<div class="card-header" th:text="${titulo}"></div>
 					<div class="card-body">
 
-						<h4 class="card-title">
+						<h4 th:if="${not afiliado.isBeneficiario}" class="card-title">
 							<a class="btn btn-primary btn-xs"
-								th:href="@{'/beneficiario/crear/' + ${afiliado.id}}"
+								th:href="@{/beneficiarios/crear/} + ${afiliado.id}"
 								th:text="'Crear Beneficiario'"></a>
 						</h4>
 
@@ -60,11 +60,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="beneficiario: ${afiliado.beneficiarios}">
-									<td th:text="${beneficiario.idBeneficiario}"></td>
-									<td th:text="*{nombre}"></td>
-									<td th:text="*{apellidoPaterno}"></td>
-									<td th:text="*{apellidoMaterno}"></td>
+								<tr th:each="beneficiario: ${afiliados}">
+									<td th:text="${beneficiario.id}"></td>
+									<td th:text="${beneficiario.nombre}"></td>
+									<td th:text="${beneficiario.apellidoPaterno}"></td>
+									<td th:text="${beneficiario.apellidoMaterno}"></td>
 									<!-- <td><a class="btn btn-primary btn-xs"
 								th:href="@{'/factura/ver/' + ${factura.id}}" th:text="'detalle'"></a></td>
 							<td><a class="btn btn-danger btn-xs"
