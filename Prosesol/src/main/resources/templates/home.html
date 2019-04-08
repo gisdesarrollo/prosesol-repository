@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+</head>
+<body class="bg-gradient-primary">
+	<header th:replace="fragments/header :: header"></header>
+	<!-- Home -->
+	<div id="wrapper">
+
+		<ul th:replace="fragments/sidebar :: sidebar"></ul>
+		<div id="content-wrapper">
+			<nav th:replace="layout/layout :: nav-bar"></nav>
+		</div>
+		
+	</div>
+	<footer th:replace="/layout/layout :: footer"></footer>
+</body>
+</html>

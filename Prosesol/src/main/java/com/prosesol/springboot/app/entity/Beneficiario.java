@@ -84,11 +84,10 @@ public class Beneficiario implements Serializable {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 
-		builder.append("Id afiliado: " + afiliado.getId() +
-					   "Id beneficiario:" + idBeneficiario +
-					   "Nombre beneficiario: " + afiliado.getNombre() + 
-					   "Apellido Paterno: " + afiliado.getApellidoPaterno() +
-					   "Apellido Materno: " + afiliado.getApellidoMaterno());
+		builder.append("\n Id beneficiario:").append(idBeneficiario)
+					  .append("\n Nombre beneficiario: ").append(afiliado.getNombre())
+					  .append("\n Apellido Paterno: ").append(afiliado.getApellidoPaterno())
+					  .append("\n Apellido Materno: ").append(afiliado.getApellidoMaterno());
 		
 		return builder.toString();
 

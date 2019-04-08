@@ -238,7 +238,7 @@
 									</tr>
 								</tfoot>
 								<tbody>
-									<tr th:switch="${afiliado.estatus}" th:each="afiliado : ${afiliado}">
+									<tr th:switch="${afiliado.estatus}" th:each="afiliado : ${afiliados}">
 										<td sec:authorize="hasRole('ROLE_USER')"><a
 											class="btn btn-primary btn-xs"
 											th:href="@{/afiliados/detalle/} + ${afiliado.id}"

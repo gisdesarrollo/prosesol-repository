@@ -17,4 +17,6 @@ public interface IAfiliadoService {
 	public List<Afiliado> getBeneficiarioByIdByIsBeneficiario(Long idAfiliado);
 	
 	public void insertBeneficiarioUsingJpa(Afiliado beneficiario, Long id);
+	
+	public Afiliado getAfiliadoAssignedBeneficiario(Long id);
 }

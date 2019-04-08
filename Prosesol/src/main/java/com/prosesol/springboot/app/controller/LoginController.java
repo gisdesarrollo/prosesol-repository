@@ -18,7 +18,7 @@ public class LoginController {
 		
 		if(principal != null) {
 			
-			return "redirect:/afiliados/ver";
+			return "/home";
 		}
 		
 		if(error != null) {
