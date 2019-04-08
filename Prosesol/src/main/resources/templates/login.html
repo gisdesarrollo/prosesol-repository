@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="fragments/head :: head"></head>
 
 <body class="bg-gradient-primary">
 
 
-	<header th:replace="layout/layout :: header"></header>
+	<header th:replace="fragments/header :: header"></header>
 	<div class="container">
 		<!-- Outer Row -->
 		<div class="row justify-content-center">
@@ -48,6 +48,8 @@
 		</div>
 
 	</div>
+	
+	
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="@{/jquery/jquery.min.js}"></script>

@@ -1,12 +1,107 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="fragments/head :: head"></head>
 
 <body class="bg-gradient-primary">	
-	<header th:replace="layout/layout :: header"></header>
-	<div th:replace="fragments/editar :: promotor"></div>
+	<header th:replace="fragments/header :: header"></header>
+	<!-- Editar Promotor -->
+	<div id="wrapper">
+
+		<ul th:replace="fragments/sidebar :: sidebar"></ul>
+		<div id="content-wrapper">
+
+			<nav th:replace="fragments/navbar :: nav-bar"></nav>
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-gray-800">Promotores</h1>
+
+				<!-- DataTables Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h5 class="m-0 font-weight-bold text-primary">Editar promotor</h5>
+					</div>
+					<div class="card-body">
+						<div th:object="${promotor}" th:remove="tag">
+							<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
+								role="alert">
+								<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+							</ul>
+						</div>
+						<form class="user" th:action="@{/promotores/crear}"
+							th:object="${promotor}" method="post">
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{nombre}"
+										class="form-control form-control-user" placeholder="Nombre">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{apellidoPaterno}"
+										class="form-control form-control-user"
+										placeholder="Apellido Paterno"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('apellidoPaterno')}" th:errors="*{apellidoPaterno}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{apellidoMaterno}"
+										class="form-control form-control-user"
+										placeholder="Apellido Materno"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('apellidoMaterno')}"
+										th:errors="*{apellidoMaterno}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{fechaAlta}"
+										class="form-control form-control-user" id="datepicker"
+										placeholder="Fecha de Alta"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('fechaAlta')}"
+										th:errors="*{fechaAlta}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{edad}"
+										class="form-control form-control-user" placeholder="Edad">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('edad')}" th:errors="*{edad}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="email" th:field="*{email}"
+										class="form-control form-control-user"
+										placeholder="Correo electrónico"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+								</div>
+							</div>
+							<div class="form-group">
+								<input type="submit" class="btn btn-primary btn-user btn-block" name="crearPromotor"
+									value="Guardar cambios">
+							</div>
+						</form>
+					</div>
+					<div class="card-footer small text-muted">
+						Updated yesterday at <a
+							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
+					</div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+
+			<!-- Sticky Footer -->
+			<footer th:replace="fragments/footer :: footer"></footer>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+	<!-- /Editar Promotor -->
 
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i

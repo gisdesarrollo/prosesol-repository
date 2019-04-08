@@ -2,11 +2,318 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="fragments/head :: head"></head>
 
 <body class="bg-gradient-primary">	
-	<header th:replace="layout/layout :: header"></header>
-	<div th:replace="fragments/crear :: afiliado"></div>
+	<header th:replace="fragments/header :: header"></header>
+	<!-- Crear AFiliado -->
+	<div id="wrapper">
+
+		<ul th:replace="fragments/sidebar :: sidebar"></ul>
+		<div id="content-wrapper">
+
+			<nav th:replace="fragments/navbar :: nav-bar"></nav>
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-gray-800">Afiliados</h1>
+
+				<!-- DataTables Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h5 class="m-0 font-weight-bold text-primary">Crear afiliado</h5>
+					</div>
+					<div class="card-body">
+						<!-- <div th:object="${afiliado}" th:remove="tag">
+							<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
+								role="alert">
+								<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+							</ul>
+						</div> -->
+						<form class="user" th:action="@{/afiliados/crear}"
+							th:object="${afiliado}" method="post">
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{nombre}"
+										class="form-control form-control-user" placeholder="Nombre">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{apellidoPaterno}"
+										class="form-control form-control-user"
+										placeholder="Apellido Paterno"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{apellidoMaterno}"
+										class="form-control form-control-user"
+										placeholder="Apellido Materno"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('apellidoMaterno')}"
+										th:errors="*{apellidoMaterno}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{fechaNacimiento}"
+										class="form-control form-control-user" id="datepicker"
+										placeholder="Fecha de Nacimiento"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('fechaNacimiento')}"
+										th:errors="*{fechaNacimiento}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{lugarNacimiento}"
+										class="form-control form-control-user"
+										placeholder="Lugar de Nacimiento"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('lugarNacimiento')}"
+										th:errors="*{lugarNacimiento}"></small>
+								</div>
+								<div class="col-sm-6">
+								<select th:field="*{estadoCivil}" class="custom-select" id="inputGroupSelect01">
+									<option th:value="'Estado civil'" th:selected>Estado Civil</option>
+								    <option th:value="'Soltero'" >Soltero(a)</option>
+								    <option th:value="'Casado'" >Casado(a)</option>
+								    <option th:value="'Viudo'" >Viudo(a)</option>
+								    <option th:value="'Divorciado'" >Divorciado(a)</option>
+								  </select><small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('estadoCivil')}"
+										th:errors="*{estadoCivil}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{regimenMatrimonial}"
+										class="form-control form-control-user"
+										placeholder="Régimen matrimonial"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('regimenMatrimonial')}"
+										th:errors="*{regimenMatrimonial}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{numeroDependientes}"
+										class="form-control form-control-user"
+										placeholder="Número de dependientes"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('numeroDependientes')}"
+										th:errors="*{numeroDependientes}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{ocupacion}"
+										class="form-control form-control-user" placeholder="Ocupación">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('ocupacion')}"
+										th:errors="*{ocupacion}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{escolaridad}"
+										class="form-control form-control-user"
+										placeholder="Escolaridad"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('escolaridad')}"
+										th:errors="*{escolaridad}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{sexo}"
+										class="form-control form-control-user" placeholder="Sexo">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{pais}"
+										class="form-control form-control-user" placeholder="País">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('pais')}" th:errors="*{pais}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{curp}"
+										class="form-control form-control-user" placeholder="Curp">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('curp')}" th:errors="*{curp}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{nss}"
+										class="form-control form-control-user"
+										placeholder="Número de seguridad social"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('nss')}" th:errors="*{nss}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{rfc}"
+										class="form-control form-control-user"
+										placeholder="Registro Federal del Contribuyente"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('rfc')}" th:errors="*{rfc}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{telefonoFijo}"
+										class="form-control form-control-user"
+										placeholder="Teléfono Fijo"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('telefonoFijo')}"
+										th:errors="*{telefonoFijo}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{telefonoMovil}"
+										class="form-control form-control-user"
+										placeholder="Teléfono móvil"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('telefonoMovil')}"
+										th:errors="*{telefonoMovil}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="email" th:field="*{email}"
+										class="form-control form-control-user"
+										placeholder="Correo electrónico"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{direccion}"
+										class="form-control form-control-user" placeholder="Dirección">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('direccion')}"
+										th:errors="*{direccion}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{municipio}"
+										class="form-control form-control-user" placeholder="Municipio">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('municipio')}"
+										th:errors="*{municipio}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{codigoPostal}"
+										class="form-control form-control-user"
+										placeholder="Código Postal"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('codigoPostal')}"
+										th:errors="*{codigoPostal}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{estatusVivienda}"
+										class="form-control form-control-user" id="exampleLastName"
+										placeholder="Estatus Vivienda"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('estatusVivienda')}"
+										th:errors="*{estatusVivienda}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{infonavit}"
+										class="form-control form-control-user"
+										placeholder="¿Cuenta con crédito Infonavit?"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('infonavit')}"
+										th:errors="*{infonavit}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{numeroInfonavit}"
+										class="form-control form-control-user"
+										placeholder="Número de Infonavit"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('numeroInfonavit')}"
+										th:errors="*{numeroInfonavit}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{fechaAlta}"
+										class="form-control form-control-user" id="datepicker1"
+										placeholder="Fecha de alta de registro"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('fechaAlta')}"
+										th:errors="*{fechaAlta}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{fechaPago}"
+										class="form-control form-control-user"
+										placeholder="Fecha de Pago"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('fechaPago')}"
+										th:errors="*{fechaPago}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{tipoBeneficiario}"
+										class="form-control form-control-user"
+										placeholder="Tipo de Beneficiario"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('tipoBeneficiario')}"
+										th:errors="*{tipoBeneficiario}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{tipoAfiliacion}"
+										class="form-control form-control-user"
+										placeholder="Tipo de Afiliación"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('tipoAfiliacion')}"
+										th:errors="*{tipoAfiliacion}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{cuota}"
+										class="form-control form-control-user" placeholder="Cuota">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('cuota')}" th:errors="*{cuota}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{comentarios}"
+										class="form-control form-control-user"
+										placeholder="Comentarios"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('comentarios')}"
+										th:errors="*{comentarios}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<button type="submit"
+										class="btn btn-primary btn-user btn-block">Crear
+										Afiliado</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="card-footer small text-muted">
+						Updated yesterday at <a
+							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
+					</div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+
+			<!-- Sticky Footer -->
+			<footer th:replace="fragments/footer :: footer"></footer>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+	<!-- /Crear Afiliado -->
 
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
