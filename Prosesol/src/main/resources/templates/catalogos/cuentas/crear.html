@@ -1,12 +1,118 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="fragments/head :: head"></head>
 
 <body class="bg-gradient-primary">	
-	<header th:replace="layout/layout :: header"></header>
-	<div th:replace="fragments/crear :: cuentas"></div>
+	<header th:replace="fragments/header :: header"></header>
+	<!-- Crear Cuentas -->
+	<div id="wrapper">
+
+		<ul th:replace="fragments/sidebar :: sidebar"></ul>
+		<div id="content-wrapper">
+
+			<nav th:replace="fragments/navbar :: nav-bar"></nav>
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-gray-800">Cuentas</h1>
+
+				<!-- DataTables Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h5 class="m-0 font-weight-bold text-primary">Crear cuenta</h5>
+					</div>
+					<div class="card-body">
+						<div th:object="${cuenta}" th:remove="tag">
+							<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
+								role="alert">
+								<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+							</ul>
+						</div>
+						<form class="user" th:action="@{/cuentas/crear}"
+							th:object="${cuenta}" method="post">
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{razonSocial}"
+										class="form-control form-control-user" placeholder="Razón Social">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('razonSocial')}" th:errors="*{razonSocial}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{rfc}"
+										class="form-control form-control-user"
+										placeholder="RFC"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('rfc')}" th:errors="*{rfc}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{direccion}"
+										class="form-control form-control-user"
+										placeholder="Dirección"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('direccion')}"
+										th:errors="*{direccion}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" th:field="*{codigoPostal}"
+										class="form-control form-control-user"
+										placeholder="Código Postal"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('codigoPostal')}" th:errors="*{codigoPostal}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{pais}"
+										class="form-control form-control-user" 
+										placeholder="País"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('pais')}"
+										th:errors="*{pais}"></small>
+								</div>
+								<div class="col-sm-6">
+									<input type="email" th:field="*{email}"
+										class="form-control form-control-user"
+										placeholder="Correo electrónico"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{fechaAlta}"
+										class="form-control form-control-user" id="datepicker"
+										placeholder="Fecha de Alta"> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('fechaAlta')}"
+										th:errors="*{fechaAlta}"></small>
+								</div>
+							</div>
+							<div class="form-group">
+								<input type="submit" class="btn btn-primary btn-user btn-block"
+									value="Crear Cuenta">
+							</div>
+						</form>
+					</div>
+					<div class="card-footer small text-muted">
+						Updated yesterday at <a
+							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
+					</div>
+				</div>
+
+			</div>
+			<!-- /.container-fluid -->
+
+			<!-- Sticky Footer -->
+			<footer th:replace="fragments/footer :: footer"></footer>
+
+		</div>
+		<!-- /.content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+	<!-- /Crear Cuentas -->
 
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i

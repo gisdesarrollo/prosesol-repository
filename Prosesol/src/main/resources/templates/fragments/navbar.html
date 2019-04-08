@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
@@ -16,7 +16,7 @@
 		<!-- Topbar Navbar -->
 		<ul class="navbar-nav ml-auto">
 			<li sec:authorize="!isAuthenticated()"><a
-				class="btn btn-primary" th:href="@{/login}">Iniciar Sesi�n</a></li>
+				class="btn btn-primary" th:href="@{/login}">Iniciar Sesión</a></li>
 			<li sec:authorize="isAuthenticated()"
 				class="nav-item dropdown no-arrow"><a
 				class="nav-link dropdown-toggle" href="#" id="userDropdown"

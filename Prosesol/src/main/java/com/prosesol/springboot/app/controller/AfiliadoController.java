@@ -132,15 +132,13 @@ public class AfiliadoController {
 		}		
 		
 		for(Afiliado afiliados : listaAfiliado) {
+			System.out.println(afiliados.getBeneficiarios());
 			if(afiliados.getIsBeneficiario().equals(true)) {
-				System.out.println(afiliados.getId());
 				beneficiarios.add(afiliadoService.getAfiliadoAssignedBeneficiario(afiliados.getId()));
-				System.out.println(beneficiarios);
 			}		
 		}
 		
-		
-		
+	
 		model.addAttribute("titulo", "Afiliados");
 		model.addAttribute("afiliados", afiliadoService.findAll());
 
