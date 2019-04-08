@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+</head>
+<body>
+	<footer th:fragment="footer">
+		<div class="container my-auto">
+			<div class="text-center my-auto">
+				<p sec:authorize="isAuthenticated()">
+					Usuario logeado: <span sec:authentication="name"></span> Roles: <span
+						sec:authentication="principal.authorities"></span>
+				</p>
+			</div>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<!-- Bootstrap core JavaScript-->
+		<script th:src="@{/jquery/jquery.min.js}"></script>
+		<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+		<!-- Core plugin JavaScript-->
+		<script th:src="@{/jquery/jquery.easing.min.js}"></script>
+
+		<!-- Page level plugin JavaScript-->
+		<!-- <script th:src="@{/jquery/jquery.dataTables.js}"></script>
+		<script th:src="@{/jquery/dataTables.bootstrap4.js}"></script>  -->
+		<script type="text/javascript"
+			src="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.6/b-flash-1.5.6/cr-1.5.0/fc-3.2.5/fh-3.1.4/datatables.min.js"></script>
+
+		<!-- Custom scripts for all pages-->
+		<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+		<!-- Demo scripts for this page-->
+		<script th:src="@{/js/datatables-demo.js}"></script>
+
+		<!-- Datepicker function -->
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script th:src="@{/js/utils.js}"></script>
+	</footer>
+</body>
+</html>

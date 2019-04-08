@@ -1,6 +1,6 @@
 package com.prosesol.springboot.app.controller;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,16 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +25,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Afiliado;
-import com.prosesol.springboot.app.entity.Beneficiario;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 
 @Controller
@@ -66,14 +59,8 @@ public class AfiliadoController {
 			return "redirect:/afiliados/ver";
 		}
 		
-		model.put("afiliado", afiliado);
-				
-		for(Afiliado beneficiario : beneficiarios) {
-			System.out.println(beneficiarios.toString());
-			model.put("beneficiarios", beneficiario);
-		}
-		
-		System.out.println(afiliado.toString());
+		model.put("afiliado", afiliadoService.findById(id));	
+		model.put("afiliados", beneficiarios);
 		model.put("titulo", "Detalle Afiliado" + ' ' + afiliado.getNombre());
 		
 		return "catalogos/afiliados/detalle";
@@ -111,7 +98,7 @@ public class AfiliadoController {
 	}
 
 	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/crear", params="crearAfiliado", method = RequestMethod.POST)
+	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Afiliado afiliado, BindingResult result, Model model, RedirectAttributes redirect,
 			SessionStatus status) {
 
@@ -124,6 +111,9 @@ public class AfiliadoController {
 
 		String mensajeFlash = (afiliado.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
 
+		afiliado.setEstatus(true);
+		afiliado.setIsBeneficiario(false);
+		
 		afiliadoService.save(afiliado);
 		status.setComplete();
 		redirect.addFlashAttribute("success", mensajeFlash);
@@ -134,90 +124,29 @@ public class AfiliadoController {
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model, Authentication authentication, HttpServletRequest request) {
 
+		List<Afiliado> listaAfiliado = afiliadoService.findAll();
+		List<Afiliado> beneficiarios = new ArrayList<Afiliado>();
+		
 		if (authentication != null) {
 			logger.info("Usuario autenticado: ".concat(authentication.getName()));
+		}		
+		
+		for(Afiliado afiliados : listaAfiliado) {
+			if(afiliados.getIsBeneficiario().equals(true)) {
+				System.out.println(afiliados.getId());
+				beneficiarios.add(afiliadoService.getAfiliadoAssignedBeneficiario(afiliados.getId()));
+				System.out.println(beneficiarios);
+			}		
 		}
-
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-		if (auth != null) {
-			logger.info("Utilizando forma estática, usuario autenticado: ".concat(auth.getName()));
-		}
-
-		if (hasRole("ROLE_ADMIN")) {
-			logger.info("Accesso garantizado ".concat(auth.getName()));
-		} else {
-			logger.info("Accesso denegado ".concat(auth.getName()));
-		}
-
-		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,
-				"");
-
-		if (securityContext.isUserInRole("ROLE_ADMIN")) {
-			logger.info("Forma usando SecurityContextHolderAwareRequest Accesso garantizado ".concat(auth.getName()));
-		} else {
-			logger.info("Forma usando SecurityContextHolderAwareRequest Accesso denegado ".concat(auth.getName()));
-		}
-
-		if (request.isUserInRole("ROLE_ADMIN")) {
-			logger.info("Forma usando HttpServletRequest Accesso garantizado ".concat(auth.getName()));
-		} else {
-			logger.info("Forma usando HttpServletRequest Accesso denegado ".concat(auth.getName()));
-		}
-
+		
+		
+		
 		model.addAttribute("titulo", "Afiliados");
-		model.addAttribute("afiliado", afiliadoService.findAll());
+		model.addAttribute("afiliados", afiliadoService.findAll());
 
 		return "catalogos/afiliados/ver";
 
-	}
-
-	private boolean hasRole(String role) {
-
-		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null) {
-			return false;
-		}
-
-		Authentication auth = context.getAuthentication();
-
-		if (auth == null) {
-			return false;
-		}
-
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-
-		return authorities.contains(new SimpleGrantedAuthority(role));
-//		for(GrantedAuthority authority : authorities) {
-//			if(role.equals(authority.getAuthority())) {
-//				logger.info("Hola usuario: ".concat(auth.getName()).concat(" tu rol es: ".concat(authority.getAuthority())));
-//				return true;
-//			}
-//		}
-//		
-//		return false;
-
-	}
-
-	@RequestMapping(value = "/crear", params="agregarBeneficiario", method = RequestMethod.POST)
-	public String crearAfiliado( @ModelAttribute("beneficiario") Beneficiario beneficiario, @Valid Afiliado afiliado, BindingResult result, Model model,
-			RedirectAttributes redirect, SessionStatus status) {
-
-		if (result.hasErrors()) {
-			model.addAttribute("titulo", "Crear Afiliado");
-			return "catalogos/afiliados/crear";
-		}
-		
-		this.guardar(afiliado, result, model, redirect, status);
-		
-		model.addAttribute("beneficiario", new Beneficiario());
-		
-		System.out.println("Entrar al método crear afiliado desde el button Agregar Afiliado");
-				
-		model.addAttribute("titulo", "Agregar Beneficiario");		
-
-		return "redirect:/beneficiarios/crear/" + afiliado.getId();
-	}
+	}	
 
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {

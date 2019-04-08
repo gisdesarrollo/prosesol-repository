@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+</head>
+
+<body>
+	<!-- Sidebar -->
+	<ul th:fragment="sidebar"
+		class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+		id="accordionSidebar">
+		<!-- Sidebar - Brand -->
+		<a
+			class="sidebar-brand d-flex align-items-center justify-content-center"
+			href="index.html">
+			<div class="sidebar-brand-text mx-3">PROSESOL</div>
+		</a>
+
+		<!-- Divider -->
+		<hr class="sidebar-divider my-0">
+
+		<!-- Nav Item - Dashboard -->
+		<li class="nav-item active"><a class="nav-link" href="index.html">
+				<i class="fas fa-fw fa-tachometer-alt"></i> <span>Inicio</span>
+		</a></li>
+
+		<!-- Divider -->
+		<hr class="sidebar-divider">
+
+		<!-- Heading -->
+		<div class="sidebar-heading">Interface</div>
+
+		<!-- Nav Item - Pages Collapse Menu -->
+		<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
+			class="nav-link collapsed" href="#" data-toggle="collapse"
+			data-target="#collapseTwo" aria-expanded="true"
+			aria-controls="collapseTwo"> <i class="fas fa-fw fa-cog"></i> <span>Sistema</span>
+		</a>
+			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+				data-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<h6 class="collapse-header">Componentes del sistema:</h6>
+					<a class="collapse-item" th:href="@{/usuarios/ver}">Usuario</a> <a
+						class="collapse-item" th:href="@{/perfiles/ver}">Perfiles</a>
+				</div>
+			</div></li>
+
+		<!-- Nav Item - Utilities Collapse Menu -->
+		<li class="nav-item"><a class="nav-link collapsed" href="#"
+			data-toggle="collapse" data-target="#collapseUtilities"
+			aria-expanded="true" aria-controls="collapseUtilities"> <i
+				class="fas fa-fw fa-wrench"></i> <span>Catálogos</span>
+		</a>
+			<div id="collapseUtilities" class="collapse"
+				aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<a class="collapse-item" th:href="@{/afiliados/ver}">Afiliados</a>
+					<a class="collapse-item" th:href="@{/promotores/ver}">Promotores</a>
+					<a class="collapse-item" th:href="@{/cuentas/ver}">Cuentas
+						Comerciales</a> <a class="collapse-item" th:href="@{/membresias/ver}">Membresías</a>
+					<a class="collapse-item" href="utilities-other.html">Cuotas</a>
+				</div>
+			</div></li>
+
+		<!-- Nav Item - Utilities Collapse Menu -->
+		<li class="nav-item"><a class="nav-link" href="charts.html">
+				<i class="fas fa-fw fa-chart-area"></i> <span>Reportes</span>
+		</a></li>
+
+		<!-- Divider -->
+		<hr class="sidebar-divider">
+
+		<!-- Heading -->
+		<div class="sidebar-heading">Portafolios</div>
+
+		<!-- Nav Item - Pages Collapse Menu -->
+		<li class="nav-item"><a class="nav-link" href="charts.html">
+				<i class="fas fa-fw fa-chart-area"></i> <span>Generar cita</span>
+		</a></li>
+
+		<!-- Nav Item - Charts -->
+		<li class="nav-item"><a class="nav-link" href="charts.html">
+				<i class="fas fa-fw fa-chart-area"></i> <span>Seguimiento</span>
+		</a></li>
+
+		<!-- Divider -->
+		<hr class="sidebar-divider d-none d-md-block">
+
+		<!-- Sidebar Toggler (Sidebar) -->
+		<div class="text-center d-none d-md-inline">
+			<button class="rounded-circle border-0" id="sidebarToggle"></button>
+		</div>
+		<!-- End of Sidebar -->
+	</ul>
+</body>
+</html>

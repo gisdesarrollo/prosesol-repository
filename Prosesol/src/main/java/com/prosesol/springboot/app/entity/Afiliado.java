@@ -459,9 +459,9 @@ public class Afiliado implements Serializable{
 		
 		for(Beneficiario beneficiario : beneficiarios) {
 			
-			builder.append("Id Afiliado: ").append("")
+			builder.append("\n Id Afiliado: ").append("")
 			   .append(id).append("")
-			   .append("Nombre Afiliado: ").append("")
+			   .append("\n Nombre Afiliado: ").append("")
 			   .append(nombre)
 			   .append(beneficiario);
 			
