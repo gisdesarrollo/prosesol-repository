@@ -1,11 +1,13 @@
-Ôªø<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 
 <head th:replace="fragments/head :: head"></head>
 
-<body class="bg-gradient-primary">	
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">	
+	
 	<header th:replace="fragments/header :: header"></header>
+	
 	<!-- Ver AFiliado -->
 	<div id="wrapper">
 
@@ -24,7 +26,7 @@
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Cat√°logo de afiliados
+						<i class="fas fa-table"></i> Cat·logo de afiliados
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -41,7 +43,7 @@
 										<th>NSS</th>
 										<th>Tipo de afiliado</th>
 										<th>Estatus</th>
-										<th>Detalle Afiliaci√≥n</th>
+										<th>Detalle AfiliaciÛn</th>
 										<th>Email</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -57,7 +59,7 @@
 										<th>NSS</th>
 										<th>Tipo de afiliado</th>
 										<th>Estatus</th>
-										<th>Detalle Afiliaci√≥n</th>
+										<th>Detalle AfiliaciÛn</th>
 										<th>Email</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -92,7 +94,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/afiliados/eliminar/} + ${afiliado.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¬øEst√°s seguro de que deseas borrar el registro?')">
+														onclick="return confirm('øEst·s seguro de que deseas borrar el registro?')">
 													</a> <a class="dropdown-item" th:href="@{/beneficiarios/crear/} + ${afiliado.id}">Agregar Beneficiario
 													</a>
 												</div>
