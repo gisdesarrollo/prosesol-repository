@@ -25,6 +25,9 @@ public class Perfil implements Serializable{
 	
 	@Column(name = "nombre_perfil")
 	private String nombrePerfil;
+	
+	@Column(name = "estatus")
+	private String estatus;
 
 	public Long getId() {
 		return id;
@@ -41,7 +44,13 @@ public class Perfil implements Serializable{
 	public void setNombrePerfil(String nombrePerfil) {
 		this.nombrePerfil = nombrePerfil;
 	}
-	
-	
+
+	public String getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(String estatus) {
+		this.estatus = estatus;
+	}
 	
 }

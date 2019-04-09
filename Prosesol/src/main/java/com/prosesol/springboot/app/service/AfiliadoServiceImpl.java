@@ -56,9 +56,11 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public Afiliado getAfiliadoAssignedBeneficiario(Long id) {
+	public List<Afiliado> getAfiliadoAssignedBeneficiario(Long id) {
 		return iAfiliadoDao.getAfiliadoAssignedBeneficiario(id);
 	}
+
+	
 
 	
 	
