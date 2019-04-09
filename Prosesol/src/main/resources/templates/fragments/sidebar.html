@@ -1,96 +1,98 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<meta charset="utf-8" />
 <head>
 </head>
 
 <body>
 	<!-- Sidebar -->
-	<ul th:fragment="sidebar"
-		class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-		id="accordionSidebar">
-		<!-- Sidebar - Brand -->
-		<a
-			class="sidebar-brand d-flex align-items-center justify-content-center"
-			href="index.html">
-			<div class="sidebar-brand-text mx-3">PROSESOL</div>
-		</a>
+	<div class="sidebar wrap" th:fragment="sidebar">
+		<nav class="sidebar-nav">
+			<ul class="nav">
+				<li class="nav-item"><a class="nav-link" href="index.html">
+						<i class="nav-icon fas fa-home"></i> Home
+				</a></li>
 
-		<!-- Divider -->
-		<hr class="sidebar-divider my-0">
+				<li class="nav-title">Sistema</li>
 
-		<!-- Nav Item - Dashboard -->
-		<li class="nav-item active"><a class="nav-link" href="index.html">
-				<i class="fas fa-fw fa-tachometer-alt"></i> <span>Inicio</span>
-		</a></li>
+				<li sec:authorize="hasRole('ROLE_ADMIN')"
+					class="nav-item nav-dropdown"><a
+					class="nav-link nav-dropdown-toggle" href="#"> <i
+						class="nav-icon fas fa-tools"></i> Config
+				</a>
+					<ul class="nav-dropdown-items">
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/usuarios/ver}"> <i class="nav-icon icon-puzzle"></i>
+								Usuarios
+						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/perfiles/ver}"> <i class="nav-icon icon-puzzle"></i>
+								Perfiles
+						</a></li>
+					</ul></li>
 
-		<!-- Divider -->
-		<hr class="sidebar-divider">
 
-		<!-- Heading -->
-		<div class="sidebar-heading">Interface</div>
+				<li class="nav-title">Administración</li>
 
-		<!-- Nav Item - Pages Collapse Menu -->
-		<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
-			class="nav-link collapsed" href="#" data-toggle="collapse"
-			data-target="#collapseTwo" aria-expanded="true"
-			aria-controls="collapseTwo"> <i class="fas fa-fw fa-cog"></i> <span>Sistema</span>
-		</a>
-			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-				data-parent="#accordionSidebar">
-				<div class="bg-white py-2 collapse-inner rounded">
-					<h6 class="collapse-header">Componentes del sistema:</h6>
-					<a class="collapse-item" th:href="@{/usuarios/ver}">Usuario</a> <a
-						class="collapse-item" th:href="@{/perfiles/ver}">Perfiles</a>
-				</div>
-			</div></li>
+				<li sec:authorize="hasRole('ROLE_ADMIN')"
+					class="nav-item nav-dropdown"><a
+					class="nav-link nav-dropdown-toggle" href="#"> <i
+						class="nav-icon fas fa-cogs"></i> Catálogos
+				</a>
+					<ul class="nav-dropdown-items">
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/afiliados/ver}"> <i class="nav-icon"></i>
+								Afiliados
+						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/cuentas/ver}"> <i class="nav-icon"></i> Cuentas
+						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/membresias/ver}"> <i class="nav-icon"></i>
+								Membresias
+						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/promotores/ver}"> <i class="nav-icon"></i>
+								Promotores
+						</a></li>
+					</ul></li>
 
-		<!-- Nav Item - Utilities Collapse Menu -->
-		<li class="nav-item"><a class="nav-link collapsed" href="#"
-			data-toggle="collapse" data-target="#collapseUtilities"
-			aria-expanded="true" aria-controls="collapseUtilities"> <i
-				class="fas fa-fw fa-wrench"></i> <span>Catálogos</span>
-		</a>
-			<div id="collapseUtilities" class="collapse"
-				aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-				<div class="bg-white py-2 collapse-inner rounded">
-					<a class="collapse-item" th:href="@{/afiliados/ver}">Afiliados</a>
-					<a class="collapse-item" th:href="@{/promotores/ver}">Promotores</a>
-					<a class="collapse-item" th:href="@{/cuentas/ver}">Cuentas
-						Comerciales</a> <a class="collapse-item" th:href="@{/membresias/ver}">Membresías</a>
-					<a class="collapse-item" href="utilities-other.html">Cuotas</a>
-				</div>
-			</div></li>
 
-		<!-- Nav Item - Utilities Collapse Menu -->
-		<li class="nav-item"><a class="nav-link" href="charts.html">
-				<i class="fas fa-fw fa-chart-area"></i> <span>Reportes</span>
-		</a></li>
+				<li class="nav-title">Operación</li>
 
-		<!-- Divider -->
-		<hr class="sidebar-divider">
+				<li sec:authorize="hasRole('ROLE_ADMIN')"
+					class="nav-item nav-dropdown"><a
+					class="nav-link nav-dropdown-toggle" href="#"> <i
+						class="nav-icon fas fa-user-md"></i> Portal de Consultas
+				</a>
+					<ul class="nav-dropdown-items">
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/afiliados/ver}"> <i class="nav-icon"></i>
+							Citas
+						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/afiliados/ver}"> <i class="nav-icon"></i>
+								Seguimiento
+						</a></li>
+					</ul></li>
 
-		<!-- Heading -->
-		<div class="sidebar-heading">Portafolios</div>
+				<li class="nav-title">Reportes</li>
 
-		<!-- Nav Item - Pages Collapse Menu -->
-		<li class="nav-item"><a class="nav-link" href="charts.html">
-				<i class="fas fa-fw fa-chart-area"></i> <span>Generar cita</span>
-		</a></li>
-
-		<!-- Nav Item - Charts -->
-		<li class="nav-item"><a class="nav-link" href="charts.html">
-				<i class="fas fa-fw fa-chart-area"></i> <span>Seguimiento</span>
-		</a></li>
-
-		<!-- Divider -->
-		<hr class="sidebar-divider d-none d-md-block">
-
-		<!-- Sidebar Toggler (Sidebar) -->
-		<div class="text-center d-none d-md-inline">
-			<button class="rounded-circle border-0" id="sidebarToggle"></button>
-		</div>
-		<!-- End of Sidebar -->
-	</ul>
+				<li sec:authorize="hasRole('ROLE_ADMIN')"
+					class="nav-item nav-dropdown"><a
+					class="nav-link nav-dropdown-toggle" href="#"> <i
+						class="nav-icon fas fa-tools"></i> Afiliados
+				</a>
+					<ul class="nav-dropdown-items">
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/afiliados/ver}"> <i class="nav-icon"></i>
+								Pendiente
+						</a></li>
+					</ul></li>
+			</ul>
+		</nav>
+		<button class="sidebar-minimizer brand-minimizer" type="button"></button>
+	</div>
 </body>
 </html>
