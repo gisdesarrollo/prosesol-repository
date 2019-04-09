@@ -34,7 +34,6 @@
 								<thead>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Id Usuario</th>
 										<th>Nombre del perfil</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -42,7 +41,6 @@
 								<tfoot>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Id Usuario</th>
 										<th>Nombre del perfil</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -51,8 +49,7 @@
 									<tr th:each="perfil : ${perfil}">
 										<td sec:authorize="hasRole('ROLE_USER')"
 											th:text="${perfil.id}"></td>
-										<td th:text="${perfil.idUsuario}"></td>
-										<td th:text="${perfil.roleName}"></td>
+										<td th:text="${perfil.nombrePerfil}"></td>
 										<td sec:authorize="hasRole('ROLE_ADMIN')">
 											<div class="dropdown mb-4">
 												<button class="btn btn-primary dropdown-toggle"
