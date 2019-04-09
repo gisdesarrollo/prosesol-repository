@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 
 <head th:replace="fragments/head :: head"></head>
 
-<body class="bg-gradient-primary">	
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">	
+	
 	<header th:replace="fragments/header :: header"></header>
+	
 	<!-- Ver AFiliado -->
 	<div id="wrapper">
 
@@ -98,8 +100,10 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/afiliados/eliminar/} + *{afiliado.id}"
 														th:text="'Borrar'"
+
 														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">
-													</a> <a class="dropdown-item" th:href="@{/beneficiarios/crear/} + *{afiliado.id}">Agregar Beneficiario
+													</a> <a class="dropdown-item" th:href="@{/beneficiarios/crear/} + ${afiliado.id}">Agregar Beneficiario
+
 													</a>
 												</div>
 											</div>
