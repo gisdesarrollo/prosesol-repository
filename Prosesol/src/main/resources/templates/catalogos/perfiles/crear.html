@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+
+	<header th:replace="fragments/header :: header"></header>
+
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+		<main class="main">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item">Catálogos</li>
+			<li class="breadcrumb-item active">Perfiles</li>
+		</ol>
+		<div class="container-fluid">
+
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Perfiles</div>
+							<div class="card-body">
+								<h5 class="m-0 font-weight-bold text-primary">Crear perfil</h5>
+
+								<div class="clearfix"></div>
+								<hr>
+								<form class="user" th:action="@{/perfiles/crear}"
+									th:object="${perfil}" method="post">
+									<div class="form-group row">
+										<div class="col-sm-6 mb-3 mb-sm-0">
+											<input type="text" th:field="*{nombrePerfil}"
+												class="form-control form-control-user" placeholder="Nombre">
+											<small class="form-text text-danger"
+												th:if="${#fields.hasErrors('nombrePerfil')}"
+												th:errors="*{nombrePerfil}"></small>
+										</div>
+										<div class="col-sm-6">
+											<select th:field="*{estatus}" class="custom-select"
+												id="inputGroupSelect01">
+												<option th:value="'Estatus'" th:selected>Estatus</option>
+												<option th:value="'Activo'">Activo</option>
+												<option th:value="'Inactivo'">Inactivo</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<input type="submit"
+											class="btn btn-primary btn-user btn-block"
+											value="Crear Promotor">
+									</div>
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+	</div>
+	<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+
+</html>

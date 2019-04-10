@@ -24,7 +24,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Promotores</div>
+							<div class="card-header">Afiliados</div>
 							<div class="card-body">
 								<a sec:authorize="hasRole('ROLE_ADMIN')"
 									th:href="@{/afiliados/crear}"
@@ -37,7 +37,7 @@
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Cat�logo de afiliados
+						<i class="fas fa-table"></i> Catálogo de afiliados
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -46,6 +46,7 @@
 								<thead>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th>Clave</th>
 										<th>Nombre</th>
 										<th>Apellido Paterno</th>
 										<th>Apellido Materno</th>
@@ -54,7 +55,7 @@
 										<th>NSS</th>
 										<th>Tipo de afiliado</th>
 										<th>Estatus</th>
-										<th>Detalle Afiliaci�n</th>
+										<th>Detalle Afiliación</th>
 										<th>Email</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -62,6 +63,7 @@
 								<tfoot>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th>Clave</th>
 										<th>Nombre</th>
 										<th>Apellido Paterno</th>
 										<th>Apellido Materno</th>
@@ -70,7 +72,7 @@
 										<th>NSS</th>
 										<th>Tipo de afiliado</th>
 										<th>Estatus</th>
-										<th>Detalle Afiliaci�n</th>
+										<th>Detalle Afiliación</th>
 										<th>Email</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -81,6 +83,7 @@
 											class="btn btn-primary btn-xs"
 											th:href="@{/afiliados/detalle/} + ${afiliado.id}"
 											th:text="${afiliado.id}"></a></td>
+										<td th:text="*{afiliado.clave}"></td>
 										<td th:text="${afiliado.nombre}"></td>
 										<td th:text="${afiliado.apellidoPaterno}"></td>
 										<td th:text="${afiliado.apellidoMaterno}"></td>
@@ -124,7 +127,8 @@
 			</div>
 		</div>
 		</main>
-	</div>
+		</div>
+	
 	<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>

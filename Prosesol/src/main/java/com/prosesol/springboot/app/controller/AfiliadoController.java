@@ -1,10 +1,10 @@
 package com.prosesol.springboot.app.controller;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.Beneficiario;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 
 @Controller
@@ -36,7 +37,7 @@ public class AfiliadoController {
 
 	@Autowired
 	private IAfiliadoService afiliadoService;
-
+	
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 
@@ -122,29 +123,35 @@ public class AfiliadoController {
 	}
 
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
-	public String ver(Model model, Authentication authentication, HttpServletRequest request) {
-
-		List<Afiliado> listaAfiliado = afiliadoService.findAll();
-		List<Afiliado> beneficiarios = new ArrayList<Afiliado>();
+	public String ver(Model model, Authentication authentication) {
+		
+		Set<Beneficiario> beneficiarios = new HashSet<Beneficiario>();
 		
 		if (authentication != null) {
 			logger.info("Usuario autenticado: ".concat(authentication.getName()));
 		}		
 		
-		for(Afiliado afiliados : listaAfiliado) {
-			System.out.println(afiliados.getBeneficiarios());
-			if(afiliados.getIsBeneficiario().equals(true)) {
-				beneficiarios.add(afiliadoService.getAfiliadoAssignedBeneficiario(afiliados.getId()));
-			}		
+		for(Afiliado afiliado : afiliadoService.findAll()) {
+			beneficiarios = afiliado.getBeneficiarios();
+			for(Beneficiario beneficiario : beneficiarios) {
+				System.out.println(beneficiario.getAfiliado().getNombre());
+			}
 		}
 		
-	
+		
+		
+		System.out.println(afiliadoService.findAll());
+		
 		model.addAttribute("titulo", "Afiliados");
 		model.addAttribute("afiliados", afiliadoService.findAll());
 
 		return "catalogos/afiliados/ver";
 
 	}	
+	
+	public void agregarAfiliado(Afiliado afiliado) {
+		
+	}
 
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {

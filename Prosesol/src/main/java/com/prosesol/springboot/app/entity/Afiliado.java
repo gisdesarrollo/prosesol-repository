@@ -36,6 +36,10 @@ public class Afiliado implements Serializable{
 	@Column(name = "id_afiliado", unique = true, nullable = false)
 	private Long id;
 	
+	@Column(name = "clave")
+	@NotEmpty(message = "Ingrese una clave")
+	private String clave;
+	
 	@NotEmpty(message = "El nombre no debe quedar vacío")
 	@Column(name="nombre")
 	private String nombre;
@@ -450,6 +454,14 @@ public class Afiliado implements Serializable{
 
 	public void setIsBeneficiario(Boolean isBeneficiario) {
 		this.isBeneficiario = isBeneficiario;
+	}
+
+	public String getClave() {
+		return clave;
+	}
+
+	public void setClave(String clave) {
+		this.clave = clave;
 	}
 
 	@Override

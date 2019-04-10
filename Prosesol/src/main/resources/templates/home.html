@@ -2,15 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 </head>
-<body class="bg-gradient-primary">
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 	<header th:replace="fragments/header :: header"></header>
 	<!-- Home -->
-	<div id="main wrap">
+	<div class="app-body">
 
-		<ul th:replace="fragments/sidebar :: sidebar"></ul>
-		<div id="content-wrapper">
-			<nav th:replace="fragments/navbar :: nav-bar"></nav>
-		</div>
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+		<main class="main">
+	
+		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
 </body>

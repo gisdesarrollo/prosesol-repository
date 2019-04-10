@@ -1,28 +1,37 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
-
+<meta charset="utf-8" />
 <head th:replace="fragments/head :: head"></head>
 
-<body class="bg-gradient-primary">
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 	<header th:replace="fragments/header :: header"></header>
-	<!-- Ver Roles -->
-	<div id="wrapper">
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<ul th:replace="fragments/sidebar :: sidebar"></ul>
-		<div id="content-wrapper">
+		<main class="main">
 
-			<nav th:replace="fragments/navbar :: nav-bar"></nav>
-			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Perfiles</h1>
-				<!-- Breadcrumbs-->
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a
-						sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/perfiles/crear}">Crear
-							perfil</a></li>
-				</ol>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item">Catálogos</li>
+			<li class="breadcrumb-item active">Perfiles</li>
+		</ol>
 
-				<!-- DataTables Example -->
+		<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Perfiles</div>
+							<div class="card-body">
+								<a sec:authorize="hasRole('ROLE_ADMIN')"
+									th:href="@{/perfiles/crear}"
+									class="btn btn-square btn-primary btn-sm"><i
+									class="fas fa-user-plus"></i> Nuevo Perfil</a>
+
+								<div class="clearfix"></div>
+								<hr>
+
 				<div class="card mb-3">
 					<div class="card-header">
 						<i class="fas fa-table"></i> Catálogo de perfiles
@@ -34,7 +43,6 @@
 								<thead>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Id Usuario</th>
 										<th>Nombre del perfil</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -42,7 +50,6 @@
 								<tfoot>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Id Usuario</th>
 										<th>Nombre del perfil</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -51,8 +58,7 @@
 									<tr th:each="perfil : ${perfil}">
 										<td sec:authorize="hasRole('ROLE_USER')"
 											th:text="${perfil.id}"></td>
-										<td th:text="${perfil.idUsuario}"></td>
-										<td th:text="${perfil.roleName}"></td>
+										<td th:text="${perfil.nombrePerfil}"></td>
 										<td sec:authorize="hasRole('ROLE_ADMIN')">
 											<div class="dropdown mb-4">
 												<button class="btn btn-primary dropdown-toggle"
@@ -73,29 +79,14 @@
 							</table>
 						</div>
 					</div>
-					<div class="card-footer small text-muted">
-						Última actualización: <a
-							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
+						</div>
 					</div>
 				</div>
-
 			</div>
-			<!-- /.container-fluid -->
-
-			<!-- Sticky Footer -->
-			<footer th:replace="fragments/footer :: footer"></footer>
-
 		</div>
-		<!-- /.content-wrapper -->
-
+		</main>
 	</div>
-	<!-- /#wrapper -->
-	<!-- Ver Roles -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
+	<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
 

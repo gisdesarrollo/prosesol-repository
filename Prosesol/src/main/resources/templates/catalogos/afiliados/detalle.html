@@ -4,20 +4,34 @@
 
 <head th:replace="fragments/head :: head"></head>
 
-<body class="bg-gradient-primary">	
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">	
+	
 	<header th:replace="fragments/header :: header"></header>
-	<div id="wrapper">
+	
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+		
+		<main class="main">
 
-		<ul th:replace="fragments/sidebar :: sidebar"></ul>
-		<div id="content-wrapper">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item">Catálogos</li>
+			<li class="breadcrumb-item active">Afiliados</li>
+		</ol>
+		
+	<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Afiliados</div>
+							<div class="card-body">
+								<h5 class="m-0 font-weight-bold text-primary" th:text="${titulo}"></h5>
 
-			<nav th:replace="fragments/navbar :: nav-bar"></nav>
-			<div class="container py-4">
-				<div class="card bg-light">
-					<div class="card-header" th:text="${titulo}"></div>
-					<div class="card-body">
+								<div class="clearfix"></div>
+								<hr>
 
-						<h4 th:if="${not afiliado.isBeneficiario}" class="card-title">
+			<h4 th:if="${not afiliado.isBeneficiario}" class="card-title">
 							<a class="btn btn-primary btn-xs"
 								th:href="@{/beneficiarios/crear/} + ${afiliado.id}"
 								th:text="'Crear Beneficiario'"></a>
@@ -67,31 +81,20 @@
 									<td th:text="${beneficiario.nombre}"></td>
 									<td th:text="${beneficiario.apellidoPaterno}"></td>
 									<td th:text="${beneficiario.apellidoMaterno}"></td>
-									<!-- <td><a class="btn btn-primary btn-xs"
-								th:href="@{'/factura/ver/' + ${factura.id}}" th:text="'detalle'"></a></td>
-							<td><a class="btn btn-danger btn-xs"
-								th:href="@{'/factura/eliminar/' + ${factura.id}}"
-								th:text="'eliminar'"
-								onclick="return confirm('¿Estas seguro que desea eliminar la factura?');"></a></td> -->
 								</tr>
 							</tbody>
 
 						</table>
-
+				
+						</div>
 					</div>
 				</div>
-
 			</div>
-			<!-- Sticky Footer -->
-		<footer th:replace="fragments/footer :: footer"></footer>
 		</div>
-		
-	</div>
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
+		</main>
+		</div>
+	
+	<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
 
