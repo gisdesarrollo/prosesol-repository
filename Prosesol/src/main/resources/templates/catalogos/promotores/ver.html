@@ -4,8 +4,12 @@
 <meta charset="utf-8" />
 <head th:replace="fragments/head :: head"></head>
 
+<<<<<<< Upstream, based on origin/prosesol-dev-changes
 <body
 	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+=======
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+>>>>>>> 00a7208 Se actualiza el template de afiliados
 	<header th:replace="fragments/header :: header"></header>
 	<div class="app-body">
 		<div th:replace="fragments/sidebar :: sidebar"></div>
@@ -27,11 +31,20 @@
 							<div class="card-body">
 								<a sec:authorize="hasRole('ROLE_ADMIN')"
 									th:href="@{/promotores/crear}"
+<<<<<<< Upstream, based on origin/prosesol-dev-changes
 									class="btn btn-square btn-primary btn-sm"><i class="fas fa-user-plus"></i> Nuevo Promotor</a>
 
 								<div class="clearfix"></div>
 								<hr>
 								
+=======
+									class="btn btn-square btn-primary btn-sm"><i
+									class="fas fa-user-plus"></i> Nuevo Promotor</a>
+
+								<div class="clearfix"></div>
+								<hr>
+
+>>>>>>> 00a7208 Se actualiza el template de afiliados
 								<div class="row">
 									<div class="col-md-12">
 										<table class="table table-bordered" id="dataTable">

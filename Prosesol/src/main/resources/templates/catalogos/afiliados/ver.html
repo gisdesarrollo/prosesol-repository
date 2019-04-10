@@ -8,25 +8,36 @@
 	
 	<header th:replace="fragments/header :: header"></header>
 	
-	<!-- Ver AFiliado -->
-	<div id="wrapper">
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+		
+		<main class="main">
 
-		<ul th:replace="fragments/sidebar :: sidebar"></ul>
-		<div id="content-wrapper">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item">CatÃ¡logos</li>
+			<li class="breadcrumb-item active">Afiliados</li>
+		</ol>
+		
+	<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Promotores</div>
+							<div class="card-body">
+								<a sec:authorize="hasRole('ROLE_ADMIN')"
+									th:href="@{/afiliados/crear}"
+									class="btn btn-square btn-primary btn-sm"><i
+									class="fas fa-user-plus"></i> Nuevo Afiliado</a>
 
-			<nav th:replace="fragments/navbar :: nav-bar"></nav>
-			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Afiliados</h1>
-				<!-- Breadcrumbs-->
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a th:href="@{/afiliados/crear}">Crear
-							Afiliado</a></li>
-				</ol>
+								<div class="clearfix"></div>
+								<hr>
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de afiliados
+						<i class="fas fa-table"></i> Catï¿½logo de afiliados
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -43,7 +54,7 @@
 										<th>NSS</th>
 										<th>Tipo de afiliado</th>
 										<th>Estatus</th>
-										<th>Detalle Afiliación</th>
+										<th>Detalle Afiliaciï¿½n</th>
 										<th>Email</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -59,7 +70,7 @@
 										<th>NSS</th>
 										<th>Tipo de afiliado</th>
 										<th>Estatus</th>
-										<th>Detalle Afiliación</th>
+										<th>Detalle Afiliaciï¿½n</th>
 										<th>Email</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -80,6 +91,7 @@
 										<td th:unless="${afiliado.isBeneficiario}">Principal</td>
 										<td th:case="true" th:text="Activo"></td>
 										<td th:case="false" th:text="Inactivo"></td>
+										<td th:text="${not afiliado.isBeneficiario} ? ${#lists.size(afiliado.beneficiarios)} : ${afiliado.nombre}"></td>
 										<td th:text="${afiliado.email}"></td>
 										<td sec:authorize="hasRole('ROLE_ADMIN')">
 											<div class="dropdown mb-4">
@@ -94,7 +106,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/afiliados/eliminar/} + ${afiliado.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">
+														onclick="return confirm('ï¿½Estï¿½s seguro de que deseas borrar el registro?')">
 													</a> <a class="dropdown-item" th:href="@{/beneficiarios/crear/} + ${afiliado.id}">Agregar Beneficiario
 													</a>
 												</div>
@@ -103,31 +115,18 @@
 									</tr>
 								</tbody>
 							</table>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="card-footer small text-muted">
-						Updated yesterday at <a
-							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
-					</div>
 				</div>
-
 			</div>
-			<!-- /.container-fluid -->
-
-			<!-- Sticky Footer -->
-			<footer th:replace="fragments/footer :: footer"></footer>
-
 		</div>
-		<!-- /.content-wrapper -->
-
+		</main>
 	</div>
-	<!-- /#wrapper -->
-	<!-- Ver AFiliado -->
+	<footer th:replace="fragments/footer :: footer"></footer>
 
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
 </body>
 
 </html>
