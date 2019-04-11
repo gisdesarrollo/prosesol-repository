@@ -6,22 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.prosesol.springboot.app.entity.Membresia;
-import com.prosesol.springboot.app.entity.dao.IMembresiaDao;
+import com.prosesol.springboot.app.entity.Servicio;
+import com.prosesol.springboot.app.entity.dao.IServicioDao;
 
 @Service
-public class MembresiaServiceImpl implements IMembresiaService{
+public class ServicioServiceImpl implements IServicioService{
 
 	@Autowired
-	private IMembresiaDao membresiaDao;
+	private IServicioDao membresiaDao;
 
 	@Override
-	public List<Membresia> findAll() {
-		return (List<Membresia>)membresiaDao.findAll();
+	public List<Servicio> findAll() {
+		return (List<Servicio>)membresiaDao.findAll();
 	}
 
 	@Override
-	public void save(Membresia membresia) {
+	public void save(Servicio membresia) {
 		membresiaDao.save(membresia);
 	}
 
@@ -32,7 +32,7 @@ public class MembresiaServiceImpl implements IMembresiaService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public Membresia findById(Long id) {
+	public Servicio findById(Long id) {
 		return membresiaDao.findById(id).orElse(null);
 	}
 	

@@ -4,30 +4,33 @@
 
 <head th:replace="fragments/head :: head"></head>
 
-<body class="bg-gradient-primary">	
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">	
+	
 	<header th:replace="fragments/header :: header"></header>
-	<!-- Editar Membresía -->
-	<div id="wrapper">
+	
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+		
+		<main class="main">
 
-		<ul th:replace="fragments/sidebar :: sidebar"></ul>
-		<div id="content-wrapper">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item">Catálogos</li>
+			<li class="breadcrumb-item active">Membresías</li>
+		</ol>
+		
+	<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Membresías</div>
+							<div class="card-body">
+								<h5 class="m-0 font-weight-bold text-primary">Editar membresía</h5>
+								
 
-			<nav th:replace="fragments/navbar :: nav-bar"></nav>
-			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Membresías</h1>
-
-				<!-- DataTables Example -->
-				<div class="card shadow mb-4">
-					<div class="card-header py-3">
-						<h5 class="m-0 font-weight-bold text-primary">Editar membresía</h5>
-					</div>
-					<div class="card-body">
-						<div th:object="${membresia}" th:remove="tag">
-							<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
-								role="alert">
-								<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
-							</ul>
-						</div>
+								<div class="clearfix"></div>
+								<hr>
 						<form class="user" th:action="@{/membresias/crear}"
 							th:object="${membresia}" method="post">
 							<div class="form-group row">
@@ -57,33 +60,19 @@
 							</div>
 							<div class="form-group">
 								<input type="submit" class="btn btn-primary btn-user btn-block" name="crearMembresia"
-									value="Crear Membresía">
+									value="Guardar cambios">
 							</div>
 						</form>
-					</div>
-					<div class="card-footer small text-muted">
-						Updated yesterday at <a
-							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
+				
+						</div>
 					</div>
 				</div>
-
 			</div>
-			<!-- /.container-fluid -->
-
-			<!-- Sticky Footer -->
-			<footer th:replace="fragments/footer :: footer"></footer>
-
 		</div>
-		<!-- /.content-wrapper -->
-
-	</div>
-	<!-- /#wrapper -->
-	<!-- /Editar membresía -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
+		</main>
+		</div>
+	
+	<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
 

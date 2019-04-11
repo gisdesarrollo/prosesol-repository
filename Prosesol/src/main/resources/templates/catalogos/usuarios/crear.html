@@ -4,31 +4,33 @@
 
 <head th:replace="fragments/head :: head"></head>
 
-<body class="bg-gradient-primary">	
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+
 	<header th:replace="fragments/header :: header"></header>
-	<!-- Crear Usuario -->
-	<div id="wrapper">
 
-		<ul th:replace="fragments/sidebar :: sidebar"></ul>
-		<div id="content-wrapper">
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+		<main class="main">
 
-			<nav th:replace="fragments/navbar :: nav-bar"></nav>
-			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Usuarios</h1>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item">Catálogos</li>
+			<li class="breadcrumb-item active">Usuarios</li>
+		</ol>
+		<div class="container-fluid">
 
-				<!-- DataTables Example -->
-				<div class="card shadow mb-4">
-					<div class="card-header py-3">
-						<h5 class="m-0 font-weight-bold text-primary">Crear usuario</h5>
-					</div>
-					<div class="card-body">
-						<div th:object="${usuario}" th:remove="tag">
-							<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
-								role="alert">
-								<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
-							</ul>
-						</div>
-						<form class="user" th:action="@{/usuarios/crear}"
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Usuarios</div>
+							<div class="card-body">
+								<h5 class="m-0 font-weight-bold text-primary"> Nuevo usuario</h5>
+
+								<div class="clearfix"></div>
+								<hr>
+								<form class="user" th:action="@{/usuarios/crear}"
 							th:object="${usuario}" method="post">
 							<div class="form-group row">
 								<div class="col-sm-6 mb-3 mb-sm-0">
@@ -61,30 +63,16 @@
 									value="Crear Usuario">
 							</div>
 						</form>
-					</div>
-					<div class="card-footer small text-muted">
-						Hora de actualización<a
-							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
+
+							</div>
+						</div>
 					</div>
 				</div>
-
 			</div>
-			<!-- /.container-fluid -->
-
-			<!-- Sticky Footer -->
-			<footer th:replace="fragments/footer :: footer"></footer>
-
-		</div>
-		<!-- /.content-wrapper -->
-
+		</main>
 	</div>
-	<!-- /#wrapper -->
-	<!-- /Crear usuario -->
-
-	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
-	</a>
+	</div>
+	<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
 

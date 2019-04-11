@@ -19,17 +19,17 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.prosesol.springboot.app.entity.Membresia;
-import com.prosesol.springboot.app.service.IMembresiaService;
+import com.prosesol.springboot.app.entity.Servicio;
+import com.prosesol.springboot.app.service.IServicioService;
 
 @Controller
 @SessionAttributes("membresia")
-public class MembresiaController {
+public class ServicioController {
 
 	protected final Log logger = LogFactory.getLog(this.getClass());
 	
 	@Autowired
-	private IMembresiaService membresiaService;
+	private IServicioService membresiaService;
 	
 	@RequestMapping(value = "/membresias/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
@@ -44,7 +44,7 @@ public class MembresiaController {
 	@RequestMapping(value = "/membresias/crear")
 	public String crear(Map<String, Object> model) {
 		
-		Membresia membresia = new Membresia();
+		Servicio membresia = new Servicio();
 		
 		model.put("membresia", membresia);
 		model.put("titulo", "Crear Membresia");
@@ -56,7 +56,7 @@ public class MembresiaController {
 	}
 	
 	@RequestMapping(value = "/membresias/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Membresia membresia, BindingResult result, Model model, 
+	public String guardar(@Valid Servicio membresia, BindingResult result, Model model, 
 						 RedirectAttributes redirect, SessionStatus status) {
 		
 		if(result.hasErrors()) {
@@ -81,7 +81,7 @@ public class MembresiaController {
 	@RequestMapping(value = "/membresias/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
-		Membresia membresia = null;
+		Servicio membresia = null;
 
 		if (id > 0) {
 			membresia = membresiaService.findById(id);

@@ -12,8 +12,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "membresias")
-public class Membresia implements Serializable{
+@Table(name = "servicios")
+public class Servicio implements Serializable{
 
 	/**
 	 * 
@@ -34,6 +34,9 @@ public class Membresia implements Serializable{
 	
 	@Column(name = "costo")
 	private BigDecimal costo;
+	
+	@Column(name = "periodicidad")
+	private String periodicidad;
 	
 	@Column(name = "estatus")
 	private String estatus;

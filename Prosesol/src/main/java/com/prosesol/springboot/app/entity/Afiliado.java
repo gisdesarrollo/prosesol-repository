@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+
 @Entity
 @Table(name="afiliados")
 public class Afiliado implements Serializable{
@@ -30,7 +31,7 @@ public class Afiliado implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_afiliado", unique = true, nullable = false)
@@ -483,7 +484,5 @@ public class Afiliado implements Serializable{
 		
 		return builder.toString();
 	}
-	
-	
 	
 }

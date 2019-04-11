@@ -17,7 +17,6 @@
 			<li class="breadcrumb-item active">Afiliados</li>
 		</ol>
 
-<<<<<<< HEAD
 		<div class="container-fluid">
 			<div class="animated fadeIn">
 				<div class="row">
@@ -101,96 +100,6 @@
 									</div>
 								</div>
 							</div>
-=======
-				<!-- DataTables Example -->
-				<div class="card mb-3">
-					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de afiliados
-					</div>
-					<div class="card-body">
-						<div class="table-responsive">
-							<table class="table table-bordered table-condensed dataTable">
-								<thead>
-									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Clave</th>
-										<th>Nombre</th>
-										<th>Apellido Paterno</th>
-										<th>Apellido Materno</th>
-										<th>CURP</th>
-										<th>RFC</th>
-										<th>NSS</th>
-										<th>Tipo de afiliado</th>
-										<th>Estatus</th>
-										<th>Detalle Afiliación</th>
-										<th>Email</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-									</tr>
-								</thead>
-								<tfoot>
-									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Clave</th>
-										<th>Nombre</th>
-										<th>Apellido Paterno</th>
-										<th>Apellido Materno</th>
-										<th>CURP</th>
-										<th>RFC</th>
-										<th>NSS</th>
-										<th>Tipo de afiliado</th>
-										<th>Estatus</th>
-										<th>Detalle Afiliación</th>
-										<th>Email</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-									</tr>
-								</tfoot>
-								<tbody>
-									<tr th:switch="*{afiliado.estatus}" th:each="afiliado, beneficiario : *{afiliados}">
-										<td sec:authorize="hasRole('ROLE_USER')"><a
-											class="btn btn-primary btn-xs"
-											th:href="@{/afiliados/detalle/} + *{afiliado.id}"
-											th:text="*{afiliado.id}"></a></td>
-										<td th:text="*{afiliado.clave}"></td>
-										<td th:text="*{afiliado.nombre}"></td>
-										<td th:text="*{afiliado.apellidoPaterno}"></td>
-										<td th:text="*{afiliado.apellidoMaterno}"></td>
-										<td th:text="*{afiliado.curp}"></td>
-										<td th:text="*{afiliado.rfc}"></td>
-										<td th:text="*{afiliado.nss}"></td>
-										<td th:if="*{afiliado.isBeneficiario}">Beneficiario</td>
-										<td th:unless="*{afiliado.isBeneficiario}">Principal</td>
-										<td th:case="true" th:text="Activo"></td>
-										<td th:case="false" th:text="Inactivo"></td>
-										<td th:text="*{not afiliado.isBeneficiario} ? *{#lists.size(afiliado.beneficiarios)} : *{beneficiario[__${afiliados.index}__].id}"></td>
-										<!-- <th:block th:unless="${afiliado.isBeneficiario}" th:each="beneficiario : ${afiliado.getBeneficiarios()}">
-											<td th:text="${beneficiario.getAfiliado().nombre}"></td>
-										</th:block> -->
-										<td th:text="*{afiliado.email}"></td>
-										<td sec:authorize="hasRole('ROLE_ADMIN')">
-											<div class="dropdown mb-4">
-												<button class="btn btn-primary dropdown-toggle"
-													type="button" id="dropdownMenuButton"
-													data-toggle="dropdown" aria-haspopup="true"
-													aria-expanded="false">Opciones</button>
-												<div class="dropdown-menu animated--fade-in"
-													aria-labelledby="dropdownMenuButton">
-													<a class="dropdown-item"
-														th:href="@{/afiliados/editar/} + *{afiliado.id}"
-														th:text="'Editar'"> </a> <a class="dropdown-item"
-														th:href="@{/afiliados/eliminar/} + *{afiliado.id}"
-														th:text="'Borrar'"
-
-														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">
-													</a> <a class="dropdown-item" th:href="@{/beneficiarios/crear/} + ${afiliado.id}">Agregar Beneficiario
-
-													</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
->>>>>>> master
 						</div>
 					</div>
 				</div>

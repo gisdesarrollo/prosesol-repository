@@ -14,19 +14,19 @@ public class LoginController {
 	@GetMapping(value = {"login", "/"})
 	public String login(@RequestParam(value = "error", required = false)String error, 
 			@RequestParam(value = "logout", required = false)String logout,
-			Model model, Principal principal, RedirectAttributes flash) {
+			Model model, Principal principal, RedirectAttributes redirect) {
 		
 		if(principal != null) {
 			
-			return "/home";
+			return "home";
 		}
 		
 		if(error != null) {
-			model.addAttribute("error", "Error en el login: Nombre de usuario o contraseña incorrecta");
+			model.addAttribute("error", "Error en el login: Nombre de usuario o contraseï¿½a incorrecta");
 		}
 		
 		if(logout != null) {
-			model.addAttribute("success", "Ha cerrado sesión con éxito");
+			model.addAttribute("success", "Ha cerrado sesiï¿½n con ï¿½xito");
 		}
 		return "login";
 	}
