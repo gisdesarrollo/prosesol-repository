@@ -16,6 +16,7 @@
 			<li class="breadcrumb-item active">Perfiles</li>
 		</ol>
 
+<<<<<<< HEAD
 		<div class="container-fluid">
 			<div class="animated fadeIn">
 				<div class="row">
@@ -69,6 +70,54 @@
 									</div>
 								</div>
 							</div>
+=======
+				<!-- DataTables Example -->
+				<div class="card mb-3">
+					<div class="card-header">
+						<i class="fas fa-table"></i> Catálogo de perfiles
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered" id="dataTable" width="100%"
+								cellspacing="0">
+								<thead>
+									<tr>
+										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th>Nombre del perfil</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th>Nombre del perfil</th>
+										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+									</tr>
+								</tfoot>
+								<tbody>
+									<tr th:each="perfil : ${perfil}">
+										<td sec:authorize="hasRole('ROLE_USER')"
+											th:text="${perfil.id}"></td>
+										<td th:text="${perfil.nombrePerfil}"></td>
+										<td sec:authorize="hasRole('ROLE_ADMIN')">
+											<div class="dropdown mb-4">
+												<button class="btn btn-primary dropdown-toggle"
+													type="button" id="dropdownMenuButton"
+													data-toggle="dropdown" aria-haspopup="true"
+													aria-expanded="false">Opciones</button>
+												<div class="dropdown-menu animated--fade-in"
+													aria-labelledby="dropdownMenuButton">
+													<a class="dropdown-item"
+														th:href="@{/perfiles/editar/} + ${perfil.id}"
+														th:text="'Editar'"> </a> <a class="dropdown-item" href="#">Borrar
+													</a>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+>>>>>>> master
 						</div>
 					</div>
 				</div>
