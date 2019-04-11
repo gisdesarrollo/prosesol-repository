@@ -1,17 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
-</head>
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+<meta charset="utf-8" />
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 	<header th:replace="fragments/header :: header"></header>
-	<!-- Home -->
 	<div class="app-body">
-
 		<div th:replace="fragments/sidebar :: sidebar"></div>
+
 		<main class="main">
-	
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item active">Home</li>
+		</ol>
+
+		<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Bienvenido a la plataforma
+								Prosesol</div>
+							<div class="card-body">
+								<div class="clearfix"></div>
+								<hr>
+								<div class="row">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
+
 </body>
+
 </html>

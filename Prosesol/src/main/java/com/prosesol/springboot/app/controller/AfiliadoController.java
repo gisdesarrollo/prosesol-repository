@@ -42,8 +42,11 @@ public class AfiliadoController {
 	public String crear(Map<String, Object> model) {
 
 		Afiliado afiliado = new Afiliado();
-
+		List<String> estados = afiliadoService.getAllEstados();
+		
+		
 		model.put("afiliado", afiliado);
+		model.put("estados", estados);
 		model.put("titulo", "Crear Afiliado");
 
 		return "catalogos/afiliados/crear";

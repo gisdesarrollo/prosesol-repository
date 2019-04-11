@@ -4,7 +4,8 @@
 <meta charset="utf-8" />
 <head th:replace="fragments/head :: head"></head>
 
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 	<header th:replace="fragments/header :: header"></header>
 	<div class="app-body">
 		<div th:replace="fragments/sidebar :: sidebar"></div>
@@ -31,7 +32,7 @@
 
 								<div class="clearfix"></div>
 								<hr>
-
+								
 								<div class="row">
 									<div class="col-md-12">
 										<table class="table table-bordered" id="dataTable">
@@ -58,8 +59,8 @@
 													<td th:text="${promotor.email}"></td>
 													<td th:text="${promotor.estatus}"></td>
 													<td sec:authorize="hasRole('ROLE_ADMIN')">
-														<div class="dropdown mb-4">
-															<button class="btn btn-primary dropdown-toggle"
+														<div class="dropdown">
+												<button class="btn btn-primary btn-sm dropdown-toggle"
 																type="button" id="dropdownMenuButton"
 																data-toggle="dropdown" aria-haspopup="true"
 																aria-expanded="false">Opciones</button>

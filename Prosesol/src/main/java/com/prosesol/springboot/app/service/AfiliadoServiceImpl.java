@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
 import com.prosesol.springboot.app.repository.BeneficiarioRepository;
+import com.prosesol.springboot.app.util.Estados;
 
 @Service
 public class AfiliadoServiceImpl implements IAfiliadoService{
@@ -56,12 +57,20 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public Afiliado getAfiliadoAssignedBeneficiario(Long id) {
+	public List<Afiliado> getAfiliadoAssignedBeneficiario(Long id) {
 		return iAfiliadoDao.getAfiliadoAssignedBeneficiario(id);
 	}
-
 	
-	
-	
+	@Override
+	@Transactional(readOnly = true)
+	public List<String> getAllEstados() {
+		
+		Estados estados = new Estados();
+		
+		for(String estado : estados.getEstados()) {
+			System.out.println("Lista de estados: " + estado);
+		}
+		return estados.getEstados();
+	}
 
 }

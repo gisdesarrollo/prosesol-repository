@@ -1,10 +1,9 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
-<meta charset="utf-8" />
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
-
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+<meta charset="utf-8" />
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 	<header th:replace="fragments/header :: header"></header>
 	<div class="app-body">
 		<div th:replace="fragments/sidebar :: sidebar"></div>
@@ -12,8 +11,8 @@
 		<main class="main">
 
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Catálogos</li>
+			<li class="breadcrumb-item ">Home</li>
+			<li class="breadcrumb-item ">Sistema</li>
 			<li class="breadcrumb-item active">Perfiles</li>
 		</ol>
 
@@ -32,53 +31,44 @@
 								<div class="clearfix"></div>
 								<hr>
 
-				<div class="card mb-3">
-					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de perfiles
-					</div>
-					<div class="card-body">
-						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable" width="100%"
-								cellspacing="0">
-								<thead>
-									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Nombre del perfil</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-									</tr>
-								</thead>
-								<tfoot>
-									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Nombre del perfil</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
-									</tr>
-								</tfoot>
-								<tbody>
-									<tr th:each="perfil : ${perfil}">
-										<td sec:authorize="hasRole('ROLE_USER')"
-											th:text="${perfil.id}"></td>
-										<td th:text="${perfil.nombrePerfil}"></td>
-										<td sec:authorize="hasRole('ROLE_ADMIN')">
-											<div class="dropdown mb-4">
-												<button class="btn btn-primary dropdown-toggle"
-													type="button" id="dropdownMenuButton"
-													data-toggle="dropdown" aria-haspopup="true"
-													aria-expanded="false">Opciones</button>
-												<div class="dropdown-menu animated--fade-in"
-													aria-labelledby="dropdownMenuButton">
-													<a class="dropdown-item"
-														th:href="@{/perfiles/editar/} + ${perfil.id}"
-														th:text="'Editar'"> </a> <a class="dropdown-item" href="#">Borrar
-													</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
+								<div class="row">
+									<div class="col-md-12">
+										<table class="table table-bordered table-condensed" id="dataTable">
+											<thead>
+												<tr>
+													<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+													<th>Id Usuario</th>
+													<th>Nombre del perfil</th>
+													<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="perfil : ${perfil}">
+													<td sec:authorize="hasRole('ROLE_USER')"
+														th:text="${perfil.id}"></td>
+													<td th:text="${perfil.idUsuario}"></td>
+													<td th:text="${perfil.roleName}"></td>
+													<td sec:authorize="hasRole('ROLE_ADMIN')">
+														<div class="dropdown mb-4">
+															<button class="btn btn-primary btn-sm dropdown-toggle"
+																type="button" id="dropdownMenuButton"
+																data-toggle="dropdown" aria-haspopup="true"
+																aria-expanded="false">Opciones</button>
+															<div class="dropdown-menu animated--fade-in"
+																aria-labelledby="dropdownMenuButton">
+																<a class="dropdown-item"
+																	th:href="@{/perfiles/editar/} + ${perfil.id}"
+																	th:text="'Editar'"> </a> <a class="dropdown-item"
+																	href="#">Borrar </a>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
