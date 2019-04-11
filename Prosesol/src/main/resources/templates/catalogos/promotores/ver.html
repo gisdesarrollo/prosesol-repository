@@ -27,7 +27,8 @@
 							<div class="card-body">
 								<a sec:authorize="hasRole('ROLE_ADMIN')"
 									th:href="@{/promotores/crear}"
-									class="btn btn-square btn-primary btn-sm"><i class="fas fa-user-plus"></i> Nuevo Promotor</a>
+									class="btn btn-square btn-primary btn-sm"><i
+									class="fas fa-user-plus"></i> Nuevo Promotor</a>
 
 								<div class="clearfix"></div>
 								<hr>
@@ -58,8 +59,8 @@
 													<td th:text="${promotor.email}"></td>
 													<td th:text="${promotor.estatus}"></td>
 													<td sec:authorize="hasRole('ROLE_ADMIN')">
-														<div class="dropdown mb-4">
-															<button class="btn btn-primary dropdown-toggle"
+														<div class="dropdown">
+												<button class="btn btn-primary btn-sm dropdown-toggle"
 																type="button" id="dropdownMenuButton"
 																data-toggle="dropdown" aria-haspopup="true"
 																aria-expanded="false">Opciones</button>
