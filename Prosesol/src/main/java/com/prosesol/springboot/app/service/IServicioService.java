@@ -9,7 +9,7 @@ public interface IServicioService {
 
 	public List<Servicio> findAll();
 	
-	public void save(Servicio membresia);
+	public void save(Servicio servicio);
 	
 	public void delete(Long id);
 	

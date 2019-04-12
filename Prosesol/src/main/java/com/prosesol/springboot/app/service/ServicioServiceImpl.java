@@ -21,8 +21,8 @@ public class ServicioServiceImpl implements IServicioService{
 	}
 
 	@Override
-	public void save(Servicio membresia) {
-		membresiaDao.save(membresia);
+	public void save(Servicio servicio) {
+		membresiaDao.save(servicio);
 	}
 
 	@Override
