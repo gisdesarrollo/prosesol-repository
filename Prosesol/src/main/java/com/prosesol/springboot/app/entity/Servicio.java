@@ -29,8 +29,8 @@ public class Servicio implements Serializable{
 	private String nombre;
 	
 	@NotEmpty(message = "Proporcione el tipo de membresía")
-	@Column(name = "tipoMembresia")
-	private String tipoMembresia;
+	@Column(name = "tipo_servicio")
+	private String tipoServicio;
 	
 	@Column(name = "costo")
 	private BigDecimal costo;
@@ -39,7 +39,7 @@ public class Servicio implements Serializable{
 	private String periodicidad;
 	
 	@Column(name = "estatus")
-	private String estatus;
+	private Boolean estatus;
 
 	public Long getId() {
 		return id;
@@ -57,12 +57,20 @@ public class Servicio implements Serializable{
 		this.nombre = nombre;
 	}
 
-	public String getTipoMembresia() {
-		return tipoMembresia;
+	public String getTipoServicio() {
+		return tipoServicio;
 	}
 
-	public void setTipoMembresia(String tipoMembresia) {
-		this.tipoMembresia = tipoMembresia;
+	public void setTipoServicio(String tipoServicio) {
+		this.tipoServicio = tipoServicio;
+	}
+
+	public String getPeriodicidad() {
+		return periodicidad;
+	}
+
+	public void setPeriodicidad(String periodicidad) {
+		this.periodicidad = periodicidad;
 	}
 
 	public BigDecimal getCosto() {
@@ -73,11 +81,11 @@ public class Servicio implements Serializable{
 		this.costo = costo;
 	}
 
-	public String getEstatus() {
+	public Boolean getEstatus() {
 		return estatus;
 	}
 
-	public void setEstatus(String estatus) {
+	public void setEstatus(Boolean estatus) {
 		this.estatus = estatus;
 	}
 	

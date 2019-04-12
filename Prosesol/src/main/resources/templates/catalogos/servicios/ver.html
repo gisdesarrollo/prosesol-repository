@@ -13,7 +13,7 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item ">Home</li>
 			<li class="breadcrumb-item ">Catálogos</li>
-			<li class="breadcrumb-item active">Membresías</li>
+			<li class="breadcrumb-item active">Servicios</li>
 		</ol>
 
 		<div class="container-fluid">
@@ -21,12 +21,12 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card card-accent-primary">
-							<div class="card-header">Membresías</div>
+							<div class="card-header">Servicios</div>
 							<div class="card-body">
 								<a sec:authorize="hasRole('ROLE_ADMIN')"
-									th:href="@{/membresias/crear}"
+									th:href="@{/servicios/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
-									class="fas fa-user-plus"></i> Nueva Membresía</a>
+									class="fas fa-user-plus"></i> Nuevo Servicio</a>
 								<div class="clearfix"></div>
 								<hr>
 								<div class="row">
@@ -37,20 +37,21 @@
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
 										<th>Nombre</th>
-										<th>Tipo de membresía</th>
+										<th>Tipo de servicio</th>
 										<th>Costo</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="membresia : ${membresia}">
+									<tr th:each="servicio : ${servicios}">
 										<td sec:authorize="hasRole('ROLE_USER')"
-											th:text="${membresia.id}"></td>
-										<td th:text="${membresia.nombre}"></td>
-										<td th:text="${membresia.tipoMembresia}"></td>
-										<td th:text="${membresia.costo}"></td>
-										<td th:text="${membresia.estatus}"></td>
+											th:text="${servicio.id}"></td>
+										<td th:text="${servicio.nombre}"></td>
+										<td th:text="${servicio.tipoServicio}"></td>
+										<td th:text="${servicio.costo}"></td>
+										<td th:if="${servicio.estatus}">Activo</td>
+										<td th:unless="${servicio.estatus}">Inactivo</td>
 										<td sec:authorize="hasRole('ROLE_ADMIN')">
 											<div class="dropdown">
 												<button class="btn btn-primary btn-sm dropdown-toggle"
@@ -60,9 +61,9 @@
 												<div class="dropdown-menu animated--fade-in"
 													aria-labelledby="dropdownMenuButton">
 													<a class="dropdown-item"
-														th:href="@{/membresias/editar/} + ${membresia.id}"
+														th:href="@{/servicios/editar/} + ${servicio.id}"
 														th:text="'Editar'"> </a> <a class="dropdown-item"
-														th:href="@{/membresias/eliminar/} + ${membresia.id}"
+														th:href="@{/servicios/eliminar/} + ${servicio.id}"
 														th:text="'Borrar'"
 														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
 													</a>

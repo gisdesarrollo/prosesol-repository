@@ -23,95 +23,98 @@ import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.service.IServicioService;
 
 @Controller
-@SessionAttributes("membresia")
+@SessionAttributes("servicio")
+@RequestMapping("/servicios")
 public class ServicioController {
 
 	protected final Log logger = LogFactory.getLog(this.getClass());
 	
 	@Autowired
-	private IServicioService membresiaService;
+	private IServicioService servicioService;
 	
-	@RequestMapping(value = "/membresias/ver", method = RequestMethod.GET)
-	public String ver(Model model) {
-		
-		model.addAttribute("titulo", "Membresía");
-		model.addAttribute("membresia", membresiaService.findAll());
-		
-		return "catalogos/membresias/ver";
-	}
-	
-	@Secured("ROLE_ADMIN")
-	@RequestMapping(value = "/membresias/crear")
+	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		
-		Servicio membresia = new Servicio();
+		Servicio servicio = new Servicio();
 		
-		model.put("membresia", membresia);
-		model.put("titulo", "Crear Membresia");
+		model.put("servicio", servicio);
+		model.put("titulo", "Crear Servicio");
 		
-		logger.info("Id membresía desde el método de crear: " + membresia.getId());
+		logger.info("Id servicio desde el método de crear: " + servicio.getId());
 		
-		return "catalogos/membresias/crear";
+		return "catalogos/servicios/crear";
 				
 	}
 	
-	@RequestMapping(value = "/membresias/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Servicio membresia, BindingResult result, Model model, 
+	@RequestMapping(value = "/ver", method = RequestMethod.GET)
+	public String ver(Model model) {
+		
+		model.addAttribute("titulo", "Membresía");
+		model.addAttribute("servicios", servicioService.findAll());
+		
+		return "catalogos/servicios/ver";
+	}
+	
+	
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(value = "/crear", method = RequestMethod.POST)
+	public String guardar(@Valid Servicio servicio, BindingResult result, Model model, 
 						 RedirectAttributes redirect, SessionStatus status) {
 		
 		if(result.hasErrors()) {
 			model.addAttribute("titulo", "Crear Membresia");
-			return "catalogos/membresias/crear";
+			return "catalogos/servicios/crear";
 		}
 		
-		String flashMessage = (membresia.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
+		String flashMessage = (servicio.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
 		
+		servicio.setEstatus(true);
 		
-		membresiaService.save(membresia);
+		servicioService.save(servicio);
 		status.setComplete();
 		redirect.addFlashAttribute("success", flashMessage);
 		
-		logger.info("Id membresía desde el método de guardar: " + membresia.getId());
+		logger.info("Id servicio desde el método de guardar: " + servicio.getId());
 		
-		return "redirect:/membresias/ver";
+		return "redirect:/servicios/ver";
 		
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/membresias/editar/{id}")
+	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
-		Servicio membresia = null;
+		Servicio servicio = null;
 
 		if (id > 0) {
-			membresia = membresiaService.findById(id);
-			if (membresia == null) {
-				redirect.addFlashAttribute("Error: ", "El id de la membresia no existe");
+			servicio = servicioService.findById(id);
+			if (servicio == null) {
+				redirect.addFlashAttribute("Error: ", "El id del servicio no existe");
 				return "redirect:/cuentas/ver";
 			}
 		} else {
-			redirect.addFlashAttribute("Error: ", "El id de la membresia no puede ser cero");
+			redirect.addFlashAttribute("Error: ", "El id del servicio no puede ser cero");
 			return "redirect:/cuentas/ver";
 		}
 
-		model.put("membresia", membresia);
-		model.put("titulo", "Editar membresía");
+		model.put("servicio", servicio);
+		model.put("titulo", "Editar servicio");
 
 		
-		return "catalogos/membresias/editar";
+		return "catalogos/servicios/editar";
 		
 
 	}
 	
-	@RequestMapping(value = "/membresias/eliminar/{id}")
+	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 		
 		if(id > 0) {
-			membresiaService.delete(id);
+			servicioService.delete(id);
 			redirect.addFlashAttribute("success", "Registro eliminado correctamente");
 		}
 		
-		return "redirect:/membresias/ver";
+		return "redirect:/servicios/ver";
 	}
 	
 }

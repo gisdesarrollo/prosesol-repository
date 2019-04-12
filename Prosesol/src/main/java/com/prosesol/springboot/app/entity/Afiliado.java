@@ -77,7 +77,7 @@ public class Afiliado implements Serializable{
 	@Column(name="escolaridad")
 	private String escolaridad;
 	
-	@Column(name="sexo", length = 1)
+	@Column(name="sexo", length = 10)
 	private String sexo;
 	
 	@Column(name="pais", length = 3)

@@ -108,20 +108,29 @@ public class AfiliadoController {
 
 		System.out.println("Entra al método guardar");
 		
-		if (result.hasErrors()) {
-			model.addAttribute("titulo", "Crear Afiliado");
-			return "catalogos/afiliados/crear";
+		try {
+			
+			if (result.hasErrors()) {
+				model.addAttribute("titulo", "Crear Afiliado");
+				return "catalogos/afiliados/crear";
+			}
+
+			String mensajeFlash = (afiliado.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
+
+			afiliado.setEstatus(true);
+			afiliado.setIsBeneficiario(false);
+			
+			afiliadoService.save(afiliado);
+			status.setComplete();
+			redirect.addFlashAttribute("success", mensajeFlash);
+			
+		}catch(Exception e) {
+
+			e.printStackTrace();
+			logger.error("Error al momento de ejecutar el proceso: " + e);
+			return "/errores/error_403";
 		}
-
-		String mensajeFlash = (afiliado.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
-
-		afiliado.setEstatus(true);
-		afiliado.setIsBeneficiario(false);
 		
-		afiliadoService.save(afiliado);
-		status.setComplete();
-		redirect.addFlashAttribute("success", mensajeFlash);
-
 		return "redirect:/afiliados/ver";
 	}
 
