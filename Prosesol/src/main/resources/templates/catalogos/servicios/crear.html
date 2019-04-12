@@ -4,35 +4,34 @@
 
 <head th:replace="fragments/head :: head"></head>
 
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">	
-	
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+
 	<header th:replace="fragments/header :: header"></header>
-	
+
 	<div class="app-body">
 		<div th:replace="fragments/sidebar :: sidebar"></div>
-		
 		<main class="main">
 
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
 			<li class="breadcrumb-item">Catálogos</li>
-			<li class="breadcrumb-item active">Membresías</li>
+			<li class="breadcrumb-item active">Servicios</li>
 		</ol>
-		
-	<div class="container-fluid">
+		<div class="container-fluid">
+
 			<div class="animated fadeIn">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Membresías</div>
+							<div class="card-header">Servicios</div>
 							<div class="card-body">
-								<h5 class="m-0 font-weight-bold text-primary">Editar membresía</h5>
-								
+								<h5 class="m-0 font-weight-bold text-primary">Crear Servicio</h5>
 
 								<div class="clearfix"></div>
 								<hr>
-						<form class="user" th:action="@{/membresias/crear}"
-							th:object="${membresia}" method="post">
+								<form class="user" th:action="@{/servicios/crear}"
+							th:object="${servicio}" method="post">
 							<div class="form-group row">
 								<div class="col-sm-6 mb-3 mb-sm-0">
 									<input type="text" th:field="*{nombre}"
@@ -41,11 +40,11 @@
 										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
 								</div>
 								<div class="col-sm-6">
-									<input type="text" th:field="*{tipoMembresia}"
+									<input type="text" th:field="*{tipoServicio}"
 										class="form-control form-control-user"
-										placeholder="Tipo de Membresía"> <small
+										placeholder="Tipo de Servicio"> <small
 										class="form-text text-danger"
-										th:if="${#fields.hasErrors('tipoMembresia')}" th:errors="*{tipoMembresia}"></small>
+										th:if="${#fields.hasErrors('tipoServicio')}" th:errors="*{tipoServicio}"></small>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -59,19 +58,19 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<input type="submit" class="btn btn-primary btn-user btn-block" name="crearMembresia"
-									value="Guardar cambios">
+								<input type="submit" class="btn btn-primary btn-user btn-block"
+									value="Crear Servicio">
 							</div>
 						</form>
-				
+
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		</main>
-		</div>
-	
+	</div>
+	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
