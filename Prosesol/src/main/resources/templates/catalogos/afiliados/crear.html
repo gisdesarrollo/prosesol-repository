@@ -145,12 +145,15 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">País</label> <select
-														th:field="*{pais}" class="custom-select"
+													<label for="company">País</label>
+													<select	name ="pais" th:field="*{pais}" class="custom-select"
 														id="inputGroupSelect01">
-														<option th:value="'MEX'" th:selected>MEX</option>
-														<option th:value="'EEUU'">USA</option>
-													</select><small class="form-text text-danger"
+														<option th:each="pais : ${paises}"
+															    th:value="${pais}"
+															    th:text="${pais}"
+															    th:selected="${pais.MEX}"/>
+													</select>
+													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('pais')}"
 														th:errors="*{pais}"></small>
 												</div>
@@ -257,9 +260,9 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">¿Cuenta con crédito Infonavit?</label><input
-														type="text" th:field="*{infonavit}"
-														class="form-control form-control-user" placeholder="">
+													<label for="company">¿Cuénta con crédito Infonavit?
+													<input type="checkbox" class="form-check-input" id="infonavitCB"/></label>
+													
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('infonavit')}"
 														th:errors="*{infonavit}"></small>
@@ -267,8 +270,8 @@
 
 												<div class="form-group col-md-3">
 													<label for="company">Número de Infonavit</label><input
-														type="text" th:field="*{numeroInfonavit}"
-														class="form-control form-control-user" placeholder="">
+														type="text" th:field="*{numeroInfonavit}" 
+														class="form-control form-control-user" id="inputNumeroInfonavit">
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('numeroInfonavit')}"
 														th:errors="*{numeroInfonavit}"></small>
@@ -291,32 +294,6 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('fechaPago')}"
 														th:errors="*{fechaPago}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Tipo de Beneficiario</label><input
-														type="text" th:field="*{tipoBeneficiario}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('tipoBeneficiario')}"
-														th:errors="*{tipoBeneficiario}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Tipo de Afiliación</label><input
-														type="text" th:field="*{tipoAfiliacion}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('tipoAfiliacion')}"
-														th:errors="*{tipoAfiliacion}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Cuota</label><input type="text"
-														th:field="*{cuota}" class="form-control form-control-user"
-														placeholder=""> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('cuota')}" th:errors="*{cuota}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -358,7 +335,6 @@
 		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
-
 </body>
 
 </html>

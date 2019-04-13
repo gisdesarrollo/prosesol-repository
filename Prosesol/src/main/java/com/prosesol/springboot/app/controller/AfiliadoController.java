@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.Beneficiario;
 import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.util.Paises;
 
 @Controller
 @SessionAttributes("afiliado")
@@ -43,10 +44,11 @@ public class AfiliadoController {
 
 		Afiliado afiliado = new Afiliado();
 		List<String> estados = afiliadoService.getAllEstados();
-		
+		List<Paises> paises = afiliadoService.getAllPaises();
 		
 		model.put("afiliado", afiliado);
 		model.put("estados", estados);
+		model.put("paises", paises);
 		model.put("titulo", "Crear Afiliado");
 
 		return "catalogos/afiliados/crear";
