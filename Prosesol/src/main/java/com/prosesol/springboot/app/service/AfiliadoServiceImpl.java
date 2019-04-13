@@ -1,5 +1,7 @@
 package com.prosesol.springboot.app.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
 import com.prosesol.springboot.app.repository.BeneficiarioRepository;
 import com.prosesol.springboot.app.util.Estados;
+import com.prosesol.springboot.app.util.Paises;
 
 @Service
 public class AfiliadoServiceImpl implements IAfiliadoService{
@@ -62,15 +65,19 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	}
 	
 	@Override
-	@Transactional(readOnly = true)
 	public List<String> getAllEstados() {
 		
 		Estados estados = new Estados();
 		
-		for(String estado : estados.getEstados()) {
-			System.out.println("Lista de estados: " + estado);
-		}
 		return estados.getEstados();
+	}
+
+	@Override
+	public List<Paises> getAllPaises() {
+		
+		List<Paises> paises = new ArrayList<Paises>(Arrays.asList(Paises.values()));
+		
+		return paises;
 	}
 
 }

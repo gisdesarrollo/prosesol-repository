@@ -1,7 +1,6 @@
 package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -112,7 +111,7 @@ public class Afiliado implements Serializable{
 	@Column(name="codigo_postal")
 	private Long codigoPostal;
 	
-	@Column(name="entidad_federativa")
+	@Column(name="entidad_federativa", length = 3)
 	private String entidadFederativa;
 	
 	@Column(name="estatus_vivienda", length = 10)
@@ -135,9 +134,6 @@ public class Afiliado implements Serializable{
 	@Column(name="fecha_pago")
 	@DateTimeFormat(pattern="dd-MM-yyyy")
 	private Date fechaPago;
-
-	@Column(name="tipo_beneficiario")
-	private String tipoBeneficiario;
 	
 	@Column(name="estatus", length = 1)
 	private Boolean estatus;
@@ -145,13 +141,7 @@ public class Afiliado implements Serializable{
 //	@ManyToOne
 //	@JoinColumn(name = "id_membresia")
 //	private Membresia membresia;
-	
-	@Column(name="tipo_afiliacion", length = 15)
-	private String tipoAfiliacion;
-	
-	@Column(name="cuota")
-	private BigDecimal cuota;
-	
+		
 	@Column(name="comentarios")
 	private String comentarios;
 	
@@ -397,14 +387,6 @@ public class Afiliado implements Serializable{
 		this.fechaPago = fechaPago;
 	}
 
-	public String getTipoBeneficiario() {
-		return tipoBeneficiario;
-	}
-
-	public void setTipoBeneficiario(String tipoBeneficiario) {
-		this.tipoBeneficiario = tipoBeneficiario;
-	}
-
 //	public Membresia getMembresia() {
 //		return membresia;
 //	}
@@ -419,22 +401,6 @@ public class Afiliado implements Serializable{
 
 	public void setEstatus(Boolean estatus) {
 		this.estatus = estatus;
-	}
-
-	public String getTipoAfiliacion() {
-		return tipoAfiliacion;
-	}
-
-	public void setTipoAfiliacion(String tipoAfiliacion) {
-		this.tipoAfiliacion = tipoAfiliacion;
-	}
-
-	public BigDecimal getCuota() {
-		return cuota;
-	}
-
-	public void setCuota(BigDecimal cuota) {
-		this.cuota = cuota;
 	}
 
 	public String getComentarios() {

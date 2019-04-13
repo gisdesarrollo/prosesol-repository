@@ -3,6 +3,7 @@ package com.prosesol.springboot.app.service;
 import java.util.List;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.util.Paises;
 
 public interface IAfiliadoService {
 
@@ -21,4 +22,6 @@ public interface IAfiliadoService {
 	public List<Afiliado> getAfiliadoAssignedBeneficiario(Long id);
 	
 	public List<String> getAllEstados();
+	
+	public List<Paises> getAllPaises();
 }
