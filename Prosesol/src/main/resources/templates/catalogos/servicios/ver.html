@@ -37,8 +37,9 @@
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
 										<th>Nombre</th>
-										<th>Tipo de servicio</th>
+										<th>Notas</th>
 										<th>Costo</th>
+										<th>Inscripción</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 									</tr>
@@ -48,8 +49,9 @@
 										<td sec:authorize="hasRole('ROLE_USER')"
 											th:text="${servicio.id}"></td>
 										<td th:text="${servicio.nombre}"></td>
-										<td th:text="${servicio.tipoServicio}"></td>
+										<td th:text="${servicio.nota}"></td>
 										<td th:text="${servicio.costo}"></td>
+										<td th:text="${servicio.inscripcion}"></td>
 										<td th:if="${servicio.estatus}">Activo</td>
 										<td th:unless="${servicio.estatus}">Inactivo</td>
 										<td sec:authorize="hasRole('ROLE_ADMIN')">

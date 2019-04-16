@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+<meta charset="utf-8" />
+<head th:replace="fragments/head :: head"></head>
+
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+	<header th:replace="fragments/header :: header"></header>
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+
+		<main class="main">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item">Catálogos</li>
+			<li class="breadcrumb-item active">Periodos</li>
+		</ol>
+
+		<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Periodos</div>
+							<div class="card-body">
+								<a sec:authorize="hasRole('ROLE_ADMIN')"
+									th:href="@{/periodicidades/crear}"
+									class="btn btn-square btn-primary btn-sm"><i
+									class="fas fa-user-plus"></i> Nuevo Periodo</a>
+
+								<div class="clearfix"></div>
+								<hr>
+								
+								<div class="row">
+									<div class="col-md-12">
+										<table class="table table-bordered" id="dataTable">
+											<thead>
+												<tr>
+													<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+													<th>Nombre</th>
+													<th>Corte</th>
+													<th>Periodo</th>
+													<th sec:authorize="hasRole('ROLE_ADMIN')">Opciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="periodo : ${periodicidad}">
+													<td sec:authorize="hasRole('ROLE_USER')"
+														th:text="${periodo.id}"></td>
+														<td th:text="${periodo.nombre}"></td>
+													<td th:text="${periodo.corte}"></td>
+													<td th:text="${periodo.periodo}"></td>
+													<td sec:authorize="hasRole('ROLE_ADMIN')">
+														<div class="dropdown">
+												<button class="btn btn-primary btn-sm dropdown-toggle"
+																type="button" id="dropdownMenuButton"
+																data-toggle="dropdown" aria-haspopup="true"
+																aria-expanded="false">Opciones</button>
+															<div class="dropdown-menu animated--fade-in"
+																aria-labelledby="dropdownMenuButton">
+																<a class="dropdown-item"
+																	th:href="@{/periodicidades/editar/} + ${periodo.id}"
+																	th:text="'Editar'"> </a> <a class="dropdown-item"
+																	th:href="@{/periodicidades/eliminar/} + ${periodo.id}"
+																	th:text="'Borrar'"
+																	onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
+																</a>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</main>
+	</div>
+	<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+
+</html>

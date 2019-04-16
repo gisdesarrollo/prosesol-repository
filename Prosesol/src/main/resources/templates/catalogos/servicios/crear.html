@@ -40,21 +40,25 @@
 										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
 								</div>
 								<div class="col-sm-6">
-									<input type="text" th:field="*{tipoServicio}"
+									<input type="text" th:field="*{nota}"
 										class="form-control form-control-user"
-										placeholder="Tipo de Servicio"> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('tipoServicio')}" th:errors="*{tipoServicio}"></small>
+										placeholder="Notas"> 
 								</div>
 							</div>
 							<div class="form-group row">
 								<div class="col-sm-6 mb-3 mb-sm-0">
 									<input type="text" th:field="*{costo}"
 										class="form-control form-control-user"
-										placeholder="Costo"> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('costo')}"
-										th:errors="*{direccion}"></small>
+										placeholder="Costo">
+									<small class="form-text text-danger"
+										th:if="${#fields.hasErrors('costo')}" th:errors="*{costo}"></small>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-6 mb-3 mb-sm-0">
+									<input type="text" th:field="*{inscripcion}"
+										class="form-control form-control-user"
+										placeholder="Inscripción">
 								</div>
 							</div>
 							<div class="form-group">

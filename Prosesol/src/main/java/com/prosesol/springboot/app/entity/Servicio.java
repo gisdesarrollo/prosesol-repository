@@ -1,15 +1,20 @@
 package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "servicios")
@@ -22,25 +27,33 @@ public class Servicio implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_servicio", unique = true, nullable = false)
 	private Long id;
 	
-	@NotEmpty(message = "Proporcione un nombre para la membresía")
+	@NotEmpty(message = "Proporcione el nombre del servicio")
 	@Column(name = "nombre")
 	private String nombre;
 	
-	@NotEmpty(message = "Proporcione el tipo de membresía")
-	@Column(name = "tipo_servicio")
-	private String tipoServicio;
-	
+	@Column(name = "notas")
+	private String nota;
+		
+	@NotNull(message = "Proporcione el costo del servicio")
 	@Column(name = "costo")
-	private BigDecimal costo;
+	private Double costo;
 	
-	@Column(name = "periodicidad")
-	private String periodicidad;
+	@Column(name = "inscripcion")
+	private String inscripcion;
 	
 	@Column(name = "estatus")
 	private Boolean estatus;
 
+	@OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Afiliado> afiliado;
+	
+	public Servicio() {
+		afiliado = new ArrayList<Afiliado>();
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -57,28 +70,36 @@ public class Servicio implements Serializable{
 		this.nombre = nombre;
 	}
 
-	public String getTipoServicio() {
-		return tipoServicio;
+	public String getNota() {
+		return nota;
 	}
 
-	public void setTipoServicio(String tipoServicio) {
-		this.tipoServicio = tipoServicio;
+	public void setNota(String nota) {
+		this.nota = nota;
 	}
 
-	public String getPeriodicidad() {
-		return periodicidad;
+	public List<Afiliado> getAfiliado() {
+		return afiliado;
 	}
 
-	public void setPeriodicidad(String periodicidad) {
-		this.periodicidad = periodicidad;
+	public void setAfiliado(List<Afiliado> afiliado) {
+		this.afiliado = afiliado;
 	}
 
-	public BigDecimal getCosto() {
+	public Double getCosto() {
 		return costo;
 	}
 
-	public void setCosto(BigDecimal costo) {
+	public void setCosto(Double costo) {
 		this.costo = costo;
+	}
+
+	public String getInscripcion() {
+		return inscripcion;
+	}
+
+	public void setInscripcion(String inscripcion) {
+		this.inscripcion = inscripcion;
 	}
 
 	public Boolean getEstatus() {
