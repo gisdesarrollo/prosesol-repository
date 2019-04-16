@@ -24,4 +24,6 @@ public interface IAfiliadoService {
 	public List<String> getAllEstados();
 	
 	public List<Paises> getAllPaises();
+	
+	
 }

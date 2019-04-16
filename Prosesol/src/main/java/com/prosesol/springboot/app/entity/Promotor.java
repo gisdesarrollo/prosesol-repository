@@ -27,6 +27,7 @@ public class Promotor implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_promotor", unique = true, nullable = false)
 	private Long id;
 	
 	@NotEmpty(message = "Proporcione el nombre del promotor")

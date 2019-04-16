@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8" />
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+	<header th:replace="fragments/header :: header"></header>
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+
+		<main class="main">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item">Afiliados</li>
+			<li class="breadcrumb-item active">Periodos</li>
+		</ol>
+
+		<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Nuevo Periodo</div>
+							<div class="card-body">
+								<p>Captura la información solicitada para dar de alta un
+									nuevo periodo</p>
+								<div class="clearfix"></div>
+								<hr>
+								<div class="row">
+									<div class="col-md-12">
+										<form class="user" th:action="@{/periodicidades/crear}"
+											th:object="${periodicidad}" method="post">
+											<div class="row">
+												<div class="form-group col-md-3">
+													<label for="company">Nombre</label> <input type="text"
+														th:field="*{nombre}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('nombre')}"
+														th:errors="*{nombre}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Fecha de Corte</label> 
+													<select	name ="corte" th:field="*{corte}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="corte : ${#numbers.sequence(1, 31)}"
+															    th:value="${corte}"
+															    th:text="${corte}"
+															    th:selected="${corte}"/>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('corte')}"
+														th:errors="*{corte}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Periodo</label> <select	
+													    name ="periodo" th:field="*{periodo}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="periodo : ${periodos}"
+															    th:value="${periodo}"
+															    th:text="${periodo}"
+															    th:selected="${periodo.EVENTO}"/>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('periodo')}"
+														th:errors="*{periodo}"></small>
+												</div>
+
+											</div>
+
+											<hr>
+											<div class="clearfix"></div>
+											<div class="row">
+												<div class="col-sm-12">
+													<button type="submit" class="btn btn-primary btn-square float-right">Crear
+														Periodo</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</main>
+	</div>
+	<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+
+</html>

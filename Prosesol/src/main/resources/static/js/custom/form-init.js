@@ -5,7 +5,6 @@ $( document ).ready(function() {
 	
 	$('head').append('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">');
 	
-	
 	$("#inputNumeroInfonavit").prop("disabled", true);
 	$("#infonavitCB").click(function(){
 		if($(this).prop("checked") == true){
@@ -14,6 +13,7 @@ $( document ).ready(function() {
 			$("#inputNumeroInfonavit").prop("disabled", true);
 		}
 	});
+	
 	
     
 });

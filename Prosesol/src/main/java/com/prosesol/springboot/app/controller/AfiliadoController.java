@@ -26,7 +26,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.Beneficiario;
+import com.prosesol.springboot.app.entity.Periodicidad;
+import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.service.IPeriodicidadService;
+import com.prosesol.springboot.app.service.IServicioService;
 import com.prosesol.springboot.app.util.Paises;
 
 @Controller
@@ -39,16 +43,26 @@ public class AfiliadoController {
 	@Autowired
 	private IAfiliadoService afiliadoService;
 	
+	@Autowired
+	private IServicioService servicioService;
+	
+	@Autowired
+	private IPeriodicidadService periodicidadService;
+	
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 
 		Afiliado afiliado = new Afiliado();
 		List<String> estados = afiliadoService.getAllEstados();
 		List<Paises> paises = afiliadoService.getAllPaises();
+		List<Servicio> servicios = servicioService.findAll();
+		List<Periodicidad> periodos = periodicidadService.findAll();
 		
 		model.put("afiliado", afiliado);
 		model.put("estados", estados);
 		model.put("paises", paises);
+		model.put("servicios", servicios);
+		model.put("periodos", periodos);
 		model.put("titulo", "Crear Afiliado");
 
 		return "catalogos/afiliados/crear";
@@ -77,7 +91,7 @@ public class AfiliadoController {
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
-		System.out.println("Entra al método editar");
+		logger.info("Editar afiliado: " + afiliadoService.findById(id));
 		
 		Afiliado afiliado = null;
 
@@ -95,8 +109,6 @@ public class AfiliadoController {
 		model.put("afiliado", afiliado);
 		model.put("titulo", "Editar afiliado");
 
-
-		System.out.println("Fin de editar");
 		
 		return "catalogos/afiliados/editar";
 		
@@ -108,7 +120,7 @@ public class AfiliadoController {
 	public String guardar(@Valid Afiliado afiliado, BindingResult result, Model model, RedirectAttributes redirect,
 			SessionStatus status) {
 
-		System.out.println("Entra al método guardar");
+		
 		
 		try {
 			
@@ -119,8 +131,15 @@ public class AfiliadoController {
 
 			String mensajeFlash = (afiliado.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
 
+			if(afiliado.getIsBeneficiario().equals(true)) {
+				afiliado.setIsBeneficiario(true);
+			}else {
+				afiliado.setIsBeneficiario(false);
+			}
+			
 			afiliado.setEstatus(true);
-			afiliado.setIsBeneficiario(false);
+			
+			logger.info(mensajeFlash);
 			
 			afiliadoService.save(afiliado);
 			status.setComplete();

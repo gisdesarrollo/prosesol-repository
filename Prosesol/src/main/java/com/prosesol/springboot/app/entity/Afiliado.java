@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -138,9 +139,11 @@ public class Afiliado implements Serializable{
 	@Column(name="estatus", length = 1)
 	private Boolean estatus;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "id_membresia")
-//	private Membresia membresia;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Servicio servicio;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Periodicidad periodicidad;
 		
 	@Column(name="comentarios")
 	private String comentarios;
@@ -387,14 +390,6 @@ public class Afiliado implements Serializable{
 		this.fechaPago = fechaPago;
 	}
 
-//	public Membresia getMembresia() {
-//		return membresia;
-//	}
-//
-//	public void setMembresia(Membresia membresia) {
-//		this.membresia = membresia;
-//	}
-
 	public Boolean getEstatus() {
 		return estatus;
 	}
@@ -429,6 +424,22 @@ public class Afiliado implements Serializable{
 
 	public void setClave(String clave) {
 		this.clave = clave;
+	}
+
+	public Servicio getServicio() {
+		return servicio;
+	}
+
+	public void setServicio(Servicio servicio) {
+		this.servicio = servicio;
+	}
+
+	public Periodicidad getPeriodicidad() {
+		return periodicidad;
+	}
+
+	public void setPeriodicidad(Periodicidad periodicidad) {
+		this.periodicidad = periodicidad;
 	}
 
 	@Override

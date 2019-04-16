@@ -262,10 +262,6 @@
 												<div class="form-group col-md-3">
 													<label for="company">¿Cuénta con crédito Infonavit?
 													<input type="checkbox" class="form-check-input" id="infonavitCB"/></label>
-													
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('infonavit')}"
-														th:errors="*{infonavit}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -294,6 +290,34 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('fechaPago')}"
 														th:errors="*{fechaPago}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Servicio</label>
+													<select	name ="servicio" th:field="*{servicio}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="servicio : ${servicios}"
+															    th:value="${servicio.nombre}"
+															    th:text="${servicio.nombre}"
+															    th:selected="${servicio.nombre}"/>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('servicio')}"
+														th:errors="*{servicio}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Periodos</label>
+													<select	name ="periodo" th:field="*{periodicidad}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="periodo : ${periodos}"
+															    th:value="${periodo.nombre}"
+															    th:text="${periodo.nombre}"
+															    th:selected="${periodo.nombre}"/>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('periodicidad')}"
+														th:errors="*{periodicidad}"></small>
 												</div>
 
 												<div class="form-group col-md-3">

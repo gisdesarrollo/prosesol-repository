@@ -27,6 +27,7 @@ public class Cuenta implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_cta_comercial", unique = true, nullable = false)
 	private Long id;
 	
 	@NotEmpty(message = "Escriba el nombre de la empresa")

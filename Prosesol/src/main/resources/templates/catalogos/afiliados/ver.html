@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
 
@@ -49,6 +50,8 @@
 													<th>Tipo de afiliado</th>
 													<th>Estatus</th>
 													<th>Detalle Afiliación</th>
+													<th>Servicio</th>
+													<th>Periodo</th>
 													<th>Email</th>
 													<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
 												</tr>
@@ -67,11 +70,12 @@
 													<td th:text="${afiliado.rfc}"></td>
 													<td th:text="${afiliado.nss}"></td>
 													<td th:if="${afiliado.isBeneficiario}">Beneficiario</td>
-													<td th:unless="${afiliado.isBeneficiario}">Principal</td>
+													<td th:unless="${afiliado.isBeneficiario}">Titular</td>
 													<td th:case="true" th:text="Activo"></td>
 													<td th:case="false" th:text="Inactivo"></td>
-													<td
-														th:text="${not afiliado.isBeneficiario} ? ${#lists.size(afiliado.beneficiarios)} : ${afiliado.nombre}"></td>
+													<td th:text="${not afiliado.isBeneficiario} ? ${#lists.size(afiliado.beneficiarios)} : ${afiliado.nombre}"></td>
+													<td th:text="${afiliado.servicio.nombre}"></td>
+													<td th:text="${afiliado.periodicidad.nombre}"></td>
 													<td th:text="${afiliado.email}"></td>
 													<td sec:authorize="hasRole('ROLE_ADMIN')">
 														<div class="dropdown">
