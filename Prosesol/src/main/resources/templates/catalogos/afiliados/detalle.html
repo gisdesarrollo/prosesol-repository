@@ -58,7 +58,11 @@
 							<li class="list-group-item" th:text="${afiliado.telefonoMovil}"></li>
 							<li class="list-group-item" th:text="${afiliado.email}"></li>
 							<li class="list-group-item"
-								th:text="${afiliado.direccion} + ' ' + ${afiliado.municipio} + ' ' + ${afiliado.codigoPostal} + ' ' + ${afiliado.entidadFederativa}"></li>
+								th:text="${afiliado.direccion} + ' ' 
+									   + ${afiliado.municipio} + ' ' 
+									   + ${afiliado.codigoPostal} + ' ' 
+									   + ${afiliado.entidadFederativa}"></li>
+							<li class="list-group-item" th:text="${afiliado.isBeneficiario} ? 'Beneficiario' : 'Titular'"></li>
 						</ul>
 
 						<!-- <div th:if="${#lists.isEmpty(cliente.facturas)}"
