@@ -260,8 +260,8 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">¿Cuénta con crédito Infonavit?
-													<input type="checkbox" class="form-check-input" id="infonavitCB"/></label>
+													<label for="company">¿Cuénta con crédito Infonavit?</label>
+													<input type="checkbox" class="form-check-input" id="infonavitCB"/>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -297,7 +297,7 @@
 													<select	name ="servicio" th:field="*{servicio}" class="custom-select"
 														id="inputGroupSelect01">
 														<option th:each="servicio : ${servicios}"
-															    th:value="${servicio.nombre}"
+															    th:value="${servicio.id}"
 															    th:text="${servicio.nombre}"
 															    th:selected="${servicio.nombre}"/>
 													</select>
@@ -311,7 +311,7 @@
 													<select	name ="periodo" th:field="*{periodicidad}" class="custom-select"
 														id="inputGroupSelect01">
 														<option th:each="periodo : ${periodos}"
-															    th:value="${periodo.nombre}"
+															    th:value="${periodo.id}"
 															    th:text="${periodo.nombre}"
 															    th:selected="${periodo.nombre}"/>
 													</select>

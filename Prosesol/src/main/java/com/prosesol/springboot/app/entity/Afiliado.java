@@ -139,9 +139,11 @@ public class Afiliado implements Serializable{
 	@Column(name="estatus", length = 1)
 	private Boolean estatus;
 	
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Servicio servicio;
 	
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Periodicidad periodicidad;
 		
@@ -453,7 +455,11 @@ public class Afiliado implements Serializable{
 			   .append(id).append("")
 			   .append("\n Nombre Afiliado: ").append("")
 			   .append(nombre)
-			   .append(beneficiario);
+			   .append(beneficiario)
+			   .append("\n Tipo servicio: ")
+			   .append(servicio.getId())
+			   .append("\n Tipo Periodo: ")
+			   .append(periodicidad.getId());
 			
 		}
 		
