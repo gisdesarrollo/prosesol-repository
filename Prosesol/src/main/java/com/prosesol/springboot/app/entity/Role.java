@@ -11,23 +11,20 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "roles", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_name"})})
+@Table(name = "roles", uniqueConstraints = {@UniqueConstraint(columnNames = {"id_perfil", "nombre"})})
 public class Role implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "user_id")
-	private Long idUsuario;
+	@Column(name = "id_perfil")
+	private Long idPerfil;
 	
-	@Column(name = "role_name")
-	private String roleName;
+	@Column(name = "nombre")
+	private String nombre;
 
 	public Long getId() {
 		return id;
@@ -37,20 +34,20 @@ public class Role implements Serializable{
 		this.id = id;
 	}
 
-	public Long getIdUsuario() {
-		return idUsuario;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setIdUsuario(Long idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}	
+
+	public Long getIdPerfil() {
+		return idPerfil;
 	}
 
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setIdPerfil(Long idPerfil) {
+		this.idPerfil = idPerfil;
 	}
 
 	@Override
@@ -58,9 +55,9 @@ public class Role implements Serializable{
 		
 		final StringBuilder builder = new StringBuilder();
 		
-		builder.append("\nId Rol: [").append(idUsuario).append("]\n")
+		builder.append("\nId Rol: [").append(idPerfil).append("]\n")
 			   .append("Role name: [")
-			   .append(roleName)
+			   .append(nombre)
 			   .append("]\n");
 		
 		return builder.toString();

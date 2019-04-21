@@ -23,7 +23,7 @@
 						<div class="card card-accent-primary">
 							<div class="card-header">Servicios</div>
 							<div class="card-body">
-								<a sec:authorize="hasRole('ROLE_ADMIN')"
+								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 									th:href="@{/servicios/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
 									class="fas fa-user-plus"></i> Nuevo Servicio</a>
@@ -35,18 +35,18 @@
 								cellspacing="0">
 								<thead>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre</th>
 										<th>Notas</th>
 										<th>Costo</th>
 										<th>Inscripción</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:each="servicio : ${servicios}">
-										<td sec:authorize="hasRole('ROLE_USER')"
+										<td sec:authorize="hasRole('ROLE_USUARIO')"
 											th:text="${servicio.id}"></td>
 										<td th:text="${servicio.nombre}"></td>
 										<td th:text="${servicio.nota}"></td>
@@ -54,7 +54,7 @@
 										<td th:text="${servicio.inscripcion}"></td>
 										<td th:if="${servicio.estatus}">Activo</td>
 										<td th:unless="${servicio.estatus}">Inactivo</td>
-										<td sec:authorize="hasRole('ROLE_ADMIN')">
+										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 											<div class="dropdown">
 												<button class="btn btn-primary btn-sm dropdown-toggle"
 													type="button" id="dropdownMenuButton"

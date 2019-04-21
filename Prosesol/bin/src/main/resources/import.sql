@@ -10,9 +10,9 @@ insert into afiliados values(2, 'Pérez', 'Jiménez', 52953, 'No cuenta con NSS'
 INSERT INTO `usuarios` (nombre, username, password, estatus) VALUES ('Luis Enrique Morales Soriano','luis','$2a$10$WkpRCpf0aldniENn8iNqwerl7FQTzaL.IhgLFE8NxK3b.RWZFEf0e',1);
 INSERT INTO `usuarios` (nombre, username, password, estatus) VALUES ('Administrador','admin','$2a$10$7fi8Xu09Nv.oxQb0cJ5xPOUBa/fueyDyHRtG9QwDIl85m0OCYO3Mm',1);
 
-INSERT INTO `roles` (user_id, role_name) VALUES (1,'ROLE_USER');
-INSERT INTO `roles` (user_id, role_name) VALUES (2,'ROLE_ADMIN');
-INSERT INTO `roles` (user_id, role_name) VALUES (2,'ROLE_USER');
+INSERT INTO `roles` (user_id, role_name) VALUES (1,'USUARIO');
+INSERT INTO `roles` (user_id, role_name) VALUES (2,'ADMINISTRADOR');
+INSERT INTO `roles` (user_id, role_name) VALUES (2,'USUARIO');
 
-INSERT INTO perfiles(nombre_perfil)VALUES('ROLE_USER'),('ROLE_ADMIN');
+INSERT INTO perfiles(nombre_perfil)VALUES('USUARIO'),('ADMINISTRADOR');
 

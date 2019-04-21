@@ -23,7 +23,7 @@
 						<div class="card card-accent-primary">
 							<div class="card-header">Cuentas</div>
 							<div class="card-body">
-								<a sec:authorize="hasRole('ROLE_ADMIN')"
+								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 									th:href="@{/cuentas/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
 									class="fas fa-user-plus"></i> Nueva Cuenta</a>
@@ -35,7 +35,7 @@
 											width="100%" cellspacing="0">
 											<thead>
 												<tr>
-													<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+													<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 													<th>Razón social</th>
 													<th>RFC</th>
 													<th>Dirección</th>
@@ -44,12 +44,12 @@
 													<th>Email</th>
 													<th>Fecha Alta</th>
 													<th>Estatus</th>
-													<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr th:each="cuenta : ${cuenta}">
-													<td sec:authorize="hasRole('ROLE_USER')"
+													<td sec:authorize="hasRole('ROLE_USUARIO')"
 														th:text="${cuenta.id}"></td>
 													<td th:text="${cuenta.razonSocial}"></td>
 													<td th:text="${cuenta.rfc}"></td>
@@ -59,7 +59,7 @@
 													<td th:text="${cuenta.email}"></td>
 													<td th:text="${cuenta.fechaAlta}"></td>
 													<td th:text="${cuenta.estatus}"></td>
-													<td sec:authorize="hasRole('ROLE_ADMIN')">
+													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 														<div class="dropdown">
 															<button class="btn btn-primary btn-sm dropdown-toggle"
 																type="button" id="dropdownMenuButton"

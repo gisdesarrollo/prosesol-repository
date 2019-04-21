@@ -1,7 +1,8 @@
 package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,21 +11,18 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_usuario", unique = true, nullable = false)
 	private Long id;
 	
 	@Column
@@ -36,11 +34,29 @@ public class Usuario implements Serializable{
 	@Column(length = 60)
 	private String password;
 	
+	@Column
+	private String email;
+	
 	private Boolean estatus;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
-	private Collection<Role> roles;
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "usuarios", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private Set<Perfil> perfiles;
+	
+	public Usuario() {
+		perfiles = new HashSet<Perfil>();
+	}
+	
+//	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	@JoinColumn(name = "id_usuario")
+//	private Collection<Role> roles;
+
+	public Set<Perfil> getPerfiles() {
+		return perfiles;
+	}
+
+	public void setPerfiles(Set<Perfil> perfiles) {
+		this.perfiles = perfiles;
+	}
 
 	public Long getId() {
 		return id;
@@ -66,6 +82,14 @@ public class Usuario implements Serializable{
 		this.username = username;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -82,12 +106,12 @@ public class Usuario implements Serializable{
 		this.estatus = estatus;
 	}
 
-	public Collection<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Collection<Role> roles) {
-		this.roles = roles;
-	}
+//	public Collection<Role> getRoles() {
+//		return roles;
+//	}
+//
+//	public void setRoles(Collection<Role> roles) {
+//		this.roles = roles;
+//	}
 	
 }

@@ -25,7 +25,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 						<div class="card">
 							<div class="card-header">Afiliados</div>
 							<div class="card-body">
-								<a sec:authorize="hasRole('ROLE_ADMIN')"
+								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 									th:href="@{/afiliados/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
 									class="fas fa-user-plus"></i> Nuevo Afiliado</a>
@@ -40,7 +40,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 											width="100%" cellspacing="0">
 											<thead>
 												<tr>
-													<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+													<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 													<th>Nombre</th>
 													<th>Apellido Paterno</th>
 													<th>Apellido Materno</th>
@@ -53,13 +53,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<th>Servicio</th>
 													<th>Periodo</th>
 													<th>Email</th>
-													<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr th:switch="${afiliado.estatus}"
 													th:each="afiliado : ${afiliados}">
-													<td sec:authorize="hasRole('ROLE_USER')"><a
+													<td sec:authorize="hasRole('ROLE_USUARIO')"><a
 														class="btn btn-primary btn-sm"
 														th:href="@{/afiliados/detalle/} + ${afiliado.id}"
 														th:text="${afiliado.id}"></a></td>
@@ -77,7 +77,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<td th:text="${afiliado.servicio.nombre}"></td>
 													<td th:text="${afiliado.periodicidad.nombre}"></td>
 													<td th:text="${afiliado.email}"></td>
-													<td sec:authorize="hasRole('ROLE_ADMIN')">
+													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 														<div class="dropdown">
 												<button class="btn btn-primary btn-sm dropdown-toggle"
 																type="button" id="dropdownMenuButton"

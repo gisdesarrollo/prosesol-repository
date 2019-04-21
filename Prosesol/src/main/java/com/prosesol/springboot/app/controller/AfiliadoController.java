@@ -82,7 +82,7 @@ public class AfiliadoController {
 
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
@@ -114,7 +114,7 @@ public class AfiliadoController {
 
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured("ADMINISTRADOR")
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Afiliado afiliado, BindingResult result, Model model,  RedirectAttributes redirect,
 						  SessionStatus status) {	
