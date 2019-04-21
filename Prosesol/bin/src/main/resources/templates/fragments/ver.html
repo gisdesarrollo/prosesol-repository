@@ -1,4 +1,4 @@
-Ôªø<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head></head>
@@ -16,14 +16,14 @@
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a
-						sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/usuarios/crear}">Crear
+						sec:authorize="hasRole('ROLE_ADMINISTRADOR')" th:href="@{/usuarios/crear}">Crear
 							Usuario</a></li>
 				</ol>
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Cat√°logo de usuarios
+						<i class="fas fa-table"></i> Cat·logo de usuarios
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -31,32 +31,32 @@
 								cellspacing="0">
 								<thead>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre Completo</th>
 										<th>Usuario</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre Completo</th>
 										<th>Usuario</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
 									<tr th:each="usuario : ${usuario}"
 										th:switch="${usuario.estatus}">
-										<td sec:authorize="hasRole('ROLE_USER')"
+										<td sec:authorize="hasRole('ROLE_USUARIO')"
 											th:text="${usuario.id}"></td>
 										<td th:text="${usuario.nombre}"></td>
 										<td th:text="${usuario.username}"></td>
 										<td th:case="true" th:text="Activo"></td>
 										<td th:case="false" th:text="Inactivo"></td>
-										<td sec:authorize="hasRole('ROLE_ADMIN')">
+										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 											<div class="dropdown mb-4">
 												<button class="btn btn-primary dropdown-toggle"
 													type="button" id="dropdownMenuButton"
@@ -77,7 +77,7 @@
 						</div>
 					</div>
 					<div class="card-footer small text-muted">
-						√öltima actualizaci√≥n: <a
+						⁄ltima actualizaciÛn: <a
 							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
 					</div>
 				</div>
@@ -107,14 +107,14 @@
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a
-						sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/perfiles/crear}">Crear
+						sec:authorize="hasRole('ROLE_ADMINISTRADOR')" th:href="@{/perfiles/crear}">Crear
 							perfil</a></li>
 				</ol>
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Cat√°logo de perfiles
+						<i class="fas fa-table"></i> Cat·logo de perfiles
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -122,27 +122,27 @@
 								cellspacing="0">
 								<thead>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Id Usuario</th>
 										<th>Nombre del perfil</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Id Usuario</th>
 										<th>Nombre del perfil</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
 									<tr th:each="perfil : ${perfil}">
-										<td sec:authorize="hasRole('ROLE_USER')"
+										<td sec:authorize="hasRole('ROLE_USUARIO')"
 											th:text="${perfil.id}"></td>
 										<td th:text="${perfil.idUsuario}"></td>
 										<td th:text="${perfil.roleName}"></td>
-										<td sec:authorize="hasRole('ROLE_ADMIN')">
+										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 											<div class="dropdown mb-4">
 												<button class="btn btn-primary dropdown-toggle"
 													type="button" id="dropdownMenuButton"
@@ -163,7 +163,7 @@
 						</div>
 					</div>
 					<div class="card-footer small text-muted">
-						√öltima actualizaci√≥n: <a
+						⁄ltima actualizaciÛn: <a
 							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
 					</div>
 				</div>
@@ -199,7 +199,7 @@
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Cat√°logo de afiliados
+						<i class="fas fa-table"></i> Cat·logo de afiliados
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -207,7 +207,7 @@
 								cellspacing="0">
 								<thead>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre</th>
 										<th>Apellido Paterno</th>
 										<th>Apellido Materno</th>
@@ -215,12 +215,12 @@
 										<th>RFC</th>
 										<th>NSS</th>
 										<th>Email</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre</th>
 										<th>Apellido Paterno</th>
 										<th>Apellido Materno</th>
@@ -228,12 +228,12 @@
 										<th>RFC</th>
 										<th>NSS</th>
 										<th>Email</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
 									<tr th:each="afiliado : ${afiliado}">
-										<td sec:authorize="hasRole('ROLE_USER')"><a
+										<td sec:authorize="hasRole('ROLE_USUARIO')"><a
 											class="btn btn-primary btn-xs"
 											th:href="@{/afiliados/detalle/} + ${afiliado.id}"
 											th:text="${afiliado.id}"></a></td>
@@ -244,7 +244,7 @@
 										<td th:text="${afiliado.rfc}"></td>
 										<td th:text="${afiliado.nss}"></td>
 										<td th:text="${afiliado.email}"></td>
-										<td sec:authorize="hasRole('ROLE_ADMIN')">
+										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 											<div class="dropdown mb-4">
 												<button class="btn btn-primary dropdown-toggle"
 													type="button" id="dropdownMenuButton"
@@ -257,7 +257,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/afiliados/eliminar/} + ${afiliado.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¬øEst√°s seguro de que deseas borrar el registro?')">
+														onclick="return confirm('øEst·s seguro de que deseas borrar el registro?')">
 													</a> <a class="dropdown-item" th:href="@{/beneficiarios/crear/} + ${afiliado.id}">Agregar Beneficiario
 													</a>
 												</div>
@@ -299,14 +299,14 @@
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a
-						sec:authorize="hasRole('ROLE_ADMIN')"
+						sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 						th:href="@{/promotores/crear}">Crear Promotor</a></li>
 				</ol>
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Cat√°logo de promotores
+						<i class="fas fa-table"></i> Cat·logo de promotores
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -314,31 +314,31 @@
 								cellspacing="0">
 								<thead>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre</th>
 										<th>Apellido Paterno</th>
 										<th>Apellido Materno</th>
 										<th>Fecha de Alta</th>
-										<th>Correo electr√≥nico</th>
+										<th>Correo electrÛnico</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre</th>
 										<th>Apellido Paterno</th>
 										<th>Apellido Materno</th>
 										<th>Fecha de Alta</th>
-										<th>Correo electr√≥nico</th>
+										<th>Correo electrÛnico</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
 									<tr th:each="promotor : ${promotor}">
-										<td sec:authorize="hasRole('ROLE_USER')"
+										<td sec:authorize="hasRole('ROLE_USUARIO')"
 											th:text="${promotor.id}"></td>
 										<td th:text="${promotor.nombre}"></td>
 										<td th:text="${promotor.apellidoPaterno}"></td>
@@ -346,7 +346,7 @@
 										<td th:text="${promotor.fechaAlta}"></td>
 										<td th:text="${promotor.email}"></td>
 										<td th:text="${promotor.estatus}"></td>
-										<td sec:authorize="hasRole('ROLE_ADMIN')">
+										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 											<div class="dropdown mb-4">
 												<button class="btn btn-primary dropdown-toggle"
 													type="button" id="dropdownMenuButton"
@@ -359,7 +359,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/promotores/eliminar/} + ${promotor.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¬øEst√°s seguro de que deseas borrar el registro?')">Borrar
+														onclick="return confirm('øEst·s seguro de que deseas borrar el registro?')">Borrar
 													</a>
 												</div>
 											</div>
@@ -400,14 +400,14 @@
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a
-						sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/cuentas/crear}">Crear
+						sec:authorize="hasRole('ROLE_ADMINISTRADOR')" th:href="@{/cuentas/crear}">Crear
 							cuenta comercial</a></li>
 				</ol>
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Cat√°logo de cuentas
+						<i class="fas fa-table"></i> Cat·logo de cuentas
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -415,35 +415,35 @@
 								cellspacing="0">
 								<thead>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Raz√≥n social</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
+										<th>RazÛn social</th>
 										<th>RFC</th>
-										<th>Direcci√≥n</th>
-										<th>C√≥digo Postal</th>
-										<th>Pa√≠s</th>
+										<th>DirecciÛn</th>
+										<th>CÛdigo Postal</th>
+										<th>PaÌs</th>
 										<th>Email</th>
 										<th>Fecha Alta</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-										<th>Raz√≥n social</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
+										<th>RazÛn social</th>
 										<th>RFC</th>
-										<th>Direcci√≥n</th>
-										<th>C√≥digo Postal</th>
-										<th>Pa√≠s</th>
+										<th>DirecciÛn</th>
+										<th>CÛdigo Postal</th>
+										<th>PaÌs</th>
 										<th>Email</th>
 										<th>Fecha Alta</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
 									<tr th:each="cuenta : ${cuenta}">
-										<td sec:authorize="hasRole('ROLE_USER')"
+										<td sec:authorize="hasRole('ROLE_USUARIO')"
 											th:text="${cuenta.id}"></td>
 										<td th:text="${cuenta.razonSocial}"></td>
 										<td th:text="${cuenta.rfc}"></td>
@@ -453,7 +453,7 @@
 										<td th:text="${cuenta.email}"></td>
 										<td th:text="${cuenta.fechaAlta}"></td>
 										<td th:text="${cuenta.estatus}"></td>
-										<td sec:authorize="hasRole('ROLE_ADMIN')">
+										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 											<div class="dropdown mb-4">
 												<button class="btn btn-primary dropdown-toggle"
 													type="button" id="dropdownMenuButton"
@@ -466,7 +466,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/cuentas/eliminar/} + ${cuenta.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¬øEst√°s seguro de que deseas borrar el registro?')">Borrar
+														onclick="return confirm('øEst·s seguro de que deseas borrar el registro?')">Borrar
 													</a>
 												</div>
 											</div>
@@ -477,7 +477,7 @@
 						</div>
 					</div>
 					<div class="card-footer small text-muted">
-						Fecha de Actualizaci√≥n: <a
+						Fecha de ActualizaciÛn: <a
 							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
 					</div>
 				</div>
@@ -495,7 +495,7 @@
 	<!-- /#wrapper -->
 	<!-- Ver Cuentas -->
 
-	<!-- Ver Membres√≠as -->
+	<!-- Ver MembresÌas -->
 	<div id="wrapper" th:fragment="membresia">
 
 		<ul th:replace="layout/layout :: sidebar"></ul>
@@ -503,18 +503,18 @@
 
 			<nav th:replace="layout/layout :: nav-bar"></nav>
 			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Membres√≠as</h1>
+				<h1 class="h3 mb-2 text-gray-800">MembresÌas</h1>
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a
-						sec:authorize="hasRole('ROLE_ADMIN')"
-						th:href="@{/membresias/crear}">Crear Membres√≠a</a></li>
+						sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+						th:href="@{/membresias/crear}">Crear MembresÌa</a></li>
 				</ol>
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Cat√°logo de membres√≠as
+						<i class="fas fa-table"></i> Cat·logo de membresÌas
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -522,33 +522,33 @@
 								cellspacing="0">
 								<thead>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre</th>
-										<th>Tipo de membres√≠a</th>
+										<th>Tipo de membresÌa</th>
 										<th>Costo</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre</th>
-										<th>Tipo de membres√≠a</th>
+										<th>Tipo de membresÌa</th>
 										<th>Costo</th>
 										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</tfoot>
 								<tbody>
 									<tr th:each="membresia : ${membresia}">
-										<td sec:authorize="hasRole('ROLE_USER')"
+										<td sec:authorize="hasRole('ROLE_USUARIO')"
 											th:text="${membresia.id}"></td>
 										<td th:text="${membresia.nombre}"></td>
 										<td th:text="${membresia.tipoMembresia}"></td>
 										<td th:text="${membresia.costo}"></td>
 										<td th:text="${membresia.estatus}"></td>
-										<td sec:authorize="hasRole('ROLE_ADMIN')">
+										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 											<div class="dropdown mb-4">
 												<button class="btn btn-primary dropdown-toggle"
 													type="button" id="dropdownMenuButton"
@@ -561,7 +561,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/membresias/eliminar/} + ${membresia.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¬øEst√°s seguro de que deseas borrar el registro?')">Borrar
+														onclick="return confirm('øEst·s seguro de que deseas borrar el registro?')">Borrar
 													</a>
 												</div>
 											</div>
@@ -572,7 +572,7 @@
 						</div>
 					</div>
 					<div class="card-footer small text-muted">
-						Fecha de Actualizaci√≥n: <a
+						Fecha de ActualizaciÛn: <a
 							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
 					</div>
 				</div>
@@ -588,7 +588,7 @@
 
 	</div>
 	<!-- /#wrapper -->
-	<!-- /Ver Membres√≠as -->
+	<!-- /Ver MembresÌas -->
 </body>
 
 </html>

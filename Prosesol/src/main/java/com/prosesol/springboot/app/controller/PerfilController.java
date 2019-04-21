@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Perfil;
 import com.prosesol.springboot.app.service.IPerfilService;
+import com.prosesol.springboot.app.service.IRoleService;
 
 @Controller
 @SessionAttributes("perfil")
@@ -30,6 +31,9 @@ public class PerfilController {
 	
 	@Autowired
 	private IPerfilService perfilService;
+	
+	@Autowired
+	private IRoleService roleService;
 	
 	@GetMapping(value = "/ver")
 	public String ver(Model model) {
@@ -49,6 +53,7 @@ public class PerfilController {
 		Perfil perfil = new Perfil();
 		
 		model.put("titulo", "Crear Perfil");
+		model.put("roles", roleService.findAll());
 		model.put("perfil", perfil);
 		
 		return "catalogos/perfiles/crear";
@@ -63,10 +68,6 @@ public class PerfilController {
 		if(result.hasErrors()) {
 			model.addAttribute("titulo", "Crear Perfil");
 			return "catalogos/perfiles/crear";
-		}
-		
-		if(perfil.getEstatus() == "Estatus") {
-			model.addAttribute("error", "Valor: "+ perfil.getEstatus() + " no permitido");
 		}
 		
 		String flashMessage = (perfil.getId() != null) ? "Perfil editado con éxito" : "Perfil creado con éxito";

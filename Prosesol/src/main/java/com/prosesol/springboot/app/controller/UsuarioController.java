@@ -37,7 +37,7 @@ public class UsuarioController {
 	@Autowired
 	private IPerfilService perfilService;
 	
-	@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/usuarios/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 				

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head></head>
@@ -53,7 +53,7 @@
 							<caption>Beneficiarios</caption>
 							<thead class="thead-inverse" >
 								<tr>
-									<th sec:authorize="hasRole('ROLE_USER')">Id</th>
+									<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 									<th>Nombre</th>
 									<th>Apellido Paterno</th>
 									<th>Apellido Materno</th>
@@ -70,7 +70,7 @@
 							<td><a class="btn btn-danger btn-xs"
 								th:href="@{'/factura/eliminar/' + ${factura.id}}"
 								th:text="'eliminar'"
-								onclick="return confirm('¿Estas seguro que desea eliminar la factura?');"></a></td> -->
+								onclick="return confirm('�Estas seguro que desea eliminar la factura?');"></a></td> -->
 								</tr>
 							</tbody>
 

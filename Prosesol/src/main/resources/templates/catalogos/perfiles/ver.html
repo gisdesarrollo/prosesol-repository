@@ -23,7 +23,7 @@
 						<div class="card">
 							<div class="card-header">Perfiles</div>
 							<div class="card-body">
-								<a sec:authorize="hasRole('ROLE_ADMIN')"
+								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 									th:href="@{/perfiles/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
 									class="fas fa-user-plus"></i> Nuevo Perfil</a>
@@ -36,19 +36,22 @@
 										<table class="table table-bordered table-condensed" id="dataTable">
 											<thead>
 												<tr>
-													<th sec:authorize="hasRole('ROLE_USER')">Id</th>
-													<th>Id Usuario</th>
+													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
 													<th>Nombre del perfil</th>
-													<th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+													<th>Descripción</th>
+													<th>Estatus</th>
+													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr th:each="perfil : ${perfil}">
-													<td sec:authorize="hasRole('ROLE_USER')"
+													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 														th:text="${perfil.id}"></td>
-													<td th:text="${perfil.idUsuario}"></td>
-													<td th:text="${perfil.roleName}"></td>
-													<td sec:authorize="hasRole('ROLE_ADMIN')">
+													<td th:text="${perfil.nombre}"></td>
+													<td th:text="${perfil.descripcion}"></td>
+													<td th:if="${perfil.estatus}">Activo</td>
+													<td th:unless="${perfil.estatus}">Inactivo</td>
+													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 														<div class="dropdown mb-4">
 															<button class="btn btn-primary btn-sm dropdown-toggle"
 																type="button" id="dropdownMenuButton"

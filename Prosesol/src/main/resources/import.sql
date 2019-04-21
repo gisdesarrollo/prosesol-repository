@@ -12,11 +12,12 @@ INSERT INTO rel_afiliados_beneficiarios (id_beneficiario, fecha_creacion, estatu
 INSERT INTO `usuarios` (nombre, username, password, estatus) VALUES ('Luis Enrique Morales Soriano','luis','$2a$10$WkpRCpf0aldniENn8iNqwerl7FQTzaL.IhgLFE8NxK3b.RWZFEf0e',1);
 INSERT INTO `usuarios` (nombre, username, password, estatus) VALUES ('Administrador','admin','$2a$10$7fi8Xu09Nv.oxQb0cJ5xPOUBa/fueyDyHRtG9QwDIl85m0OCYO3Mm',1);
 
-INSERT INTO `roles` (user_id, role_name) VALUES (1,'ROLE_USER');
-INSERT INTO `roles` (user_id, role_name) VALUES (2,'ROLE_ADMIN');
-INSERT INTO `roles` (user_id, role_name) VALUES (2,'ROLE_USER');
+INSERT INTO rel_usuarios_perfiles values(1,2),(2,1);
 
-INSERT INTO perfiles(nombre_perfil)VALUES('Promotor'),('Cuenta Comercial');
+INSERT INTO perfiles (nombre, descripcion, estatus) VALUES('admin', 'Administrador del sistema', 1),('user', 'Usuario Corporativo', 1);
+
+INSERT INTO `roles` (id_perfil, nombre) VALUES (2,'ROLE_USUARIO');
+INSERT INTO `roles` (id_perfil, nombre) VALUES (1,'ROLE_ADMINISTRADOR');
 
 INSERT INTO servicios(nombre, notas, costo, inscripcion, estatus)values('Ajustes Especiales', 'Ajustes especiales', 9.99, null, 1),('Prosesol total', 'Prosesol total', 19.99, null, 1),('Médica Prosesol', 'Médica Prosesol', 29.99, null, 1)
 

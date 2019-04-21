@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 
@@ -15,7 +15,7 @@
 
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Cat�logos</li>
+			<li class="breadcrumb-item">Catálogos</li>
 			<li class="breadcrumb-item active">Perfiles</li>
 		</ol>
 		
@@ -35,10 +35,10 @@
 							th:object="${perfil}" method="post">
 							<div class="form-group row">
 								<div class="col-sm-6 mb-3 mb-sm-0">
-									<input type="text" th:field="*{nombrePerfil}"
+									<input type="text" th:field="*{nombre}"
 										class="form-control form-control-user" placeholder="Nombre">
 									<small class="form-text text-danger"
-										th:if="${#fields.hasErrors('nombrePerfil')}" th:errors="*{nombrePerfil}"></small>
+										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
 								</div>
 								<div class="col-sm-6">
 									<select th:field="*{estatus}" class="custom-select" id="inputGroupSelect01">
