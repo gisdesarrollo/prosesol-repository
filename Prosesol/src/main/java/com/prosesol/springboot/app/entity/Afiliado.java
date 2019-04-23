@@ -136,8 +136,17 @@ public class Afiliado implements Serializable{
 	@DateTimeFormat(pattern="dd-MM-yyyy")
 	private Date fechaPago;
 	
+	@Column(name = "saldo_acumulado")
+	private Double saldoAcumulado;
+	
+	@Column(name = "saldo_corte")
+	private Double saldoCorte;
+	
 	@Column(name="estatus", length = 1)
 	private Boolean estatus;
+	
+	@Column(name = "inscripcion")
+	private Double inscripcion;
 	
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -428,6 +437,22 @@ public class Afiliado implements Serializable{
 		this.clave = clave;
 	}
 
+	public Double getSaldoAcumulado() {
+		return saldoAcumulado;
+	}
+
+	public void setSaldoAcumulado(Double saldoAcumulado) {
+		this.saldoAcumulado = saldoAcumulado;
+	}
+
+	public Double getSaldoCorte() {
+		return saldoCorte;
+	}
+
+	public void setSaldoCorte(Double saldoCorte) {
+		this.saldoCorte = saldoCorte;
+	}
+
 	public Servicio getServicio() {
 		return servicio;
 	}
@@ -442,6 +467,14 @@ public class Afiliado implements Serializable{
 
 	public void setPeriodicidad(Periodicidad periodicidad) {
 		this.periodicidad = periodicidad;
+	}	
+	
+	public Double getInscripcion() {
+		return inscripcion;
+	}
+
+	public void setInscripcion(Double inscripcion) {
+		this.inscripcion = inscripcion;
 	}
 
 	@Override

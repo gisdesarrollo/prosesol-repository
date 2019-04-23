@@ -41,9 +41,6 @@ public class Servicio implements Serializable{
 	@Column(name = "costo")
 	private Double costo;
 	
-	@Column(name = "inscripcion")
-	private String inscripcion;
-	
 	@Column(name = "estatus")
 	private Boolean estatus;
 
@@ -92,14 +89,6 @@ public class Servicio implements Serializable{
 
 	public void setCosto(Double costo) {
 		this.costo = costo;
-	}
-
-	public String getInscripcion() {
-		return inscripcion;
-	}
-
-	public void setInscripcion(String inscripcion) {
-		this.inscripcion = inscripcion;
 	}
 
 	public Boolean getEstatus() {

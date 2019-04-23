@@ -42,7 +42,7 @@ public class PeriodicidadController {
 		
 	}
 	
-	@Secured("ADMINISTRADOR")
+	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "crear")
 	public String crear(Map<String, Object> model) {
 		

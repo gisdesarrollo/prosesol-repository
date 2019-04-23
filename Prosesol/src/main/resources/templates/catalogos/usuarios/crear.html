@@ -52,8 +52,8 @@
 									<select th:field="${perfiles}" class="custom-select">
 			                         <option value=""> Perfil </option>
 			                         <option th:each="perfil : ${perfiles}"
-			                                 th:value="${perfil}"
-			                                 th:text="${perfil.nombre}">
+			                                 th:value="${perfil.id}"
+			                                 th:text="${perfil.descripcion}">
 			                         </option>
 			                    </select>
 								</div>

@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.service.IPeriodicidadService;
+import com.prosesol.springboot.app.service.IServicioService;
 
 @Controller
 @SessionAttributes("beneficiario")
@@ -25,6 +27,12 @@ public class BeneficiarioController {
 
 	@Autowired
 	private IAfiliadoService afiliadoService;
+	
+	@Autowired
+	private IServicioService servicioService;
+
+	@Autowired
+	private IPeriodicidadService periodicidadService;
 	
 	private static Long idAfiliado;
 	
@@ -35,7 +43,11 @@ public class BeneficiarioController {
 		
 		Afiliado beneficiario = new Afiliado();
 		
-		model.put("afiliado", beneficiario);	
+		model.put("beneficiario", beneficiario);
+		model.put("estados", afiliadoService.getAllEstados());
+		model.put("paises", afiliadoService.getAllPaises());
+		model.put("servicios", servicioService.findAll());
+		model.put("periodos", periodicidadService.findAll());
 		model.put("titulo", "Crear Beneficiario");
 
 		return "catalogos/beneficiarios/crear";

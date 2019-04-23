@@ -30,7 +30,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<form class="user" th:action="@{/beneficiarios/crear}"
-											th:object="${afiliado}" method="post">
+											th:object="${beneficiario}" method="post">
 											<div class="row">
 												<div class="form-group col-md-3">
 													<label for="company">Nombre</label> <input type="text"
@@ -83,9 +83,7 @@
 													<label for="company">Estado Civil</label> <select
 														th:field="*{estadoCivil}" class="custom-select"
 														id="inputGroupSelect01">
-														<option th:value="'Estado civil'" th:selected>Estado
-															Civil</option>
-														<option th:value="'Soltero'">Soltero(a)</option>
+														<option th:value="'Soltero'" th:selected>Soltero(a)</option>
 														<option th:value="'Casado'">Casado(a)</option>
 														<option th:value="'Viudo'">Viudo(a)</option>
 														<option th:value="'Divorciado'">Divorciado(a)</option>
@@ -123,28 +121,41 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Escolaridad</label><input type="text"
-														th:field="*{escolaridad}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
+													<label for="company">Escolaridad</label> <select
+														th:field="*{escolaridad}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:value="'Primaria'" th:selected>Primaria</option>
+														<option th:value="'Secundaria'">Secundaria</option>
+														<option th:value="'Media Superior'">Media Superior</option>
+														<option th:value="'Superior'">Superior</option>
+													</select><small class="form-text text-danger"
 														th:if="${#fields.hasErrors('escolaridad')}"
 														th:errors="*{escolaridad}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Sexo</label><input type="text"
-														th:field="*{sexo}" class="form-control form-control-user"
-														placeholder=""> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></small>
+													<label for="company">Sexo</label> <select
+														th:field="*{sexo}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:value="'Masculino'" th:selected>Masculino</option>
+														<option th:value="'Femenino'">Femenino</option>
+													</select><small class="form-text text-danger"
+														th:if="${#fields.hasErrors('sexo')}"
+														th:errors="*{sexo}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">País</label><input type="text"
-														th:field="*{pais}" class="form-control form-control-user"
-														placeholder=""> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('pais')}" th:errors="*{pais}"></small>
+													<label for="company">País</label>
+													<select	name ="pais" th:field="*{pais}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="pais : ${paises}"
+															    th:value="${pais}"
+															    th:text="${pais}"
+															    th:selected="${pais.MEX}"/>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('pais')}"
+														th:errors="*{pais}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -214,6 +225,19 @@
 														th:if="${#fields.hasErrors('municipio')}"
 														th:errors="*{municipio}"></small>
 												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Entidad Federativa</label> 
+													<select	name ="entidadFederativa" th:field="*{entidadFederativa}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="estado : ${estados}"
+															    th:value="${estado}"
+															    th:text="${estado}"
+															    th:selected="false"/>
+													</select><small class="form-text text-danger"
+														th:if="${#fields.hasErrors('entidadFederativa')}"
+														th:errors="*{entidadFederativa}"></small>
+												</div>
 
 												<div class="form-group col-md-3">
 													<label for="company">Código Postal</label><input
@@ -225,28 +249,25 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Estatus Vivienda</label><input
-														type="text" th:field="*{estatusVivienda}"
-														class="form-control form-control-user"
-														id="exampleLastName" placeholder=""> <small
-														class="form-text text-danger"
+													<label for="company">Estatus Vivienda</label> <select
+														th:field="*{estatusVivienda}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:value="'Propia'" th:selected>Propia</option>
+														<option th:value="'Rentada'">Rentada</option>
+													</select><small class="form-text text-danger"
 														th:if="${#fields.hasErrors('estatusVivienda')}"
 														th:errors="*{estatusVivienda}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">¿Cuenta con crédito Infonavit?</label><input
-														type="text" th:field="*{infonavit}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('infonavit')}"
-														th:errors="*{infonavit}"></small>
+													<label for="company">¿Cuénta con crédito Infonavit?</label>
+													<input type="checkbox" class="form-check-input" id="infonavitCB"/>
 												</div>
 
 												<div class="form-group col-md-3">
 													<label for="company">Número de Infonavit</label><input
-														type="text" th:field="*{numeroInfonavit}"
-														class="form-control form-control-user" placeholder="">
+														type="text" th:field="*{numeroInfonavit}" 
+														class="form-control form-control-user" id="inputNumeroInfonavit">
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('numeroInfonavit')}"
 														th:errors="*{numeroInfonavit}"></small>
@@ -270,31 +291,33 @@
 														th:if="${#fields.hasErrors('fechaPago')}"
 														th:errors="*{fechaPago}"></small>
 												</div>
-
+												
 												<div class="form-group col-md-3">
-													<label for="company">Tipo de Beneficiario</label><input
-														type="text" th:field="*{tipoBeneficiario}"
-														class="form-control form-control-user" placeholder="">
+													<label for="company">Servicio</label>
+													<select	name ="servicio" th:field="*{servicio}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="servicio : ${servicios}"
+															    th:value="${servicio.id}"
+															    th:text="${servicio.nombre}"
+															    th:selected="${servicio.nombre}"/>
+													</select>
 													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('tipoBeneficiario')}"
-														th:errors="*{tipoBeneficiario}"></small>
+														th:if="${#fields.hasErrors('servicio')}"
+														th:errors="*{servicio}"></small>
 												</div>
-
+												
 												<div class="form-group col-md-3">
-													<label for="company">Tipo de Afiliación</label><input
-														type="text" th:field="*{tipoAfiliacion}"
-														class="form-control form-control-user" placeholder="">
+													<label for="company">Periodos</label>
+													<select	name ="periodo" th:field="*{periodicidad}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="periodo : ${periodos}"
+															    th:value="${periodo.id}"
+															    th:text="${periodo.nombre}"
+															    th:selected="${periodo.nombre}"/>
+													</select>
 													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('tipoAfiliacion')}"
-														th:errors="*{tipoAfiliacion}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Cuota</label><input type="text"
-														th:field="*{cuota}" class="form-control form-control-user"
-														placeholder=""> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('cuota')}" th:errors="*{cuota}"></small>
+														th:if="${#fields.hasErrors('periodicidad')}"
+														th:errors="*{periodicidad}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -304,6 +327,15 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('comentarios')}"
 														th:errors="*{comentarios}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Clave de Afiliado</label><input type="text"
+														th:field="*{clave}"
+														class="form-control form-control-user" placeholder="">
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('clave')}"
+														th:errors="*{clave}"></small>
 												</div>
 											</div>
 
