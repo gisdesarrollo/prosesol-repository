@@ -36,7 +36,7 @@
 										<table class="table table-bordered" id="dataTable">
 											<thead>
 												<tr>
-													<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
+													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
 													<th>Nombre Completo</th>
 													<th>Usuario</th>
 													<th>Estatus</th>
@@ -46,7 +46,7 @@
 											<tbody>
 												<tr th:each="usuario : ${usuario}"
 													th:switch="${usuario.estatus}">
-													<td sec:authorize="hasRole('ROLE_USUARIO')"
+													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 														th:text="${usuario.id}"></td>
 													<td th:text="${usuario.nombre}"></td>
 													<td th:text="${usuario.username}"></td>

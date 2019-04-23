@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,9 +29,16 @@ import com.prosesol.springboot.app.service.IUsuarioService;
 
 @Controller
 @SessionAttributes("usuario")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 	
 	protected final Log logger = LogFactory.getLog(this.getClass());
+	
+	@Value("${app.password}")
+	private String password;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
 	private IUsuarioService usuarioService;
@@ -38,7 +47,7 @@ public class UsuarioController {
 	private IPerfilService perfilService;
 	
 	@Secured("ROLE_ADMINISTRADOR")
-	@RequestMapping(value = "/usuarios/ver", method = RequestMethod.GET)
+	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 				
 		logger.info("Entra al método de ver usuario");
@@ -49,7 +58,7 @@ public class UsuarioController {
 		return "catalogos/usuarios/ver";
 	}
 	
-	@RequestMapping(value = "/usuarios/crear")
+	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		
 		logger.info("Entra al método crear usuario");
@@ -63,30 +72,41 @@ public class UsuarioController {
 		
 	}
 	
-	@RequestMapping(value = "/usuarios/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Usuario usuario, Model model, SessionStatus status,
+	@RequestMapping(value = "/crear", method = RequestMethod.POST)
+	public String guardar(@ModelAttribute("perfiles")Perfil perfiles, @Valid Usuario usuario, Model model, SessionStatus status,
 						  RedirectAttributes redirect, BindingResult result) {
 		
-		logger.info("Entra al método guardar usuario");
+		String passwordUser = null;	
+		Perfil perfil = perfilService.findById(perfiles.getId());
 		
 		if(result.hasErrors()) {
 			model.addAttribute("titulo", "Crear Usuario");
 			return "catalogos/usuarios/crear";
 		}
 		
-		String flashMessage = (usuario.getId() != null) ? "Registro editado con éxito" 
-							   : "Registro creado con éxito";
-		
-		usuario.setPassword(null);
+		if(usuario.getId() != null) {
+			logger.info("Registro: " + usuario.getNombre() + " editado con éxito");
+		}else {
+			
+			usuario.setEstatus(true);
+			logger.info("Registro creado con éxito");
+			
+			for(int i = 0;i < 2; i++) {
+				passwordUser = passwordEncoder.encode(password);
+			}
+			
+			usuario.getPerfiles().add(perfil);
+			usuario.setPassword(passwordUser);
+			
+		}
 		
 		usuarioService.save(usuario);
-		redirect.addFlashAttribute("success", flashMessage);
 		status.setComplete();
 		
 		return "redirect:/usuarios/ver";
 	}
 	
-	@RequestMapping(value = "/usuarios/editar/{id}")
+	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 		
 		Usuario usuario = null;
@@ -108,7 +128,7 @@ public class UsuarioController {
 		return "catalogos/usuarios/editar";
 	}
 	
-	@RequestMapping(value = "/usuarios/eliminar/{id}")
+	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 		
 		if(id > 0) {

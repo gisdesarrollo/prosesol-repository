@@ -7,11 +7,11 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -36,10 +36,8 @@ public class Perfil implements Serializable {
 
 	@Column(name = "estatus")
 	private Boolean estatus;
-
-	@ManyToMany
-	@JoinTable(name = "rel_usuarios_perfiles", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_perfil"), uniqueConstraints = {
-			@UniqueConstraint(columnNames = { "id_usuario", "id_perfil" }) })
+	
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "perfiles")
 	private Set<Usuario> usuarios;
 
 	@OneToMany

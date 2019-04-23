@@ -35,23 +35,21 @@
 								cellspacing="0">
 								<thead>
 									<tr>
-										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
+										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
 										<th>Nombre</th>
 										<th>Notas</th>
 										<th>Costo</th>
-										<th>Inscripción</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:each="servicio : ${servicios}">
-										<td sec:authorize="hasRole('ROLE_USUARIO')"
+										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 											th:text="${servicio.id}"></td>
 										<td th:text="${servicio.nombre}"></td>
 										<td th:text="${servicio.nota}"></td>
 										<td th:text="${servicio.costo}"></td>
-										<td th:text="${servicio.inscripcion}"></td>
 										<td th:if="${servicio.estatus}">Activo</td>
 										<td th:unless="${servicio.estatus}">Inactivo</td>
 										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">

@@ -11,8 +11,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "usuarios")
@@ -38,17 +41,16 @@ public class Usuario implements Serializable{
 	private String email;
 	
 	private Boolean estatus;
-
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "usuarios", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "rel_usuarios_perfiles", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_perfil"), uniqueConstraints = {
+			@UniqueConstraint(columnNames = { "id_usuario", "id_perfil" }) })
 	private Set<Perfil> perfiles;
 	
 	public Usuario() {
 		perfiles = new HashSet<Perfil>();
 	}
 	
-//	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	@JoinColumn(name = "id_usuario")
-//	private Collection<Role> roles;
 
 	public Set<Perfil> getPerfiles() {
 		return perfiles;
@@ -105,13 +107,5 @@ public class Usuario implements Serializable{
 	public void setEstatus(Boolean estatus) {
 		this.estatus = estatus;
 	}
-
-//	public Collection<Role> getRoles() {
-//		return roles;
-//	}
-//
-//	public void setRoles(Collection<Role> roles) {
-//		this.roles = roles;
-//	}
 	
 }
