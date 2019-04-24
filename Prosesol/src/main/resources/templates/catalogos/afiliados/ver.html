@@ -50,6 +50,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<th>Servicio</th>
 													<th>Saldo acumulado</th>
 													<th>Saldo al Corte</th>
+													<th>Fecha Inicio Servicio</th>
 													<th>Fecha de corte</th>
 													<th>Periodo</th>
 													<th>Email</th>
@@ -74,7 +75,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<td th:text="${afiliado.servicio.nombre}"></td>
 													<td th:text="${afiliado.saldoAcumulado}"></td>
 													<td th:text="${afiliado.saldoCorte}"></td>
-													<td th:text="${afiliado.fechaPago}"></td>
+													<td th:text="${afiliado.fechaInicioServicio}"></td>
+													<td th:text="${afiliado.fechaCorte}"></td>
 													<td th:text="${afiliado.periodicidad.nombre}"></td>
 													<td th:text="${afiliado.email}"></td>
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">

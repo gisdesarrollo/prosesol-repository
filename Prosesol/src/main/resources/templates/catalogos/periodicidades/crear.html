@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Afiliados</li>
+			<li class="breadcrumb-item">Catálogos</li>
 			<li class="breadcrumb-item active">Periodos</li>
 		</ol>
 
@@ -62,7 +62,7 @@
 														<option th:each="periodo : ${periodos}"
 															    th:value="${periodo}"
 															    th:text="${periodo}"
-															    th:selected="${periodo.EVENTO}"/>
+															    th:selected="${periodo.MENSUAL}"/>
 													</select>
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('periodo')}"

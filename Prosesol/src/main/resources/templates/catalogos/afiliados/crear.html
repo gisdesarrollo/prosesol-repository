@@ -272,25 +272,6 @@
 														th:if="${#fields.hasErrors('numeroInfonavit')}"
 														th:errors="*{numeroInfonavit}"></small>
 												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Fecha de alta de registro</label><input
-														type="text" th:field="*{fechaAlta}"
-														class="form-control form-control-user" id="datepicker1"
-														placeholder=""> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('fechaAlta')}"
-														th:errors="*{fechaAlta}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Fecha de Pago</label><input
-														type="text" th:field="*{fechaPago}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('fechaPago')}"
-														th:errors="*{fechaPago}"></small>
-												</div>
 												
 												<div class="form-group col-md-3">
 													<label for="company">Servicio</label>
@@ -299,7 +280,7 @@
 														<option th:each="servicio : ${servicios}"
 															    th:value="${servicio.id}"
 															    th:text="${servicio.nombre}"
-															    th:selected="${servicio.nombre}"/>
+															    th:selected="false"/>
 													</select>
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('servicio')}"
@@ -313,7 +294,7 @@
 														<option th:each="periodo : ${periodos}"
 															    th:value="${periodo.id}"
 															    th:text="${periodo.nombre}"
-															    th:selected="${periodo.nombre}"/>
+															    th:selected="false"/>
 													</select>
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('periodicidad')}"

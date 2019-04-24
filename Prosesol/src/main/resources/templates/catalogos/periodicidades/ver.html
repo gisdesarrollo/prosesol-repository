@@ -47,7 +47,7 @@
 											</thead>
 											<tbody>
 												<tr th:each="periodo : ${periodicidad}">
-													<td sec:authorize="hasRole('ROLE_USUARIO')"
+													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 														th:text="${periodo.id}"></td>
 														<td th:text="${periodo.nombre}"></td>
 													<td th:text="${periodo.corte}"></td>
