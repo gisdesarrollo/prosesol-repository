@@ -1,10 +1,9 @@
 package com.prosesol.springboot.app.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +40,7 @@ import com.prosesol.springboot.app.util.Paises;
 @RequestMapping("/afiliados")
 public class AfiliadoController {
 
-	protected final Log logger = LogFactory.getLog(this.getClass());
+	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
 
 	@Autowired
 	private IAfiliadoService afiliadoService;
@@ -75,7 +74,7 @@ public class AfiliadoController {
 		}
 
 		model.put("afiliado", afiliadoService.findById(id));
-		model.put("afiliados", beneficiarios);
+		model.put("beneficiarios", beneficiarios);
 		model.put("titulo", "Detalle Afiliado" + ' ' + afiliado.getNombre());
 
 		return "catalogos/afiliados/detalle";
@@ -116,7 +115,6 @@ public class AfiliadoController {
 		Periodicidad periodicidad = new Periodicidad();
 
 		String mensajeFlash = null;
-		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 		Date date = new Date();
 
@@ -135,16 +133,21 @@ public class AfiliadoController {
 				}
 				mensajeFlash = "Registro editado con éxito";
 			} else {
+				
 				afiliado.setIsBeneficiario(false);
 				mensajeFlash = "Registro creado con éxito";
-				dateFormat.format(date);
 
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
-				Date fechaCorte = calcularFechaCorte(periodicidad);
+
+				Map<Date, Date> listaFechas = calcularFechas(periodicidad);
+
+				for (Map.Entry<Date, Date> entry : listaFechas.entrySet()) {
+					afiliado.setFechaInicioServicio(entry.getKey());
+					afiliado.setFechaCorte(entry.getValue());
+				}
 
 				afiliado.setFechaAlta(date);
-				afiliado.setFechaCorte(fechaCorte);
 			}
 
 			afiliado.setEstatus(true);
@@ -191,75 +194,133 @@ public class AfiliadoController {
 		return "redirect:/afiliados/ver";
 	}
 
-	private static Date calcularFechaCorte(Periodicidad periodo) {
+	/**
+	 * Método para calcular las fechas de inicio y corte
+	 * 
+	 * @param(periodicidad)
+	 */
+
+	private static Map<Date, Date> calcularFechas(Periodicidad periodo) {
 
 		int periodoTiempo;
-		@SuppressWarnings("unused")
-		int corte;
+		int diaCorte;
 
 		LocalDate tiempoActual = LocalDate.now();
 		LocalDate tiempoModificado = null;
+		LocalDate fechaInicioServicio = null;
+		LocalDate fechaCorte = null;
+
+		Map<Date, Date> listaFechas = new HashMap<Date, Date>();
 
 		switch (periodo.getNombre()) {
 		case "MENSUAL":
 
+			logger.info("Entra al perido MENSUAL");
+
 			periodoTiempo = 1;
-			corte = periodo.getCorte();
-			
+			diaCorte = periodo.getCorte();
+
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			
-			System.out.println(tiempoModificado);
+
+			if (diaCorte >= tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
+			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
+			}
 
 			break;
+
 		case "BIMESTRAL":
-			
+
+			logger.info("Entra al perido BIMESTRAL");
+
 			periodoTiempo = 2;
-			corte = periodo.getCorte();
-			
+			diaCorte = periodo.getCorte();
+
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			
-			System.out.println(tiempoModificado);
-			
+
+			if (diaCorte >= tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
+			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
+			}
+
 			break;
 		case "TRIMESTRAL":
-			
+
+			logger.info("Entra al perido TRIMESTRAL");
+
 			periodoTiempo = 3;
-			corte = periodo.getCorte();
+			diaCorte = periodo.getCorte();
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			
-			System.out.println(tiempoModificado);
-			
+
+			if (diaCorte >= tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
+			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
+			}
+
 			break;
 		case "CUATRIMESTRAL":
-			
+
+			logger.info("Entra al perido CUATRIMESTRAL");
+
 			periodoTiempo = 4;
-			corte = periodo.getCorte();
+			diaCorte = periodo.getCorte();
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			
-			System.out.println(tiempoModificado);
-			
+
+			if (diaCorte >= tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
+			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
+			}
+
 			break;
 		case "SEMESTRAL":
-			
+
+			logger.info("Entra al perido SEMESTRAL");
+
 			periodoTiempo = 6;
-			corte = periodo.getCorte();
+			diaCorte = periodo.getCorte();
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			
-			System.out.println(tiempoModificado);
-			
+
+			if (diaCorte >= tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
+			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
+			}
+
 			break;
 		case "ANUAL":
-			
+
+			logger.info("Entra al perido ANUAL");
+
 			periodoTiempo = 12;
-			corte = periodo.getCorte();
+			diaCorte = periodo.getCorte();
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			
-			System.out.println(tiempoModificado);
-			
+
+			if (diaCorte >= tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
+			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
+				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
+			}
+
 			break;
 
 		default:
@@ -267,8 +328,11 @@ public class AfiliadoController {
 
 		}
 
-		return java.util.Date.from(tiempoModificado.atStartOfDay()
-				.atZone(ZoneId.systemDefault()).toInstant());
+		listaFechas.put(
+				java.util.Date.from(fechaInicioServicio.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
+				java.util.Date.from(fechaCorte.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+
+		return listaFechas;
 
 	}
 

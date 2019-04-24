@@ -75,8 +75,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<td th:text="${afiliado.servicio.nombre}"></td>
 													<td th:text="${afiliado.saldoAcumulado}"></td>
 													<td th:text="${afiliado.saldoCorte}"></td>
-													<td th:text="${afiliado.fechaInicioServicio}"></td>
-													<td th:text="${afiliado.fechaCorte}"></td>
+													<td style="color: #4a9252" th:text="${afiliado.fechaInicioServicio}"></td>
+													<td style="color: #ea3808" th:text="${afiliado.fechaCorte}"></td>
 													<td th:text="${afiliado.periodicidad.nombre}"></td>
 													<td th:text="${afiliado.email}"></td>
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
@@ -92,7 +92,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 																	th:text="'Editar'"> </a> <a class="dropdown-item"
 																	th:href="@{/afiliados/eliminar/} + ${afiliado.id}"
 																	th:text="'Borrar'"
-																	onclick="return confirm('ï¿½Estï¿½s seguro de que deseas borrar el registro?')">
+																	onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">
 																</a> <a class="dropdown-item"
 																	th:href="@{/beneficiarios/crear/} + ${afiliado.id}">Agregar
 																	Beneficiario </a>
