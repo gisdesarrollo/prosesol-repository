@@ -40,7 +40,7 @@ public class PromotorController {
 		return "catalogos/promotores/ver";
 	}
 	
-	@Secured("ADMINISTRADOR")
+	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/promotores/crear")
 	public String crear(Map<String, Object> model) {
 		
@@ -53,7 +53,7 @@ public class PromotorController {
 		
 	}
 	
-	@Secured("ADMINISTRADOR")
+	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/promotores/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Promotor promotor, BindingResult result, Model model, RedirectAttributes redirect,
 						 SessionStatus status) {

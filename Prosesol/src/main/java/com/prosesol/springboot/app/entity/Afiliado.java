@@ -123,18 +123,21 @@ public class Afiliado implements Serializable{
 	
 	@Column(name="numero_infonavit")
 	private Long numeroInfonavit;
-	
-	@NotNull
+
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_alta")
 	@DateTimeFormat(pattern="dd-MM-yyyy")
 	private Date fechaAlta;
 	
-	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_pago")
+	@Column(name = "fecha_inicio_servicio")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	private Date fechaInicioServicio;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_corte")
 	@DateTimeFormat(pattern="dd-MM-yyyy")
-	private Date fechaPago;
+	private Date fechaCorte;
 	
 	@Column(name = "saldo_acumulado")
 	private Double saldoAcumulado;
@@ -393,12 +396,20 @@ public class Afiliado implements Serializable{
 		this.fechaAlta = fechaAlta;
 	}
 
-	public Date getFechaPago() {
-		return fechaPago;
+	public Date getFechaInicioServicio() {
+		return fechaInicioServicio;
 	}
 
-	public void setFechaPago(Date fechaPago) {
-		this.fechaPago = fechaPago;
+	public void setFechaInicioServicio(Date fechaInicioServicio) {
+		this.fechaInicioServicio = fechaInicioServicio;
+	}
+
+	public Date getFechaCorte() {
+		return fechaCorte;
+	}
+
+	public void setFechaCorte(Date fechaCorte) {
+		this.fechaCorte = fechaCorte;
 	}
 
 	public Boolean getEstatus() {

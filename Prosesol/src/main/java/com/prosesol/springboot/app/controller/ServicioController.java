@@ -56,7 +56,7 @@ public class ServicioController {
 	}
 	
 	
-	@Secured("ADMINISTRADOR")
+	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Servicio servicio, BindingResult result, Model model, 
 						 RedirectAttributes redirect, SessionStatus status) {

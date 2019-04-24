@@ -36,7 +36,7 @@ public class CuentaController {
 		return "catalogos/cuentas/ver";
 	}
 	
-	@Secured("ADMINISTRADOR")
+	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "cuentas/crear")
 	public String crear(Map<String, Object> model) {
 		Cuenta cuenta = new Cuenta();
@@ -47,7 +47,7 @@ public class CuentaController {
 		return "catalogos/cuentas/crear";
 	}
 	
-	@Secured("ADMINISTRADOR")
+	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "cuentas/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Cuenta cuenta, BindingResult result, Model model, RedirectAttributes redirect,
 						  SessionStatus status) {
