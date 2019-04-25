@@ -15,7 +15,7 @@
 
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Catálogos</li>
+			<li class="breadcrumb-item"><a th:href="@{/afiliados/ver}">Catálogos</a></li>
 			<li class="breadcrumb-item active">Afiliados</li>
 		</ol>
 		
@@ -80,7 +80,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="beneficiario: beneficiarios">
+								<tr th:each="beneficiario: ${beneficiarios}">
 									<td th:text="${beneficiario.id}"></td>
 									<td th:text="${beneficiario.nombre}"></td>
 									<td th:text="${beneficiario.apellidoPaterno}"></td>

@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Afiliados</li>
+			<li class="breadcrumb-item"><a th:href="@{/afiliados/ver}">Afiliados</a></li>
 			<li class="breadcrumb-item active">Agregar Beneficiario</li>
 		</ol>
 
@@ -278,9 +278,9 @@
 													<select	name ="servicio" th:field="*{servicio}" class="custom-select"
 														id="inputGroupSelect01">
 														<option th:each="servicio : ${servicios}"
-															    th:value="${servicio}"
+															    th:value="${servicio.id}"
 															    th:text="${servicio.nombre}"
-															    th:selected="${servicio.nombre}"/>
+															    th:selected="false"/>
 													</select>
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('servicio')}"
@@ -292,9 +292,9 @@
 													<select	name ="periodo" th:field="*{periodicidad}" class="custom-select"
 														id="inputGroupSelect01">
 														<option th:each="periodo : ${periodos}"
-															    th:value="${periodo}"
+															    th:value="${periodo.id}"
 															    th:text="${periodo.nombre}"
-															    th:selected="${periodo.nombre}"/>
+															    th:selected="false"/>
 													</select>
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('periodicidad')}"

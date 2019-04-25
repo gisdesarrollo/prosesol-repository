@@ -148,6 +148,7 @@ public class AfiliadoController {
 				}
 
 				afiliado.setFechaAlta(date);
+				afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 			}
 
 			afiliado.setEstatus(true);
