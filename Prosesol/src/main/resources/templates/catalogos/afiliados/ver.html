@@ -75,9 +75,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<td th:text="${afiliado.servicio.nombre}"></td>
 													<td th:text="${afiliado.saldoAcumulado}"></td>
 													<td th:text="${afiliado.saldoCorte}"></td>
-													<td style="color: #4a9252" th:text="${afiliado.fechaInicioServicio}"></td>
-													<td style="color: #ea3808" th:text="${afiliado.fechaCorte}"></td>
-													<td th:text="${afiliado.periodicidad.nombre}"></td>
+													<td th:if="${afiliado.isBeneficiario}">N/A</td>
+													<td th:unless="${afiliado.isBeneficiario}" style="color: #4a9252" th:text="${afiliado.fechaInicioServicio}"></td>
+													<td th:if="${afiliado.isBeneficiario}">N/A</td>
+													<td th:unless="${afiliado.isBeneficiario}" style="color: #ea3808" th:text="${afiliado.fechaCorte}"></td>
+													<td th:if="${afiliado.isBeneficiario}">N/A</td>
+													<td th:unless="${afiliado.isBeneficiario}" th:text="${afiliado.periodicidad.nombre}"></td>
 													<td th:text="${afiliado.email}"></td>
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 														<div class="dropdown">
