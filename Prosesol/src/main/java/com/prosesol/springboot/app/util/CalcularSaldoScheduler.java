@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.util;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.service.EmailServiceImpl;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 
 @Configuration
@@ -26,13 +29,19 @@ public class CalcularSaldoScheduler {
 	private static final Logger logger = LoggerFactory.getLogger(CalcularSaldoScheduler.class);
 	
 	private Date fechaActual = new Date();
-	
+		
 	@Autowired
 	private IAfiliadoService afiliadoService;
 	
-	@Scheduled(fixedDelay = 10000)
+	@Autowired
+	private EmailServiceImpl emailServiceImpl;
+	
+	@Scheduled(fixedDelay = 100000)
 	@Transactional
-	public void calcularSaldoScheduler() throws ParseException {
+	public void calcularSaldoScheduler() throws ParseException, MessagingException, IOException {
+		
+		Mail mail = new Mail();
+		
 		System.out.println("Method executed at every 10 seconds. Current time is :: " + new Date());
 		
 		String pattern = "yyyy-MM-dd";
@@ -77,6 +86,18 @@ public class CalcularSaldoScheduler {
 					
 					afiliadoService.save(afiliado);
 					
+					String body = "Estimado: " + afiliado.getNombre() + " (Prueba de suspensión de servicio)";
+					
+//					emailServiceImpl.sendText("luis.morales@gisconsultoria.com", afiliado.getEmail(), 
+//							"SUSPENSIÓN DE SERVICIO", body);
+//					emailServiceImpl.sendSimpleEmail("prosesol@example.com", "luis.morales@gisconsultoria.com", 
+//							"SUSPENSIÓN DE SERVICIO", body);
+					
+					mail.setTo("luis.morales@gisconsultoria.com");
+					mail.setFrom("prosesol@exampl.com");
+					mail.setSubject(body);
+					
+					emailServiceImpl.sendSimpleMessage(mail);
 				}
 			}
 		}
