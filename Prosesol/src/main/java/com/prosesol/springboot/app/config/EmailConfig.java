@@ -3,12 +3,11 @@ package com.prosesol.springboot.app.config;
 import java.nio.charset.StandardCharsets;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
-@Configuration
+//@Configuration
 public class EmailConfig {
 
 	private static String template = "classpath:/templates/";

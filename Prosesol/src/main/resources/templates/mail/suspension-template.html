@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Sending Email with Thymeleaf HTML Template Example</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
+
+    <!-- use the font -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 48px;
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0;">
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
+    <tr>
+        <td align="center" style="padding: 40px 0 30px 0;">
+            <img src="cid:suspensionHeader"/>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#fff" style="padding: 40px 30px 40px 30px;">
+            <p>Estimado(a) <b th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}"></b></p>
+            <p>Lamentamos informarle que su servicio de <b th:text="${afiliado.servicio.nombre}"></b> ha sido suspendido debido a un
+            adeudo pendiente de <b th:text="${afiliado.saldoCorte}"></b>, así mismo le comentamos que la excelente Red Médica la encontrará
+            disponible realizando el pago correspondiente. Para que sus servicio sea reactivado y pueda seguir
+            difrutando de sus beneficios de su Plan de Salud, le pedimos nos contace en el:
+            <p><b>01800 25 03300</b></p>
+            <p>Agradecemos su confianza y quedamos pendientes de sus comentarios</p>
+            <p>¡Saludos!</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="padding: 30px 30px 30px 30px;">
+            <img src="cid:suspensionFooter"/>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Sending Email with Thymeleaf HTML Template Example</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
+
+    <!-- use the font -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 48px;
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0;">
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
+    <tr>
+        <td align="center" style="padding: 40px 0 30px 0;">
+            <img src="cid:suspensionHeader"/>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#fff" style="padding: 40px 30px 40px 30px;">
+        	<h1  style="font-family: 'Optima, sans-serif'" th:text="${afiliado.servicio.nombre}"></h1>
+            <p>Estimado(a) <b th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}"></b></p>
+            <p>Es un gusto saludarte nuevamente y así tener la oportunidad para agradecer tu confianza, así mismo, queremos recordarte la forma
+            de hacer uso de tu membresía para que puedas gozar de los grandes beneficios de acuerdo a la membresía elegida <b th:text="${afiliado.servicio.nombre}"></b>
+            <p>Sabemos de antemano que <b th:text="${afiliado.servicio.nombre}"></b> será de gran utilidad para ti y los tuyos al proteger, prevenir y cuidar a quien
+            más quieres</p>
+            <p>Para hacer uso de tu membresía, sólo llama al <b>01800 250 3300</b>; ahí te atenderemos con gusto y podrás pedir información, agendar citas, consultas,
+            descuentos, etc. </p>
+            <p>Recuerda que para recibir la atención adicional, deberás acudir a tu clínica más cercana para activar el servicio, esto con tu documento de alta de IMSS.
+            De igual manera, deberás asistir a la misma clínica para registrar a tus beneficiarios (este trámite es individual y es necesaria la presencida del titular).
+            <b>Es importante que sigas los pasos que a continuación mencionaremos y úedas leer con atención el documento que adjuntamos "Pasos a seguir Prosesol" para 
+            que tengas la mejor atención</b></p>
+            <p>En caso de tener alguna duda o comentario, puedes ponerte en contacto con nosotros</p>
+            <p>- contacto@prosesol.org
+            - 01800 253 300</p>
+            <p>Agradecemos su confianza</p>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
