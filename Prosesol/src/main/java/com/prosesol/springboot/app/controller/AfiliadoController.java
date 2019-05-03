@@ -31,8 +31,10 @@ import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.Periodicidad;
 import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.service.IEmailService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
 import com.prosesol.springboot.app.service.IServicioService;
+import com.prosesol.springboot.app.util.Mail;
 import com.prosesol.springboot.app.util.Paises;
 
 @Controller
@@ -41,6 +43,8 @@ import com.prosesol.springboot.app.util.Paises;
 public class AfiliadoController {
 
 	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
+	
+	private static String bandera = "inscripcion";
 
 	@Autowired
 	private IAfiliadoService afiliadoService;
@@ -50,6 +54,9 @@ public class AfiliadoController {
 
 	@Autowired
 	private IPeriodicidadService periodicidadService;
+	
+	@Autowired
+	private IEmailService emailService;
 
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
@@ -113,6 +120,9 @@ public class AfiliadoController {
 			SessionStatus status) {
 
 		Periodicidad periodicidad = new Periodicidad();
+		Mail mail = new Mail();
+		
+		Map<String, Object> modelEmail = new HashMap<String, Object>();
 
 		String mensajeFlash = null;
 
@@ -149,6 +159,19 @@ public class AfiliadoController {
 
 				afiliado.setFechaAlta(date);
 				afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
+				
+				// Se crea el cuerpo del mensaje para los afiliados con inscripción
+				
+				mail.setTo(afiliado.getEmail());
+				mail.setFrom("prosesol@example.org");
+				mail.setSubject("BIENVENIDO A PROSESOL");
+				
+				modelEmail.put("afiliado", afiliado);
+				
+				mail.setModel(modelEmail);
+				
+				emailService.sendSimpleMessage(mail, bandera);
+				
 			}
 
 			afiliado.setEstatus(true);
