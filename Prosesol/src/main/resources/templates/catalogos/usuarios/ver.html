@@ -39,6 +39,8 @@
 													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
 													<th>Nombre Completo</th>
 													<th>Usuario</th>
+													<th>Correo electrónico</th>
+													<th>Perfil</th>
 													<th>Estatus</th>
 													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 												</tr>
@@ -49,7 +51,9 @@
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 														th:text="${usuario.id}"></td>
 													<td th:text="${usuario.nombre}"></td>
-													<td th:text="${usuario.username}"></td>
+													<td th:text="${usuario.username}"></td>													
+													<td th:text="${usuario.email}"></td>
+													<td th:each="perfil : ${usuario.perfiles}" th:text="${perfil.descripcion}"></td>
 													<td th:case="true" th:text="Activo"></td>
 													<td th:case="false" th:text="Inactivo"></td>
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
@@ -63,7 +67,7 @@
 																<a class="dropdown-item"
 																	th:href="@{/usuarios/editar/} + ${usuario.id}"
 																	th:text="'Editar'"> </a> <a class="dropdown-item"
-																	href="#">Borrar </a>
+																	th:href="@{/usuarios/eliminar/} + ${usuario.id}">Borrar </a>
 															</div>
 														</div>
 													</td>

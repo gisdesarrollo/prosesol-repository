@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
@@ -13,7 +13,7 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
 			<li class="breadcrumb-item"><a th:href="@{/usuarios/ver}">Usuarios</a></li>
-			<li class="breadcrumb-item active">Crear</li>
+			<li class="breadcrumb-item active">Editar</li>
 		</ol>
 
 		<div class="container-fluid">
@@ -21,10 +21,9 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Nuevo Usuario</div>
+							<div class="card-header">Editar Usuario</div>
 							<div class="card-body">
-								<p>Captura la información solicitada para dar de alta un
-									Nuevo Usuario</p>
+								<p>Captura la información necesaria para editar el usuario</p>
 								<p align="right" ><b th:text="'La contraseña del usuario es: '+ '' + ${@environment.getProperty('app.password')}"></b></p>
 								<div class="clearfix"></div>
 								<hr>
@@ -34,7 +33,7 @@
 											th:object="${usuario}" method="post">
 											<div class="row">
 												<div class="form-group col-md-3">
-													<label for="company">Nombre*</label> <input type="text"
+													<label for="company">Nombre</label> <input type="text"
 														th:field="*{nombre}"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
@@ -43,7 +42,7 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Nombre de usuario*</label> <input
+													<label for="company">Nombre de usuario</label> <input
 														type="text" th:field="*{username}"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
@@ -52,7 +51,7 @@
 												</div>
 												
 												<div class="form-group col-md-3">
-													<label for="company">Correo electrónico*</label> <input
+													<label for="company">Correo electrónico</label> <input
 														type="text" th:field="*{email}"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
@@ -80,8 +79,7 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<button type="submit"
-														class="btn btn-primary btn-square float-right">Crear
-														Usuario</button>
+														class="btn btn-primary btn-square float-right">Guardar cambios</button>
 												</div>
 											</div>
 										</form>
