@@ -1,4 +1,4 @@
-$('table').DataTable({
+$('table').dataTable({
     dom: 'Bfrtip',
     buttons: ['excel']
 //    "language": {

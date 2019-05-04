@@ -81,11 +81,12 @@ public class UsuarioController {
 		
 		if(result.hasErrors()) {
 			model.addAttribute("titulo", "Crear Usuario");
-			return "catalogos/usuarios/crear";
+			return "catalogos/usuarios/editar";
 		}
 		
 		if(usuario.getId() != null) {
 			logger.info("Registro: " + usuario.getNombre() + " editado con éxito");
+			usuarioService.updateRelUsuarioPerfil(usuario.getId(), perfil.getId());
 		}else {
 			
 			usuario.setEstatus(true);

@@ -14,7 +14,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
 	@Autowired
 	private IUsuarioDao usuarioDao;
-	
+		
 	@Override
 	@Transactional(readOnly = true)
 	public List<Usuario> findAll() {
@@ -35,6 +35,13 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	@Transactional(readOnly = true)
 	public Usuario findById(Long id) {		
 		return usuarioDao.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void updateRelUsuarioPerfil(Long idPerfil, Long idUsuario) {
+		usuarioDao.updateRelUsuarioPerfil(idPerfil, idUsuario);
+		
 	}
 
 

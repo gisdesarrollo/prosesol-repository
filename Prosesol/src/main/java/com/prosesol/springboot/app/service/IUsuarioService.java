@@ -14,4 +14,5 @@ public interface IUsuarioService {
 	
 	public Usuario findById(Long id);
 	
+	public void updateRelUsuarioPerfil(Long idPerfil, Long idUsuario);
 }
