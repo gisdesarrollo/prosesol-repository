@@ -92,7 +92,7 @@ public class CalcularSaldoScheduler {
 					afiliadoService.save(afiliado);
 					
 					// Testing mail
-					mail.setTo("luis.morales@gisconsultoria.com");
+					mail.setTo("eduardo.ayala@gisconsultoria.com");
 //					mail.setTo(afiliado.getEmail());
 					mail.setFrom("prosesol@example.com");
 					mail.setSubject("SUSPENSIÓN DE SERVICIO");
