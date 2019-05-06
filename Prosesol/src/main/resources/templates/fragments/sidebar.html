@@ -63,18 +63,6 @@
 
 
 				<li class="nav-title">Operación</li>
-				
-				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-					class="nav-item nav-dropdown"><a
-					class="nav-link nav-dropdown-toggle" href="#"> <i
-						class="nav-icon fas fa-tools"></i> Formatos
-				</a>
-					<ul class="nav-dropdown-items">
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/formatos/correo/ver}"> <i class="nav-icon icon-puzzle">
-							Correo</i>								
-						</a></li>
-					</ul></li>
 
 				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 					class="nav-item nav-dropdown"><a
