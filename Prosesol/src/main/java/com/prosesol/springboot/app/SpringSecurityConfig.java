@@ -28,8 +28,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/jquery/**", "/webfonts/**", "/login").permitAll()
-//			.antMatchers("/ver/**").hasAnyRole("USER")
-//			.antMatchers("/crear/**").hasAnyRole("ADMIN")
 			.anyRequest().authenticated()
 			.and()
 				.formLogin()
@@ -37,9 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 					.loginPage("/login")
 			.permitAll()
 			.and()
-			.logout().permitAll()
-			.and()
-			.exceptionHandling().accessDeniedPage("/errores/error_403");
+			.logout().permitAll();
 		
 	}
 

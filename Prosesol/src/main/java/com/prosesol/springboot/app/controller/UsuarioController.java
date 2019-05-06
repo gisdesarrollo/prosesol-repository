@@ -73,19 +73,20 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@ModelAttribute("perfiles")Perfil perfiles, @Valid Usuario usuario, Model model, SessionStatus status,
-						  RedirectAttributes redirect, BindingResult result) {
+	public String guardar(@ModelAttribute("perfiles")Perfil perfiles, @Valid Usuario usuario, 
+						  BindingResult result, Model model, RedirectAttributes redirect, SessionStatus status) {
 		
 		String passwordUser = null;	
 		Perfil perfil = perfilService.findById(perfiles.getId());
 		
 		if(result.hasErrors()) {
 			model.addAttribute("titulo", "Crear Usuario");
-			return "catalogos/usuarios/crear";
+			return "catalogos/usuarios/editar";
 		}
 		
 		if(usuario.getId() != null) {
 			logger.info("Registro: " + usuario.getNombre() + " editado con éxito");
+			usuarioService.updateRelUsuarioPerfil(usuario.getId(), perfil.getId());
 		}else {
 			
 			usuario.setEstatus(true);

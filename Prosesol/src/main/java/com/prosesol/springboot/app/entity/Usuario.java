@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "usuarios")
@@ -29,15 +30,18 @@ public class Usuario implements Serializable{
 	private Long id;
 	
 	@Column
+	@NotEmpty(message = "El nombre es obligatorio")
 	private String nombre;
 	
 	@Column(unique = true, length = 30)
+	@NotEmpty(message = "El nombre de usuario es obligatorio")
 	private String username;
 	
 	@Column(length = 60)
 	private String password;
 	
 	@Column
+	@NotEmpty(message = "El correo electrónico es obligatorio")
 	private String email;
 	
 	private Boolean estatus;
