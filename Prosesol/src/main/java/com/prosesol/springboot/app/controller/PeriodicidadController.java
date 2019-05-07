@@ -43,7 +43,7 @@ public class PeriodicidadController {
 	}
 	
 	@Secured("ROLE_ADMINISTRADOR")
-	@RequestMapping(value = "crear")
+	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		
 		Periodicidad periodicidad = new Periodicidad();
@@ -55,7 +55,7 @@ public class PeriodicidadController {
 		
 	}
 	
-	@RequestMapping(value = "editar/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, 
 			Map<String, Object> model, RedirectAttributes redirect) {
 		
@@ -71,6 +71,7 @@ public class PeriodicidadController {
 			return "redirect:/periodicidades/ver";
 		}
 		
+		model.put("periodos", periodicidadService.getAllEventos());
 		model.put("periodicidad", periodicidad);
 		
 		return "catalogos/periodicidades/editar";

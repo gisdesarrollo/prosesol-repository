@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+	<header th:replace="fragments/header :: header"></header>
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+
+		<main class="main">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item"><a th:href="@{/}">Formatos de
+					correo</a></li>
+			<li class="breadcrumb-item active">Crear</li>
+		</ol>
+
+		<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Nuevo Correo</div>
+							<div class="card-body">
+								<p>Capture la información necesaria para crear un nuevo
+									formato de correo</p>
+								<div class="clearfix"></div>
+								<hr>
+								<div class="row">
+									<div class="col-md-12">
+										<form th:action="@{/correos/crear}" th:object="${correo}" method="post" id="get-data-form">
+											<textarea class="tinyemc" th:field="*{html}" id="texteditor"></textarea>										
+											<hr>
+											<div class="clearfix"></div>
+											<div class="row">
+												<div class="col-sm-12">
+													<button type="submit"
+														class="btn btn-primary btn-square float-right">Crear
+														Formato</button>
+												</div>
+											</div>
+										</form>
+										<div id="data-container"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</main>
+	</div>
+	<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+
+</html>

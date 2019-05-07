@@ -92,8 +92,6 @@ public class PromotorController {
 		}
 
 		model.put("promotor", promotor);
-		model.put("titulo", "Editar promotor");
-
 		
 		return "catalogos/promotores/editar";
 		

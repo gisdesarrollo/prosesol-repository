@@ -1,75 +1,80 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
-
+<meta charset="utf-8" />
 <body
 	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-
 	<header th:replace="fragments/header :: header"></header>
-
 	<div class="app-body">
 		<div th:replace="fragments/sidebar :: sidebar"></div>
+
 		<main class="main">
 
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Catálogos</li>
-			<li class="breadcrumb-item active">Servicios</li>
+			<li class="breadcrumb-item"><a th:href="@{/servicios/ver}">Servicios</a></li>
+			<li class="breadcrumb-item active">Crear</li>
 		</ol>
-		<div class="container-fluid">
 
+		<div class="container-fluid">
 			<div class="animated fadeIn">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Servicios</div>
+							<div class="card-header">Nuevo Servicio</div>
 							<div class="card-body">
-								<h5 class="m-0 font-weight-bold text-primary">Crear Servicio</h5>
-
+								<p>Captura la información solicitada para dar de alta un
+									nuevo servicio</p>
 								<div class="clearfix"></div>
 								<hr>
-								<form class="user" th:action="@{/servicios/crear}"
-							th:object="${servicio}" method="post">
-							<div class="form-group row">
-								<div class="col-sm-6 mb-3 mb-sm-0">
-									<input type="text" th:field="*{nombre}"
-										class="form-control form-control-user" placeholder="Nombre">
-									<small class="form-text text-danger"
-										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
-								</div>
-								<div class="col-sm-6">
-									<input type="text" th:field="*{nota}"
-										class="form-control form-control-user"
-										placeholder="Notas"> 
-								</div>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6 mb-3 mb-sm-0">
-									<input type="text" th:field="*{costo}"
-										class="form-control form-control-user"
-										placeholder="Costo">
-									<small class="form-text text-danger"
-										th:if="${#fields.hasErrors('costo')}" th:errors="*{costo}"></small>
-								</div>
-							</div>
-							<div class="form-group">
-								<input type="submit" class="btn btn-primary btn-user btn-block"
-									value="Crear Servicio">
-							</div>
-						</form>
+								<div class="row">
+									<div class="col-md-12">
+										<form class="user" th:action="@{/servicios/crear}"
+											th:object="${servicio}" method="post">
+											<div class="row">
+												<div class="form-group col-md-3">
+													<label for="company">Nombre*</label> <input type="text"
+														th:field="*{nombre}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('nombre')}"
+														th:errors="*{nombre}"></small>
+												</div>
 
+												<div class="form-group col-md-3">
+													<label for="company">Nota</label><input type="text"
+														th:field="*{nota}" class="form-control form-control-user">
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Costo*</label> <input type="text"
+														th:field="*{costo}" class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('costo')}" th:errors="*{costo}"></small>
+												</div>
+											</div>
+
+											<hr>
+											<div class="clearfix"></div>
+											<div class="row">
+												<div class="col-sm-12">
+													<button type="submit"
+														class="btn btn-primary btn-square float-right">Crear
+														Servicio</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		</main>
 	</div>
-	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
-
 </body>
 
 </html>

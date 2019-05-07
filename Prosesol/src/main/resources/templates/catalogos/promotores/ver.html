@@ -50,7 +50,7 @@
 											</thead>
 											<tbody>
 												<tr th:each="promotor : ${promotor}">
-													<td sec:authorize="hasRole('ROLE_USUARIO')"
+													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 														th:text="${promotor.id}"></td>
 													<td th:text="${promotor.nombre}"></td>
 													<td th:text="${promotor.apellidoPaterno}"></td>

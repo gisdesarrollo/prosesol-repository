@@ -34,15 +34,15 @@ public class Promotor implements Serializable{
 	@Column(name = "nombre")
 	private String nombre;
 	
-	@NotEmpty(message = "Proporcione el nombre del promotor")
+	@NotEmpty(message = "Proporcione el Apellido Paterno")
 	@Column(name = "apellido_paterno")
 	private String apellidoPaterno;
 	
-	@NotEmpty(message = "Proporcione el nombre del promotor")
+	@NotEmpty(message = "Proporcione el Apellido Materno")
 	@Column(name = "apellido_materno")
 	private String apellidoMaterno;
 	
-	@NotNull
+	@NotNull(message = "Coloque una fecha")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_alta")
 	@DateTimeFormat(pattern="dd-MM-yyyy")
