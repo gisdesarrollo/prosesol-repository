@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/head :: head403">
+<head th:replace="fragments/head :: head">
 </head>
 
 <body>
@@ -9,9 +9,10 @@
 	<div id="notfound">
 		<div class="notfound">
 			<div class="notfound-404">
-				<h1>Lo sentimos</h1>
-				<h2>403 - Acceso denegado</h2>
+				<h3>Lo sentimos</h3>
+				<h1><span>4</span><span>0</span><span>3</span></h1>
 			</div>
+			<h2>Lo sentimos, no tiene acceso a esta página, consulte con su administrador</h2>
 			<a th:href="@{/}">Ir al Inicio</a>
 		</div>
 	</div>

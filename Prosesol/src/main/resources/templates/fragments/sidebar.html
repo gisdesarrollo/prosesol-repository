@@ -34,8 +34,7 @@
 
 				<li class="nav-title">Administración</li>
 
-				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-					class="nav-item nav-dropdown"><a
+				<li class="nav-item nav-dropdown"><a
 					class="nav-link nav-dropdown-toggle" href="#"> <i
 						class="nav-icon fas fa-cogs"></i> Catálogos
 				</a>
@@ -63,9 +62,25 @@
 
 
 				<li class="nav-title">Operación</li>
+				<li class="nav-item nav-dropdown"><a
+					class="nav-link nav-dropdown-toggle" href="#"> <i
+						class="nav-icon fas fa-cogs"></i> Formatos de correo
+				</a>
+					<ul class="nav-dropdown-items">
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/correos/ver}"> <i class="nav-icon"></i>
+								Ver
+						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/correos/crear}"> <i class="nav-icon"></i> Crear
+						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/correos/editar}"> <i class="nav-icon"></i>
+								Editar
+						</a></li>
+					</ul></li>
 
-				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-					class="nav-item nav-dropdown"><a
+				<li class="nav-item nav-dropdown"><a
 					class="nav-link nav-dropdown-toggle" href="#"> <i
 						class="nav-icon fas fa-user-md"></i> Portal de Consultas
 				</a>
@@ -82,8 +97,7 @@
 
 				<li class="nav-title">Reportes</li>
 
-				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-					class="nav-item nav-dropdown"><a
+				<li class="nav-item nav-dropdown"><a
 					class="nav-link nav-dropdown-toggle" href="#"> <i
 						class="nav-icon fas fa-tools"></i> Afiliados
 				</a>

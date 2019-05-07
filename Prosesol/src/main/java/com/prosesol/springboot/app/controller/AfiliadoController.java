@@ -184,7 +184,7 @@ public class AfiliadoController {
 
 			e.printStackTrace();
 			logger.error("Error al momento de ejecutar el proceso: " + e);
-			return "/errores/error_403";
+			return "/errores/error_500";
 		}
 
 		return "redirect:/afiliados/ver";

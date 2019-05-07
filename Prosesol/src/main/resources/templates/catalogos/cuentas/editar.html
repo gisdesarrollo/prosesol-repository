@@ -1,113 +1,117 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
-
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">	
-	
+<meta charset="utf-8" />
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 	<header th:replace="fragments/header :: header"></header>
-	
 	<div class="app-body">
 		<div th:replace="fragments/sidebar :: sidebar"></div>
-		
+
 		<main class="main">
 
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Catálogos</li>
-			<li class="breadcrumb-item active">Cuentas Comerciales</li>
+			<li class="breadcrumb-item"><a th:href="@{/cuentas/ver}">Cuentas</a></li>
+			<li class="breadcrumb-item active">Crear</li>
 		</ol>
-		
-	<div class="container-fluid">
+
+		<div class="container-fluid">
 			<div class="animated fadeIn">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Cuentas</div>
+							<div class="card-header">Editar Cuenta</div>
 							<div class="card-body">
-								<h5 class="m-0 font-weight-bold text-primary">Editar cuenta</h5>
-								
-
+								<p>Captura la información solicitada para modificar los
+									datos de la cuenta</p>
 								<div class="clearfix"></div>
 								<hr>
-						<form class="user" th:action="@{/cuentas/crear}"
-							th:object="${cuenta}" method="post">
-							<div class="form-group row">
-								<div class="col-sm-6 mb-3 mb-sm-0">
-									<input type="text" th:field="*{razonSocial}"
-										class="form-control form-control-user" placeholder="Razón Social">
-									<small class="form-text text-danger"
-										th:if="${#fields.hasErrors('razonSocial')}" th:errors="*{razonSocial}"></small>
-								</div>
-								<div class="col-sm-6">
-									<input type="text" th:field="*{rfc}"
-										class="form-control form-control-user"
-										placeholder="RFC"> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('rfc')}" th:errors="*{rfc}"></small>
+								<div class="row">
+									<div class="col-md-12">
+										<form class="user" th:action="@{/cuentas/crear}"
+											th:object="${cuenta}" method="post">
+											<div class="row">
+												<div class="form-group col-md-3">
+													<label for="company">Razón Social*</label><input
+														type="text" th:field="*{razonSocial}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('razonSocial')}"
+														th:errors="*{razonSocial}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">RFC*</label><input type="text"
+														th:field="*{rfc}" class="form-control form-control-user">
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('rfc')}" th:errors="*{rfc}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Direccion*</label> <input type="text"
+														th:field="*{direccion}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('direccion')}"
+														th:errors="*{direccion}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Código Postal*</label> <input
+														type="text" th:field="*{codigoPostal}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('codigoPostal')}"
+														th:errors="*{codigoPostal}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">País</label> <input type="text"
+														th:field="*{pais}" class="form-control form-control-user">
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('pais')}" th:errors="*{pais}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Correo electrónico*</label> <input
+														type="email" th:field="*{email}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Fecha de Alta*</label> <input
+														type="text" th:field="*{fechaAlta}"
+														class="form-control form-control-user" id="datepicker">
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('fechaAlta')}"
+														th:errors="*{fechaAlta}"></small>
+												</div>
+											</div>
+
+											<hr>
+											<div class="clearfix"></div>
+											<div class="row">
+												<div class="col-sm-12">
+													<button type="submit"
+														class="btn btn-primary btn-square float-right">Guardar
+														cambios</button>
+												</div>
+											</div>
+										</form>
+									</div>
 								</div>
 							</div>
-							<div class="form-group row">
-								<div class="col-sm-6 mb-3 mb-sm-0">
-									<input type="text" th:field="*{direccion}"
-										class="form-control form-control-user"
-										placeholder="Dirección"> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('direccion')}"
-										th:errors="*{direccion}"></small>
-								</div>
-								<div class="col-sm-6">
-									<input type="text" th:field="*{codigoPostal}"
-										class="form-control form-control-user"
-										placeholder="Código Postal"> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('codigoPostal')}" th:errors="*{codigoPostal}"></small>
-								</div>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6 mb-3 mb-sm-0">
-									<input type="text" th:field="*{pais}"
-										class="form-control form-control-user" 
-										placeholder="País"> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('pais')}"
-										th:errors="*{pais}"></small>
-								</div>
-								<div class="col-sm-6">
-									<input type="email" th:field="*{email}"
-										class="form-control form-control-user"
-										placeholder="Correo electrónico"> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
-								</div>
-							</div>
-							<div class="form-group row">
-								<div class="col-sm-6 mb-3 mb-sm-0">
-									<input type="text" th:field="*{fechaAlta}"
-										class="form-control form-control-user" id="datepicker"
-										placeholder="Fecha de Alta"> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('fechaAlta')}"
-										th:errors="*{fechaAlta}"></small>
-								</div>
-							</div>
-							<div class="form-group">
-								<input type="submit" class="btn btn-primary btn-user btn-block" name="crearCuenta"
-									value="Guardar cambios">
-							</div>
-						</form>
-				
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		</main>
-		</div>
-	
+	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
-
 </body>
 
 </html>
