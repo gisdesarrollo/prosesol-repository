@@ -28,11 +28,15 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.Periodicidad;
+import com.prosesol.springboot.app.entity.Promotor;
 import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.IEmailService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
+import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
 import com.prosesol.springboot.app.util.Mail;
 import com.prosesol.springboot.app.util.Paises;
@@ -54,6 +58,12 @@ public class AfiliadoController {
 
 	@Autowired
 	private IPeriodicidadService periodicidadService;
+	
+	@Autowired
+	private IPromotorService promotorService;
+	
+	@Autowired
+	private ICuentaService cuentaService;
 	
 	@Autowired
 	private IEmailService emailService;
@@ -127,7 +137,7 @@ public class AfiliadoController {
 		String mensajeFlash = null;
 
 		Date date = new Date();
-
+		
 		try {
 
 			if (result.hasErrors()) {
@@ -143,7 +153,7 @@ public class AfiliadoController {
 				}
 				mensajeFlash = "Registro editado con éxito";
 			} else {
-				
+								
 				afiliado.setIsBeneficiario(false);
 				mensajeFlash = "Registro creado con éxito";
 
@@ -363,7 +373,7 @@ public class AfiliadoController {
 	/**
 	 * Método para mostrar los periodos Dentro del list box de crear afiliados
 	 * 
-	 * @param(name = ModelAttribute)
+	 * @param(name ="periodos")
 	 */
 
 	@ModelAttribute("periodos")
@@ -374,7 +384,7 @@ public class AfiliadoController {
 	/**
 	 * Método para mostrar los estados Dentro del list box de crear afiliados
 	 * 
-	 * @param(name = "ModelAttribute")
+	 * @param(name = "estados")
 	 */
 
 	@ModelAttribute("estados")
@@ -385,7 +395,7 @@ public class AfiliadoController {
 	/**
 	 * Método para mostrar los países Dentro del list box de crear afiliados
 	 * 
-	 * @param(name = "ModelAttribute")
+	 * @param(name = "paises")
 	 */
 
 	@ModelAttribute("paises")
@@ -396,12 +406,34 @@ public class AfiliadoController {
 	/**
 	 * Método para mostrar los servicios Dentro del list box de crear afiliados
 	 * 
-	 * @param(name = "ModelAttribute")
+	 * @param(name = "servicios")
 	 */
 
 	@ModelAttribute("servicios")
 	public List<Servicio> getAllServicios() {
 		return servicioService.findAll();
+	}
+	
+	/**
+	 * Método para mostrar los servicios Dentro del list box de crear afiliados
+	 * 
+	 * @param(name = "promotores")
+	 */
+	
+	@ModelAttribute("promotores")
+	public List<Promotor> getAllPromotores(){
+		return promotorService.findAll();
+	}
+	
+	/**
+	 * Método para mostrar los servicios Dentro del list box de crear afiliados
+	 * 
+	 * @param(name = "cuentas")
+	 */
+	
+	@ModelAttribute("cuentas")
+	public List<Cuenta> getAllCuentas(){
+		return cuentaService.findAll();
 	}
 
 }

@@ -61,7 +61,7 @@
 												<div class="form-group col-md-3">
 													<label for="company">Fecha de Nacimiento</label> <input
 														type="text" th:field="*{fechaNacimiento}"
-														class="form-control form-control-user" id="datepicker"
+														class="form-control form-control-user" id="datepicker1"
 														placeholder=""> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('fechaNacimiento')}"
@@ -92,19 +92,9 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Régimen matrimonial</label> <input
-														type="text" th:field="*{regimenMatrimonial}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('regimenMatrimonial')}"
-														th:errors="*{regimenMatrimonial}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
 													<label for="company">Número de dependientes</label><input
 														type="text" th:field="*{numeroDependientes}"
-														class="form-control form-control-user"
-														placeholder="Número de dependientes"> <small
+														class="form-control form-control-user"> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('numeroDependientes')}"
 														th:errors="*{numeroDependientes}"></small>
@@ -117,19 +107,6 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('ocupacion')}"
 														th:errors="*{ocupacion}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Escolaridad</label> <select
-														th:field="*{escolaridad}" class="custom-select"
-														id="inputGroupSelect01">
-														<option th:value="'Primaria'" th:selected>Primaria</option>
-														<option th:value="'Secundaria'">Secundaria</option>
-														<option th:value="'Media Superior'">Media Superior</option>
-														<option th:value="'Superior'">Superior</option>
-													</select><small class="form-text text-danger"
-														th:if="${#fields.hasErrors('escolaridad')}"
-														th:errors="*{escolaridad}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -248,17 +225,6 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Estatus Vivienda</label> <select
-														th:field="*{estatusVivienda}" class="custom-select"
-														id="inputGroupSelect01">
-														<option th:value="'Propia'" th:selected>Propia</option>
-														<option th:value="'Rentada'">Rentada</option>
-													</select><small class="form-text text-danger"
-														th:if="${#fields.hasErrors('estatusVivienda')}"
-														th:errors="*{estatusVivienda}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
 													<label for="company">¿Cuénta con crédito Infonavit?</label>
 													<input type="checkbox" class="form-check-input" id="infonavitCB"/>
 												</div>
@@ -307,6 +273,35 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('comentarios')}"
 														th:errors="*{comentarios}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Promotor</label>
+													<select	name ="promotor" th:field="*{promotor}" class="custom-select"
+														id="promotores">
+														<option th:value="0" selected>Ninguno</option>
+														<option th:each="promotor : ${promotores}"
+															    th:value="${promotor.id}"
+															    th:text="${promotor.nombre}"
+															    th:selected="false"/>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('promotor')}"
+														th:errors="*{promotor}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Cuenta</label>
+													<select	name ="cuenta" th:field="*{cuenta}" class="custom-select"
+														id="cuentas" >				
+														<option th:each="cuenta : ${cuentas}"
+															    th:value="${cuenta.id}"
+															    th:text="${cuenta.razonSocial}"
+															    th:selected="false"></option>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('cuenta')}"
+														th:errors="*{cuenta}"></small>
 												</div>
 												
 												<div class="form-group col-md-3">

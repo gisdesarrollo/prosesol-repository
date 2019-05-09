@@ -65,7 +65,7 @@ public class PromotorController {
 		
 		String flashMessage = (promotor.getId() != null) ? "Promotor editado con éxito" : "Promotor creado con éxito";
 		
-		promotor.setEstatus("Activo");
+		promotor.setEstatus(true);
 		
 		promotorService.save(promotor);
 		status.setComplete();

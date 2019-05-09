@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,156 +23,153 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 @Entity
-@Table(name="afiliados")
-public class Afiliado implements Serializable{
+@Table(name = "afiliados")
+public class Afiliado implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_afiliado", unique = true, nullable = false)
 	private Long id;
-	
+
 	@Column(name = "clave")
 	@NotEmpty(message = "Ingrese una clave")
 	private String clave;
-	
+
 	@NotEmpty(message = "El nombre no debe quedar vacío")
-	@Column(name="nombre")
+	@Column(name = "nombre")
 	private String nombre;
-	
+
 	@NotEmpty(message = "El apellido paterno no debe quedar vacío")
-	@Column(name="apellido_paterno")
+	@Column(name = "apellido_paterno")
 	private String apellidoPaterno;
-	
+
 	@NotEmpty(message = "El apellido materno no debe quedar vacío")
-	@Column(name="apellido_materno")
+	@Column(name = "apellido_materno")
 	private String apellidoMaterno;
-	
+
 	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_nacimiento")
-	@DateTimeFormat(pattern="dd-MM-yyyy")
+	@Column(name = "fecha_nacimiento")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private Date fechaNacimiento;
-	
-	@Column(name="lugar_nacimiento")
+
+	@Column(name = "lugar_nacimiento")
 	private String lugarNacimiento;
-	
-	@Column(name="estado_civil", length = 10)
+
+	@Column(name = "estado_civil", length = 10)
 	private String estadoCivil;
-	
-	@Column(name="regimen_matrimonial")
-	private String regimenMatrimonial;
-	
-	@Column(name="dependientes")
-	private Integer numeroDependientes;	
-	
-	@Column(name="ocupacion")
+
+	@Column(name = "dependientes")
+	private Integer numeroDependientes;
+
+	@Column(name = "ocupacion")
 	private String ocupacion;
-	
-	@Column(name="escolaridad")
-	private String escolaridad;
-	
-	@Column(name="sexo", length = 10)
+
+	@Column(name = "sexo", length = 10)
 	private String sexo;
-	
-	@Column(name="pais", length = 3)
+
+	@Column(name = "pais", length = 3)
 	private String pais;
-	
-	@Column(name="curp", length = 18)
+
+	@Column(name = "curp", length = 18)
 	private String curp;
-	
-	@Column(name="nss")
+
+	@Column(name = "nss")
 	private Long nss;
-	
-	@Column(name="rfc", length = 13)
+
+	@Column(name = "rfc", length = 13)
 	private String rfc;
-	
-	@Column(name="telefono_fijo")
+
+	@Column(name = "telefono_fijo")
 	private Long telefonoFijo;
-	
-	@Column(name="telefono_movil")
+
+	@Column(name = "telefono_movil")
 	private Long telefonoMovil;
-	
+
 	@NotEmpty(message = "El email no debe quedar vacío")
-	@Column(name="email")
+	@Column(name = "email")
 	private String email;
-	
+
 	@NotEmpty(message = "Por favor, proporcione la dirección")
-	@Column(name="direccion")
+	@Column(name = "direccion")
 	private String direccion;
-	
-	@Column(name="municipio")
+
+	@Column(name = "municipio")
 	private String municipio;
-	
-	@Column(name="codigo_postal")
+
+	@Column(name = "codigo_postal")
 	private Long codigoPostal;
-	
-	@Column(name="entidad_federativa", length = 3)
+
+	@Column(name = "entidad_federativa", length = 3)
 	private String entidadFederativa;
-	
-	@Column(name="estatus_vivienda", length = 10)
-	private String estatusVivienda;
-	
-	@Column(name="infonavit")
+
+	@Column(name = "infonavit")
 	private String infonavit;
-	
-	@Column(name="numero_infonavit")
+
+	@Column(name = "numero_infonavit")
 	private Long numeroInfonavit;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_alta")
-	@DateTimeFormat(pattern="dd-MM-yyyy")
+	@Column(name = "fecha_alta")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private Date fechaAlta;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_inicio_servicio")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private Date fechaInicioServicio;
-	
+
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_corte")
-	@DateTimeFormat(pattern="dd-MM-yyyy")
+	@Column(name = "fecha_corte")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private Date fechaCorte;
-	
+
 	@Column(name = "saldo_acumulado")
 	private Double saldoAcumulado;
-	
+
 	@Column(name = "saldo_corte")
 	private Double saldoCorte;
-	
-	@Column(name="estatus", length = 1)
+
+	@Column(name = "estatus", length = 1)
 	private Boolean estatus;
-	
+
 	@Column(name = "inscripcion")
 	private Double inscripcion;
-	
+
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_servicio")
 	private Servicio servicio;
-	
+
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_periodicidad")
 	private Periodicidad periodicidad;
-		
-	@Column(name="comentarios")
+
+	@Column(name = "comentarios")
 	private String comentarios;
-	
+
 	@Column(name = "is_beneficiario")
 	private Boolean isBeneficiario;
-	
+
 	@OneToMany(mappedBy = "afiliado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Beneficiario> beneficiarios;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_promotor")
+	private Promotor promotor;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_cta_comercial")
+	private Cuenta cuenta;
 
 	public Afiliado() {
 		beneficiarios = new HashSet<Beneficiario>();
 	}
-	
+
 	public Set<Beneficiario> getBeneficiarios() {
 		return beneficiarios;
 	}
@@ -236,14 +234,6 @@ public class Afiliado implements Serializable{
 		this.estadoCivil = estadoCivil;
 	}
 
-	public String getRegimenMatrimonial() {
-		return regimenMatrimonial;
-	}
-
-	public void setRegimenMatrimonial(String regimenMatrimonial) {
-		this.regimenMatrimonial = regimenMatrimonial;
-	}
-
 	public Integer getNumeroDependientes() {
 		return numeroDependientes;
 	}
@@ -258,14 +248,6 @@ public class Afiliado implements Serializable{
 
 	public void setOcupacion(String ocupacion) {
 		this.ocupacion = ocupacion;
-	}
-
-	public String getEscolaridad() {
-		return escolaridad;
-	}
-
-	public void setEscolaridad(String escolaridad) {
-		this.escolaridad = escolaridad;
 	}
 
 	public String getSexo() {
@@ -364,14 +346,6 @@ public class Afiliado implements Serializable{
 		this.entidadFederativa = entidadFederativa;
 	}
 
-	public String getEstatusVivienda() {
-		return estatusVivienda;
-	}
-
-	public void setEstatusVivienda(String estatusVivienda) {
-		this.estatusVivienda = estatusVivienda;
-	}
-
 	public String getInfonavit() {
 		return infonavit;
 	}
@@ -429,7 +403,7 @@ public class Afiliado implements Serializable{
 	}
 
 	public void addBeneficiario(Beneficiario beneficiario) {
-		beneficiarios.add(beneficiario);	
+		beneficiarios.add(beneficiario);
 	}
 
 	public Boolean getIsBeneficiario() {
@@ -478,8 +452,8 @@ public class Afiliado implements Serializable{
 
 	public void setPeriodicidad(Periodicidad periodicidad) {
 		this.periodicidad = periodicidad;
-	}	
-	
+	}
+
 	public Double getInscripcion() {
 		return inscripcion;
 	}
@@ -488,28 +462,36 @@ public class Afiliado implements Serializable{
 		this.inscripcion = inscripcion;
 	}
 
+	public Promotor getPromotor() {
+		return promotor;
+	}
+
+	public void setPromotor(Promotor promotor) {
+		this.promotor = promotor;
+	}
+
+	public Cuenta getCuenta() {
+		return cuenta;
+	}
+
+	public void setCuenta(Cuenta cuenta) {
+		this.cuenta = cuenta;
+	}
+
 	@Override
 	public String toString() {
-		
+
 		final StringBuilder builder = new StringBuilder();
-		
-		for(Beneficiario beneficiario : beneficiarios) {
-			
-			builder.append("\n Id Afiliado: ").append("")
-			   .append(id).append("")
-			   .append("\n Nombre Afiliado: ").append("")
-			   .append(nombre)
-			   .append(beneficiario)
-			   .append("\n Tipo servicio: ")
-			   .append(servicio.getId())
-			   .append("\n Tipo Periodo: ")
-			   .append(periodicidad.getId());
-			
+
+		for (Beneficiario beneficiario : beneficiarios) {
+
+			builder.append("\n Id Afiliado: ").append("").append(id).append("").append("\n Nombre Afiliado: ")
+					.append("").append(nombre).append(beneficiario).append("\n Tipo servicio: ")
+					.append(servicio.getId()).append("\n Tipo Periodo: ").append(periodicidad.getId());
+
 		}
-		
-		
-		
+
 		return builder.toString();
 	}
-	
+
 }
