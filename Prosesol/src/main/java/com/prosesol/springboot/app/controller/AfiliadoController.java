@@ -72,7 +72,6 @@ public class AfiliadoController {
 	public String crear(Map<String, Object> model) {
 
 		Afiliado afiliado = new Afiliado();
-
 		model.put("afiliado", afiliado);
 		model.put("titulo", "Crear Afiliado");
 
@@ -126,9 +125,12 @@ public class AfiliadoController {
 
 	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Afiliado afiliado, BindingResult result, Model model, RedirectAttributes redirect,
-			SessionStatus status) {
-
+	public String guardar(@ModelAttribute("corte") Integer corte,
+						  @Valid Afiliado afiliado, BindingResult result, 
+			              Model model, RedirectAttributes redirect,	SessionStatus status) {
+				
+		System.out.println(corte);
+		
 		Periodicidad periodicidad = new Periodicidad();
 		Mail mail = new Mail();
 		
