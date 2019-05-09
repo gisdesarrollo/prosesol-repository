@@ -22,5 +22,33 @@ $( document ).ready(function() {
 		return false;
 		
 	});
-    
+	
+	$("#cuentas").prop("disabled", false);
+	$("#promotores").change(function(){
+		var selectValue = $(this).children("option:selected").val();
+		if(selectValue >= 1){
+			$("#cuentas").prop("disabled", true);
+			$("#cuentas option[value=0]").attr('selected', 'selected');
+		}else{
+			$("#cuentas").prop("disabled", false);			
+			$("#cuentas").val(1);
+		}
+	});
+	
+	$( "#fechaNacimiento" ).datepicker({
+        dateFormat : 'dd-mm-yy',
+        changeMonth : true,
+        changeYear : true,
+        yearRange: '-100y:c+nn',
+        maxDate: "today"
+    });
+	
+	$( "#fechaCorte" ).datepicker({
+        dateFormat : 'dd-mm-yy',
+        changeMonth : true,
+        changeYear : true,
+        yearRange: '-100y:c+nn',
+        maxDate: "today"
+    });
+	
 });

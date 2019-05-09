@@ -2,12 +2,16 @@ package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,44 +22,49 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "cuentas_comerciales")
-public class Cuenta implements Serializable{
+public class Cuenta implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_cta_comercial", unique = true, nullable = false)
 	private Long id;
-	
+
 	@NotEmpty(message = "Escriba el nombre de la empresa")
 	@Column(name = "razon_social")
 	private String razonSocial;
-	
+
 	@NotEmpty(message = "Proporcione el RFC de la empresa")
 	@Column(name = "rfc", length = 15)
 	private String rfc;
-	
+
 	@Column(name = "direccion")
 	private String direccion;
-	
+
 	@Column(name = "codigo_postal")
 	private Integer codigoPostal;
-	
+
 	@Column(name = "pais")
 	private String pais;
-	
+
 	@Column(name = "email")
 	private String email;
 	
+	private Boolean selected;
+
 	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_alta")
-	@DateTimeFormat(pattern="dd-MM-yyyy")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private Date fechaAlta;
-	
+
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "cuentas")
+	private Set<Promotor> promotores;
+
+	@OneToMany(mappedBy = "cuenta", fetch = FetchType.LAZY)
+	private Set<Afiliado> afiliado;
+
 	@Column(name = "estatus")
 	private String estatus;
 
@@ -130,6 +139,32 @@ public class Cuenta implements Serializable{
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
 	}
+
+	public Set<Promotor> getPromotores() {
+		return promotores;
+	}
+
+	public void setPromotores(Set<Promotor> promotores) {
+		this.promotores = promotores;
+	}
+
+	public Set<Afiliado> getAfiliado() {
+		return afiliado;
+	}
+
+	public void setAfiliado(Set<Afiliado> afiliado) {
+		this.afiliado = afiliado;
+	}
 	
+	public Boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+
+
 	
+
 }

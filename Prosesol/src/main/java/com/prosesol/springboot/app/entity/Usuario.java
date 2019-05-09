@@ -47,8 +47,9 @@ public class Usuario implements Serializable{
 	private Boolean estatus;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "rel_usuarios_perfiles", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_perfil"), uniqueConstraints = {
-			@UniqueConstraint(columnNames = { "id_usuario", "id_perfil" }) })
+	@JoinTable(name = "rel_usuarios_perfiles", joinColumns = @JoinColumn(name = "id_usuario"), 
+			   inverseJoinColumns = @JoinColumn(name = "id_perfil"), uniqueConstraints = {
+			   @UniqueConstraint(columnNames = { "id_usuario", "id_perfil" }) })
 	private Set<Perfil> perfiles;
 	
 	public Usuario() {

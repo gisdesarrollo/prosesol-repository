@@ -93,15 +93,6 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Régimen matrimonial</label> <input
-														type="text" th:field="*{regimenMatrimonial}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('regimenMatrimonial')}"
-														th:errors="*{regimenMatrimonial}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
 													<label for="company">Número de dependientes</label><input
 														type="text" th:field="*{numeroDependientes}"
 														class="form-control form-control-user"
@@ -118,19 +109,6 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('ocupacion')}"
 														th:errors="*{ocupacion}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Escolaridad</label> <select
-														th:field="*{escolaridad}" class="custom-select"
-														id="inputGroupSelect01">
-														<option th:value="'Primaria'" th:selected>Primaria</option>
-														<option th:value="'Secundaria'">Secundaria</option>
-														<option th:value="'Media Superior'">Media Superior</option>
-														<option th:value="'Superior'">Superior</option>
-													</select><small class="form-text text-danger"
-														th:if="${#fields.hasErrors('escolaridad')}"
-														th:errors="*{escolaridad}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -246,17 +224,6 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('codigoPostal')}"
 														th:errors="*{codigoPostal}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Estatus Vivienda</label> <select
-														th:field="*{estatusVivienda}" class="custom-select"
-														id="inputGroupSelect01">
-														<option th:value="'Propia'" th:selected>Propia</option>
-														<option th:value="'Rentada'">Rentada</option>
-													</select><small class="form-text text-danger"
-														th:if="${#fields.hasErrors('estatusVivienda')}"
-														th:errors="*{estatusVivienda}"></small>
 												</div>
 
 												<div class="form-group col-md-3">

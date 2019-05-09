@@ -15,17 +15,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "perfiles", uniqueConstraints = { @UniqueConstraint(columnNames = { "id_perfil", "nombre" }) })
+@Table(name = "perfiles")
 public class Perfil implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_perfil")
+	@Column(name = "id_perfil", unique = true, nullable = false)
 	private Long id;
 
 	@Column(name = "nombre")
