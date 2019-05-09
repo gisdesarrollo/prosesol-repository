@@ -165,7 +165,7 @@ public class Afiliado implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cta_comercial")
 	private Cuenta cuenta;
-
+	
 	public Afiliado() {
 		beneficiarios = new HashSet<Beneficiario>();
 	}
