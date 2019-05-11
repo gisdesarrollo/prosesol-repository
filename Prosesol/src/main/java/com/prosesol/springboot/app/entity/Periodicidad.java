@@ -28,10 +28,7 @@ public class Periodicidad implements Serializable{
 		
 	@Column(name = "periodo")
 	private String periodo;
-	
-	@Column(name = "corte")
-	private Integer corte;
-	
+		
 	@OneToMany(mappedBy = "periodicidad", fetch = FetchType.LAZY, 
 			   cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Afiliado> afiliado;
@@ -70,14 +67,6 @@ public class Periodicidad implements Serializable{
 
 	public void setAfiliado(List<Afiliado> afiliado) {
 		this.afiliado = afiliado;
-	}
-
-	public Integer getCorte() {
-		return corte;
-	}
-
-	public void setCorte(Integer corte) {
-		this.corte = corte;
 	}
 	
 }

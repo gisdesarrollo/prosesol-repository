@@ -125,11 +125,11 @@ public class AfiliadoController {
 
 	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@ModelAttribute("corte") Integer corte,
-						  @Valid Afiliado afiliado, BindingResult result, 
+	public String guardar(@ModelAttribute(name = "clave") String clave,
+				          @Valid Afiliado afiliado, BindingResult result, 
 			              Model model, RedirectAttributes redirect,	SessionStatus status) {
-				
-		System.out.println(corte);
+		
+		System.out.println(clave);
 		
 		Periodicidad periodicidad = new Periodicidad();
 		Mail mail = new Mail();
@@ -162,7 +162,7 @@ public class AfiliadoController {
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
 
-				Map<Date, Date> listaFechas = calcularFechas(periodicidad);
+				Map<Date, Date> listaFechas = calcularFechas(periodicidad, afiliado.getCorte());
 
 				for (Map.Entry<Date, Date> entry : listaFechas.entrySet()) {
 					afiliado.setFechaInicioServicio(entry.getKey());
@@ -171,6 +171,7 @@ public class AfiliadoController {
 
 				afiliado.setFechaAlta(date);
 				afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
+				afiliado.setClave(clave);
 				
 				// Se crea el cuerpo del mensaje para los afiliados con inscripción
 				
@@ -196,7 +197,7 @@ public class AfiliadoController {
 
 			e.printStackTrace();
 			logger.error("Error al momento de ejecutar el proceso: " + e);
-			return "/errores/error_500";
+			return "/error/error_500";
 		}
 
 		return "redirect:/afiliados/ver";
@@ -236,7 +237,7 @@ public class AfiliadoController {
 	 * @param(periodicidad)
 	 */
 
-	private static Map<Date, Date> calcularFechas(Periodicidad periodo) {
+	private static Map<Date, Date> calcularFechas(Periodicidad periodo, Integer corte) {
 
 		int periodoTiempo;
 		int diaCorte;
@@ -254,7 +255,7 @@ public class AfiliadoController {
 			logger.info("Entra al perido MENSUAL");
 
 			periodoTiempo = 1;
-			diaCorte = periodo.getCorte();
+			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
 
@@ -273,7 +274,7 @@ public class AfiliadoController {
 			logger.info("Entra al perido BIMESTRAL");
 
 			periodoTiempo = 2;
-			diaCorte = periodo.getCorte();
+			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
 
@@ -291,7 +292,7 @@ public class AfiliadoController {
 			logger.info("Entra al perido TRIMESTRAL");
 
 			periodoTiempo = 3;
-			diaCorte = periodo.getCorte();
+			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
 
@@ -309,7 +310,7 @@ public class AfiliadoController {
 			logger.info("Entra al perido CUATRIMESTRAL");
 
 			periodoTiempo = 4;
-			diaCorte = periodo.getCorte();
+			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
 
@@ -327,7 +328,7 @@ public class AfiliadoController {
 			logger.info("Entra al perido SEMESTRAL");
 
 			periodoTiempo = 6;
-			diaCorte = periodo.getCorte();
+			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
 
@@ -345,7 +346,7 @@ public class AfiliadoController {
 			logger.info("Entra al perido ANUAL");
 
 			periodoTiempo = 12;
-			diaCorte = periodo.getCorte();
+			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
 
@@ -436,6 +437,25 @@ public class AfiliadoController {
 	@ModelAttribute("cuentas")
 	public List<Cuenta> getAllCuentas(){
 		return cuentaService.findAll();
+	}
+	
+	/**
+	 * Método para asignar una clave para el Afiliado
+	 * 
+	 * @param(name = "clave")
+	 */
+	
+	@ModelAttribute("clave")
+	public String getClaveAfiliado() {
+		
+		String clave = "0123456789";
+		String claveAfiliado = "";
+		
+		for(int i = 0; i < 10; i++) {
+			claveAfiliado += (clave.charAt((int)(Math.random() * clave.length())));
+		}
+		
+		return claveAfiliado;
 	}
 
 }

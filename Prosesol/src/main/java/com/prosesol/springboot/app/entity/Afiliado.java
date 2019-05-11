@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -35,7 +36,6 @@ public class Afiliado implements Serializable {
 	private Long id;
 
 	@Column(name = "clave")
-	@NotEmpty(message = "Ingrese una clave")
 	private String clave;
 
 	@NotEmpty(message = "El nombre no debe quedar vacío")
@@ -53,7 +53,7 @@ public class Afiliado implements Serializable {
 	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nacimiento")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaNacimiento;
 
 	@Column(name = "lugar_nacimiento")
@@ -114,17 +114,17 @@ public class Afiliado implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_alta")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaAlta;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_inicio_servicio")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaInicioServicio;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_corte")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaCorte;
 
 	@Column(name = "saldo_acumulado")
@@ -165,6 +165,9 @@ public class Afiliado implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cta_comercial")
 	private Cuenta cuenta;
+	
+	@Transient
+	private Integer corte;
 	
 	public Afiliado() {
 		beneficiarios = new HashSet<Beneficiario>();
@@ -476,6 +479,14 @@ public class Afiliado implements Serializable {
 
 	public void setCuenta(Cuenta cuenta) {
 		this.cuenta = cuenta;
+	}
+	
+	public Integer getCorte() {
+		return corte;
+	}
+
+	public void setCorte(Integer corte) {
+		this.corte = corte;
 	}
 
 	@Override

@@ -25,6 +25,7 @@
 							<div class="card-body">
 								<p>Captura la información solicitada para dar de alta un
 									nuevo Afiliado</p>
+									<p align="right" ><b th:text="'Clave de afiliado: '+ '' + *{clave}"></b></p>
 								<div class="clearfix"></div>
 								<hr>
 								<div class="row">
@@ -227,7 +228,8 @@
 
 												<div class="form-group col-md-3">
 													<label for="company">¿Cuénta con crédito Infonavit?</label>
-													<input type="checkbox" class="form-check-input" id="infonavitCB"/>
+													<input type="checkbox" id="infonavitCB"/>
+													<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -317,15 +319,6 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('cuenta')}"
 														th:errors="*{cuenta}"></small>
-												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Clave de Afiliado</label><input type="text"
-														th:field="*{clave}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('clave')}"
-														th:errors="*{clave}"></small>
 												</div>
 											</div>
 

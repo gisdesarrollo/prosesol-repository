@@ -61,7 +61,7 @@
 												<div class="form-group col-md-3">
 													<label for="company">Fecha de Nacimiento</label> <input
 														type="text" th:field="*{fechaNacimiento}"
-														class="form-control form-control-user" id="datepicker1"
+														class="form-control form-control-user" id="fechaNacimiento"
 														placeholder=""> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('fechaNacimiento')}"
@@ -253,6 +253,20 @@
 												</div>
 												
 												<div class="form-group col-md-3">
+													<label for="company">Fecha de Corte</label> 
+													<select	name ="corte" th:field="*{corte}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="corte : ${#numbers.sequence(1, 31)}"
+															    th:value="${corte}"
+															    th:text="${corte}"
+															    th:selected="${corte}"/>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('corte')}"
+														th:errors="*{corte}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
 													<label for="company">Periodos</label>
 													<select	name ="periodo" th:field="*{periodicidad}" class="custom-select"
 														id="inputGroupSelect01">
@@ -302,15 +316,6 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('cuenta')}"
 														th:errors="*{cuenta}"></small>
-												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Clave de Afiliado</label><input type="text"
-														th:field="*{clave}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('clave')}"
-														th:errors="*{clave}"></small>
 												</div>
 											</div>
 

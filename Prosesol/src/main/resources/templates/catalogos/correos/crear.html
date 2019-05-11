@@ -30,8 +30,39 @@
 								<hr>
 								<div class="row">
 									<div class="col-md-12">
-										<form th:action="@{/correos/crear}" th:object="${correo}" method="post" id="get-data-form">
-											<textarea class="tinyemc" th:field="*{html}" id="texteditor"></textarea>										
+										<form class="user" th:action="@{/correos/crear}" method="post">
+											<div class="row">
+												<div class="form-group col-md-3">
+													<label for="company">Afiliado</label> <select
+														name="afiliado" th:field="${variablesAfiliado}"
+														class="custom-select" id="inputGroupSelect01">
+														<option th:each="variable : ${variablesAfiliado}"
+															th:value="${variable}" th:text="${variable.getName()}"
+															th:selected="false" />
+													</select>
+												</div>
+												<div class="form-group col-md-3">
+													<label for="company">Servicio</label> <select
+														name="afiliado" th:field="${variablesServicio}"
+														class="custom-select" id="inputGroupSelect01">
+														<option th:each="variable : ${variablesServicio}"
+															th:value="${variable}" th:text="${variable.getName()}"
+															th:selected="false" />
+													</select>
+												</div>
+												<div class="form-group col-md-3">
+													<label for="company">Promotor</label> <select
+														name="afiliado" th:field="${variablesPromotor}"
+														class="custom-select" id="inputGroupSelect01">
+														<option th:each="variable : ${variablesPromotor}"
+															th:value="${variable}" th:text="${variable.getName()}"
+															th:selected="false" />
+													</select>
+												</div>
+												
+											</div>
+											<textarea class="tinyemc" th:field="${correo.html}"
+													id="texteditor"></textarea>
 											<hr>
 											<div class="clearfix"></div>
 											<div class="row">
