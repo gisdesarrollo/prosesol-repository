@@ -36,15 +36,7 @@ $( document ).ready(function() {
 	});
 	
 	$( "#fechaNacimiento" ).datepicker({
-        dateFormat : 'dd-mm-yy',
-        changeMonth : true,
-        changeYear : true,
-        yearRange: '-100y:c+nn',
-        maxDate: "today"
-    });
-	
-	$( "#fechaCorte" ).datepicker({
-        dateFormat : 'dd-mm-yy',
+        format : 'dd/mm/yyyy',
         changeMonth : true,
         changeYear : true,
         yearRange: '-100y:c+nn',

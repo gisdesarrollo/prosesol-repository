@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import com.prosesol.springboot.app.entity.Afiliado;
@@ -25,5 +26,5 @@ public interface IAfiliadoService {
 	
 	public List<Paises> getAllPaises();
 	
-	
+	public Field[] getVariablesAfiliado();	
 }

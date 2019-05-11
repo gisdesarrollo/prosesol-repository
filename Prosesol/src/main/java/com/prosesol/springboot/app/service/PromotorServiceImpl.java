@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +11,15 @@ import com.prosesol.springboot.app.entity.Promotor;
 import com.prosesol.springboot.app.entity.dao.IPromotorDao;
 
 @Service
-public class PromotorServiceImpl implements IPromotorService{
+public class PromotorServiceImpl implements IPromotorService {
 
 	@Autowired
 	private IPromotorDao promotorDao;
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<Promotor> findAll() {
-		return (List<Promotor>)promotorDao.findAll();
+		return (List<Promotor>) promotorDao.findAll();
 	}
 
 	@Override
@@ -37,6 +38,13 @@ public class PromotorServiceImpl implements IPromotorService{
 	@Transactional(readOnly = true)
 	public Promotor findById(Long id) {
 		return promotorDao.findById(id).orElse(null);
+	}
+
+	@Override
+	public Field[] getVariablesPromotor() {
+		Field variablesPromotor[] = Promotor.class.getDeclaredFields();
+
+		return variablesPromotor;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,15 @@ public class ServicioServiceImpl implements IServicioService{
 	@Transactional(readOnly = true)
 	public Servicio findById(Long id) {
 		return membresiaDao.findById(id).orElse(null);
+	}
+
+	@Override
+	public Field[] getVariablesServicio() {
+		
+		Field variablesServicio[] = Servicio.class.getDeclaredFields();
+
+		return variablesServicio;
+		
 	}
 	
 }

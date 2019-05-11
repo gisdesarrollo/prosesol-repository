@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,6 +79,14 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 		List<Paises> paises = new ArrayList<Paises>(Arrays.asList(Paises.values()));
 		
 		return paises;
+	}
+
+	@Override
+	public Field[] getVariablesAfiliado() {
+		
+		Field variablesAfiliado[] = Afiliado.class.getDeclaredFields();
+		
+		return variablesAfiliado;
 	}
 
 	

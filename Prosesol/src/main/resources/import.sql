@@ -29,4 +29,4 @@ INSERT INTO `roles` (id_perfil, nombre) VALUES (1,'ROLE_ADMINISTRADOR');
 
 INSERT INTO servicios(nombre, notas, costo, estatus)values('Ajustes Especiales', 'Ajustes especiales', 9.99, 1),('Prosesol total', 'Prosesol total', 19.99, 1),('Médica Prosesol', 'Médica Prosesol', 29.99, 1)
 
-INSERT INTO periodicidades(nombre, periodo, corte)values('MENSUAL', 'Mensual', 24),('ANUAL', 'anual', 4),('SEMESTRAL', 'Semestral', 6);
+INSERT INTO periodicidades(nombre, periodo)values('MENSUAL', 'Mensual'),('ANUAL', 'anual'),('SEMESTRAL', 'Semestral');
