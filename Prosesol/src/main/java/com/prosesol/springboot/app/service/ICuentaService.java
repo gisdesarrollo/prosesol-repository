@@ -14,4 +14,5 @@ public interface ICuentaService {
 	
 	public Cuenta findById(Long id);
 	
+	public String[] getVariablesCuenta();	
 }

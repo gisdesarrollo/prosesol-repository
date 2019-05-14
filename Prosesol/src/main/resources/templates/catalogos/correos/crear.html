@@ -30,38 +30,62 @@
 								<hr>
 								<div class="row">
 									<div class="col-md-12">
-										<form class="user" th:action="@{/correos/crear}" method="post">
+										<form class="user" th:action="@{/correos/crear}" th:object="${correo}" 
+										      method="post">
 											<div class="row">
 												<div class="form-group col-md-3">
 													<label for="company">Afiliado</label> <select
 														name="afiliado" th:field="${variablesAfiliado}"
-														class="custom-select" id="inputGroupSelect01">
-														<option th:each="variable : ${variablesAfiliado}"
-															th:value="${variable}" th:text="${variable.getName()}"
+														class="custom-select" id="selectAfiliado">
+														<option th:each="variable, status : ${variablesAfiliado}"
+															th:if="${not status.first}"															
+															th:value="${variable}"
+															th:text="${variable}"
 															th:selected="false" />
 													</select>
 												</div>
 												<div class="form-group col-md-3">
 													<label for="company">Servicio</label> <select
 														name="afiliado" th:field="${variablesServicio}"
-														class="custom-select" id="inputGroupSelect01">
-														<option th:each="variable : ${variablesServicio}"
-															th:value="${variable}" th:text="${variable.getName()}"
+														class="custom-select" id="selectServicio">
+														<option th:each="variable, status : ${variablesServicio}"
+															th:if="${not status.first}"
+															th:value="${variable}" th:text="${variable}"
 															th:selected="false" />
 													</select>
 												</div>
 												<div class="form-group col-md-3">
 													<label for="company">Promotor</label> <select
 														name="afiliado" th:field="${variablesPromotor}"
-														class="custom-select" id="inputGroupSelect01">
-														<option th:each="variable : ${variablesPromotor}"
-															th:value="${variable}" th:text="${variable.getName()}"
+														class="custom-select" id="selectPromotor">
+														<option th:each="variable, status : ${variablesPromotor}"
+															th:if="${not status.first}"
+															th:value="${variable}" th:text="${variable}"
 															th:selected="false" />
 													</select>
 												</div>
-												
+												<div class="form-group col-md-3">
+													<label for="company">Cuenta</label> <select
+														name="afiliado" th:field="${variablesCuenta}"
+														class="custom-select" id="selectCuenta">
+														<option th:each="variable, status : ${variablesCuenta}"
+															th:if="${not status.first}"
+															th:value="${variable}" th:text="${variable}"
+															th:selected="false" />
+													</select>
+												</div>
+												<div class="form-group col-md-3">
+													<label for="company">Periodo</label> <select
+														name="afiliado" th:field="${variablesPeriodo}"
+														class="custom-select" id="selectPeriodo">
+														<option th:each="variable, status : ${variablesPeriodo}"
+															th:if="${not status.first}"
+															th:value="${variable}" th:text="${variable}"
+															th:selected="false" />
+													</select>
+												</div>												
 											</div>
-											<textarea class="tinyemc" th:field="${correo.html}"
+											<textarea class="tinyemc" th:field="*{html}"
 													id="texteditor"></textarea>
 											<hr>
 											<div class="clearfix"></div>

@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +51,20 @@ public class PeriodicidadServiceImpl implements IPeriodicidadService{
 		List<Eventos> eventos = new ArrayList<Eventos>(Arrays.asList(Eventos.values()));
 		
 		return eventos;
+	}
+
+	@Override
+	public String[] getVariablesPeriodo() {
+		
+		Field campos[] = Periodicidad.class.getDeclaredFields();
+		String variablesPeriodo[] = new String[campos.length];
+		
+		for(int i = 0; i < campos.length; i++) {
+			variablesPeriodo[i] = campos[i].getName();
+		}
+		
+		return variablesPeriodo;
+
 	}
 
 }

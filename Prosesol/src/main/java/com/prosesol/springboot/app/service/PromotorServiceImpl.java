@@ -41,8 +41,14 @@ public class PromotorServiceImpl implements IPromotorService {
 	}
 
 	@Override
-	public Field[] getVariablesPromotor() {
-		Field variablesPromotor[] = Promotor.class.getDeclaredFields();
+	public String[] getVariablesPromotor() {
+		
+		Field campos[] = Promotor.class.getDeclaredFields();
+		String variablesPromotor[] = new String[campos.length];
+		
+		for(int i = 0; i < campos.length; i++) {
+			variablesPromotor[i] = campos[i].getName();
+		}
 
 		return variablesPromotor;
 	}
