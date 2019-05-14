@@ -11,14 +11,14 @@ import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.entity.dao.IServicioDao;
 
 @Service
-public class ServicioServiceImpl implements IServicioService{
+public class ServicioServiceImpl implements IServicioService {
 
 	@Autowired
 	private IServicioDao membresiaDao;
 
 	@Override
 	public List<Servicio> findAll() {
-		return (List<Servicio>)membresiaDao.findAll();
+		return (List<Servicio>) membresiaDao.findAll();
 	}
 
 	@Override
@@ -28,7 +28,8 @@ public class ServicioServiceImpl implements IServicioService{
 
 	@Override
 	public void delete(Long id) {
-		membresiaDao.deleteById(id);;
+		membresiaDao.deleteById(id);
+		;
 	}
 
 	@Override
@@ -38,12 +39,17 @@ public class ServicioServiceImpl implements IServicioService{
 	}
 
 	@Override
-	public Field[] getVariablesServicio() {
-		
-		Field variablesServicio[] = Servicio.class.getDeclaredFields();
+	public String[] getVariablesServicio() {
+
+		Field campos[] = Servicio.class.getDeclaredFields();
+		String variablesServicio[] = new String[campos.length];
+
+		for (int i = 0; i < campos.length; i++) {
+			variablesServicio[i] = campos[i].getName();
+		}
 
 		return variablesServicio;
-		
+
 	}
-	
+
 }

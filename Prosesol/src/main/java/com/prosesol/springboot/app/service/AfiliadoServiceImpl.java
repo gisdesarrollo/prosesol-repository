@@ -82,9 +82,15 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	}
 
 	@Override
-	public Field[] getVariablesAfiliado() {
+	public String[] getVariablesAfiliado() {
+				
+		Field campos[] = Afiliado.class.getDeclaredFields();
+		String variablesAfiliado[] = new String[campos.length];
 		
-		Field variablesAfiliado[] = Afiliado.class.getDeclaredFields();
+		for(int i = 0; i < campos.length; i++) {
+			variablesAfiliado[i] = campos[i].getName();
+		}
+		
 		
 		return variablesAfiliado;
 	}

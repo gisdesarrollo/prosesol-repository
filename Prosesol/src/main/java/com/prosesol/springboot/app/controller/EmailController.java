@@ -1,9 +1,11 @@
 package com.prosesol.springboot.app.controller;
 
-import java.lang.reflect.Field;
-
 import javax.validation.Valid;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.prosesol.springboot.app.entity.Correo;
 import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.service.ICorreoService;
+import com.prosesol.springboot.app.service.ICuentaService;
+import com.prosesol.springboot.app.service.IPeriodicidadService;
 import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
 
 @Controller
+@SessionAttributes("correo")
 @RequestMapping("/correos")
 public class EmailController {
 
@@ -34,6 +41,15 @@ public class EmailController {
 	
 	@Autowired
 	private IPromotorService promotorService;
+	
+	@Autowired
+	private ICuentaService cuentaService;
+	
+	@Autowired
+	private IPeriodicidadService periodoService;
+	
+	@Autowired
+	private ICorreoService correoService;
 
 	@RequestMapping(value = "/crear")
 	public String crear(Model model) {
@@ -47,13 +63,26 @@ public class EmailController {
 	}
 	
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid @ModelAttribute("correo") Correo correo,
+	public String guardar(@Valid Correo correo,
 				          BindingResult result,
 						  Model model, SessionStatus status) {
-				
+		
 		if(correo.getHtml().isEmpty()) {
 			System.out.println("No hay datos qué mostrar");
 		}
+		
+		Correo template = correoService.getTemplateCorreoByName("template");
+		Document doc = Jsoup.parse(template.getHtml());
+		Elements td = doc.select("td");
+		
+		for(Element p : td) {
+			if(!p.hasAttr("align")) {				
+				p.append(correo.getHtml());
+				System.out.println(p);
+			}
+		}
+		
+		System.out.println(doc.html());
 		
 		try {
 			
@@ -79,25 +108,59 @@ public class EmailController {
 		
 	}
 	
+	/**
+	 * Método para obtener las variables para el Objeto de Afiliado
+	 * @return("variablesAfiliado")
+	 */
+	
 	@ModelAttribute("variablesAfiliado")
-	public Field[] getVariablesAfiliado() {
+	public String[] getVariablesAfiliado() {
 		
 		return afiliadoService.getVariablesAfiliado();
 		
 	}
 	
+	/**
+	 * Método para obtener las variables para el Objeto de Servicio
+	 * @return("variablesServicio")
+	 */
+	
 	@ModelAttribute("variablesServicio")
-	public Field[] getVariablesServicio() {
+	public String[] getVariablesServicio() {
 		
 		return servicioServicio.getVariablesServicio();
 		
 	}
 	
+	/**
+	 * Método para obtener las variables para el Objeto de Promotor
+	 * @return("variablesPromotor")
+	 */
+	
 	@ModelAttribute("variablesPromotor")
-	public Field[] getVariablesPromotor() {
+	public String[] getVariablesPromotor() {
 		
 		return promotorService.getVariablesPromotor();
 		
 	}
 	
+	/**
+	 * Método para obtener las variables para el Objeto de Cuenta
+	 * @return("variablesCuenta")
+	 */
+	
+	@ModelAttribute("variablesCuenta")
+	public String[] getVariablesCuenta() {
+		return cuentaService.getVariablesCuenta();
+	}
+	
+	/**
+	 * Método para obtener las variables para el Objeto de Periodo
+	 * @return("variablesPeriodo")
+	 */
+	
+	@ModelAttribute("variablesPeriodo")
+	public String[] getVariablesPeriodo() {
+		return periodoService.getVariablesPeriodo();
+	}
 }

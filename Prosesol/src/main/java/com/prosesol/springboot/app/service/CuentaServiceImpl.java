@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,20 @@ public class CuentaServiceImpl implements ICuentaService{
 	@Transactional
 	public void delete(Long id) {
 		cuentaDao.deleteById(id);;
+		
+	}
+
+	@Override
+	public String[] getVariablesCuenta() {
+
+		Field campos[] = Cuenta.class.getDeclaredFields();
+		String variablesCuenta[] = new String[campos.length];
+		
+		for(int i = 0; i < campos.length; i++) {
+			variablesCuenta[i] = campos[i].getName();
+		}
+		
+		return variablesCuenta;
 		
 	}
 

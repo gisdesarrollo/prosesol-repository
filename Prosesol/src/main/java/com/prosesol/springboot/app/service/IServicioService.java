@@ -1,6 +1,5 @@
 package com.prosesol.springboot.app.service;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import com.prosesol.springboot.app.entity.Servicio;
@@ -16,5 +15,5 @@ public interface IServicioService {
 	
 	public Servicio findById(Long id);
 	
-	public Field[] getVariablesServicio();
+	public String[] getVariablesServicio();
 }

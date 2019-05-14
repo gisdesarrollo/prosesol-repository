@@ -17,4 +17,6 @@ public interface IPeriodicidadService {
 	
 	public List<Eventos> getAllEventos();
 	
+	public String[] getVariablesPeriodo();
+	
 }
