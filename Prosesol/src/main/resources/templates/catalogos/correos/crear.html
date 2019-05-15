@@ -83,7 +83,18 @@
 															th:value="${variable}" th:text="${variable}"
 															th:selected="false" />
 													</select>
-												</div>												
+												</div>	
+												<div class="form-group col-md-3">
+													<label for="company">Tipo de correo</label> <select
+														th:field="*{tipoCorreo}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:value="'inscripcion'" th:selected>Inscripción</option>
+														<option th:value="'suspension'">Suspensión</option>
+														<option th:value="'aviso'">Aviso</option>														
+													</select><small class="form-text text-danger"
+														th:if="${#fields.hasErrors('tipoCorreo')}"
+														th:errors="*{tipoCorreo}"></small>
+												</div>											
 											</div>
 											<textarea class="tinyemc" th:field="*{html}"
 													id="texteditor"></textarea>

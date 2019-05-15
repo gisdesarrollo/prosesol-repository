@@ -8,6 +8,6 @@ import com.prosesol.springboot.app.entity.Correo;
 public interface ICorreoDao extends CrudRepository<Correo, Long>{
 
 	@Query("select c from Correo c where tipoCorreo = ?1")
-	public Correo getTemplateCorreByName(String name);
+	public Correo getTemplateCorreoByName(String name);
 	
 }
