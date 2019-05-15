@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "cat_correos")
@@ -25,6 +26,7 @@ public class Correo implements Serializable{
 	@Column(name = "id_correo")
 	private Long id;
 	
+	@NotEmpty(message = "Introduzca el tipo de correo")
 	@Column(name = "tipo_correo")
 	private String tipoCorreo;
 	

@@ -33,14 +33,14 @@ public class CorreoServiceImpl implements ICorreoService{
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void deleteById(Long id) {
 		correoDao.deleteById(id);	
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Correo getTemplateCorreoByName(String name) {
-		return correoDao.getTemplateCorreByName(name);
+		return correoDao.getTemplateCorreoByName(name);
 	}
 
 }

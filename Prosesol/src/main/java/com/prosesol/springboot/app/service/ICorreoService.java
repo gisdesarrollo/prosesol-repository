@@ -12,7 +12,7 @@ public interface ICorreoService {
 	
 	public void save(Correo correo);
 	
-	public void delete(Long id);
+	public void deleteById(Long id);
 	
 	public Correo getTemplateCorreoByName(String name);
 	
