@@ -183,7 +183,7 @@ public class AfiliadoController {
 				
 				mail.setModel(modelEmail);
 				
-				emailService.sendSimpleMessage(mail, bandera);
+//				emailService.sendSimpleMessage(mail, bandera);
 				
 			}
 
