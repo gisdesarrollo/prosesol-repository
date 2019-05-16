@@ -9,7 +9,7 @@ import com.prosesol.springboot.app.entity.Adjunto;
 
 public interface IAdjuntoDao extends CrudRepository<Adjunto, Long> {
 
-	@Query(value = "select a.* from cat_adjuntos where id_correo = ?", nativeQuery = true)
+	@Query(value = "select a.* from cat_adjuntos a where id_correo = ?", nativeQuery = true)
 	public List<Adjunto> getAdjuntoCorreo(Long id);
 	
 }
