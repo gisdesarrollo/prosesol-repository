@@ -6,14 +6,18 @@ import java.nio.charset.StandardCharsets;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import com.prosesol.springboot.app.entity.Correo;
 import com.prosesol.springboot.app.util.Mail;
@@ -28,8 +32,8 @@ public class EmailServiceImpl implements IEmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 
-//	@Autowired
-//	private SpringTemplateEngine templateEngine;
+	@Autowired
+	private SpringTemplateEngine templateEngine;
 	
 	@Autowired
 	private CorreoServiceImpl correoService;
@@ -59,11 +63,10 @@ public class EmailServiceImpl implements IEmailService {
 			logger.info("Template de inscripcion");
 			
 			correo = correoService.getTemplateCorreoByName(bandera);
-			adjuntoService.getAdjuntoCorreo(correo.getId());
-			
-//			InputStreamSource stream = new ByteArrayResource(IOUtils.toByteArray())
+//			adjuntoService.getAdjuntoCorreo(correo.getId());
 			
 			html = correo.getHtml();
+			System.out.println(html);
 			
 //			html = this.templateEngine.process("/mail/inscripcion_template", context);
 			break;
@@ -82,7 +85,7 @@ public class EmailServiceImpl implements IEmailService {
 		
 		
 
-		helper.addInline("suspensionHeader", new ClassPathResource("static/img/logos/suspension_header.png"),
+		helper.addInline("suspensionHeader", new ClassPathResource("static/img/logos/suspension_header.jpg"),
 				"image/jpg");
 		helper.addInline("suspensionFooter", new ClassPathResource("static/img/logos/suspension_footer.png"),
 				"image/png");

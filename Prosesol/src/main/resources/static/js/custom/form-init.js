@@ -42,15 +42,5 @@ $( document ).ready(function() {
         yearRange: '-100y:c+nn',
         maxDate: "today"
     });
-	
-	selectValue();
-	
+		
 });
-
-function selectValue(){
-	
-	$('.custom-select').change(function(){
-		var s = $(this).val();
-		tinyMCE.get('texteditor').setContent(s);
-	});
-}

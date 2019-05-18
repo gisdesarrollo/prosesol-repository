@@ -1,5 +1,11 @@
 tinymce.init({
-    selector: 'textarea.tinyemc',
+    selector: 'textarea.tinyemc',   
+
+	force_br_newlines : false,
+    force_p_newlines : false,
+    forced_root_block : '',
+    paste_auto_cleanup_on_paste: true,
+    entity_encoding: 'raw',
     
     /* plugin */
 	plugins: [
@@ -43,4 +49,5 @@ tinymce.init({
 			{title: "Justify", icon: "alignjustify", format: "alignjustify"}
 		]}
 	]
+	
 });
