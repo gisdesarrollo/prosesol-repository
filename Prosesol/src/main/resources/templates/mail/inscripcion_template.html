@@ -27,7 +27,7 @@
     <tr>
         <td bgcolor="#fff" style="padding: 40px 30px 40px 30px;">
         	<h1  style="font-family: 'Optima, sans-serif'" th:text="${afiliado.servicio.nombre}"></h1>
-            <p>Estimado(a) <b th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}"></b></p>
+            <p>Estimado(a) [[${afiliado.nombre}]] [[${afiliado.apellidoPaterno}]] [[${afiliado.apellidoMaterno}]]</p>
             <p>Es un gusto saludarte nuevamente y así tener la oportunidad para agradecer tu confianza, así mismo, queremos recordarte la forma
             de hacer uso de tu membresía para que puedas gozar de los grandes beneficios de acuerdo a la membresía elegida <b th:text="${afiliado.servicio.nombre}"></b>
             <p>Sabemos de antemano que <b th:text="${afiliado.servicio.nombre}"></b> será de gran utilidad para ti y los tuyos al proteger, prevenir y cuidar a quien
