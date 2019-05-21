@@ -1,5 +1,7 @@
 package com.prosesol.springboot.app.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.jsoup.Jsoup;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.Correo;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 import com.prosesol.springboot.app.service.ICorreoService;
@@ -55,7 +58,7 @@ public class EmailController {
 	public String crear(Model model) {
 
 		LOGGER.info("Ingresar al método crear correo");
-
+		
 		model.addAttribute("correo", new Correo());
 
 		return "/catalogos/correos/crear";
