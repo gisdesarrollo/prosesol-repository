@@ -62,7 +62,7 @@
 												<div class="form-group col-md-3">
 													<label for="company">Fecha de Nacimiento</label> <input
 														type="text" th:field="*{fechaNacimiento}"
-														class="form-control form-control-user" id="datepicker"
+														class="form-control form-control-user" id="fechaNacimiento"
 														placeholder=""> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('fechaNacimiento')}"
@@ -87,6 +87,7 @@
 														<option th:value="'Casado'">Casado(a)</option>
 														<option th:value="'Viudo'">Viudo(a)</option>
 														<option th:value="'Divorciado'">Divorciado(a)</option>
+														<option th:value="'Desconocido'" >Desconocido</option>
 													</select><small class="form-text text-danger"
 														th:if="${#fields.hasErrors('estadoCivil')}"
 														th:errors="*{estadoCivil}"></small>
@@ -95,8 +96,7 @@
 												<div class="form-group col-md-3">
 													<label for="company">Número de dependientes</label><input
 														type="text" th:field="*{numeroDependientes}"
-														class="form-control form-control-user"
-														placeholder="Número de dependientes"> <small
+														class="form-control form-control-user"> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('numeroDependientes')}"
 														th:errors="*{numeroDependientes}"></small>
@@ -142,14 +142,6 @@
 														placeholder=""> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('curp')}" th:errors="*{curp}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Número de seguridad social</label><input
-														type="text" th:field="*{nss}"
-														class="form-control form-control-user" placeholder="">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('nss')}" th:errors="*{nss}"></small>
 												</div>
 
 												<div class="form-group col-md-3">
@@ -225,20 +217,6 @@
 														th:if="${#fields.hasErrors('codigoPostal')}"
 														th:errors="*{codigoPostal}"></small>
 												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">¿Cuénta con crédito Infonavit?</label>
-													<input type="checkbox" class="form-check-input" id="infonavitCB"/>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Número de Infonavit</label><input
-														type="text" th:field="*{numeroInfonavit}" 
-														class="form-control form-control-user" id="inputNumeroInfonavit">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('numeroInfonavit')}"
-														th:errors="*{numeroInfonavit}"></small>
-												</div>
 												
 												<div class="form-group col-md-3">
 													<label for="company">Servicio</label>
@@ -252,6 +230,20 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('servicio')}"
 														th:errors="*{servicio}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Fecha de Corte</label> 
+													<select	name ="corte" th:field="*{corte}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="corte : ${#numbers.sequence(1, 31)}"
+															    th:value="${corte}"
+															    th:text="${corte}"
+															    th:selected="${corte}"/>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('corte')}"
+														th:errors="*{corte}"></small>
 												</div>
 												
 												<div class="form-group col-md-3">
@@ -278,15 +270,34 @@
 												</div>
 												
 												<div class="form-group col-md-3">
-													<label for="company">Clave de Afiliado</label><input type="text"
-														th:field="*{clave}"
-														class="form-control form-control-user" placeholder="">
+													<label for="company">Promotor</label>
+													<select	name ="promotor" th:field="*{promotor}" class="custom-select"
+														id="promotores">
+														<option th:value="0" selected>Ninguno</option>
+														<option th:each="promotor : ${promotores}"
+															    th:value="${promotor.id}"
+															    th:text="${promotor.nombre}"
+															    th:selected="false"/>
+													</select>
 													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('clave')}"
-														th:errors="*{clave}"></small>
+														th:if="${#fields.hasErrors('promotor')}"
+														th:errors="*{promotor}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Cuenta</label>
+													<select	name ="cuenta" th:field="*{cuenta}" class="custom-select"
+														id="cuentas" >				
+														<option th:each="cuenta : ${cuentas}"
+															    th:value="${cuenta.id}"
+															    th:text="${cuenta.razonSocial}"
+															    th:selected="false"></option>
+													</select>
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('cuenta')}"
+														th:errors="*{cuenta}"></small>
 												</div>
 											</div>
-
 											<hr>
 											<div class="clearfix"></div>
 											<div class="row">

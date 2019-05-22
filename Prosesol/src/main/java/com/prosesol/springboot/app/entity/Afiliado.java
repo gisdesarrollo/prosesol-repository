@@ -19,8 +19,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -50,7 +52,7 @@ public class Afiliado implements Serializable {
 	@Column(name = "apellido_materno")
 	private String apellidoMaterno;
 
-	@NotNull
+	@NotNull(message = "{NotNull.afiliado.fechaNacimiento}")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nacimiento")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -74,13 +76,19 @@ public class Afiliado implements Serializable {
 	@Column(name = "pais", length = 3)
 	private String pais;
 
-	@Column(name = "curp", length = 18)
+	@Column(name = "curp")
+	@NotEmpty(message = "{TextField.curp.empty.afiliado.message}")
+	@Size(min = 18, message = "{TextField.curp.min.afiliado.message}")
 	private String curp;
 
 	@Column(name = "nss")
+	@NotNull(message = "{TextField.nss.empty.afiliado.message}")
+	@Max(11)
 	private Long nss;
 
-	@Column(name = "rfc", length = 13)
+	@Column(name = "rfc")
+	@NotEmpty(message = "{TextField.rfc.empty.afiliado.message}")
+	@Size(min = 12, max = 13, message = "{TextField.rfc.min.afiliado.message}")
 	private String rfc;
 
 	@Column(name = "telefono_fijo")
