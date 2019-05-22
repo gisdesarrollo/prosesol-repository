@@ -18,10 +18,14 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.Periodicidad;
+import com.prosesol.springboot.app.entity.Promotor;
 import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
+import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
 import com.prosesol.springboot.app.util.Paises;
 
@@ -38,6 +42,12 @@ public class BeneficiarioController {
 
 	@Autowired
 	private IPeriodicidadService periodicidadService;
+	
+	@Autowired
+	private IPromotorService promotorService;
+	
+	@Autowired
+	private ICuentaService cuentaService;
 	
 	private static Long idAfiliado;
 	
@@ -129,5 +139,25 @@ public class BeneficiarioController {
 	public List<Servicio> getAllServicios() {
 		return servicioService.findAll();
 	}
+	/**
+	 * Método para mostrar los servicios Dentro del list box de crear afiliados
+	 * 
+	 * @param(name = "promotores")
+	 */
 	
+	@ModelAttribute("promotores")
+	public List<Promotor> getAllPromotores(){
+		return promotorService.findAll();
+	}
+	
+	/**
+	 * Método para mostrar los servicios Dentro del list box de crear afiliados
+	 * 
+	 * @param(name = "cuentas")
+	 */
+	
+	@ModelAttribute("cuentas")
+	public List<Cuenta> getAllCuentas(){
+		return cuentaService.findAll();
+	}
 }

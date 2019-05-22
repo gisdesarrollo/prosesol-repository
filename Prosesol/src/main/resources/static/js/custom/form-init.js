@@ -42,5 +42,18 @@ $( document ).ready(function() {
         yearRange: '-100y:c+nn',
         maxDate: "today"
     });
+	
+	$('#curpText').on('keydown keyup change', function(){
 		
+		var valueCurp = $(this).val();
+		var valueCurpLn = $(this).val().length;
+		
+		if(valueCurpLn < 18){
+			$('#smallCurp').text('El campo no cuenta con la longitud correcta);
+		}else{
+			$('small').text('Longitud correcta');
+		}
+		
+	});
+	
 });
