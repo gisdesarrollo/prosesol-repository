@@ -41,6 +41,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 											<thead>
 												<tr>
 													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
+													<th>Clave Afiliado</th>
 													<th>Nombre</th>
 													<th>Apellido Paterno</th>
 													<th>Apellido Materno</th>
@@ -52,6 +53,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<th>Saldo al Corte</th>
 													<th>Fecha Inicio Servicio</th>
 													<th>Fecha de corte</th>
+													<th>Fecha de Afiliación</th>
 													<th>Periodo</th>
 													<th>Email</th>
 													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
@@ -64,13 +66,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 														class="btn btn-primary btn-sm"
 														th:href="@{/afiliados/detalle/} + ${afiliado.id}"
 														th:text="${afiliado.id}"></a></td>
+													<td th:text="${afiliado.clave}"></td>
 													<td th:text="${afiliado.nombre}"></td>
 													<td th:text="${afiliado.apellidoPaterno}"></td>
 													<td th:text="${afiliado.apellidoMaterno}"></td>
 													<td th:if="${afiliado.isBeneficiario}">Beneficiario</td>
 													<td th:unless="${afiliado.isBeneficiario}">Titular</td>
-													<td th:case="true" th:text="Activo"></td>
-													<td th:case="false" th:text="Inactivo"></td>
+													<td th:case="1" style="color: #4a9252" th:text="Activo"></td>
+													<td th:case="2" style="color: #ea3808" th:text="Inactivo"></td>
+													<td th:case="3" style="color: #bbb63d " th:text="Candidato"></td>
 													<td th:text="${not afiliado.isBeneficiario} ? ${#lists.size(afiliado.beneficiarios)} : ${afiliado.nombre}"></td>
 													<td th:text="${afiliado.servicio.nombre}"></td>
 													<td th:text="${afiliado.saldoAcumulado}"></td>
@@ -80,7 +84,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<td th:if="${afiliado.isBeneficiario}">N/A</td>
 													<td th:unless="${afiliado.isBeneficiario}" style="color: #ea3808" th:text="${afiliado.fechaCorte}"></td>
 													<td th:if="${afiliado.isBeneficiario}">N/A</td>
-													<td th:unless="${afiliado.isBeneficiario}" th:text="${afiliado.periodicidad.nombre}"></td>
+													<td th:unless="${afiliado.isBeneficiario}" th:text="${afiliado.fechaAfiliacion}"></td>
+													<td th:if="${afiliado.isBeneficiario}">N/A</td>
+													<td th:unless="${afiliado.isBeneficiario}" th:text="${afiliado.periodicidad.nombre}"></td>													
 													<td th:text="${afiliado.email}"></td>
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 														<div class="dropdown">
@@ -99,6 +105,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 																</a> <a class="dropdown-item"
 																	th:href="@{/beneficiarios/crear/} + ${afiliado.id}">Agregar
 																	Beneficiario </a>
+																<a class="dropdown-item"
+																   th:href="@{/afiliados/ver/} + ${afiliado.id}"
+																   th:if="${afiliado.estatus == 3}" th:text="Activar"></a>
+																<a class="dropdown-item"
+																   th:href="@{/afiliados/ver/} + ${afiliado.id}"
+																   th:if="${afiliado.estatus == 1}" th:text="Desactivar"></a>																
 															</div>
 														</div>
 													</td>

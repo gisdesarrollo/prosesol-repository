@@ -82,7 +82,7 @@ public class BeneficiarioController {
 		
 		afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 		afiliado.setIsBeneficiario(true);
-		afiliado.setEstatus(true);
+		afiliado.setEstatus(3);
 		
 		afiliadoService.save(afiliado);
 		guardarRelAfiliadoBeneficiario(afiliado, idAfiliado);

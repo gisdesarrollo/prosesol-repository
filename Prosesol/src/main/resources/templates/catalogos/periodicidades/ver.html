@@ -40,7 +40,6 @@
 												<tr>
 													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
 													<th>Nombre</th>
-													<th>Corte</th>
 													<th>Periodo</th>
 													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Opciones</th>
 												</tr>
@@ -50,7 +49,6 @@
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 														th:text="${periodo.id}"></td>
 														<td th:text="${periodo.nombre}"></td>
-													<td th:text="${periodo.corte}"></td>
 													<td th:text="${periodo.periodo}"></td>
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 														<div class="dropdown">
