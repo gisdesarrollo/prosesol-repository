@@ -43,15 +43,62 @@ $( document ).ready(function() {
         maxDate: "today"
     });
 	
-	$('#curpText').on('keydown keyup change', function(){
+	$( "#fechaAfiliacion" ).datepicker({
+        format : 'dd/mm/yyyy',
+        changeMonth : true,
+        changeYear : true,
+        yearRange: '-100y:c+nn',
+        maxDate: "today"
+    });
+	
+	$( "#fechaInicioServicio" ).datepicker({
+        format : 'dd/mm/yyyy',
+        changeMonth : true,
+        changeYear : true,
+        yearRange: '-100y:c+nn',
+        maxDate: "today"
+    });
+	
+	$('#curpText').keypress(function(e){
 		
-		var valueCurp = $(this).val();
-		var valueCurpLn = $(this).val().length;
+		var max = 18;
 		
-		if(valueCurpLn < 18){
-			$('#smallCurp').text('El campo no cuenta con la longitud correcta);
-		}else{
-			$('small').text('Longitud correcta');
+		if(e.which < 0x20){
+			return;
+		}
+		if(this.value.length == max){
+			e.preventDefault();
+		}else if(this.value.length > max){			
+			this.value = this.value.substring(0, max);
+		}
+		
+	});
+		
+	$('#nssText').keypress(function(e){
+		
+		var max = 11;
+		
+		if(e.which < 0x20){
+			return;
+		}
+		if(this.value.length == max){
+			e.preventDefault();
+		}else if(this.value.length > max){
+			this.value = this.value.substring(0, max);
+		}
+	});
+	
+	$('#rfcText').keypress(function(e){
+		
+		var max = 13;
+		
+		if(e.which < 0x20){
+			return;
+		}
+		if(this.value.length == max){
+			e.preventDefault();
+		}else if(this.value.length > max){
+			this.value = this.value.substring(0, max);
 		}
 		
 	});

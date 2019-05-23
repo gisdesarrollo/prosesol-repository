@@ -1,8 +1,10 @@
 package com.prosesol.springboot.app.controller;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,7 @@ import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
 import com.prosesol.springboot.app.util.Mail;
 import com.prosesol.springboot.app.util.Paises;
+import com.prosesol.springboot.app.validator.ValidarMesesImpl;
 
 @Controller
 @SessionAttributes("afiliado")
@@ -67,6 +70,9 @@ public class AfiliadoController {
 	
 	@Autowired
 	private IEmailService emailService;
+	
+	@Autowired
+	private ValidarMesesImpl validarMeses;
 
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
@@ -162,13 +168,9 @@ public class AfiliadoController {
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
 
-				Map<Date, Date> listaFechas = calcularFechas(periodicidad, afiliado.getCorte());
+				Date fechaCorte = calcularFechas(periodicidad, afiliado.getCorte());
 
-				for (Map.Entry<Date, Date> entry : listaFechas.entrySet()) {
-					afiliado.setFechaInicioServicio(entry.getKey());
-					afiliado.setFechaCorte(entry.getValue());
-				}
-
+				afiliado.setFechaCorte(fechaCorte);				
 				afiliado.setFechaAlta(date);
 				afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 				afiliado.setClave(clave);
@@ -183,11 +185,11 @@ public class AfiliadoController {
 				
 				mail.setModel(modelEmail);
 				
-				emailService.sendSimpleMessage(mail, bandera);
+//				emailService.sendSimpleMessage(mail, bandera);
 				
 			}
 
-			afiliado.setEstatus(true);
+			afiliado.setEstatus(3);
 			logger.info(mensajeFlash);
 
 			afiliadoService.save(afiliado);
@@ -230,6 +232,26 @@ public class AfiliadoController {
 
 		return "redirect:/afiliados/ver";
 	}
+	
+	@Secured("ROLE_ADMINISTRADOR")
+	@RequestMapping(value = "/ver/{id}")
+	public String actDesctAfiliado(@PathVariable(value = "id") Long id, RedirectAttributes redirect,
+			SessionStatus status) {
+		
+		Afiliado afiliado = afiliadoService.findById(id);
+		
+		if(afiliado.getEstatus() == 3) {
+			afiliado.setEstatus(1);
+		}else if(afiliado.getEstatus() == 1) {
+			afiliado.setEstatus(2);
+		}
+		
+		afiliadoService.save(afiliado);
+		status.setComplete();
+		
+		return "redirect:/afiliados/ver";
+		
+	}
 
 	/**
 	 * Método para calcular las fechas de inicio y corte
@@ -237,17 +259,19 @@ public class AfiliadoController {
 	 * @param(periodicidad)
 	 */
 
-	private static Map<Date, Date> calcularFechas(Periodicidad periodo, Integer corte) {
+	private Date calcularFechas(Periodicidad periodo, Integer corte) {
 
 		int periodoTiempo;
 		int diaCorte;
+		Boolean isLeapYear;
+		
+		final Month FEBRERO = Month.FEBRUARY;
 
 		LocalDate tiempoActual = LocalDate.now();
-		LocalDate tiempoModificado = null;
-		LocalDate fechaInicioServicio = null;
+		LocalDate tiempoModificado = null;		
 		LocalDate fechaCorte = null;
-
-		Map<Date, Date> listaFechas = new HashMap<Date, Date>();
+		
+		GregorianCalendar calendar = new GregorianCalendar();
 
 		switch (periodo.getNombre()) {
 		case "MENSUAL":
@@ -258,15 +282,19 @@ public class AfiliadoController {
 			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-
-			if (diaCorte >= tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
+						
+			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
+				logger.info("Mes con 30 días");
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
+			}else {
 				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
 			}
-
+			
 			break;
 
 		case "BIMESTRAL":
@@ -277,13 +305,17 @@ public class AfiliadoController {
 			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-
-			if (diaCorte >= tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
+			
+			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
+				logger.info("Mes con 30 días");
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
+			}else {
 				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
 			}
 
 			break;
@@ -295,14 +327,7 @@ public class AfiliadoController {
 			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-
-			if (diaCorte >= tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
-			}
+			fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
 
 			break;
 		case "CUATRIMESTRAL":
@@ -313,13 +338,17 @@ public class AfiliadoController {
 			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-
-			if (diaCorte >= tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
+			
+			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
+				logger.info("Mes con 30 días");
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
+			}else {
 				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
 			}
 
 			break;
@@ -331,13 +360,17 @@ public class AfiliadoController {
 			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-
-			if (diaCorte >= tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
+			
+			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
+				logger.info("Mes con 30 días");
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
+			}else {
 				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
 			}
 
 			break;
@@ -349,13 +382,17 @@ public class AfiliadoController {
 			diaCorte = corte;
 
 			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-
-			if (diaCorte >= tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth(), diaCorte);
+			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
+			
+			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
+				logger.info("Mes con 30 días");
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
+			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
+				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
+			}else {
 				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			} else if (diaCorte < tiempoActual.getDayOfMonth()) {
-				fechaInicioServicio = LocalDate.of(tiempoActual.getYear(), tiempoActual.getMonth().plus(1), diaCorte);
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
 			}
 
 			break;
@@ -365,11 +402,7 @@ public class AfiliadoController {
 
 		}
 
-		listaFechas.put(
-				java.util.Date.from(fechaInicioServicio.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
-				java.util.Date.from(fechaCorte.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-
-		return listaFechas;
+		return java.util.Date.from(fechaCorte.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
 	}
 

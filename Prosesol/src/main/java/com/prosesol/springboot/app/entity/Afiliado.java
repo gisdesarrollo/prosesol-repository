@@ -20,6 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -83,7 +84,6 @@ public class Afiliado implements Serializable {
 
 	@Column(name = "nss")
 	@NotNull(message = "{TextField.nss.empty.afiliado.message}")
-	@Max(11)
 	private Long nss;
 
 	@Column(name = "rfc")
@@ -135,6 +135,11 @@ public class Afiliado implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaCorte;
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_afiliacion")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private Date fechaAfiliacion;
+
 	@Column(name = "saldo_acumulado")
 	private Double saldoAcumulado;
 
@@ -142,7 +147,9 @@ public class Afiliado implements Serializable {
 	private Double saldoCorte;
 
 	@Column(name = "estatus", length = 1)
-	private Boolean estatus;
+	@Min(1)
+	@Max(3)
+	private int estatus;
 
 	@Column(name = "inscripcion")
 	private Double inscripcion;
@@ -173,10 +180,10 @@ public class Afiliado implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cta_comercial")
 	private Cuenta cuenta;
-	
+
 	@Transient
 	private Integer corte;
-	
+
 	public Afiliado() {
 		beneficiarios = new HashSet<Beneficiario>();
 	}
@@ -397,11 +404,19 @@ public class Afiliado implements Serializable {
 		this.fechaCorte = fechaCorte;
 	}
 
-	public Boolean getEstatus() {
+	public Date getFechaAfiliacion() {
+		return fechaAfiliacion;
+	}
+
+	public void setFechaAfiliacion(Date fechaAfiliacion) {
+		this.fechaAfiliacion = fechaAfiliacion;
+	}
+
+	public int getEstatus() {
 		return estatus;
 	}
 
-	public void setEstatus(Boolean estatus) {
+	public void setEstatus(int estatus) {
 		this.estatus = estatus;
 	}
 
@@ -488,7 +503,7 @@ public class Afiliado implements Serializable {
 	public void setCuenta(Cuenta cuenta) {
 		this.cuenta = cuenta;
 	}
-	
+
 	public Integer getCorte() {
 		return corte;
 	}

@@ -39,21 +39,6 @@
 														th:if="${#fields.hasErrors('nombre')}"
 														th:errors="*{nombre}"></small>
 												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Fecha de Corte</label> 
-													<select	name ="corte" th:field="*{corte}" class="custom-select"
-														id="inputGroupSelect01">
-														<option th:each="corte : ${#numbers.sequence(1, 31)}"
-															    th:value="${corte}"
-															    th:text="${corte}"
-															    th:selected="${corte}"/>
-													</select>
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('corte')}"
-														th:errors="*{corte}"></small>
-												</div>
-
 												<div class="form-group col-md-3">
 													<label for="company">Periodo</label> <select	
 													    name ="periodo" th:field="*{periodo}" class="custom-select"
