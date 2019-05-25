@@ -10,7 +10,7 @@
 			type="button" data-toggle="sidebar-show">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<a class="navbar-brand" href="#"> <img class="navbar-brand-full"
+		<a class="navbar-brand" th:href="@{/}"> <img class="navbar-brand-full"
 			th:src="@{/img/logos/prosesol_logo.png}" width="140" height="auto"
 			alt="Prosesol"> <img class="navbar-brand-minimized"
 			th:src="@{/img/logos/prosesol_logo.png}" width="30" height="30"
@@ -41,7 +41,7 @@
 						<div class="dropdown-header text-center">
 							<strong>Cuenta</strong>
 						</div>
-						<a class="dropdown-item" href="#"> <i class="fas fa-key"></i>
+						<a class="dropdown-item" th:href="@{/}"> <i class="fas fa-key"></i>
 							Cambiar contraseña
 						</a> <a class="dropdown-item" data-toggle="modal"
 							onclick="document.getElementById('logoutform').submit();"

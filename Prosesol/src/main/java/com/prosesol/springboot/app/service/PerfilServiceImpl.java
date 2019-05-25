@@ -29,7 +29,7 @@ public class PerfilServiceImpl implements IPerfilService{
 
 	@Override
 	@Transactional
-	public void delete(Long id) {
+	public void deleteById(Long id) {
 		perfilDao.deleteById(id);
 	}
 

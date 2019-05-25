@@ -61,8 +61,10 @@
 																aria-labelledby="dropdownMenuButton">
 																<a class="dropdown-item"
 																	th:href="@{/perfiles/editar/} + ${perfil.id}"
-																	th:text="'Editar'"> </a> <a class="dropdown-item"
-																	href="#">Borrar </a>
+																	th:text="'Editar'"> </a> 
+																<a class="dropdown-item"
+																	th:href="@{/perfiles/borrar/} + ${perfil.id}"
+																	th:text="Borrar"> </a>
 															</div>
 														</div>
 													</td>

@@ -40,6 +40,7 @@ import com.prosesol.springboot.app.service.IEmailService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
 import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
+import com.prosesol.springboot.app.util.CalcularFecha;
 import com.prosesol.springboot.app.util.Mail;
 import com.prosesol.springboot.app.util.Paises;
 import com.prosesol.springboot.app.validator.ValidarMesesImpl;
@@ -50,7 +51,7 @@ import com.prosesol.springboot.app.validator.ValidarMesesImpl;
 public class AfiliadoController {
 
 	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
-	
+
 	private static String bandera = "inscripcion";
 
 	@Autowired
@@ -61,18 +62,21 @@ public class AfiliadoController {
 
 	@Autowired
 	private IPeriodicidadService periodicidadService;
-	
+
 	@Autowired
 	private IPromotorService promotorService;
-	
+
 	@Autowired
 	private ICuentaService cuentaService;
-	
+
 	@Autowired
 	private IEmailService emailService;
-	
+
 	@Autowired
 	private ValidarMesesImpl validarMeses;
+
+	@Autowired
+	private CalcularFecha calcularFechas;
 
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
@@ -131,21 +135,20 @@ public class AfiliadoController {
 
 	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@ModelAttribute(name = "clave") String clave,
-				          @Valid Afiliado afiliado, BindingResult result, 
-			              Model model, RedirectAttributes redirect,	SessionStatus status) {
-		
+	public String guardar(@ModelAttribute(name = "clave") String clave, @Valid Afiliado afiliado, BindingResult result,
+			Model model, RedirectAttributes redirect, SessionStatus status) {
+
 		System.out.println(clave);
-		
+
 		Periodicidad periodicidad = new Periodicidad();
 		Mail mail = new Mail();
-		
+
 		Map<String, Object> modelEmail = new HashMap<String, Object>();
 
 		String mensajeFlash = null;
 
 		Date date = new Date();
-		
+
 		try {
 
 			if (result.hasErrors()) {
@@ -161,32 +164,32 @@ public class AfiliadoController {
 				}
 				mensajeFlash = "Registro editado con éxito";
 			} else {
-								
+
 				afiliado.setIsBeneficiario(false);
 				mensajeFlash = "Registro creado con éxito";
 
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
 
-				Date fechaCorte = calcularFechas(periodicidad, afiliado.getCorte());
+				Date fechaCorte = calcularFechas.calcularFechas(periodicidad, afiliado.getCorte());
 
-				afiliado.setFechaCorte(fechaCorte);				
+				afiliado.setFechaCorte(fechaCorte);
 				afiliado.setFechaAlta(date);
 				afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 				afiliado.setClave(clave);
-				
+
 				// Se crea el cuerpo del mensaje para los afiliados con inscripción
-				
+
 				mail.setTo(afiliado.getEmail());
 				mail.setFrom("prosesol@example.org");
 				mail.setSubject("BIENVENIDO A PROSESOL");
-				
+
 				modelEmail.put("afiliado", afiliado);
-				
+
 				mail.setModel(modelEmail);
-				
+
 //				emailService.sendSimpleMessage(mail, bandera);
-				
+
 			}
 
 			afiliado.setEstatus(3);
@@ -232,177 +235,24 @@ public class AfiliadoController {
 
 		return "redirect:/afiliados/ver";
 	}
-	
+
 	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/ver/{id}")
 	public String actDesctAfiliado(@PathVariable(value = "id") Long id, RedirectAttributes redirect,
 			SessionStatus status) {
-		
+
 		Afiliado afiliado = afiliadoService.findById(id);
-		
-		if(afiliado.getEstatus() == 3) {
+
+		if (afiliado.getEstatus() == 3) {
 			afiliado.setEstatus(1);
-		}else if(afiliado.getEstatus() == 1) {
+		} else if (afiliado.getEstatus() == 1) {
 			afiliado.setEstatus(2);
 		}
-		
+
 		afiliadoService.save(afiliado);
 		status.setComplete();
-		
+
 		return "redirect:/afiliados/ver";
-		
-	}
-
-	/**
-	 * Método para calcular las fechas de inicio y corte
-	 * 
-	 * @param(periodicidad)
-	 */
-
-	private Date calcularFechas(Periodicidad periodo, Integer corte) {
-
-		int periodoTiempo;
-		int diaCorte;
-		Boolean isLeapYear;
-		
-		final Month FEBRERO = Month.FEBRUARY;
-
-		LocalDate tiempoActual = LocalDate.now();
-		LocalDate tiempoModificado = null;		
-		LocalDate fechaCorte = null;
-		
-		GregorianCalendar calendar = new GregorianCalendar();
-
-		switch (periodo.getNombre()) {
-		case "MENSUAL":
-
-			logger.info("Entra al perido MENSUAL");
-
-			periodoTiempo = 1;
-			diaCorte = corte;
-
-			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
-						
-			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
-				logger.info("Mes con 30 días");
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
-			}else {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			}
-			
-			break;
-
-		case "BIMESTRAL":
-
-			logger.info("Entra al perido BIMESTRAL");
-
-			periodoTiempo = 2;
-			diaCorte = corte;
-
-			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
-			
-			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
-				logger.info("Mes con 30 días");
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
-			}else {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			}
-
-			break;
-		case "TRIMESTRAL":
-
-			logger.info("Entra al perido TRIMESTRAL");
-
-			periodoTiempo = 3;
-			diaCorte = corte;
-
-			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth().plus(1), diaCorte);
-
-			break;
-		case "CUATRIMESTRAL":
-
-			logger.info("Entra al perido CUATRIMESTRAL");
-
-			periodoTiempo = 4;
-			diaCorte = corte;
-
-			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
-			
-			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
-				logger.info("Mes con 30 días");
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
-			}else {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			}
-
-			break;
-		case "SEMESTRAL":
-
-			logger.info("Entra al perido SEMESTRAL");
-
-			periodoTiempo = 6;
-			diaCorte = corte;
-
-			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
-			
-			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
-				logger.info("Mes con 30 días");
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
-			}else {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			}
-
-			break;
-		case "ANUAL":
-
-			logger.info("Entra al perido ANUAL");
-
-			periodoTiempo = 12;
-			diaCorte = corte;
-
-			tiempoModificado = tiempoActual.plusMonths(periodoTiempo);
-			isLeapYear = calendar.isLeapYear(tiempoModificado.getYear());
-			
-			if(validarMeses.has30Days(tiempoModificado.getMonth()) && diaCorte == 31) {
-				logger.info("Mes con 30 días");
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 30);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && isLeapYear && diaCorte == 31 || diaCorte == 30){
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 29);
-			}else if(validarMeses.isFebruary(tiempoModificado.getMonth()) && diaCorte == 31 || diaCorte == 30 || diaCorte == 29) {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), 28);
-			}else {
-				fechaCorte = LocalDate.of(tiempoModificado.getYear(), tiempoModificado.getMonth(), diaCorte);
-			}
-
-			break;
-
-		default:
-			new Exception();
-
-		}
-
-		return java.util.Date.from(fechaCorte.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
 	}
 
@@ -449,45 +299,45 @@ public class AfiliadoController {
 	public List<Servicio> getAllServicios() {
 		return servicioService.findAll();
 	}
-	
+
 	/**
 	 * Método para mostrar los servicios Dentro del list box de crear afiliados
 	 * 
 	 * @param(name = "promotores")
 	 */
-	
+
 	@ModelAttribute("promotores")
-	public List<Promotor> getAllPromotores(){
+	public List<Promotor> getAllPromotores() {
 		return promotorService.findAll();
 	}
-	
+
 	/**
 	 * Método para mostrar los servicios Dentro del list box de crear afiliados
 	 * 
 	 * @param(name = "cuentas")
 	 */
-	
+
 	@ModelAttribute("cuentas")
-	public List<Cuenta> getAllCuentas(){
+	public List<Cuenta> getAllCuentas() {
 		return cuentaService.findAll();
 	}
-	
+
 	/**
 	 * Método para asignar una clave para el Afiliado
 	 * 
 	 * @param(name = "clave")
 	 */
-	
+
 	@ModelAttribute("clave")
 	public String getClaveAfiliado() {
-		
+
 		String clave = "0123456789";
 		String claveAfiliado = "";
-		
-		for(int i = 0; i < 10; i++) {
-			claveAfiliado += (clave.charAt((int)(Math.random() * clave.length())));
+
+		for (int i = 0; i < 10; i++) {
+			claveAfiliado += (clave.charAt((int) (Math.random() * clave.length())));
 		}
-		
+
 		return claveAfiliado;
 	}
 

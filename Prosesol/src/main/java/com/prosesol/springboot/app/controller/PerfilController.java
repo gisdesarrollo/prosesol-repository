@@ -70,10 +70,14 @@ public class PerfilController {
 			return "catalogos/perfiles/crear";
 		}
 		
-		String flashMessage = (perfil.getId() != null) ? "Perfil editado con éxito" : "Perfil creado con éxito";
+		if(perfil.getId() != null) {
+			logger.info("Perfil editado con éxito");
+		}else {
+			perfil.setEstatus(true);
+			logger.info("Perfil creado con éxito");
+		}	
 		
 		perfilService.save(perfil);
-		redirect.addFlashAttribute("success", flashMessage);
 		status.setComplete();
 		
 		return "redirect:/perfiles/ver";
@@ -97,10 +101,25 @@ public class PerfilController {
 		}
 		
 		model.put("titulo", "Editar perfil");
+		model.put("roles", roleService.findAll());
 		model.put("perfil", perfil);
 		
 		return "catalogos/perfiles/editar";
 		
+	}
+	
+	@RequestMapping(value = "/borrar/{id}")
+	public String borrar(@PathVariable("id")Long id, RedirectAttributes redirect) {
+		
+		logger.info("Id de Perfil: " + id);
+		
+		if(id > 0) {
+			
+			perfilService.deleteById(id);			
+			logger.info("El perfil se ha borrado correctamente");
+		}
+		
+		return "redirect:/perfiles/ver";
 	}
 	
 }
