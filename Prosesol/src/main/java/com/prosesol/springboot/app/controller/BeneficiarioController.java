@@ -30,7 +30,7 @@ import com.prosesol.springboot.app.service.IServicioService;
 import com.prosesol.springboot.app.util.Paises;
 
 @Controller
-@SessionAttributes("beneficiario")
+@SessionAttributes("afiliado")
 @RequestMapping("/beneficiarios")
 public class BeneficiarioController {
 
@@ -51,14 +51,14 @@ public class BeneficiarioController {
 	
 	private static Long idAfiliado;
 	
-	@RequestMapping(value = "/crear/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/crear/{id}")
 	public String crear(@PathVariable("id")Long id, Map<String, Object> model) {
 		
 		idAfiliado = id;
 		
 		Afiliado beneficiario = new Afiliado();
 		
-		model.put("beneficiario", beneficiario);
+		model.put("afiliado", beneficiario);
 		model.put("titulo", "Crear Beneficiario");
 
 		return "catalogos/beneficiarios/crear";
@@ -68,7 +68,8 @@ public class BeneficiarioController {
 	public String guardar(@Valid Afiliado afiliado, BindingResult result, Model model, 
 						  RedirectAttributes redirect, SessionStatus status) {
 		
-		System.out.println(idAfiliado);
+		System.out.println(afiliado.toString());
+		afiliado.setEstatus(3);
 		
 		System.out.println("Guardar beneficiario");
 		
@@ -82,7 +83,7 @@ public class BeneficiarioController {
 		
 		afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 		afiliado.setIsBeneficiario(true);
-		afiliado.setEstatus(3);
+		
 		
 		afiliadoService.save(afiliado);
 		guardarRelAfiliadoBeneficiario(afiliado, idAfiliado);
@@ -159,5 +160,24 @@ public class BeneficiarioController {
 	@ModelAttribute("cuentas")
 	public List<Cuenta> getAllCuentas(){
 		return cuentaService.findAll();
+	}
+	
+	/**
+	 * Método para asignar una clave para el Afiliado
+	 * 
+	 * @param(name = "clave")
+	 */
+	
+	@ModelAttribute("clave")
+	public String getClaveAfiliado() {
+		
+		String clave = "0123456789";
+		String claveAfiliado = "";
+		
+		for(int i = 0; i < 10; i++) {
+			claveAfiliado += (clave.charAt((int)(Math.random() * clave.length())));
+		}
+		
+		return claveAfiliado;
 	}
 }

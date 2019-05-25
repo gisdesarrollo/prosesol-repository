@@ -10,7 +10,7 @@ public interface IPerfilService {
 	
 	public void save(Perfil perfil);
 	
-	public void delete(Long id);
+	public void deleteById(Long id);
 	
 	public Perfil findById(Long id);
 	

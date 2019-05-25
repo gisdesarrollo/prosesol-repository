@@ -4,9 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -18,13 +21,15 @@ public class Role implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_role", unique = true, nullable = false)
 	private Long id;
-	
-	@Column(name = "id_perfil")
-	private Long idPerfil;
-	
+		
 	@Column(name = "nombre")
 	private String nombre;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_perfil")
+	private Perfil perfil;
 
 	public Long getId() {
 		return id;
@@ -42,28 +47,12 @@ public class Role implements Serializable{
 		this.nombre = nombre;
 	}	
 
-	public Long getIdPerfil() {
-		return idPerfil;
+	public Perfil getPerfil() {
+		return perfil;
 	}
 
-	public void setIdPerfil(Long idPerfil) {
-		this.idPerfil = idPerfil;
-	}
-
-	@Override
-	public String toString() {
-		
-		final StringBuilder builder = new StringBuilder();
-		
-		builder.append("\nId Rol: [").append(idPerfil).append("]\n")
-			   .append("Role name: [")
-			   .append(nombre)
-			   .append("]\n");
-		
-		return builder.toString();
-	}
-
-	
-	
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
+	}	
 	
 }

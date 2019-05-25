@@ -1,6 +1,16 @@
-$('table').dataTable({
-    dom: 'Bfrtip',
-    buttons: ['excel']
+$(document).ready(function() {
+    var table = $('.table').DataTable( {
+        lengthChange: false,
+        buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+    } );
+ 
+    table.buttons().container()
+        .appendTo( '#example_wrapper .col-sm-6:eq(0)' );
+} );
+
+//$('table').dataTable({
+//    dom: 'Bfrtip',
+//    buttons: ['excel']
 //    "language": {
 //        "search": "Buscar:",
 //        "emptyTable": "No hay registros en la tabla",
@@ -16,4 +26,4 @@ $('table').dataTable({
 //            last: 'Ultima'
 //        }
 //    }
-});	
+//});	

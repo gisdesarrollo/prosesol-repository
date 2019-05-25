@@ -27,6 +27,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.prosesol.springboot.app.annotation.NSSConstraint;
+
 @Entity
 @Table(name = "afiliados")
 public class Afiliado implements Serializable {
@@ -84,6 +86,7 @@ public class Afiliado implements Serializable {
 
 	@Column(name = "nss")
 	@NotNull(message = "{TextField.nss.empty.afiliado.message}")
+	@NSSConstraint
 	private Long nss;
 
 	@Column(name = "rfc")
@@ -146,9 +149,8 @@ public class Afiliado implements Serializable {
 	@Column(name = "saldo_corte")
 	private Double saldoCorte;
 
+	@NotNull
 	@Column(name = "estatus", length = 1)
-	@Min(1)
-	@Max(3)
 	private int estatus;
 
 	@Column(name = "inscripcion")

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,8 +40,8 @@ public class Perfil implements Serializable {
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "perfiles")
 	private Set<Usuario> usuarios;
 
-	@OneToMany
-	@JoinColumn(name = "id_perfil")
+	@OneToMany(mappedBy = "perfil", fetch = FetchType.LAZY,
+			   cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<Role> roles;
 
 	public Perfil() {
