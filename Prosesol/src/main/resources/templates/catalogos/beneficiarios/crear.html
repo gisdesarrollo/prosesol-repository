@@ -30,7 +30,7 @@
 								<hr>
 								<div class="row">
 									<div class="col-md-12">
-										<form class="user" th:action="@{/beneficiarios/crear}"
+										<form class="formInput" th:action="@{/beneficiarios/crear}"
 											th:object="${afiliado}" method="post">
 											<div class="row">
 												<div class="form-group col-md-3">
@@ -139,25 +139,17 @@
 
 												<div class="form-group col-md-3">
 													<label for="company">Curp</label><input type="text"
-														th:field="*{curp}" class="form-control form-control-user"
-														id="curpText"><small
+														th:field="*{curp}" class="form-control form-control-user curpText"
+														><small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('curp')}" th:errors="*{curp}"
 														id="smallCurp"></small>
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Número de seguridad social</label><input
-														type="text" th:field="*{nss}"
-														class="form-control form-control-user" id="nssText">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('nss')}" th:errors="*{nss}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
 													<label for="company">Registro Federal del
 														Contribuyente</label><input type="text" th:field="*{rfc}"
-														class="form-control form-control-user" id="rfcText">
+														class="form-control form-control-user rfcText">
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('rfc')}" th:errors="*{rfc}"></small>
 												</div>
