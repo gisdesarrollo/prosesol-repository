@@ -59,7 +59,7 @@ $( document ).ready(function() {
         maxDate: "today"
     });
 	
-	$('#curpText').keypress(function(e){
+	$('.curpText').keypress(function(e){
 		
 		var max = 18;
 		
@@ -74,7 +74,7 @@ $( document ).ready(function() {
 		
 	});
 		
-	$('#nssText').keypress(function(e){
+	$('.nssText').keypress(function(e){
 		
 		var max = 11;
 		
@@ -88,7 +88,7 @@ $( document ).ready(function() {
 		}
 	});
 	
-	$('#rfcText').keypress(function(e){
+	$('.rfcText').keypress(function(e){
 		
 		var max = 13;
 		

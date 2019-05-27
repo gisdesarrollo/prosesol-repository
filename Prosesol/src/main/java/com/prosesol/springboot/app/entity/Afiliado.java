@@ -85,8 +85,8 @@ public class Afiliado implements Serializable {
 	private String curp;
 
 	@Column(name = "nss")
-	@NotNull(message = "{TextField.nss.empty.afiliado.message}")
-	@NSSConstraint
+//	@NotNull(message = "{TextField.nss.empty.afiliado.message}")
+//	@NSSConstraint
 	private Long nss;
 
 	@Column(name = "rfc")

@@ -1,10 +1,13 @@
 package com.prosesol.springboot.app.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +30,7 @@ import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
 import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
+import com.prosesol.springboot.app.util.CalcularFecha;
 import com.prosesol.springboot.app.util.Paises;
 
 @Controller
@@ -34,6 +38,8 @@ import com.prosesol.springboot.app.util.Paises;
 @RequestMapping("/beneficiarios")
 public class BeneficiarioController {
 
+	protected Log logger = LogFactory.getLog(BeneficiarioController.class);
+	
 	@Autowired
 	private IAfiliadoService afiliadoService;
 	
@@ -49,12 +55,16 @@ public class BeneficiarioController {
 	@Autowired
 	private ICuentaService cuentaService;
 	
+	@Autowired
+	private CalcularFecha calcularFechas;
+	
 	private static Long idAfiliado;
 	
 	@RequestMapping(value = "/crear/{id}")
 	public String crear(@PathVariable("id")Long id, Map<String, Object> model) {
 		
 		idAfiliado = id;
+		System.out.println(idAfiliado);
 		
 		Afiliado beneficiario = new Afiliado();
 		
@@ -65,29 +75,43 @@ public class BeneficiarioController {
 	}
 	
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Afiliado afiliado, BindingResult result, Model model, 
+	public String guardar(@ModelAttribute("clave") String clave,
+						  @Valid Afiliado afiliado, BindingResult result, Model model, 
 						  RedirectAttributes redirect, SessionStatus status) {
 		
-		System.out.println(afiliado.toString());
-		afiliado.setEstatus(3);
+		System.out.println(idAfiliado);
 		
-		System.out.println("Guardar beneficiario");
-		
-		if(result.hasErrors()) {
-			System.out.println("Error en el proceso");
-			model.addAttribute("titulo", "Crear Beneficiario");
-			return "catalogos/beneficiarios/crear";
+		Date fechaAlta = new Date();
+		Periodicidad periodicidad = new Periodicidad();		
+		try {
+			
+			if(result.hasErrors()) {
+				System.out.println("Error en el proceso");
+				model.addAttribute("titulo", "Crear Beneficiario");
+				return "catalogos/beneficiarios/crear";
+			}
+			
+			periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
+			
+			Date fechaCorte = calcularFechas.calcularFechas(periodicidad, afiliado.getCorte());
+			
+			afiliado.setFechaCorte(fechaCorte);
+			afiliado.setEstatus(3);
+			afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
+			afiliado.setIsBeneficiario(true);
+			afiliado.setClave(clave);
+			afiliado.setFechaAlta(fechaAlta);
+			
+			
+			afiliadoService.save(afiliado);
+			guardarRelAfiliadoBeneficiario(afiliado, idAfiliado);
+			status.setComplete();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Error al momento de ejecutar el proceso: " + e);
+			return "/error/error_500";
 		}
-		
-//		String flashMessage = (afiliado.getId() != null) ? "Registro creado con éxito" : "Registro editado con éxito";
-		
-		afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
-		afiliado.setIsBeneficiario(true);
-		
-		
-		afiliadoService.save(afiliado);
-		guardarRelAfiliadoBeneficiario(afiliado, idAfiliado);
-		status.setComplete();
 		
 		return "redirect:/afiliados/detalle/" + idAfiliado;
 		
