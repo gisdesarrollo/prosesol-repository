@@ -1,11 +1,10 @@
 $(document).ready(function() {
-    var table = $('.table').DataTable( {
-        lengthChange: false,
-        buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
-    } );
- 
-    table.buttons().container()
-        .appendTo( '#example_wrapper .col-sm-6:eq(0)' );
+	 var table = $('#dataTable').DataTable( {
+	        lengthChange: false
+	    } );
+	 
+	    table.buttons().container()
+	        .appendTo( '#dataTable_wrapper .col-md-6:eq(0)' );
 } );
 
 //$('table').dataTable({

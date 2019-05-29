@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.controller;
 
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
@@ -9,11 +10,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -27,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Afiliado;
@@ -44,6 +59,7 @@ import com.prosesol.springboot.app.util.CalcularFecha;
 import com.prosesol.springboot.app.util.Mail;
 import com.prosesol.springboot.app.util.Paises;
 import com.prosesol.springboot.app.validator.ValidarMesesImpl;
+import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 
 @Controller
 @SessionAttributes("afiliado")
@@ -51,8 +67,7 @@ import com.prosesol.springboot.app.validator.ValidarMesesImpl;
 public class AfiliadoController {
 
 	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
-
-	private static String bandera = "inscripcion";
+	private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT);
 
 	@Autowired
 	private IAfiliadoService afiliadoService;
@@ -73,10 +88,13 @@ public class AfiliadoController {
 	private IEmailService emailService;
 
 	@Autowired
-	private ValidarMesesImpl validarMeses;
+	private CalcularFecha calcularFechas;
 
 	@Autowired
-	private CalcularFecha calcularFechas;
+	private ReportesExcelImpl reportesExcelImpl;
+	
+	@Value("${app.clave}")
+	private String clave;
 
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
@@ -170,7 +188,6 @@ public class AfiliadoController {
 
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
-
 				Date fechaCorte = calcularFechas.calcularFechas(periodicidad, afiliado.getCorte());
 
 				afiliado.setFechaCorte(fechaCorte);
@@ -255,6 +272,19 @@ public class AfiliadoController {
 		return "redirect:/afiliados/ver";
 
 	}
+	
+	/**
+	 * Descargar Excel
+	 */
+	
+	@Secured("ROLE_ADMINISTRADOR")
+	@GetMapping("/descargar")
+	public void descargar(HttpServletResponse response) throws Exception {
+
+		List<Afiliado> afiliados = afiliadoService.findAll();
+		reportesExcelImpl.generarReporteAfiliadoXlsx(afiliados, response);
+	}
+	
 
 	/**
 	 * Método para mostrar los periodos Dentro del list box de crear afiliados
@@ -331,7 +361,6 @@ public class AfiliadoController {
 	@ModelAttribute("clave")
 	public String getClaveAfiliado() {
 
-		String clave = "0123456789";
 		String claveAfiliado = "";
 
 		for (int i = 0; i < 10; i++) {

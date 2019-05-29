@@ -29,15 +29,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 									th:href="@{/afiliados/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
 									class="fas fa-user-plus"></i> Nuevo Afiliado</a>
-
+								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+									th:href="@{/afiliados/descargar}"
+									class="btn btn-square btn-success btn-xs float-right"><i
+									class="fas"></i>XSLX</a>
 								<div class="clearfix"></div>
 								<hr>
 
 								<div class="row">
 									<div class="col-md-12">
 
-										<table class="table table-bordered table-responsive" id="dataTable"
-											width="100%" cellspacing="0">
+										<table id="dataTable" class="table table-striped table-bordered" 
+											style="width:100%">
 											<thead>
 												<tr>
 													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
