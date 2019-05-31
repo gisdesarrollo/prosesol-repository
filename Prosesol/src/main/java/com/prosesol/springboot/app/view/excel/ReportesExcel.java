@@ -65,9 +65,8 @@ public class ReportesExcel extends AbstractXlsxView{
 			courseRow.createCell(3).setCellValue(afiliado.getServicio().getNombre());
 			courseRow.createCell(4).setCellValue(afiliado.getSaldoAcumulado());
 			courseRow.createCell(5).setCellValue(afiliado.getSaldoCorte());
-			courseRow.createCell(6).setCellValue(DATE_FORMAT.format(afiliado.getFechaInicioServicio()));
-			courseRow.createCell(7).setCellValue(DATE_FORMAT.format(afiliado.getFechaCorte()));
 			courseRow.createCell(8).setCellValue(DATE_FORMAT.format(afiliado.getFechaAfiliacion()));
+			courseRow.createCell(7).setCellValue(DATE_FORMAT.format(afiliado.getFechaCorte()));			
 			courseRow.createCell(9).setCellValue(afiliado.getPeriodicidad().getNombre());
 			courseRow.createCell(10).setCellValue(afiliado.getEmail());
 		}

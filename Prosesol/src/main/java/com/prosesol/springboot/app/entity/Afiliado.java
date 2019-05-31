@@ -64,7 +64,7 @@ public class Afiliado implements Serializable {
 	@Column(name = "lugar_nacimiento")
 	private String lugarNacimiento;
 
-	@Column(name = "estado_civil", length = 10)
+	@Column(name = "estado_civil", length = 11)
 	private String estadoCivil;
 
 	@Column(name = "dependientes")
@@ -129,19 +129,14 @@ public class Afiliado implements Serializable {
 	private Date fechaAlta;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_inicio_servicio")
+	@Column(name = "fecha_afiliacion")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date fechaInicioServicio;
-
+	private Date fechaAfiliacion;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_corte")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaCorte;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_afiliacion")
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date fechaAfiliacion;
 
 	@Column(name = "saldo_acumulado")
 	private Double saldoAcumulado;
@@ -161,7 +156,6 @@ public class Afiliado implements Serializable {
 	@JoinColumn(name = "id_servicio")
 	private Servicio servicio;
 
-	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_periodicidad")
 	private Periodicidad periodicidad;
@@ -388,14 +382,6 @@ public class Afiliado implements Serializable {
 
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
-	}
-
-	public Date getFechaInicioServicio() {
-		return fechaInicioServicio;
-	}
-
-	public void setFechaInicioServicio(Date fechaInicioServicio) {
-		this.fechaInicioServicio = fechaInicioServicio;
 	}
 
 	public Date getFechaCorte() {

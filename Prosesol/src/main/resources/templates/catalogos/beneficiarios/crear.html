@@ -147,8 +147,7 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Registro Federal del
-														Contribuyente</label><input type="text" th:field="*{rfc}"
+													<label for="company">RFC</label><input type="text" th:field="*{rfc}"
 														class="form-control form-control-user rfcText">
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('rfc')}" th:errors="*{rfc}"></small>
@@ -250,16 +249,6 @@
 												</div>
 												
 												<div class="form-group col-md-3">
-													<label for="company">Fecha de Inicio de Servicios</label> <input
-														type="text" th:field="*{fechaInicioServicio}"
-														class="form-control form-control-user" id="fechaInicioServicio"
-														placeholder=""> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('fechaInicioServicio')}"
-														th:errors="*{fechaInicioServicio}"></small>
-												</div>
-												
-												<div class="form-group col-md-3">
 													<label for="company">Fecha de Afiliacion</label> <input
 														type="text" th:field="*{fechaAfiliacion}"
 														class="form-control form-control-user" id="fechaAfiliacion"
@@ -269,7 +258,7 @@
 														th:errors="*{fechaAfiliacion}"></small>
 												</div>
 												
-												<div class="form-group col-md-3">
+												<!-- <div class="form-group col-md-3">
 													<label for="company">Fecha de Corte</label> 
 													<select	name ="corte" th:field="*{corte}" class="custom-select"
 														id="inputGroupSelect01">
@@ -295,7 +284,7 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('periodicidad')}"
 														th:errors="*{periodicidad}"></small>
-												</div>
+												</div> -->
 
 												<div class="form-group col-md-3">
 													<label for="company">Comentarios</label><input type="text"

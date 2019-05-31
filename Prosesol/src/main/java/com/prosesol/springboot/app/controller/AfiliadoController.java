@@ -67,7 +67,6 @@ import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 public class AfiliadoController {
 
 	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
-	private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT);
 
 	@Autowired
 	private IAfiliadoService afiliadoService;
@@ -264,6 +263,8 @@ public class AfiliadoController {
 			afiliado.setEstatus(1);
 		} else if (afiliado.getEstatus() == 1) {
 			afiliado.setEstatus(2);
+		}else if (afiliado.getEstatus() == 2) {
+			afiliado.setEstatus(1);
 		}
 
 		afiliadoService.save(afiliado);

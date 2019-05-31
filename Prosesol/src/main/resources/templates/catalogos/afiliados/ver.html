@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="fragments/head :: head"></head>
@@ -54,9 +54,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<th>Servicio</th>
 													<th>Saldo acumulado</th>
 													<th>Saldo al Corte</th>
-													<th>Fecha Inicio Servicio</th>
-													<th>Fecha de corte</th>
 													<th>Fecha de Afiliación</th>
+													<th>Fecha de corte</th>
 													<th>Periodo</th>
 													<th>Email</th>
 													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
@@ -82,12 +81,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 													<td th:text="${afiliado.servicio.nombre}"></td>
 													<td th:text="${afiliado.saldoAcumulado}"></td>
 													<td th:text="${afiliado.saldoCorte}"></td>
+													<td th:text="${afiliado.fechaAfiliacion}"></td>
 													<td th:if="${afiliado.isBeneficiario}">N/A</td>
-													<td th:unless="${afiliado.isBeneficiario}" style="color: #4a9252" th:text="${afiliado.fechaInicioServicio}"></td>
-													<td th:if="${afiliado.isBeneficiario}">N/A</td>
-													<td th:unless="${afiliado.isBeneficiario}" style="color: #ea3808" th:text="${afiliado.fechaCorte}"></td>
-													<td th:if="${afiliado.isBeneficiario}">N/A</td>
-													<td th:unless="${afiliado.isBeneficiario}" th:text="${afiliado.fechaAfiliacion}"></td>
+													<td th:unless="${afiliado.isBeneficiario}" style="color: #ea3808" th:text="${afiliado.fechaCorte}"></td>													
 													<td th:if="${afiliado.isBeneficiario}">N/A</td>
 													<td th:unless="${afiliado.isBeneficiario}" th:text="${afiliado.periodicidad.nombre}"></td>													
 													<td th:text="${afiliado.email}"></td>
@@ -111,6 +107,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 																<a class="dropdown-item"
 																   th:href="@{/afiliados/ver/} + ${afiliado.id}"
 																   th:if="${afiliado.estatus == 3}" th:text="Activar"></a>
+																<a class="dropdown-item"
+																   th:href="@{/afiliados/ver/} + ${afiliado.id}"
+																   th:if="${afiliado.estatus == 2}" th:text="Activar"></a>	
 																<a class="dropdown-item"
 																   th:href="@{/afiliados/ver/} + ${afiliado.id}"
 																   th:if="${afiliado.estatus == 1}" th:text="Desactivar"></a>																
