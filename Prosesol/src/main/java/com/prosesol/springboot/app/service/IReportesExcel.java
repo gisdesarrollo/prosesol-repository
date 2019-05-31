@@ -12,6 +12,8 @@ public interface IReportesExcel {
 	
 	public void generarReporteAfiliadoXls(List<Afiliado> afiliados, HttpServletResponse response);
 	
-	public void generarTemplateAfiliadoXlsx(IAfiliadoService afiliadoService, HttpServletResponse response);
+	public void generarTemplateAfiliadoXlsx(IAfiliadoService afiliadoService, IPeriodicidadService periodicidadService, 
+											IServicioService servicioService, IPromotorService promotorService, 
+											ICuentaService cuentaService, HttpServletResponse response);
 	
 }

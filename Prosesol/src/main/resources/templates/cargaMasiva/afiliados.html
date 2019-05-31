@@ -26,7 +26,25 @@
 								<p>Carga masiva de Afiliados</p>
 								<div class="clearfix"></div>
 								<hr>
-								<a th:href="@{/cargaMasiva/templateXlsx}">Descargue Template</a>
+								<div class="row">
+									<div class="col-md-12">
+										<form th:action="@{/cargaMasiva/upload}" method="post" enctype="multipart/form-data">
+											<b>1.- Descargue la <a th:href="@{/cargaMasiva/templateXlsx}">plantilla</a> para realizar la carga masiva de Afiliados</b>
+											<br>
+											<b>2.- Cargue la plantilla con los datos del afiliado que desee guardar en el sistema </b>
+											<div>
+												<input type="file" name="file"/>
+											</div>
+											<hr>
+											<div class="clearfix"></div>
+											<div class="row">
+												<div class="col-sm-12">
+													<button type="submit" class="btn btn-primary btn-square float-right">Cargar Archivo</button>
+												</div>
+											</div>											
+										</form>
+									</div>
+								</div>									
 							</div>
 						</div>
 					</div>

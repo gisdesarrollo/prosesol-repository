@@ -82,7 +82,7 @@ public class BeneficiarioController {
 		System.out.println(idAfiliado);
 		
 		Date fechaAlta = new Date();
-		Periodicidad periodicidad = new Periodicidad();		
+//		Periodicidad periodicidad = new Periodicidad();		
 		try {
 			
 			if(result.hasErrors()) {
@@ -91,11 +91,11 @@ public class BeneficiarioController {
 				return "catalogos/beneficiarios/crear";
 			}
 			
-			periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
-			
-			Date fechaCorte = calcularFechas.calcularFechas(periodicidad, afiliado.getCorte());
-			
-			afiliado.setFechaCorte(fechaCorte);
+//			periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
+//			
+//			Date fechaCorte = calcularFechas.calcularFechas(periodicidad, afiliado.getCorte());
+//			
+//			afiliado.setFechaCorte(fechaCorte);
 			afiliado.setEstatus(3);
 			afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 			afiliado.setIsBeneficiario(true);

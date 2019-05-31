@@ -155,8 +155,7 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Registro Federal del
-														Contribuyente</label><input type="text" th:field="*{rfc}"
+													<label for="company">RFC</label><input type="text" th:field="*{rfc}"
 														class="form-control form-control-user rfcText">
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('rfc')}" th:errors="*{rfc}"></small>
@@ -255,16 +254,6 @@
 													<small class="form-text text-danger"
 														th:if="${#fields.hasErrors('servicio')}"
 														th:errors="*{servicio}"></small>
-												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Fecha de Inicio de Servicios</label> <input
-														type="text" th:field="*{fechaInicioServicio}"
-														class="form-control form-control-user" id="fechaInicioServicio"
-														placeholder=""> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('fechaInicioServicio')}"
-														th:errors="*{fechaInicioServicio}"></small>
 												</div>
 												
 												<div class="form-group col-md-3">
