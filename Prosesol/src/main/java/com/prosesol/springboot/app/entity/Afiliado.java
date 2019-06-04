@@ -1,8 +1,8 @@
 package com.prosesol.springboot.app.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -31,13 +32,11 @@ import com.prosesol.springboot.app.annotation.NSSConstraint;
 
 @Entity
 @Table(name = "afiliados")
-public class Afiliado implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class Afiliado{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_afiliado", unique = true, nullable = false)
+	@Column(name = "id_afiliado")
 	private Long id;
 
 	@Column(name = "clave")
@@ -515,5 +514,5 @@ public class Afiliado implements Serializable {
 
 		return builder.toString();
 	}
-
+	
 }
