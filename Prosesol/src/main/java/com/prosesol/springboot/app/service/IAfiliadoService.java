@@ -26,4 +26,6 @@ public interface IAfiliadoService {
 	public List<Paises> getAllPaises();
 	
 	public String[] getVariablesAfiliado();	
+	
+	public Long getIdAfiliadoByRfc(String rfc);
 }

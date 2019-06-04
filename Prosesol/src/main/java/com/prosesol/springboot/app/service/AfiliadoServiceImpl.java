@@ -95,6 +95,12 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 		return variablesAfiliado;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Long getIdAfiliadoByRfc(String rfc) {
+		return iAfiliadoDao.getIdAfiliadoByRfc(rfc);
+	}
+
 	
 
 }
