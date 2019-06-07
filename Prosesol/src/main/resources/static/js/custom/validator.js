@@ -11,33 +11,7 @@ $('.formInput').submit(function(e){
 	var curpLength = 18;
 	var nssLength = 11;
 	var rfcLength = 13;
-	
-	if(!$('.curpText').val()){
 		
-		curpText.remove();
-		
-		if($('.curpText').after().next('.validation').length == 0){
-			$('.curpText').after("<span class='validation' style='color:red;margin-bottom: 20px;'>Campo requerido</span>");
-		}
-		e.preventDefault();	
-	}else if($('.curpText').val().length > 0){
-		
-		curpText.remove();
-		var inputLength = $('.curpText').val().length;		
-		
-		if(inputLength < curpLength){
-			$('.curpText').after("<span class='validation' style='color:red;margin-bottom: 20px;'>El curp no cumple con la longitud correcta</span>");
-			e.preventDefault();	
-		}
-		
-		if(!focusSet){
-			$('.rfcText').focus();
-		}
-		
-	}else{
-		return true;
-	}
-	
 	if(!$('.rfcText').val()){
 		
 		rfcText.remove();
@@ -91,6 +65,24 @@ $('.formInput').submit(function(e){
 				$('.nssText').focus();
 			}		
 		}
+	}
+	
+	if($('.curpText').val().length > 0){
+		
+		curpText.remove();
+		var inputLength = $('.curpText').val().length;		
+		
+		if(inputLength < curpLength){
+			$('.curpText').after("<span class='validation' style='color:red;margin-bottom: 20px;'>El curp no cumple con la longitud correcta</span>");
+			e.preventDefault();	
+		}
+		
+		if(!focusSet){
+			$('.rfcText').focus();
+		}
+		
+	}else{
+		return true;
 	}
 	
 });

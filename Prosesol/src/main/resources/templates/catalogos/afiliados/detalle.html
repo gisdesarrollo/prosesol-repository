@@ -77,11 +77,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="beneficiario: ${beneficiarios}">
-									<td th:text="${beneficiario.id}"></td>
-									<td th:text="${beneficiario.nombre}"></td>
-									<td th:text="${beneficiario.apellidoPaterno}"></td>
-									<td th:text="${beneficiario.apellidoMaterno}"></td>
+								<tr th:each="afiliado : ${beneficiarios}">
+									<td th:text="${afiliado.id}"></td>
+									<td th:text="${afiliado.nombre}"></td>
+									<td th:text="${afiliado.apellidoPaterno}"></td>
+									<td th:text="${afiliado.apellidoMaterno}"></td>
 								</tr>
 							</tbody>
 
