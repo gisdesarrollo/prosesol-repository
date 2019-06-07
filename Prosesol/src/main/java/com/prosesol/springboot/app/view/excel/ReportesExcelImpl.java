@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -599,9 +598,7 @@ public class ReportesExcelImpl implements IReportesExcel {
 	 * @throws ParseException 
 	 */
 
-	public void leerArchivoCargaMasiva(XSSFWorkbook workbook) throws ParseException {
-
-		Afiliado afiliado = new Afiliado();
+	public void leerArchivoCargaMasiva(XSSFWorkbook workbook){
 
 		long startTime = System.nanoTime();
 

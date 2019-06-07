@@ -6,7 +6,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <body
 	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-	<header th:replace="fragments/header :: header"></header>
+	
+	<header th:replace="fragments/header :: header"></header>	
 	<div class="app-body">
 		<div th:replace="fragments/sidebar :: sidebar"></div>
 
@@ -17,13 +18,16 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 			<li class="breadcrumb-item active">Catálogos</li>
 			<li class="breadcrumb-item active">Afiliados</li>
 		</ol>
+		
+		<!-- <div th:replace="fragments/navbar :: div-messages"></div> -->
 
 		<div class="container-fluid">
 			<div class="animated fadeIn">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">Afiliados</div>
+						<div class="card">						
+						<div th:replace="fragments/navbar :: div-messages"></div>
+							<div class="card-header">Afiliados</div>							
 							<div class="card-body">
 								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 									th:href="@{/afiliados/crear}"
@@ -101,8 +105,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 																	th:href="@{/afiliados/eliminar/} + ${afiliado.id}"
 																	th:text="'Borrar'"
 																	onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">
-																</a> <a class="dropdown-item"
-																	th:href="@{/beneficiarios/crear/} + ${afiliado.id}">Agregar
+																</a> 
+																<a class="dropdown-item"
+																	th:href="@{/beneficiarios/crear/} + ${afiliado.id}"
+																	th:if="${not afiliado.isBeneficiario}">Agregar
 																	Beneficiario </a>
 																<a class="dropdown-item"
 																   th:href="@{/afiliados/ver/} + ${afiliado.id}"

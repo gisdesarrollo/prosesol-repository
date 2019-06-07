@@ -1,10 +1,6 @@
-insert into afiliados values(1, 'Soriano', 'Morales', '3672679273', 52953, 'No cuenta con NSS','MOSL891031HMCRRS09', 'Coahuila 4', 'dean.kikin@gmail.com', 'MEX', 'Soltero', 3, '2019/04/12', '2019/05/11', '2019/04/23', '1989/10/31',  null, 200.00, false, 'Tlalneapantla Edo. de Méx.', 'Atizapán de Zaragoza', 'Luis Enrique', 912939764839, 0, null, 'Desarrollador', 'MEX', 'MOSL891031CBZ', 1100.00, 2000.00,'M', 5558257904, 5532255338, null, 2, 3, 1);
-insert into afiliados values(2, 'Pérez', 'Jiménez', '7563749540', 52953, 'No cuenta con NSS', 'MOSL891031HMCRRS09', 'Coahuila 4', 'dean.kikin@gmail.com', 'MEX', 'Soltero', 3, '2019/04/12', '2019/05/11', '2019/04/23', '1989/10/31', null, 200.00, true,'Tlalneapantla Edo. de Méx.', 'Atizapán de Zaragoza', 'Alberto', 912939764839, 0, null, 'Desarrollador', 'MEX', 'MOSL891031CBB', 450.00, 450.00, 'M', 5558257904, 553225533, null, 3, 3, 2);
-insert into afiliados values(3, 'Soriano', 'Morales', '9490832023', 52953, 'No cuenta con NSS', 'MOSL891031HMCRRS09', 'Coahuila 4', 'dean.kikin@gmail.com', 'MEX', 'Soltero', 3, '2019/04/12', '2019/05/11', '2019/04/23', '1989/10/31', null, 200.00, true,'Tlalneapantla Edo. de Méx.', 'Atizapán de Zaragoza', 'María Fernanda', 912939764839, 0, null, 'Desarrollador', 'MEX', 'MOSL891031CBC', 450.00, 450.00, 'M', 5558257904, 5532255338, null, 3, 3, 2);
+INSERT INTO servicios(nombre, notas, costo, estatus)values('Ajustes Especiales', 'Ajustes especiales', 9.99, 1),('Prosesol total', 'Prosesol total', 19.99, 1),('Médica Prosesol', 'Médica Prosesol', 29.99, 1)
 
-insert into afiliados values(4, 'Fernández', 'Pérez', '4774919667', 52953, 'No cuenta con NSS', 'MOSL891031HMCRRS09', 'Coahuila 4', 'luisenrique.moralessoriano@gmail.com', 'MEX', 'Soltero', 1, '2019/04/12', '2019/05/07', '2019/04/23', '1989/10/31', null, 150.00, false, 'Tlalneapantla Edo. de Méx.', 'Atizapán de Zaragoza', 'Javier', 912939764839, 0, null, 'Desarrollador', 'MEX', 'MOSL891031CBD', 2500.00, 4000.00, 'M', 5558257904, 5532255338, 4, 1, 5, 3);
-insert into afiliados values(5, 'García', 'Sánchez', '8717491020', 52953, 'No cuenta con NSS', 'MOSL891031HMCRRS09', 'Coahuila 4', 'dean.kikin@gmail.com', 'MEX', 'Soltero', 3, '2019/04/12', '2019/05/11', '2019/04/23', '1989/10/31', null, 150.00, true,'Tlalneapantla Edo. de Méx.', 'Atizapán de Zaragoza', 'Juan Carlos', 912939764839, 0, null, 'Desarrollador', 'MEX', 'MOSL891031CBE', 1000.00, 1000.00, 'M', 5558257904, 5532255338, 4, 2, 5, 2);
-insert into afiliados values(6, 'García', 'Sánchez', '0113262583', 52953, 'No cuenta con NSS', 'MOSL891031HMCRRS09', 'Coahuila 4', 'dean.kikin@gmail.com', 'MEX', 'Soltero', 3, '2019/04/12', '2019/05/11', '2019/04/23', '1989/10/31', null, 150.00, true,'Tlalneapantla Edo. de Méx.', 'Atizapán de Zaragoza', 'Juan Carlos', 912939764839, 0, null, 'Desarrollador', 'MEX', 'MOSL891031CBF', 3000.00, 1000.00, 'M', 5558257904, 5532255338, 4, 2, 5, 2);
+INSERT INTO periodicidades(nombre, periodo)values('MENSUAL', 'Mensual'),('ANUAL', 'anual'),('SEMESTRAL', 'Semestral');
 
 insert into promotores(nombre, apellido_paterno, apellido_materno, fecha_alta, edad, email, estatus) values('Cuenta Corporativa', 'N/A', 'N/A', '2019/05/08', null, 'N/A', true),('José Martín', 'Hernández', 'Sánchez', '2019/05/07', 25, 'martin@gmail.com', true),('Aldo', 'Contreras', 'Muñoz', '2019/05/07', 33, 'aldo@gmail.com', true),('Javier', 'Cisneros', 'Aguilar', '2019/05/07', 24, 'javier@gmail.com', true),('Estela', 'Reyes', 'Ocampo', '2019/05/07', 28, 'estela@gmail.com', true);
 
@@ -12,24 +8,15 @@ insert into cuentas_comerciales(razon_social, rfc, direccion, codigo_postal, pai
 
 insert into rel_promotores_cuentas(id_promotor, id_cta_comercial)values(2,3),(1,1),(1,2),(4,5);
 
-INSERT INTO rel_afiliados_beneficiarios (id_beneficiario, fecha_creacion, estatus, afiliado_id_afiliado) values(2, '2019/04/03', true, 1);
-INSERT INTO rel_afiliados_beneficiarios (id_beneficiario, fecha_creacion, estatus, afiliado_id_afiliado) values(3, '2019/04/03', true, 1);
-INSERT INTO rel_afiliados_beneficiarios (id_beneficiario, fecha_creacion, estatus, afiliado_id_afiliado) values(5, '2019/04/03', true, 4);
-INSERT INTO rel_afiliados_beneficiarios (id_beneficiario, fecha_creacion, estatus, afiliado_id_afiliado) values(6, '2019/04/03', true, 4);
-
 INSERT INTO `usuarios` (nombre, username, password, estatus) VALUES ('Luis Enrique Morales Soriano','luis','$2a$10$WkpRCpf0aldniENn8iNqwerl7FQTzaL.IhgLFE8NxK3b.RWZFEf0e',1);
 INSERT INTO `usuarios` (nombre, username, password, estatus) VALUES ('Administrador','admin','$2a$10$7fi8Xu09Nv.oxQb0cJ5xPOUBa/fueyDyHRtG9QwDIl85m0OCYO3Mm',1);
 
-INSERT INTO rel_usuarios_perfiles values(1,2),(2,1);
-
 INSERT INTO perfiles (nombre, descripcion, estatus) VALUES('admin', 'Administrador del sistema', 1),('user', 'Usuario Corporativo', 1);
+
+INSERT INTO rel_usuarios_perfiles(id_usuario, id_perfil) values(1,2),(2,1);
 
 INSERT INTO `roles` (id_perfil, nombre) VALUES (2,'ROLE_USUARIO');
 INSERT INTO `roles` (id_perfil, nombre) VALUES (1,'ROLE_ADMINISTRADOR');
-
-INSERT INTO servicios(nombre, notas, costo, estatus)values('Ajustes Especiales', 'Ajustes especiales', 9.99, 1),('Prosesol total', 'Prosesol total', 19.99, 1),('Médica Prosesol', 'Médica Prosesol', 29.99, 1)
-
-INSERT INTO periodicidades(nombre, periodo)values('MENSUAL', 'Mensual'),('ANUAL', 'anual'),('SEMESTRAL', 'Semestral');
 
 insert into cat_correos(tipo_correo, html)values('template', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"><head><title>Sending Email with Thymeleaf HTML Template Example</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css"/><!-- use the font --><style>body {font-family: "Roboto", sans-serif;font-size: 48px;}</style></head><body style="margin: 0; padding: 0;"><table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;"><tr><td align="center" style="padding: 40px 0 30px 0;"><img src="cid:suspensionHeader"/></td></tr><tr><td></td></tr><tr><td align="center" style="padding: 30px 30px 30px 30px;"><img src="cid:suspensionFooter"/></td></tr></table></body></html>');
 

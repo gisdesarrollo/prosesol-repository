@@ -18,7 +18,7 @@ public class BeneficiarioRepository {
 	
 	@Transactional
 	public void insertBeneficiario(Afiliado beneficiario, Long id) {
-		entity.createNativeQuery("insert into rel_afiliados_beneficiarios (id_beneficiario, estatus, fecha_creacion, afiliado_id_afiliado) values (?, ?, ?, ?)")
+		entity.createNativeQuery("insert into rel_afiliados_beneficiarios (id_beneficiario, estatus, fecha_creacion, id_afiliado) values (?, ?, ?, ?)")
 			  .setParameter(1, beneficiario.getId())
 			  .setParameter(2, true)
 			  .setParameter(3, new Date())

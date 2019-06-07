@@ -2,7 +2,6 @@ package com.prosesol.springboot.app.entity;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -20,15 +18,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.prosesol.springboot.app.annotation.NSSConstraint;
 
 @Entity
 @Table(name = "afiliados")
@@ -79,7 +73,7 @@ public class Afiliado{
 	private String pais;
 
 	@Column(name = "curp")
-	@NotEmpty(message = "{TextField.curp.empty.afiliado.message}")
+//	@NotEmpty(message = "{TextField.curp.empty.afiliado.message}")
 	@Size(min = 18, message = "{TextField.curp.min.afiliado.message}")
 	private String curp;
 
@@ -165,7 +159,8 @@ public class Afiliado{
 	@Column(name = "is_beneficiario")
 	private Boolean isBeneficiario;
 
-	@OneToMany(mappedBy = "afiliado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "id_afiliado")
 	private Set<Beneficiario> beneficiarios;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -189,7 +184,7 @@ public class Afiliado{
 
 	public void setBeneficiarios(Set<Beneficiario> beneficiarios) {
 		this.beneficiarios = beneficiarios;
-	}
+	}	
 
 	public Long getId() {
 		return id;

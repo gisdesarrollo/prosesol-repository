@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -67,6 +69,9 @@ import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 public class AfiliadoController {
 
 	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
+	
+	@Value("${app.clave}")
+	private String clave;
 
 	@Autowired
 	private IAfiliadoService afiliadoService;
@@ -92,8 +97,8 @@ public class AfiliadoController {
 	@Autowired
 	private ReportesExcelImpl reportesExcelImpl;
 	
-	@Value("${app.clave}")
-	private String clave;
+	@Autowired
+	private MessageSource messageSource;
 
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
@@ -106,13 +111,14 @@ public class AfiliadoController {
 	}
 
 	@GetMapping(value = "/detalle/{id}")
-	public String detalle(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
+	public String detalle(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect,
+			Locale locale) {
 
 		Afiliado afiliado = afiliadoService.findById(id);
 		List<Afiliado> beneficiarios = afiliadoService.getBeneficiarioByIdByIsBeneficiario(id);
 
 		if (afiliado == null) {
-			redirect.addFlashAttribute("error", "El id del afiliado no existe");
+			redirect.addFlashAttribute("error", messageSource.getMessage("text.afiliado.ver.db.error", null, locale));
 			return "redirect:/afiliados/ver";
 		}
 
@@ -126,7 +132,8 @@ public class AfiliadoController {
 
 	@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
 	@RequestMapping(value = "/editar/{id}")
-	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
+	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect,
+						Locale locale) {
 
 		logger.info("Editar afiliado: " + id);
 
@@ -135,7 +142,7 @@ public class AfiliadoController {
 		if (id > 0) {
 			afiliado = afiliadoService.findById(id);
 			if (afiliado == null) {
-				redirect.addFlashAttribute("Error: ", "El id del afiliado no existe");
+				redirect.addFlashAttribute("error", messageSource.getMessage("text.afiliado.ver.db.error", null, locale));
 				return "redirect:/afiliados/ver";
 			}
 		} else {

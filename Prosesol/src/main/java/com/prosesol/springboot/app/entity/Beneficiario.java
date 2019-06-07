@@ -5,11 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,8 +35,9 @@ public class Beneficiario implements Serializable {
 	@Column(name = "estatus")
 	private Boolean estatus;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Afiliado afiliado;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "id_afiliado")
+//	private Afiliado afiliado;
 
 	public Long getId() {
 		return id;
@@ -56,13 +55,13 @@ public class Beneficiario implements Serializable {
 		this.idBeneficiario = idBeneficiario;
 	}
 
-	public Afiliado getAfiliado() {
-		return afiliado;
-	}
-
-	public void setAfiliado(Afiliado afiliado) {
-		this.afiliado = afiliado;
-	}
+//	public Afiliado getAfiliado() {
+//		return afiliado;
+//	}
+//
+//	public void setAfiliado(Afiliado afiliado) {
+//		this.afiliado = afiliado;
+//	}
 
 	public Date getFechaCreacion() {
 		return fechaCreacion;
@@ -80,17 +79,17 @@ public class Beneficiario implements Serializable {
 		this.estatus = estatus;
 	}
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-
-		builder.append("\n Id beneficiario:").append(idBeneficiario)
-					  .append("\n Nombre Afiliado: ").append(afiliado.getNombre())
-					  .append("\n Apellido Paterno: ").append(afiliado.getApellidoPaterno())
-					  .append("\n Apellido Materno: ").append(afiliado.getApellidoMaterno());
-		
-		return builder.toString();
-
-	}
+//	@Override
+//	public String toString() {
+//		final StringBuilder builder = new StringBuilder();
+//
+//		builder.append("\n Id beneficiario:").append(idBeneficiario)
+//					  .append("\n Nombre Afiliado: ").append(afiliado.getNombre())
+//					  .append("\n Apellido Paterno: ").append(afiliado.getApellidoPaterno())
+//					  .append("\n Apellido Materno: ").append(afiliado.getApellidoMaterno());
+//		
+//		return builder.toString();
+//
+//	}
 
 }
