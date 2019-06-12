@@ -110,12 +110,11 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.monitorjbl/xlsx-streamer -->
-		<!-- <dependency>
-			<groupId>com.monitorjbl</groupId>
-			<artifactId>xlsx-streamer</artifactId>
-			<version>0.2.3</version>
-		</dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
