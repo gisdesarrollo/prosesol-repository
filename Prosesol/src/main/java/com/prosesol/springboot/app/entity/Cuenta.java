@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -51,6 +52,7 @@ public class Cuenta implements Serializable {
 	@Column(name = "email")
 	private String email;
 	
+	@Transient
 	private Boolean selected;
 
 	@NotNull
@@ -162,9 +164,6 @@ public class Cuenta implements Serializable {
 
 	public void setSelected(Boolean selected) {
 		this.selected = selected;
-	}
-
-
-	
+	}	
 
 }

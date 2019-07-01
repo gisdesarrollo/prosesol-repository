@@ -97,7 +97,6 @@ public class Afiliado{
 	@Column(name = "email")
 	private String email;
 
-	@NotEmpty(message = "Por favor, proporcione la dirección")
 	@Column(name = "direccion")
 	private String direccion;
 

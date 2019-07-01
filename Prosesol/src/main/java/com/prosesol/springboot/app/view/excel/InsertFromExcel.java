@@ -1,21 +1,21 @@
 package com.prosesol.springboot.app.view.excel;
 
 import java.text.Collator;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.Cuenta;
@@ -54,196 +54,202 @@ public class InsertFromExcel {
 
 	@Autowired
 	private CalcularFecha calcularFechas;
+	
+	private String servicioString;
+	private String periodoString;
+	private String promotorString;	
+	private String cuentaString;
+	private String isBeneficiario;
+	private String rfcAfiliado;
+	
+	private int corte;
+	private Long idAfiliado;
+	
+	public void insertToDBFromExcel(Map<Integer, String> listValues) {
 
-	public void insertToDBFromExcel(Map<Integer, String> listValues){
-
-		LOGGER.info("Inicia la inserción de datos de carga masiva");
+		LOGGER.info("Inicia la inserción de datos de carga masiva");	
 		
 		Collator collator = Collator.getInstance(new Locale("es"));
-
+		
 		Afiliado afiliado = new Afiliado();
 		Periodicidad periodicidad = new Periodicidad();
-
-		Integer numeroDependientes = null;
-		Long telefonoFijo = null;
-		Long telefonoMovil = null;
-		String comentarios = null;
-		String rfcAfiliado = null;
-		String periodoString = null;
-		Long idAfiliado = null;
-
+		
+		Map<Integer, String> treeMap = new TreeMap<Integer, String>(
+					(Comparator<Integer>)(o1, o2) -> o1.compareTo(o2)
+				);
+		treeMap.putAll(listValues);
+		
+		List<String> afiliadoValues = new ArrayList<String>();
 		List<Periodicidad> periodos = periodicidadService.findAll();
 		List<Cuenta> cuentas = cuentaService.findAll();
 		List<Promotor> promotores = promotorService.findAll();
 		List<Servicio> servicios = servicioService.findAll();
-
-		int rowKey = 0;
-
-		List<String> listaAfiliado = new ArrayList<String>();
 		
-		try {
-
-			for (Entry<Integer, String> values : listValues.entrySet()) {
-	
-				listaAfiliado.add(values.getValue());
-				System.out.println("Clave: " + values.getKey() + " Valor: " + values.getValue());
-	
-				if (values.getKey() == 6) {
-					numeroDependientes = Integer.parseInt(values.getValue());
-				}			
-				if (values.getKey() == 13) {
-					telefonoFijo = Long.parseLong(values.getValue());
+		for(Entry<Integer, String> values : treeMap.entrySet()) {
+			afiliadoValues.add(values.getValue());
+			System.out.println("Clave: " + values.getKey() + " Valor: " + values.getValue());
+			
+			try {
+				
+				if(values.getKey().equals(0)) {
+					afiliado.setNombre(values.getValue());
 				}
-				if (values.getKey() == 14) {
-					telefonoMovil = Long.parseLong(values.getValue());
+				if(values.getKey().equals(1)) {
+					afiliado.setApellidoPaterno(values.getValue());
 				}
-				if (values.getKey() == 24) {
+				if(values.getKey().equals(2)) {
+					afiliado.setApellidoMaterno(values.getValue());
+				}
+				if(values.getKey().equals(3)) {
+					afiliado.setFechaNacimiento(new SimpleDateFormat("yyyy/MM/dd").parse(values.getValue()));
+				}
+				if(values.getKey().equals(4)) {
+					afiliado.setLugarNacimiento(values.getValue());
+				}
+				if(values.getKey().equals(5)) {
+					afiliado.setEstadoCivil(values.getValue());
+				}
+				if(values.getKey().equals(6)) {
+					afiliado.setNumeroDependientes(Integer.parseInt(values.getValue()));
+				}
+				if(values.getKey().equals(7)) {
+					afiliado.setOcupacion(values.getValue());
+				}
+				if(values.getKey().equals(8)) {
+					afiliado.setSexo(values.getValue());
+				}
+				if(values.getKey().equals(9)) {
+					afiliado.setPais(values.getValue());
+				}
+				if(values.getKey().equals(10)) {
+					afiliado.setCurp(values.getValue());
+				}
+				if(values.getKey().equals(11)) {
+					afiliado.setNss(Long.parseLong(values.getValue()));
+				}
+				if(values.getKey().equals(12)) {
+					afiliado.setRfc(values.getValue());
+				}
+				if(values.getKey().equals(13)) {
+					afiliado.setTelefonoFijo(Long.parseLong(values.getValue()));
+				}
+				if(values.getKey().equals(14)) {
+					afiliado.setTelefonoMovil(Long.parseLong(values.getValue()));
+				}
+				if(values.getKey().equals(15)) {
+					afiliado.setEmail(values.getValue());
+				}
+				if(values.getKey().equals(16)) {
+					afiliado.setDireccion(values.getValue());
+				}
+				if(values.getKey().equals(17)) {
+					afiliado.setMunicipio(values.getValue());
+				}
+				if(values.getKey().equals(18)) {
+					afiliado.setCodigoPostal(Long.parseLong(values.getValue()));
+				}
+				if(values.getKey().equals(19)) {
+					afiliado.setEntidadFederativa((values.getValue()));
+				}
+				if(values.getKey().equals(20)) {
+					afiliado.setInfonavit(values.getValue());				
+				}
+				if(values.getKey().equals(21)) {
+					afiliado.setNumeroInfonavit(Long.parseLong(values.getValue()));
+				}
+				if(values.getKey().equals(22)) {
+					afiliado.setFechaAfiliacion(new SimpleDateFormat("yyyy/MM/dd").parse(values.getValue()));
+				}
+				if(values.getKey().equals(23)) {
+					servicioString = values.getValue();
+				}
+				if(values.getKey().equals(24)) {
 					periodoString = values.getValue();
 				}
-				if (values.getKey() == 25) {
-					comentarios = values.getValue();
+				if(values.getKey().equals(25)) {
+					afiliado.setComentarios(values.getValue());
 				}
-				if (values.getKey() == 27) {
+				if(values.getKey().equals(26)) {
+					isBeneficiario = values.getValue();
+				}
+				if(values.getKey().equals(27)) {
 					rfcAfiliado = values.getValue();
 				}
-			}
-	
-			System.out.println(rfcAfiliado);
-			System.out.println(comentarios);
-			
-			afiliado.setNombre(listaAfiliado.get(rowKey++));
-			afiliado.setApellidoPaterno(listaAfiliado.get(rowKey++));
-			afiliado.setApellidoMaterno(listaAfiliado.get(rowKey++));
-			afiliado.setFechaNacimiento(new SimpleDateFormat("yyyy/MM/dd").parse(listaAfiliado.get(rowKey++)));
-			afiliado.setLugarNacimiento(listaAfiliado.get(rowKey++));
-			afiliado.setEstadoCivil(listaAfiliado.get(rowKey++));
-	
-			if (numeroDependientes != null) {
-				afiliado.setNumeroDependientes(Integer.parseInt(listaAfiliado.get(rowKey++)));
-			}
-	
-			afiliado.setOcupacion(listaAfiliado.get(rowKey++));
-			afiliado.setSexo(listaAfiliado.get(rowKey++));
-			afiliado.setPais(listaAfiliado.get(rowKey++));
-			afiliado.setCurp(listaAfiliado.get(rowKey++));
-	
-			Long nss = Long.parseLong(listaAfiliado.get(rowKey++));
-			afiliado.setNss(nss);
-	
-			String rfc = listaAfiliado.get(rowKey++);
-			afiliado.setRfc(rfc);
-	
-			if (telefonoFijo != null) {
-				afiliado.setTelefonoFijo(Long.parseLong(listaAfiliado.get(rowKey++)));
-			}
-	
-			if (telefonoMovil != null) {
-				afiliado.setTelefonoMovil(Long.parseLong(listaAfiliado.get(rowKey++)));
-			}
-	
-			afiliado.setEmail(listaAfiliado.get(rowKey++));
-			afiliado.setDireccion(listaAfiliado.get(rowKey++));
-			afiliado.setMunicipio(listaAfiliado.get(rowKey++));
-	
-			Long codigoPostal = Long.parseLong(listaAfiliado.get(rowKey++));
-			afiliado.setCodigoPostal(codigoPostal);
-	
-			afiliado.setEntidadFederativa(listaAfiliado.get(rowKey++));
-	
-			String infonavit = listaAfiliado.get(rowKey++);
-	
-			if (infonavit.equals("No")) {			
-				afiliado.setNumeroInfonavit(null);			
-			} else {
-				afiliado.setNumeroInfonavit(Long.parseLong(listaAfiliado.get(rowKey++)));
-			}
-	
-			afiliado.setFechaAfiliacion(new SimpleDateFormat("yyyy/MM/dd").parse(listaAfiliado.get(rowKey++)));
-	
-			String servicioString = listaAfiliado.get(rowKey++);
-			System.out.println(servicioString);
-			
-			for (Servicio servicio : servicios) {
-				if (servicioString.equals(servicio.getNombre())) {
-					System.out.println(servicio.getNombre());
-					afiliado.setServicio(servicio);
+				if(values.getKey().equals(28)) {
+					promotorString = values.getValue();
 				}
-			}
-	
-			if(periodoString != null) {
+				if(values.getKey().equals(29)) {
+					cuentaString = values.getValue();
+				}
+				if(values.getKey().equals(30)) {
+					corte = Integer.parseInt(values.getValue());
+				}
 				
-				String p = listaAfiliado.get(rowKey++);
-				
-				for (Periodicidad periodo : periodos) {
-					if (p.equals(periodo.getNombre())) {
-						periodicidad = periodo;
-						afiliado.setPeriodicidad(periodicidad);
+				if(servicioString != null) {
+					for(Servicio servicio : servicios) {
+						if(servicioString.equals(servicio.getNombre())) {
+							afiliado.setServicio(servicio);
+						}
 					}
-				}	
-			}
-			
-			
-			if (comentarios != null) {
-				afiliado.setComentarios(listaAfiliado.get(rowKey++));
-			}
-	
-			String isBeneficiario = listaAfiliado.get(rowKey++);
-			System.out.println(isBeneficiario);
-	
-			if (isBeneficiario.equals("No")) {
-				afiliado.setIsBeneficiario(false);
-			} else {
-				afiliado.setIsBeneficiario(true);
-			}
-	
-			String promotorString = listaAfiliado.get(rowKey++);
-	
-			for (Promotor promotor : promotores) {
-				if (promotorString.equals(promotor.getNombre())) {
-					afiliado.setPromotor(promotor);
 				}
-			}
-	
-			String cuentaString = listaAfiliado.get(rowKey++);
-	
-			for (Cuenta cuenta : cuentas) {
-				if (cuentaString.equals(cuenta.getRazonSocial())) {
-					afiliado.setCuenta(cuenta);
-				}
-			}
-	
-			if (isBeneficiario.equals("No")) {
-	
-				Integer corte = Integer.parseInt(listaAfiliado.get(rowKey++));
-				Date fechaCorte = calcularFechas.calcularFechas(periodicidad, corte);
-				afiliado.setFechaCorte(fechaCorte);
-			}else {
 				
-				idAfiliado = getIdAfiliadoByRfc(rfcAfiliado);
-				System.out.println(idAfiliado);
+				if(promotorString != null) {
+					for(Promotor promotor : promotores) {
+						if(promotorString.equals(promotor.getNombre())) {
+							afiliado.setPromotor(promotor);
+						}
+					}
+				}
+				
+				if(periodoString != null) {
+					for(Periodicidad periodo : periodos) {
+						if(periodoString.equals(periodo.getNombre())) {
+							periodicidad = periodo;
+							afiliado.setPeriodicidad(periodo);
+						}
+					}
+				}
+				
+				if(cuentaString != null) {
+					for(Cuenta cuenta : cuentas) {
+						if(cuentaString.equals(cuenta.getRazonSocial())) {
+							afiliado.setCuenta(cuenta);
+						}
+					}
+				}						
+				
+			}catch(Exception e) {
+				LOGGER.error("Error al momento de leer el archivo");
 			}
-	
-			afiliado.setFechaAlta(new Date());
-			afiliado.setEstatus(3);
-			afiliado.setClave(getClaveAfiliado());
-	
-			afiliadoService.save(afiliado);
-			
-			collator.setStrength(Collator.PRIMARY);		
-			System.out.println(isBeneficiario + (collator.equals(isBeneficiario, "Sí") ? "eq" : "ne") + "Sí");
-			
-			if (collator.equals(isBeneficiario, "Sí")) {			
-				afiliadoService.insertBeneficiarioUsingJpa(afiliado, idAfiliado);		
-			}
-		
-		}catch(ParseException pe) {
-			LOGGER.error("Error al momento de realizar el parse", pe);
+				
 		}
-
+		
+		collator.setStrength(Collator.PRIMARY);
+		if(collator.equals(isBeneficiario, "Sí")) {
+			afiliado.setIsBeneficiario(true);
+			
+			idAfiliado = afiliadoService.getIdAfiliadoByRfc(rfcAfiliado);					
+		}else if(isBeneficiario.equals("No")) {
+			
+			afiliado.setIsBeneficiario(false);
+			
+			Date fechaCorte = calcularFechas.calcularFechas(periodicidad, corte);	
+			afiliado.setFechaCorte(fechaCorte);
+		}
+		
+		afiliado.setFechaAlta(new Date());
+		afiliado.setEstatus(3);
+		afiliado.setClave(getClaveAfiliado());
+		
+		afiliadoService.save(afiliado);
+		
+		if (collator.equals(isBeneficiario, "Sí")) {
+			afiliadoService.insertBeneficiarioUsingJpa(afiliado, idAfiliado);
+		}
+		
 		LOGGER.info("Termina la inserción de afiliado desde la carga masiva");
 	}
 
-	@ModelAttribute("clave")
 	private String getClaveAfiliado() {
 
 		String claveAfiliado = "";
@@ -255,8 +261,4 @@ public class InsertFromExcel {
 		return claveAfiliado;
 	}
 
-	private Long getIdAfiliadoByRfc(String rfc) {		
-		return afiliadoService.getIdAfiliadoByRfc(rfc);		
-	}
-	
 }

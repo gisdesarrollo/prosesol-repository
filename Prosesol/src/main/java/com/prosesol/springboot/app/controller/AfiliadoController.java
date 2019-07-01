@@ -1,35 +1,19 @@
 package com.prosesol.springboot.app.controller;
 
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -41,9 +25,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Afiliado;
@@ -53,14 +37,13 @@ import com.prosesol.springboot.app.entity.Promotor;
 import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 import com.prosesol.springboot.app.service.ICuentaService;
-import com.prosesol.springboot.app.service.IEmailService;
+//import com.prosesol.springboot.app.service.IEmailService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
 import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
 import com.prosesol.springboot.app.util.CalcularFecha;
 import com.prosesol.springboot.app.util.Mail;
 import com.prosesol.springboot.app.util.Paises;
-import com.prosesol.springboot.app.validator.ValidarMesesImpl;
 import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 
 @Controller
@@ -88,8 +71,8 @@ public class AfiliadoController {
 	@Autowired
 	private ICuentaService cuentaService;
 
-	@Autowired
-	private IEmailService emailService;
+//	@Autowired
+//	private IEmailService emailService;
 
 	@Autowired
 	private CalcularFecha calcularFechas;
@@ -259,6 +242,17 @@ public class AfiliadoController {
 		return "redirect:/afiliados/ver";
 	}
 
+	/**
+	 * Método que cambia el estatus del afiliado
+	 * 1.- Activo
+	 * 2.- Inactivo
+	 * 3.- Candidato
+	 * @param id
+	 * @param redirect
+	 * @param status
+	 * @return
+	 */
+	
 	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/ver/{id}")
 	public String actDesctAfiliado(@PathVariable(value = "id") Long id, RedirectAttributes redirect,
@@ -279,6 +273,17 @@ public class AfiliadoController {
 
 		return "redirect:/afiliados/ver";
 
+	}
+	
+	
+	@Secured("ROLE_ADMINISTRADOR")
+	@RequestMapping(value="/cambiarPassword/{id}")
+	public String cambiarPassword(@RequestParam("id")Long idAfiliado, RedirectAttributes redirect,
+			SessionStatus status) {
+		
+		
+		
+		return null;
 	}
 	
 	/**
