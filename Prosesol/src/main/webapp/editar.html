@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8" />
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+	<header th:replace="fragments/header :: header"></header>
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+
+		<main class="main">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item"><a th:href="@{/usuarios/ver}">Usuarios</a></li>
+			<li class="breadcrumb-item active">Editar</li>
+		</ol>
+
+		<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Cambiar contraseña</div>
+							<div class="card-body">
+								<p>Capture los datos para su nueva contraseña</p>
+								<div class="clearfix"></div>
+								<hr>
+								<div class="row">
+									<div class="col-md-12">
+										<form class="user" th:action="@{/usuarios/password}"
+											th:object="${usuario}" method="post">
+											<div class="row">
+												<div class="form-group col-md-3">
+													<label for="company">Contraseña</label> <input type="text"
+														th:field="*{nombre}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('nombre')}"
+														th:errors="*{nombre}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Nombre de usuario</label> <input
+														type="text" th:field="*{username}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('username')}"
+														th:errors="*{username}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Correo electrónico</label> <input
+														type="text" th:field="*{email}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Perfil</label> <select name="perfil"
+														th:field="${perfiles}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="perfil : ${perfiles}"
+															th:value="${perfil.id}" th:text="${perfil.descripcion}"
+															th:selected="false"></option>
+													</select> <small class="form-text text-danger"
+														th:if="${#fields.hasErrors('perfiles')}"
+														th:errors="*{perfiles}"></small>
+												</div>
+											</div>
+
+											<hr>
+											<div class="clearfix"></div>
+											<div class="row">
+												<div class="col-sm-12">
+													<button type="submit"
+														class="btn btn-primary btn-square float-right">Guardar
+														cambios</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</main>
+	</div>
+	<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+
+</html>

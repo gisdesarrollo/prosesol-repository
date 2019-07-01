@@ -258,7 +258,7 @@ public class ReportesExcelImpl implements IReportesExcel {
 
 			int rowNum = 0;
 			int cellRowNum = 0;
-			for (int i = 3; i < afiliadoFields.length; i++) {
+			for (int i = 2; i < afiliadoFields.length; i++) {
 				sheet.autoSizeColumn(rowNum);
 
 				if (afiliadoFields[i].equals("infonavit")) {
@@ -599,6 +599,8 @@ public class ReportesExcelImpl implements IReportesExcel {
 	 */
 
 	public void leerArchivoCargaMasiva(XSSFWorkbook workbook){
+		
+		LOGGER.info("Método que lee el archivo xlsx ");
 
 		long startTime = System.nanoTime();
 
@@ -671,7 +673,7 @@ public class ReportesExcelImpl implements IReportesExcel {
 					}
 				}
 
-				System.out.println(cell.getColumnIndex());
+//				System.out.println(cell.getColumnIndex());
 			}
 
 			numOfCol = 0;
