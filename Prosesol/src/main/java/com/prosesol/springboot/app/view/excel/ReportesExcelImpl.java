@@ -41,6 +41,7 @@ import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.Periodicidad;
 import com.prosesol.springboot.app.entity.Promotor;
 import com.prosesol.springboot.app.entity.Servicio;
+import com.prosesol.springboot.app.exception.CustomUserException;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
@@ -595,10 +596,11 @@ public class ReportesExcelImpl implements IReportesExcel {
 
 	/**
 	 * Método que lee el archivo de carga masiva
+	 * @throws CustomUserException 
 	 * @throws ParseException 
 	 */
 
-	public void leerArchivoCargaMasiva(XSSFWorkbook workbook){
+	public void leerArchivoCargaMasiva(XSSFWorkbook workbook) throws CustomUserException{
 		
 		LOGGER.info("Método que lee el archivo xlsx ");
 

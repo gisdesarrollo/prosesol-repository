@@ -181,7 +181,7 @@ public class AfiliadoController {
 
 				afiliado.setFechaCorte(fechaCorte);
 				afiliado.setFechaAlta(date);
-				afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
+//				afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 				afiliado.setClave(clave);
 
 				// Se crea el cuerpo del mensaje para los afiliados con inscripción

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8" />
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+	<header th:replace="fragments/header :: header"></header>
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+
+		<main class="main">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item"><a th:href="@{/beneficios/ver}">Beneficios</a></li>
+			<li class="breadcrumb-item active">Crear</li>
+		</ol>
+
+		<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Editar Beneficio</div>
+							<div class="card-body">
+								<p>Captura la información solicitada para editar el beneficio</p>
+								<div class="clearfix"></div>
+								<hr>
+								<div class="row">
+									<div class="col-md-12">
+										<form class="user" th:action="@{/beneficios/crear}"
+											th:object="${beneficio}" method="post">
+											<div class="row">
+												<div class="form-group col-md-3">
+													<label for="company">Nombre*</label> <input type="text"
+														th:field="*{nombre}"
+														class="form-control form-control-user"> 
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Descripción</label><input type="text"
+														th:field="*{descripcion}" class="form-control form-control-user">
+												</div>
+
+											</div>
+
+											<hr>
+											<div class="clearfix"></div>
+											<div class="row">
+												<div class="col-sm-12">
+													<button type="submit"
+														class="btn btn-primary btn-square float-right">Guardar cambios</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</main>
+	</div>
+	<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+
+</html>

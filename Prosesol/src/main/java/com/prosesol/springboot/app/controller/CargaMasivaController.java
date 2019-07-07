@@ -1,5 +1,7 @@
 package com.prosesol.springboot.app.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
@@ -63,7 +65,7 @@ public class CargaMasivaController {
 			
 		}catch(Exception ne) {
 			
-			String error = new CustomUserException("Error al momento de leer el archivo, consulte el archivo generado").getMessage();
+			String error = new CustomUserException().getMessage();
 			String[] errorMessage = error.split("\\:");
 			
 			logger.error("Formato incorrecto", ne);

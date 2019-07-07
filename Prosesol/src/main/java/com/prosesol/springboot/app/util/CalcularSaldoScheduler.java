@@ -91,18 +91,18 @@ public class CalcularSaldoScheduler {
 					
 					afiliadoService.save(afiliado);
 					
-					// Testing mail
-					mail.setTo(afiliado.getEmail());
-					mail.setFrom("prosesol@example.com");
-					mail.setSubject("SUSPENSIÓN DE SERVICIO");
-					
-					// Se le envía el afiliado al template del correo para poder manipularse
-					// desde el controlador
-					model.put("afiliado", afiliado);
-					
-					mail.setModel(model);
-					
-					emailServiceImpl.sendSimpleMessage(mail, bandera);
+//					// Testing mail
+//					mail.setTo(afiliado.getEmail());
+//					mail.setFrom("prosesol@example.com");
+//					mail.setSubject("SUSPENSIÓN DE SERVICIO");
+//					
+//					// Se le envía el afiliado al template del correo para poder manipularse
+//					// desde el controlador
+//					model.put("afiliado", afiliado);
+//					
+//					mail.setModel(model);
+//					
+//					emailServiceImpl.sendSimpleMessage(mail, bandera);
 				}
 			}
 		}

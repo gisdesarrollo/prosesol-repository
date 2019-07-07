@@ -22,6 +22,7 @@ import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.Periodicidad;
 import com.prosesol.springboot.app.entity.Promotor;
 import com.prosesol.springboot.app.entity.Servicio;
+import com.prosesol.springboot.app.exception.CustomUserException;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
@@ -65,7 +66,7 @@ public class InsertFromExcel {
 	private int corte;
 	private Long idAfiliado;
 	
-	public void insertToDBFromExcel(Map<Integer, String> listValues) {
+	public void insertToDBFromExcel(Map<Integer, String> listValues) throws CustomUserException {
 
 		LOGGER.info("Inicia la inserción de datos de carga masiva");	
 		
@@ -219,7 +220,10 @@ public class InsertFromExcel {
 				}						
 				
 			}catch(Exception e) {
-				LOGGER.error("Error al momento de leer el archivo");
+				
+				new CustomUserException("Error al momento de leer el archivo");
+//				e.printStackTrace();
+				
 			}
 				
 		}

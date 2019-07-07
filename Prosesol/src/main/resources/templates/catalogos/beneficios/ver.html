@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
 <body
@@ -13,7 +14,7 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item ">Home</li>
 			<li class="breadcrumb-item ">Catálogos</li>
-			<li class="breadcrumb-item active">Servicios</li>
+			<li class="breadcrumb-item active">Beneficios</li>
 		</ol>
 
 		<div class="container-fluid">
@@ -21,12 +22,13 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card card-accent-primary">
-							<div class="card-header">Servicios</div>
+						<div th:replace="fragments/navbar :: div-messages"></div>
+							<div class="card-header">Beneficios</div>
 							<div class="card-body">
 								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-									th:href="@{/servicios/crear}"
+									th:href="@{/beneficios/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
-									class="fas fa-user-plus"></i> Nuevo Servicio</a>
+									class="fas fa-user-plus"></i> Nuevo Beneficio</a>
 								<div class="clearfix"></div>
 								<hr>
 								<div class="row">
@@ -37,27 +39,16 @@
 									<tr>
 										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
 										<th>Nombre</th>
-										<th>Notas</th>
-										<th>Costo de Inscripción (Titular)</th>
-										<th>Costo de Servicio (Titular)</th>
-										<th>Costo de Inscripción (Beneficiario)</th>
-										<th>Costo de Servicio (Beneficiario)</th>
-										<th>Estatus</th>
+										<th>Descripción</th>
 										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="servicio : ${servicios}">
+									<tr th:each="beneficio : ${beneficios}">
 										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-											th:text="${servicio.id}"></td>
-										<td th:text="${servicio.nombre}"></td>
-										<td th:text="${servicio.nota}"></td>
-										<td th:text="${servicio.inscripcionTitular}"></td>
-										<td th:text="${servicio.costoTitular}"></td>
-										<td th:text="${servicio.inscripcionBeneficiario}"></td>
-										<td th:text="${servicio.costoBeneficiario}"></td>
-										<td th:if="${servicio.estatus}">Activo</td>
-										<td th:unless="${servicio.estatus}">Inactivo</td>
+											th:text="${beneficio.id}"></td>
+										<td th:text="${beneficio.nombre}"></td>
+										<td th:text="${beneficio.descripcion}"></td>
 										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 											<div class="dropdown">
 												<button class="btn btn-primary btn-sm dropdown-toggle"
@@ -67,9 +58,9 @@
 												<div class="dropdown-menu animated--fade-in"
 													aria-labelledby="dropdownMenuButton">
 													<a class="dropdown-item"
-														th:href="@{/servicios/editar/} + ${servicio.id}"
+														th:href="@{/beneficios/editar/} + ${beneficio.id}"
 														th:text="'Editar'"> </a> <a class="dropdown-item"
-														th:href="@{/servicios/eliminar/} + ${servicio.id}"
+														th:href="@{/beneficios/eliminar/} + ${beneficio.id}"
 														th:text="'Borrar'"
 														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
 													</a>
