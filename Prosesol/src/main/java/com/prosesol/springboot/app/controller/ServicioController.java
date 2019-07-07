@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +21,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.prosesol.springboot.app.entity.Beneficio;
 import com.prosesol.springboot.app.entity.Servicio;
+import com.prosesol.springboot.app.service.IBeneficioService;
 import com.prosesol.springboot.app.service.IServicioService;
 
 @Controller
@@ -31,6 +35,9 @@ public class ServicioController {
 	
 	@Autowired
 	private IServicioService servicioService;
+	
+	@Autowired
+	private IBeneficioService beneficioService;
 	
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
@@ -61,10 +68,16 @@ public class ServicioController {
 	public String guardar(@Valid Servicio servicio, BindingResult result, Model model, 
 						 RedirectAttributes redirect, SessionStatus status) {
 		
+		
+		logger.info("Entra al método para guardar o modificar el servicio");
+		
+		System.out.println(servicio.toString());
+		
 		if(result.hasErrors()) {
 			model.addAttribute("titulo", "Crear Membresia");
 			return "catalogos/servicios/crear";
 		}
+		
 		
 		String flashMessage = (servicio.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
 		
@@ -115,6 +128,23 @@ public class ServicioController {
 		}
 		
 		return "redirect:/servicios/ver";
+	}
+	
+	/**
+	 * Cátalogo de beneficios para la vista de creación de servicios
+	 * @return
+	 */
+	
+	@ModelAttribute("beneficios")
+	public List<Beneficio> getAllBeneficios(){
+		return beneficioService.findAll();
+	}
+	
+	
+	@ModelAttribute("beneficio")
+	public Beneficio getNewBeneficio() {
+		Beneficio beneficio = new Beneficio();
+		return beneficio;
 	}
 	
 }

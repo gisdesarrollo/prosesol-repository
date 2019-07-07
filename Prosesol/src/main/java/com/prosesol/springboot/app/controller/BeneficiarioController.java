@@ -97,7 +97,7 @@ public class BeneficiarioController {
 //			
 //			afiliado.setFechaCorte(fechaCorte);
 			afiliado.setEstatus(3);
-			afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
+//			afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 			afiliado.setIsBeneficiario(true);
 			afiliado.setClave(clave);
 			afiliado.setFechaAlta(fechaAlta);
