@@ -55,10 +55,12 @@ public class BeneficioController {
 						  RedirectAttributes redirect, SessionStatus status) {
 		
 		LOGGER.info("Guardar Beneficio");
+	
+		String flashMessage = (beneficio.getId() != null) ? "Registro editado correctamente" : "Registro creado correctamente";
 		
 		beneficioService.save(beneficio);
 		status.setComplete();
-		redirect.addFlashAttribute("success", "El beneficio se ha creado correctamente");
+		redirect.addFlashAttribute("success", flashMessage);
 		
 		LOGGER.info("El beneficio se ha guardado correctamente");
 		
@@ -75,18 +77,17 @@ public class BeneficioController {
 		if(id > 0) {
 			beneficio = beneficioService.findById(id);
 			if(beneficio == null) {
-				model.put("error", "El id del beneficio no existe");
+				redirect.addFlashAttribute("error", "El id del beneficio no existe");
 				LOGGER.info("El id del beneficio no existe: " + id);				
 				return "redirect:/beneficios/ver";
 			}
 		}else {
-			model.put("error", "El id no puede ser cero");
+			redirect.addFlashAttribute("error", "El id no puede ser cero");
 			LOGGER.info("El id no puede ser cero");
 			return "redirect:/beneficios/ver";
 		}		
 		
 		model.put("beneficio", beneficio);
-		model.put("success", "Registro editado correctamente");
 		
 		LOGGER.info("Registro: " + beneficio.getNombre() + " editado correctamente");
 		
@@ -95,7 +96,7 @@ public class BeneficioController {
 	}
 	
 	@RequestMapping(value = "/eliminar/{id}")
-	public String borrar(@PathVariable("id")Long id, Map<String, Object> model, RedirectAttributes redirect) {
+	public String borrar(@PathVariable("id")Long id, RedirectAttributes redirect) {
 		
 		LOGGER.info("Registro a eliminar: " + beneficioService.findById(id));
 		
@@ -104,13 +105,13 @@ public class BeneficioController {
 			LOGGER.info("Registro eliminado correctamente");
 			
 		}else {
-			model.put("error", "El id no puede ser cero");
+			redirect.addFlashAttribute("error", "El id no puede ser cero");
 			
 			LOGGER.info("El id no puede ser cero");
 			return "redirect:/beneficios/ver";
 		}
 			
-		model.put("success", "Registro eliminado correctamente");
+		redirect.addFlashAttribute("success", "Registro eliminado correctamente");
 		
 		return "redirect:/beneficios/ver";
 	}

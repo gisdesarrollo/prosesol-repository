@@ -1,6 +1,8 @@
-﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head"></head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/head :: head">
+</head>
 <meta charset="utf-8" />
 <body
 	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
@@ -13,7 +15,7 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item ">Home</li>
 			<li class="breadcrumb-item ">Catálogos</li>
-			<li class="breadcrumb-item active">Servicios</li>
+			<li class="breadcrumb-item active">Centros de Asistencia</li>
 		</ol>
 
 		<div class="container-fluid">
@@ -22,12 +24,12 @@
 					<div class="col-md-12">
 						<div class="card">
 						<div th:replace="fragments/navbar :: div-messages"></div>
-							<div class="card-header">Servicios</div>
+							<div class="card-header">Centros de Asistencia</div>
 							<div class="card-body">							
 								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-									th:href="@{/servicios/crear}"
+									th:href="@{/centros/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
-									class="fas fa-user-plus"></i> Nuevo Servicio</a>
+									class="fas fa-user-plus"></i>Nuevo Centro de Asistencia</a>
 								<div class="clearfix"></div>
 								<hr>
 								<div class="row">
@@ -38,29 +40,30 @@
 									<tr>
 										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 										<th>Nombre</th>
-										<th>Notas</th>
-										<th>Costo de Inscripción (Titular)</th>
-										<th>Costo de Servicio (Titular)</th>
-										<th>Costo de Inscripción (Beneficiario)</th>
-										<th>Costo de Servicio (Beneficiario)</th>
+										<th>Descripcion</th>
+										<th>Teléfono 1</th>
+										<th>Teléfono 2</th>
+										<th>Nombre Responsable</th>
+										<th>Teléfono Responsable</th>
+										<th>Correo Responsable</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="servicio : ${servicios}">
+									<tr th:each="centroContacto : ${centros}">
 										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"><a
 										class="btn btn-primary btn-sm"
-										th:href="@{/servicios/detalle/} + ${servicio.id}"
-										th:text="${servicio.id}"></a></td>
-										<td th:text="${servicio.nombre}"></td>
-										<td th:text="${servicio.nota}"></td>
-										<td th:text="${servicio.inscripcionTitular}"></td>
-										<td th:text="${servicio.costoTitular}"></td>
-										<td th:text="${servicio.inscripcionBeneficiario}"></td>
-										<td th:text="${servicio.costoBeneficiario}"></td>
-										<td th:if="${servicio.estatus}">Activo</td>
-										<td th:unless="${servicio.estatus}">Inactivo</td>
+										th:href="@{/centros/detalle/} + ${centroContacto.id}"
+										th:text="${centroContacto.id}"></a></td>
+										<td th:text="${centroContacto.nombre}"></td>
+										<td th:text="${centroContacto.descripcion}"></td>
+										<td th:text="${centroContacto.telefono1}"></td>
+										<td th:text="${centroContacto.telefono2}"></td>
+										<td th:text="${centroContacto.nombreResponsable}"></td>
+										<td th:text="${centroContacto.telefonoResponsable}"></td>
+										<td th:if="${centroContacto.estatus}">Activo</td>
+										<td th:unless="${centroContacto.estatus}">Inactivo</td>
 										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 											<div class="dropdown">
 												<button class="btn btn-primary btn-sm dropdown-toggle"
@@ -70,9 +73,9 @@
 												<div class="dropdown-menu animated--fade-in"
 													aria-labelledby="dropdownMenuButton">
 													<a class="dropdown-item"
-														th:href="@{/servicios/editar/} + ${servicio.id}"
+														th:href="@{/centros/editar/} + ${centroContacto.id}"
 														th:text="'Editar'"> </a> <a class="dropdown-item"
-														th:href="@{/servicios/eliminar/} + ${servicio.id}"
+														th:href="@{/centros/eliminar/} + ${centroContacto.id}"
 														th:text="'Borrar'"
 														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
 													</a>

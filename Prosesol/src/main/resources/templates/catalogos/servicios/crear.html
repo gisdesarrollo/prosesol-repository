@@ -21,6 +21,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
+							<div th:replace="fragments/navbar :: div-messages"></div>
 							<div class="card-header">Nuevo Servicio</div>
 							<div class="card-body">
 								<p>Captura la información solicitada para dar de alta un
@@ -45,35 +46,46 @@
 													<label for="company">Nota</label><input type="text"
 														th:field="*{nota}" class="form-control form-control-user">
 												</div>
-												
+
 												<div class="form-group col-md-3">
-													<label for="company">Costo de Inscripción (Titular)*</label> <input type="text"
-														th:field="*{inscripcionTitular}" class="form-control form-control-user"> <small
+													<label for="company">Costo de Inscripción
+														(Titular)*</label> <input type="text"
+														th:field="*{inscripcionTitular}"
+														class="form-control form-control-user"> <small
 														class="form-text text-danger"
-														th:if="${#fields.hasErrors('inscripcionTitular')}" th:errors="*{inscripcionTitular}"></small>
+														th:if="${#fields.hasErrors('inscripcionTitular')}"
+														th:errors="*{inscripcionTitular}"></small>
 												</div>
-												
+
 												<div class="form-group col-md-3">
-													<label for="company">Costo de Servicio (Titular)*</label> <input type="text"
-														th:field="*{costoTitular}" class="form-control form-control-user"> <small
+													<label for="company">Costo de Servicio (Titular)*</label> <input
+														type="text" th:field="*{costoTitular}"
+														class="form-control form-control-user"> <small
 														class="form-text text-danger"
-														th:if="${#fields.hasErrors('costoTitular')}" th:errors="*{costoTitular}"></small>
+														th:if="${#fields.hasErrors('costoTitular')}"
+														th:errors="*{costoTitular}"></small>
 												</div>
-												
+
 												<div class="form-group col-md-3">
-													<label for="company">Costo de Inscripción (Beneficiario)*</label> <input type="text"
-														th:field="*{inscripcionBeneficiario}" class="form-control form-control-user"> <small
+													<label for="company">Costo de Inscripción
+														(Beneficiario)*</label> <input type="text"
+														th:field="*{inscripcionBeneficiario}"
+														class="form-control form-control-user"> <small
 														class="form-text text-danger"
-														th:if="${#fields.hasErrors('inscripcionBeneficiario')}" th:errors="*{inscripcionBeneficiario}"></small>
+														th:if="${#fields.hasErrors('inscripcionBeneficiario')}"
+														th:errors="*{inscripcionBeneficiario}"></small>
 												</div>
-												
+
 												<div class="form-group col-md-3">
-													<label for="company">Costo de Servicio (Beneficiario)*</label> <input type="text"
-														th:field="*{costoBeneficiario}" class="form-control form-control-user"> <small
+													<label for="company">Costo de Servicio
+														(Beneficiario)*</label> <input type="text"
+														th:field="*{costoBeneficiario}"
+														class="form-control form-control-user"> <small
 														class="form-text text-danger"
-														th:if="${#fields.hasErrors('costoBeneficiario')}" th:errors="*{costoBeneficiario}"></small>
+														th:if="${#fields.hasErrors('costoBeneficiario')}"
+														th:errors="*{costoBeneficiario}"></small>
 												</div>
-												
+
 												<div class="form-group col-md-3">
 													<label for="company">Tipo de Servicio*</label> <select
 														th:field="*{tipoPrivacidad}" class="custom-select"
@@ -85,46 +97,79 @@
 														th:if="${#fields.hasErrors('tipoPrivacidad')}"
 														th:errors="*{tipoPrivacidad}"></small>
 												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Centro de Asistencia</label> <select
+														th:field="*{tipoPrivacidad}" class="custom-select"
+														id="inputGroupSelect01">
+														<option value="">Opciones</option>
+														<option th:each="centro : ${centros}"
+																th:value="${centro.id}"
+																th:text="${centro.nombre}"
+																th:selected="selected"></option>
+													</select><small class="form-text text-danger"
+														th:if="${#fields.hasErrors('tipoPrivacidad')}"
+														th:errors="*{tipoPrivacidad}"></small>
+												</div>
 											</div>
-											
-											<a class="btn btn-primary" data-toggle="collapse" href="#agregarBeneficio" role="button" aria-expanded="false"
-   												aria-controls="agregarBeneficio">Agregar Beneficio</a>
-											<div class="collapse " id="agregarBeneficio">
+
+											<div
+												th:replace="catalogos/servicios/plantilla-beneficios :: tBeneficios"></div>
+
+											<a class="btn btn-primary" data-toggle="collapse"
+												href="#agregaBeneficio" role="button" aria-expanded="false"
+												aria-controls="agregarBeneficio" id="addListaBeneficios">Agregar
+												Beneficio</a> <br></br>
+											<div class="collapse" id="agregaBeneficio">
 												<div class="row">
 													<div class="col-md-12">
 														<div class="card">
 															<div class="card-header">Beneficios</div>
-																<div class="card-body">
+															<div class="card-body">
 																<div class="clearfix"></div>
-																<div class="row">
-																	<div class="form-group col-md-10 cartWrapper">
-																		<div class="form-group col-md-10" id="listaBeneficios">
-																		<label class="lblBeneficio">Listado de beneficios</label>
-																			<select	name ="beneficios" th:field="*{beneficios}" class="custom-select beneficios changeFields"
-																				id="inputGroupSelect01" >
-																				<option value="">Seleccione una opción</option>
-																				<option th:each="beneficio : ${beneficios}"
-																					    th:value="${beneficio.id}"
-																					    th:text="${beneficio.nombre}"
-																					    th:selected="true"/>																				    
-																			</select>																		
-																		</div>	
+																<div class="row" id="listaBeneficio">
+																	<div class="form-group col-md-3">
+																		<label for="user">Lista de beneficios</label> <select
+																			name="beneficio" th:field="*{beneficios}"
+																			class="custom-select">
+																			<option value="">Seleccione una opción</option>
+																			<option
+																				th:each="beneficio, iterStat : ${lBeneficios}"
+																				th:value="${beneficio.id}"
+																				th:text="${beneficio.nombre}" th:selected="true" />
+																		</select>
 																	</div>
-																	<div id="result"></div>
-																	<br/><br/>														
-																</div>	
+																	<div class="form-group col-md-3">
+																		<label>Descripcion</label> <input type="text"
+																			class="form-control form-control-user"
+																			name="descripcion[]">
+																	</div>
+																	<div class="form-group col-md-3">
+																		<label>Costo</label> <input type="text"
+																			class="form-control form-control-user" name="costo[]">
+																	</div>
+																	<div class="form-group col-md-3">
+																		<button type="button" id="removeRow"
+																			class="btn btn-primary rounded-circle"
+																			style="position: absolute; top: 30px; left: 30px;">
+																			<i class="fa fa-minus"></i>
+																		</button>
+																	</div>
+																</div>
+																<div id="result"></div>
 																<div class="row">
 																	<div class="col-sm-12">
-																		<button type="button" class="btn btn-primary rounded-circle float-right agregarBeneficio">
+																		<button type="button"
+																			class="btn btn-primary rounded-circle float-right addRow">
 																			<i class="fa fa-plus"></i>
 																		</button>
 																	</div>
 																</div>
-																</div>
+															</div>
 														</div>
-													</div>													
-												</div>												
-											</div>							
+													</div>
+												</div>
+											</div>
 											<hr>
 
 											<hr>

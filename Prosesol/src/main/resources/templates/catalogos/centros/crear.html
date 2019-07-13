@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8" />
+<body
+	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+	<header th:replace="fragments/header :: header"></header>
+	<div class="app-body">
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+
+		<main class="main">
+
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">Home</li>
+			<li class="breadcrumb-item"><a th:href="@{/centros/ver}">Centros de Asistencia</a></li>
+			<li class="breadcrumb-item active">Crear</li>
+		</ol>
+
+		<div class="container-fluid">
+			<div class="animated fadeIn">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header">Nuevo Centro de Assitencia</div>
+							<div class="card-body">
+								<p>Captura la información solicitada para dar de alta un
+									nuevo Centro de Asistencia</p>
+								<div class="clearfix"></div>
+								<hr>
+								<div class="row">
+									<div class="col-md-12">
+										<form class="user" th:action="@{/centros/crear}"
+											th:object="${centroContacto}" method="post">
+											<div class="row">
+												<div class="form-group col-md-3">
+													<label for="company">Nombre*</label><input
+														type="text" th:field="*{nombre}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('nombre')}"
+														th:errors="*{nombre}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Descripción</label><input type="text"
+														th:field="*{descripcion}"
+														class="form-control form-control-user"> <small
+														class="form-text text-danger"
+														th:if="${#fields.hasErrors('descripcion')}"
+														th:errors="*{descripcion}"></small>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label for="company">Teléfono 1</label>
+													<input type="text"
+														th:field="*{telefono1}"
+														class="form-control form-control-user">
+													 <small class="form-text text-danger"
+														th:if="${#fields.hasErrors('telefono1')}"
+														th:errors="*{telefono1}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Teléfono 2</label>
+													<input type="text"
+														th:field="*{telefono2}"
+														class="form-control form-control-user">
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('telefono2')}"
+														th:errors="*{telefono2}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Nombre Responsable</label>
+													<input type="text"
+														th:field="*{nombreResponsable}"
+														class="form-control form-control-user">
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('nombreResponsable')}"
+														th:errors="*{nombreResponsable}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Teléfono Reponsable</label> 
+													<input type="text"
+														th:field="*{telefonoResponsable}"
+														class="form-control form-control-user">
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('telefonoResponsable')}"
+														th:errors="*{telefonoResponsable}"></small>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Correo Responsable</label> 
+													<input type="email"
+														th:field="*{mailResponsable}"
+														class="form-control form-control-user">
+													<small class="form-text text-danger"
+														th:if="${#fields.hasErrors('mailResponsable')}"
+														th:errors="*{mailResponsable}"></small>
+												</div>
+											</div>
+
+											<hr>
+											<div class="clearfix"></div>
+											<div class="row">
+												<div class="col-sm-12">
+													<button type="submit"
+														class="btn btn-primary btn-square float-right">Crear
+														Centro</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</main>
+	</div>
+	<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+
+</html>

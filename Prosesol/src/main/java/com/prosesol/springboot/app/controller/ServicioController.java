@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Beneficio;
+import com.prosesol.springboot.app.entity.CentroContacto;
 import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.service.IBeneficioService;
+import com.prosesol.springboot.app.service.ICentroContactoService;
 import com.prosesol.springboot.app.service.IServicioService;
 
 @Controller
@@ -39,6 +43,15 @@ public class ServicioController {
 	@Autowired
 	private IBeneficioService beneficioService;
 	
+	@Autowired
+	private ICentroContactoService centroContactoService;
+	
+	/**
+	 * Método para la creación de un Servicio
+	 * @param model
+	 * @return
+	 */
+	
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		
@@ -53,6 +66,12 @@ public class ServicioController {
 				
 	}
 	
+	/**
+	 * Método para la visualización del Servicio
+	 * @param model
+	 * @return
+	 */
+	
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 		
@@ -62,23 +81,79 @@ public class ServicioController {
 		return "catalogos/servicios/ver";
 	}
 	
+	/**
+	 * Método para el detalle del Servicio
+	 * @param id
+	 * @param model
+	 * @param redirect
+	 * @return
+	 */
+	
+	@RequestMapping(value = "/detalle/{id}")
+	public String detalle(@PathVariable(value = "id")Long id, Map<String, Object> model, RedirectAttributes redirect) {
+		
+		Servicio servicio = null;
+		
+		
+		if(id > 0) {
+			servicio = servicioService.findById(id);
+			
+			if(servicio == null) {
+				redirect.addFlashAttribute("error", "El servicio no existe en la base de datos");
+				return "redirect:/servicios/ver";
+			}
+		}else {
+			redirect.addFlashAttribute("error", "El id del servicio no puede ser cero");
+			return "redirect:/servicios/ver";
+		}
+		
+		model.put("servicio", servicio);
+		model.put("listaBeneficios", getBeneficiosByIdServicio(id));
+		
+		return "catalogos/servicios/detalle";
+				
+	}
+	
+	/**
+	 * Método para guardar el servicios en la BBDD
+	 * @param servicio
+	 * @param result
+	 * @param model
+	 * @param redirect
+	 * @param status
+	 * @return
+	 */
 	
 	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Servicio servicio, BindingResult result, Model model, 
+	public String guardar(@RequestParam(name = "descripcion[]", required = false) String[] descripcion,
+				  		  @RequestParam(name = "costo[]", required = false) Double[] costo,
+						 @Valid Servicio servicio, BindingResult result, Model model, 
 						 RedirectAttributes redirect, SessionStatus status) {
 		
 		
 		logger.info("Entra al método para guardar o modificar el servicio");
 		
-		System.out.println(servicio.toString());
-		
-		if(result.hasErrors()) {
-			model.addAttribute("titulo", "Crear Membresia");
-			return "catalogos/servicios/crear";
+		for(int i = 0; i < descripcion.length; i++) {
+			System.out.println(descripcion[i]);
 		}
 		
+		for(int i = 0; i < costo.length; i++) {
+			System.out.println(costo[i]);
+		}
 		
+		if(servicio.getId() != null) {
+			if(result.hasErrors()) {
+				model.addAttribute("titulo", "Crear Membresia");
+				return "catalogos/servicios/editar";
+			}
+		}else {
+			if(result.hasErrors()) {
+				model.addAttribute("titulo", "Crear Membresia");
+				return "catalogos/servicios/crear";
+			}
+		}	
+				
 		String flashMessage = (servicio.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
 		
 		servicio.setEstatus(true);
@@ -93,31 +168,58 @@ public class ServicioController {
 		
 	}
 	
+	/**
+	 * Método para la edición del Servicio
+	 * @param id
+	 * @param model
+	 * @param redirect
+	 * @return
+	 */
+	
 	@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
 		Servicio servicio = null;
 
-		if (id > 0) {
-			servicio = servicioService.findById(id);
-			if (servicio == null) {
-				redirect.addFlashAttribute("Error: ", "El id del servicio no existe");
-				return "redirect:/cuentas/ver";
+		try {
+			if (id > 0) {
+				servicio = servicioService.findById(id);
+				if (servicio == null) {
+					redirect.addFlashAttribute("error", "El id del servicio no existe");
+					return "redirect:/servicios/ver";
+				}
+			} else {
+				redirect.addFlashAttribute("error", "El id del servicio no puede ser cero");
+				return "redirect:/servicios/ver";
 			}
-		} else {
-			redirect.addFlashAttribute("Error: ", "El id del servicio no puede ser cero");
-			return "redirect:/cuentas/ver";
+		}catch(Exception ex) {
+			redirect.addFlashAttribute("error", "Ocurrió un error en el sistema, contacte al administrador");
+			return "redirect:/servicios/ver";
 		}
+		
+			
 
+		List<Beneficio> listaBeneficios = getBeneficiosByIdServicio(id);
+		
+		for(Beneficio beneficios : listaBeneficios) {
+			System.out.println(beneficios.toString());
+		}
+		
 		model.put("servicio", servicio);
-		model.put("titulo", "Editar servicio");
-
+		model.put("listaBeneficios", getBeneficiosByIdServicio(id));
 		
 		return "catalogos/servicios/editar";
 		
 
 	}
+	
+	/**
+	 * Método para borrar el Servicio
+	 * @param id
+	 * @param redirect
+	 * @return
+	 */
 	
 	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
@@ -135,16 +237,47 @@ public class ServicioController {
 	 * @return
 	 */
 	
-	@ModelAttribute("beneficios")
+	@ModelAttribute("lBeneficios")
 	public List<Beneficio> getAllBeneficios(){
 		return beneficioService.findAll();
 	}
 	
+	/**
+	 * Se genera un beneficio para la pantalla de creación del Servicio
+	 * @return
+	 */
 	
 	@ModelAttribute("beneficio")
-	public Beneficio getNewBeneficio() {
-		Beneficio beneficio = new Beneficio();
+	public List<Beneficio> getBeneficioWrapper() {
+		List<Beneficio> beneficio = new ArrayList<Beneficio>();
+		
 		return beneficio;
+	}
+	
+	/**
+	 * Método que obtiene la lista de los beneficios que pertenecen a cada Servicio	
+	 * @param id
+	 * @return
+	 */
+	
+	public List<Beneficio> getBeneficiosByIdServicio(Long id){
+		List<Beneficio> beneficios = beneficioService.getBeneficiosByIdServicio(id);
+		
+		return beneficios;
+	}
+	
+	/**
+	 * Método que obtiene la lista de los centros de asistencia por cada servicio
+	 * @return
+	 */
+	
+	@ModelAttribute("centros")
+	public List<CentroContacto> getAllCentroContacto(){
+		
+		List<CentroContacto> centrosContacto = centroContactoService.findAll();
+		
+		return centrosContacto;
+		
 	}
 	
 }

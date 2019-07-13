@@ -24,6 +24,7 @@ import com.prosesol.springboot.app.service.IPromotorService;
 
 @Controller
 @SessionAttributes("promotor")
+@RequestMapping("/promotores")
 public class PromotorController {
 
 	protected final Log logger = LogFactory.getLog(this.getClass());
@@ -31,7 +32,7 @@ public class PromotorController {
 	@Autowired
 	private IPromotorService promotorService;
 	
-	@RequestMapping(value = "/promotores/ver", method = RequestMethod.GET)
+	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 		
 		model.addAttribute("titulo", "Promotores");
@@ -41,7 +42,7 @@ public class PromotorController {
 	}
 	
 	@Secured("ROLE_ADMINISTRADOR")
-	@RequestMapping(value = "/promotores/crear")
+	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		
 		Promotor promotor = new Promotor();
@@ -54,7 +55,7 @@ public class PromotorController {
 	}
 	
 	@Secured("ROLE_ADMINISTRADOR")
-	@RequestMapping(value = "/promotores/crear", method = RequestMethod.POST)
+	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Promotor promotor, BindingResult result, Model model, RedirectAttributes redirect,
 						 SessionStatus status) {
 		
@@ -75,7 +76,7 @@ public class PromotorController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
-	@RequestMapping(value = "/promotores/editar/{id}")
+	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
 		Promotor promotor = null;
@@ -98,7 +99,7 @@ public class PromotorController {
 
 	}
 	
-	@RequestMapping(value = "/promotores/eliminar/{id}")
+	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 		
 		if(id > 0) {

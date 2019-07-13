@@ -246,6 +246,7 @@
 													<label for="company">Servicio</label>
 													<select	name ="servicio" th:field="*{servicio}" class="custom-select"
 														id="inputGroupSelect01">
+														<option value="">Ninguno</option>
 														<option th:each="servicio : ${servicios}"
 															    th:value="${servicio.id}"
 															    th:text="${servicio.nombre}"
@@ -284,6 +285,7 @@
 													<label for="company">Periodos</label>
 													<select	name ="periodo" th:field="*{periodicidad}" class="custom-select"
 														id="inputGroupSelect01">
+														<option value="">Ninguno</option>
 														<option th:each="periodo : ${periodos}"
 															    th:value="${periodo.id}"
 															    th:text="${periodo.nombre}"
@@ -321,7 +323,8 @@
 												<div class="form-group col-md-3">
 													<label for="company">Cuenta</label>
 													<select	name ="cuenta" th:field="*{cuenta}" class="custom-select"
-														id="cuentas" >				
+														id="cuentas" >			
+														<option value="">Ninguno</option>	
 														<option th:each="cuenta : ${cuentas}"
 															    th:value="${cuenta.id}"
 															    th:text="${cuenta.razonSocial}"

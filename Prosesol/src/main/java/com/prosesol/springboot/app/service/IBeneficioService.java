@@ -13,5 +13,7 @@ public interface IBeneficioService {
 	public void deleteById(Long id);
 	
 	public List<Beneficio> findAll();
+	
+	public List<Beneficio> getBeneficiosByIdServicio(Long id);
 
 }

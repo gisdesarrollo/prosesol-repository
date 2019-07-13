@@ -1,7 +1,8 @@
 package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Table(name = "beneficios")
 @Entity
@@ -32,12 +32,13 @@ public class Beneficio implements Serializable{
 	
 	@Column(name = "descripcion")
 	private String descripcion;
-	
-	@Transient
-	private Double costo;
-	
+		
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "beneficios")
-	private Set<Servicio> servicios;
+	private List<Servicio> servicios;
+	
+	public Beneficio() {
+		servicios = new ArrayList<Servicio>();
+	}
 	
 	public Long getId() {
 		return id;
@@ -63,20 +64,27 @@ public class Beneficio implements Serializable{
 		this.descripcion = descripcion;
 	}
 
-	public Double getCosto() {
-		return costo;
-	}
-
-	public void setCosto(Double costo) {
-		this.costo = costo;
-	}
-
-	public Set<Servicio> getServicios() {
+	public List<Servicio> getServicios() {
 		return servicios;
 	}
 
-	public void setServicios(Set<Servicio> servicios) {
+	public void setServicios(List<Servicio> servicios) {
 		this.servicios = servicios;
 	}
+	
+	@Override
+	public String toString() {
+
+		StringBuffer buffer = new StringBuffer();
+		
+		buffer.append("Id: [").append(id).append("] ")
+			  .append("Nombre: [").append(nombre).append("] ")
+			  .append("Descripción: [").append(descripcion).append("] ");
+		
+		return buffer.toString();
+		
+	}
+
+
 	
 }

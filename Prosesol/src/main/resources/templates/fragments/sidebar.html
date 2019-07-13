@@ -14,13 +14,14 @@
 						<i class="nav-icon fas fa-home"></i> Home
 				</a></li>
 
-				<li class="nav-title">Sistema</li>
+				<li class="nav-title" sec:authorize="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_USUARIO')">Sistema</li>
 
-				<li class="nav-item nav-dropdown"><a
+				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_USUARIO')"
+					class="nav-item nav-dropdown"><a
 					class="nav-link nav-dropdown-toggle"> <i
 						class="nav-icon fas fa-tools"></i> Config
 				</a>
-					<ul class="nav-dropdown-items">
+					<ul class="nav-dropdown-items" sec:authorize="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_USUARIO')">
 						<li class="nav-item"><a class="nav-link"
 							th:href="@{/usuarios/ver}"> <i class="nav-icon icon-puzzle"></i>
 								Usuarios
@@ -32,9 +33,10 @@
 					</ul></li>
 
 
-				<li class="nav-title">Administración</li>
+				<li class="nav-title" sec:authorize="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_USUARIO')">Administración</li>
 
-				<li class="nav-item nav-dropdown"><a
+				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_USUARIO')"
+					class="nav-item nav-dropdown"><a
 					class="nav-link nav-dropdown-toggle"> <i
 						class="nav-icon fas fa-cogs"></i> Catálogos
 				</a>
@@ -62,6 +64,10 @@
 							th:href="@{/beneficios/ver}"> <i class="nav-icon"></i>
 								Beneficios
 						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/centros/ver}"> <i class="nav-icon"></i>
+								Centros de Asistencia
+						</a></li>
 					</ul></li>
 
 
@@ -84,7 +90,8 @@
 						</a></li>
 					</ul></li> -->
 
-				<li class="nav-item nav-dropdown"><a
+				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_USUARIO')"
+					class="nav-item nav-dropdown"><a
 					class="nav-link nav-dropdown-toggle"> <i
 						class="nav-icon fas fa-user-md"></i> Carga Masiva
 				</a>
@@ -95,7 +102,8 @@
 						</a></li>
 					</ul></li>
 
-				<li class="nav-item nav-dropdown"><a
+				<li sec:authorize="hasRole('ROLE_ASISTENCIA')"
+					class="nav-item nav-dropdown"><a
 					class="nav-link nav-dropdown-toggle"> <i
 						class="nav-icon fas fa-user-md"></i> Portal de Consultas
 				</a>
@@ -110,9 +118,10 @@
 						</a></li>
 					</ul></li>
 
-				<li class="nav-title">Reportes</li>
+				<li class="nav-title" sec:authorize="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_USUARIO')">Reportes</li>
 
-				<li class="nav-item nav-dropdown"><a
+				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_USUARIO')"
+					class="nav-item nav-dropdown"><a
 					class="nav-link nav-dropdown-toggle"> <i
 						class="nav-icon fas fa-tools"></i> Afiliados
 				</a>

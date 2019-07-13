@@ -14,28 +14,28 @@ import com.prosesol.springboot.app.entity.dao.IServicioDao;
 public class ServicioServiceImpl implements IServicioService {
 
 	@Autowired
-	private IServicioDao membresiaDao;
+	private IServicioDao servicioDao;
 
 	@Override
 	public List<Servicio> findAll() {
-		return (List<Servicio>) membresiaDao.findAll();
+		return (List<Servicio>) servicioDao.findAll();
 	}
 
 	@Override
 	public void save(Servicio servicio) {
-		membresiaDao.save(servicio);
+		servicioDao.save(servicio);
 	}
 
 	@Override
 	public void delete(Long id) {
-		membresiaDao.deleteById(id);
+		servicioDao.deleteById(id);
 		;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Servicio findById(Long id) {
-		return membresiaDao.findById(id).orElse(null);
+		return servicioDao.findById(id).orElse(null);
 	}
 
 	@Override
