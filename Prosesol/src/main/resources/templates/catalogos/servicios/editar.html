@@ -88,6 +88,7 @@
 											
 											<a class="btn btn-primary" data-toggle="collapse" href="#agregarBeneficio" role="button" aria-expanded="false"
    												aria-controls="agregarBeneficio">Agregar Beneficio</a>
+   											<br></br>
 											<div class="collapse " id="agregarBeneficio">
 												<div class="row">
 													<div class="col-md-12">
@@ -96,20 +97,36 @@
 																<div class="card-body">
 																<div class="clearfix"></div>
 																<div class="row">
-																	<div class="form-group col-md-10 cartWrapper">
-																		<div class="form-group col-md-10" id="listaBeneficios">
-																		<label class="lblBeneficio">Listado de beneficios</label>
-																			<select	name ="beneficios" th:field="*{beneficios}" class="custom-select beneficios changeFields"
-																				id="inputGroupSelect01" >
-																				<option th:each="beneficio : ${beneficios}"
-																					    th:value="${beneficio.id}"
-																					    th:text="${beneficio.nombre}"
-																					    th:selected="true"/>
-																			</select>																		
-																		</div>	
-																	</div>
-																	<div id="result"></div>
-																	<br/><br/>														
+																	<div class="form-group col-md-10 cartWrapper">																	
+																		<div class="form-group col-md-4" id="listaBeneficios" 
+																			 th:each="listaBeneficio, iterStat : ${listaBeneficios}">
+																			 <div>
+																			 	<label for="user">Listado de beneficios</label>
+																				<select	name ="beneficios" id="beneficios" class="custom-select" th:value="${iterStat.index}">
+																					<option value="">Seleccione una opción</option>
+																					<option th:each="beneficio : ${beneficios}"
+																						    th:value="${beneficio.id}"
+																						    th:text="${beneficio.nombre}"
+																						    th:selected="${beneficio.id == listaBeneficio.id}"/>																				    
+																				</select>
+																			 </div>
+																			 <div>
+																			 	<label>Descripcion</label>
+																				<input type="text" th:field="*{beneficios[__${iterStat.index}__].descripcion}" 
+																				   class="form-control form-control-user" name="nota" id="nota">
+																			 </div>		
+																			 <div>
+																			 	<label>Costo</label>
+																				<input type="text" th:value="*{beneficios[__${iterStat.index}__].costo}" 
+																				   class="form-control form-control-user" name="costo" id="costo">
+																			 </div>	
+																			 <div>
+																			 	<label>Borrar</label>
+																				<button type="button" class="btn btn-primary rounded-circle quitarBeneficio">
+																				<i class="fa fa-minus"></i>	</button>
+																			 </div>																																																															
+																		</div>															
+																	</div>												
 																</div>	
 																<div class="row">
 																	<div class="col-sm-12">

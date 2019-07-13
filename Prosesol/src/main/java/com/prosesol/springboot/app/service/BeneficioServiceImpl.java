@@ -37,6 +37,12 @@ public class BeneficioServiceImpl implements IBeneficioService{
 	public List<Beneficio> findAll() {
 		return (List<Beneficio>)beneficioDao.findAll();
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Beneficio> getBeneficiosByIdServicio(Long id) {
+		return beneficioDao.getBeneficiosByIdServicio(id);
+	}
 	
 	
 

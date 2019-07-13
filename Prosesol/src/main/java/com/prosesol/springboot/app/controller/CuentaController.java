@@ -22,12 +22,13 @@ import com.prosesol.springboot.app.service.ICuentaService;
 
 @Controller
 @SessionAttributes("cuenta")
+@RequestMapping("/cuentas")
 public class CuentaController {
 
 	@Autowired
 	private ICuentaService cuentaService;
 	
-	@RequestMapping(value = "/cuentas/ver", method = RequestMethod.GET)
+	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 		
 		model.addAttribute("titulo", "Cuentas");
@@ -37,7 +38,7 @@ public class CuentaController {
 	}
 	
 	@Secured("ROLE_ADMINISTRADOR")
-	@RequestMapping(value = "cuentas/crear")
+	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		Cuenta cuenta = new Cuenta();
 
@@ -48,7 +49,7 @@ public class CuentaController {
 	}
 	
 	@Secured("ROLE_ADMINISTRADOR")
-	@RequestMapping(value = "cuentas/crear", method = RequestMethod.POST)
+	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Cuenta cuenta, BindingResult result, Model model, RedirectAttributes redirect,
 						  SessionStatus status) {
 		
@@ -70,7 +71,7 @@ public class CuentaController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
-	@RequestMapping(value = "/cuentas/editar/{id}")
+	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
 		Cuenta cuenta = null;
@@ -95,7 +96,7 @@ public class CuentaController {
 
 	}
 	
-	@RequestMapping(value = "/cuentas/eliminar/{id}")
+	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 		
 		if(id > 0) {

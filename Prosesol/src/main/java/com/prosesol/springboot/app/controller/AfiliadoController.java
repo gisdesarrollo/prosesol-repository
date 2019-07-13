@@ -87,8 +87,11 @@ public class AfiliadoController {
 	public String crear(Map<String, Object> model) {
 
 		Afiliado afiliado = new Afiliado();
+		
 		model.put("afiliado", afiliado);
 		model.put("titulo", "Crear Afiliado");
+		
+		
 
 		return "catalogos/afiliados/crear";
 	}

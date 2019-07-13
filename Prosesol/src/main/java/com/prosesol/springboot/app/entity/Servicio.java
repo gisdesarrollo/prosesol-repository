@@ -3,7 +3,6 @@ package com.prosesol.springboot.app.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,12 +14,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 @Entity
 @Table(name = "servicios")
@@ -43,6 +45,7 @@ public class Servicio implements Serializable{
 	@Column(name = "notas")
 	private String nota;
 				
+	@NumberFormat(style = Style.NUMBER, pattern = "#,###.##")
 	@NotNull(message = "{text.servicio.inscripcionTitular}")
 	@Column(name = "inscripcion_titular")
 	private Double inscripcionTitular;
@@ -69,19 +72,20 @@ public class Servicio implements Serializable{
 	@OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Afiliado> afiliado;
 	
-	@OneToOne
-	@JoinColumn(name = "id_centro_contacto", referencedColumnName = "id_centro_contacto")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_centro_contacto")
 	private CentroContacto centroContacto;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "rel_servicios_beneficios", joinColumns = @JoinColumn(name = "id_servicio"), 
 			   inverseJoinColumns = @JoinColumn(name = "id_beneficio"), uniqueConstraints = {
 			   @UniqueConstraint(columnNames = {"id_servicio", "id_beneficio"})})
-	private Set<Beneficio> beneficios;
+	private List<Beneficio> beneficios;
 	
 	
 	public Servicio() {
 		afiliado = new ArrayList<Afiliado>();
+		beneficios = new ArrayList<Beneficio>();
 	}
 	
 	public Long getId() {
@@ -164,11 +168,11 @@ public class Servicio implements Serializable{
 		this.centroContacto = centroContacto;
 	}
 
-	public Set<Beneficio> getBeneficios() {
+	public List<Beneficio> getBeneficios() {
 		return beneficios;
 	}
 
-	public void setBeneficios(Set<Beneficio> beneficios) {
+	public void setBeneficios(List<Beneficio> beneficios) {
 		this.beneficios = beneficios;
 	}
 	

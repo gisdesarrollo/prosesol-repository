@@ -1,32 +1,15 @@
-$(function(){
+$(document).ready(function(){
 	
-	var beneficio = [];
+	var rowBeneficios = $("#rowBeneficios").html();
 	
-	$(".agregarBeneficio").click(function(){	
-		cloneF();
-	});
-	
-	
-	function cloneF(){
+	$(".addRow").click(function(){
 		
-		var $lbl = $(".lblBeneficio");
-		
-		$("#listaBeneficios:first")
-		.clone()
-		.appendTo(".cartWrapper");
-		
-	}
-	
-	$('.cartWrapper').on('change', '.changeFields', function(){
-		
-		var $set = $(this).closest('#listaBeneficios')
-		
-		var valBeneficio = $set.find(".beneficios :selected:last").val();
-
-		beneficio.push(valBeneficio);
+		$("#listaBeneficio").append(rowBeneficios);
 		
 	});
 	
+	$("#removeRow").click(function(){
+		$("#listaBeneficios").remove(rowBeneficios);
+	});
 	
-
 });

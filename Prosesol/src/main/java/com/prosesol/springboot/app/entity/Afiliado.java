@@ -1,7 +1,10 @@
 package com.prosesol.springboot.app.entity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -24,9 +27,16 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
+
 @Entity
 @Table(name = "afiliados")
-public class Afiliado{
+public class Afiliado implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -169,12 +179,16 @@ public class Afiliado{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cta_comercial")
 	private Cuenta cuenta;
+	
+	@OneToMany(mappedBy = "afiliado", cascade = CascadeType.ALL)
+	private List<RelAfiliadoIncidencia> relAfiliadoIncidencia;
 
 	@Transient
 	private Integer corte;
 
 	public Afiliado() {
 		beneficiarios = new HashSet<Beneficiario>();
+		relAfiliadoIncidencia = new ArrayList<RelAfiliadoIncidencia>();
 	}
 
 	public Set<Beneficiario> getBeneficiarios() {
@@ -491,6 +505,14 @@ public class Afiliado{
 
 	public void setCorte(Integer corte) {
 		this.corte = corte;
+	}
+	
+	public List<RelAfiliadoIncidencia> getRelAfiliadoIncidencia() {
+		return relAfiliadoIncidencia;
+	}
+
+	public void setRelAfiliadoIncidencia(List<RelAfiliadoIncidencia> relAfiliadoIncidencia) {
+		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
 	}
 
 	@Override
