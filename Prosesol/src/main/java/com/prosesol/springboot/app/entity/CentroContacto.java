@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -61,6 +62,9 @@ public class CentroContacto implements Serializable{
 	
 	@OneToMany(mappedBy = "centroContacto", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Servicio> servicio;
+	
+	@OneToOne(mappedBy = "centroContacto")
+	private Usuario usuario;
 	
 	public CentroContacto() {
 		servicio = new ArrayList<Servicio>();
@@ -145,4 +149,13 @@ public class CentroContacto implements Serializable{
 	public void setServicio(List<Servicio> servicio) {
 		this.servicio = servicio;
 	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 }

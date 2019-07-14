@@ -14,6 +14,16 @@ $( document ).ready(function() {
 		}
 	});
 	
+	$('#inputCentroAsistencia').prop("disabled", true);
+	$('#cbCentroAsistencia').click(function(){
+		
+		if($(this).prop("checked") == true){
+			$('#inputCentroAsistencia').prop("disabled", false);
+		}else if($(this).prop("checked") == false){
+			$('#inputCentroAsistencia').prop("disabled", false);
+		}
+	})
+	
 	$("#get-data-form").submit(function(e){
 		
 		var content = tinymce.get("texteditor").getContent();

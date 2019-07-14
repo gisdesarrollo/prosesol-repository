@@ -14,9 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
+
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "usuarios")
@@ -43,6 +46,11 @@ public class Usuario implements Serializable{
 	@Column
 	@NotEmpty(message = "El correo electrónico es obligatorio")
 	private String email;
+		
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_centro_contacto", referencedColumnName = "id_centro_contacto")
+	@Nullable
+	private CentroContacto centroContacto;
 	
 	private Boolean estatus;
 	
@@ -112,5 +120,24 @@ public class Usuario implements Serializable{
 	public void setEstatus(Boolean estatus) {
 		this.estatus = estatus;
 	}
+
+	public CentroContacto getCentroContacto() {
+		return centroContacto;
+	}
+
+	public void setCentroContacto(CentroContacto centroContacto) {
+		this.centroContacto = centroContacto;
+	}
 	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append("Usuario: [").append(nombre).append("]")
+		       .append("Correo: [").append(email).append("]")
+		       .append("Centro Contacto: [").append(centroContacto).append("]");
+		
+		return builder.toString();
+	}
+
 }

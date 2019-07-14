@@ -16,12 +16,9 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.prosesol.springboot.app.entity.Afiliado;
-import com.prosesol.springboot.app.service.EmailServiceImpl;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 
 //@Configuration
@@ -37,8 +34,6 @@ public class CalcularSaldoScheduler {
 	@Autowired
 	private IAfiliadoService afiliadoService;
 	
-	@Autowired
-	private EmailServiceImpl emailServiceImpl;
 	
 	@Scheduled(fixedDelay = 100000)
 	@Transactional
@@ -91,18 +86,6 @@ public class CalcularSaldoScheduler {
 					
 					afiliadoService.save(afiliado);
 					
-//					// Testing mail
-//					mail.setTo(afiliado.getEmail());
-//					mail.setFrom("prosesol@example.com");
-//					mail.setSubject("SUSPENSIÓN DE SERVICIO");
-//					
-//					// Se le envía el afiliado al template del correo para poder manipularse
-//					// desde el controlador
-//					model.put("afiliado", afiliado);
-//					
-//					mail.setModel(model);
-//					
-//					emailServiceImpl.sendSimpleMessage(mail, bandera);
 				}
 			}
 		}

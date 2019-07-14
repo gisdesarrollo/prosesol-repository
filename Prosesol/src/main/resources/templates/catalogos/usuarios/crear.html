@@ -73,6 +73,25 @@
 														th:if="${#fields.hasErrors('perfiles')}"
 														th:errors="*{perfiles}"></small>
 												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">¿Es Centro de Asistencia?</label>
+													<input type="checkbox" id="cbCentroAsistencia"/>
+													<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Centro Asistencia</label>
+													<select	name ="centroContacto" th:field="*{centroContacto}" class="custom-select"
+														id="inputCentroAsistencia">
+														<option value="">Ninguno</option>
+														<option th:each="centro : ${centros}"
+															    th:value="${centro.id}"
+															    th:text="${centro.nombre}"
+															    th:selected="false"/>
+													</select>
+												</div>
+												
 											</div>
 
 											<hr>

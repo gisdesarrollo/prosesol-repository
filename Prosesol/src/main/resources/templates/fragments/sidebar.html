@@ -72,23 +72,6 @@
 
 
 				<li class="nav-title">Operación</li>
-				<!--<li class="nav-item nav-dropdown"><a
-					class="nav-link nav-dropdown-toggle"> <i
-						class="nav-icon fas fa-cogs"></i> Formatos de correo
-				</a>
-					<ul class="nav-dropdown-items">
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/correos/ver}"> <i class="nav-icon"></i>
-								Ver
-						</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/correos/crear}"> <i class="nav-icon"></i> Crear
-						</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/correos/editar}"> <i class="nav-icon"></i>
-								Editar
-						</a></li>
-					</ul></li> -->
 
 				<li sec:authorize="hasRole('ROLE_ADMINISTRADOR') or hasRole('ROLE_USUARIO')"
 					class="nav-item nav-dropdown"><a
@@ -105,12 +88,12 @@
 				<li sec:authorize="hasRole('ROLE_ASISTENCIA')"
 					class="nav-item nav-dropdown"><a
 					class="nav-link nav-dropdown-toggle"> <i
-						class="nav-icon fas fa-user-md"></i> Portal de Consultas
+						class="nav-icon fas fa-user-md"></i> Portal de Incidencias
 				</a>
 					<ul class="nav-dropdown-items">
 						<li class="nav-item"><a class="nav-link"
 							href="#"> <i class="nav-icon"></i>
-							Citas
+							Nueva Incidencia
 						</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="#"> <i class="nav-icon"></i>

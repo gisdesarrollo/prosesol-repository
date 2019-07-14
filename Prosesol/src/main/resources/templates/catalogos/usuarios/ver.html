@@ -42,6 +42,7 @@
 													<th>Correo electrónico</th>
 													<th>Perfil</th>
 													<th>Estatus</th>
+													<th>Centro de Asistencia Asignado</th>
 													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 												</tr>
 											</thead>
@@ -56,6 +57,7 @@
 													<td th:each="perfil : ${usuario.perfiles}" th:text="${perfil.descripcion}"></td>
 													<td th:case="true" th:text="Activo"></td>
 													<td th:case="false" th:text="Inactivo"></td>
+													<td th:text="${usuario?.centroContacto?.getNombre()}"></td>
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 														<div class="dropdown">
 												<button class="btn btn-primary btn-sm dropdown-toggle"

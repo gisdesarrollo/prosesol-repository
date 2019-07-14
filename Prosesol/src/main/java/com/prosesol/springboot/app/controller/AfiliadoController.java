@@ -91,8 +91,6 @@ public class AfiliadoController {
 		model.put("afiliado", afiliado);
 		model.put("titulo", "Crear Afiliado");
 		
-		
-
 		return "catalogos/afiliados/crear";
 	}
 
