@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.prosesol.springboot.app.entity.CentroContacto;
 import com.prosesol.springboot.app.entity.Perfil;
 import com.prosesol.springboot.app.entity.Usuario;
+import com.prosesol.springboot.app.service.ICentroContactoService;
 import com.prosesol.springboot.app.service.IPerfilService;
 import com.prosesol.springboot.app.service.IUsuarioService;
 
@@ -45,6 +47,9 @@ public class UsuarioController {
 	
 	@Autowired
 	private IPerfilService perfilService;
+	
+	@Autowired
+	private ICentroContactoService centroContactoService;
 	
 	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
@@ -148,5 +153,10 @@ public class UsuarioController {
 	@ModelAttribute("perfiles")
 	public List<Perfil> listaPerfiles(){
 		return perfilService.findAll();
+	}
+	
+	@ModelAttribute("centros")
+	public List<CentroContacto> listaCentros(){
+		return centroContactoService.findAll();
 	}
 }
