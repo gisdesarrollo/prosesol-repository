@@ -65,9 +65,7 @@ public class CentroContactoController {
 			return "redirect:/centros/ver";
 			
 		}
-		
-		
-		System.out.println(centroContacto.getId());
+				
 		String flashMessage = (centroContacto.getId() != null) ? "El registro se ha editado correctamente" : "El registro se ha creado correctamente";
 		
 		centroContacto.setEstatus(true);
