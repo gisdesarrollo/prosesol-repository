@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
 
 public interface IAfiliadoDao extends CrudRepository<Afiliado, Long>{
 	
@@ -19,4 +20,6 @@ public interface IAfiliadoDao extends CrudRepository<Afiliado, Long>{
 	@Query("select a.id from Afiliado a where a.rfc like %:rfc%")
 	public Long getIdAfiliadoByRfc(@Param("rfc")String rfc);
 	
+	@Query("select new com.prosesol.springboot.app.entity.custom.AfiliadoCustom(a.nombre, a.apellidoPaterno, a.apellidoMaterno, a.clave, a.telefonoFijo, a.telefonoMovil, a.municipio, a.entidadFederativa) from Afiliado a where a.clave like %:clave%")
+	public AfiliadoCustom findAfiliadoByClave(@Param("clave")String clave);
 }

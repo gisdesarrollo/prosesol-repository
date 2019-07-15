@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
 import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
 import com.prosesol.springboot.app.repository.BeneficiarioRepository;
 import com.prosesol.springboot.app.util.Estados;
@@ -101,6 +102,10 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 		return iAfiliadoDao.getIdAfiliadoByRfc(rfc);
 	}
 
+	@Override
+	public AfiliadoCustom findAfiliadoByClave(String clave) {
+		return iAfiliadoDao.findAfiliadoByClave(clave);
+	}
 	
 
 }

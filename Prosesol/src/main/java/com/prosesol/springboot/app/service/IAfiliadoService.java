@@ -3,6 +3,7 @@ package com.prosesol.springboot.app.service;
 import java.util.List;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
 import com.prosesol.springboot.app.util.Paises;
 
 public interface IAfiliadoService {
@@ -28,4 +29,6 @@ public interface IAfiliadoService {
 	public String[] getVariablesAfiliado();	
 	
 	public Long getIdAfiliadoByRfc(String rfc);
+	
+	public AfiliadoCustom findAfiliadoByClave(String clave);
 }
