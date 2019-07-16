@@ -2,6 +2,8 @@ package com.prosesol.springboot.app.entity.custom;
 
 public class AfiliadoCustom {
 
+	private Long id;
+	
 	private String nombre;
 	
 	private String apellidoPaterno;
@@ -20,9 +22,10 @@ public class AfiliadoCustom {
 
 	public AfiliadoCustom() {}
 
-	public AfiliadoCustom(String nombre, String apellidoPaterno, String apellidoMaterno, String clave,
-			Long telefonoFijo, Long telefonoMovil, String municipio, String entidadFederativa) {
-		super();
+	public AfiliadoCustom(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, 
+			Long telefonoFijo, Long telefonoMovil, String clave, String municipio, 
+			String entidadFederativa) {
+		this.id = id;
 		this.nombre = nombre;
 		this.apellidoPaterno = apellidoPaterno;
 		this.apellidoMaterno = apellidoMaterno;
@@ -31,6 +34,14 @@ public class AfiliadoCustom {
 		this.telefonoMovil = telefonoMovil;
 		this.municipio = municipio;
 		this.entidadFederativa = entidadFederativa;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public String getNombre() {
@@ -97,6 +108,24 @@ public class AfiliadoCustom {
 		this.entidadFederativa = entidadFederativa;
 	}
 
-	
+	@Override
+	public String toString() {
+		
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append("Id Afiliado: [").append(id).append("]")
+			   .append("Nombre: [").append(nombre).append("]")
+			   .append("Apellido Paterno: [").append(apellidoPaterno).append("]")
+			   .append("Apellido Materno: [").append(apellidoMaterno).append("]")
+			   .append("RFC: [").append(clave).append("]")
+			   .append("Telefono Fijo: [").append(telefonoFijo).append("]")
+			   .append("Telefono Movil: [").append(telefonoMovil).append("]")
+			   .append("Municipio: [").append(municipio).append("]")
+			   .append("Entidad Federativa: [").append(entidadFederativa).append("]");
+		
+		return builder.toString();
+	}
+
+
 	
 }

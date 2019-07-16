@@ -28,6 +28,7 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
+import com.prosesol.springboot.app.util.AfiliadoAsistencia;
 
 @Entity
 @Table(name = "afiliados")
@@ -531,4 +532,7 @@ public class Afiliado implements Serializable{
 		return builder.toString();
 	}
 	
+	public String getQuery(String campo, boolean where, AfiliadoAsistencia tipoQuery) {
+		return tipoQuery.addQuery(campo, where);
+	}
 }

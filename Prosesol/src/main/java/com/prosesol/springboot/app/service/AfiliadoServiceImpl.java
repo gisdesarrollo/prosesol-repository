@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
 import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
+import com.prosesol.springboot.app.repository.AfiliadoRepository;
 import com.prosesol.springboot.app.repository.BeneficiarioRepository;
 import com.prosesol.springboot.app.util.Estados;
 import com.prosesol.springboot.app.util.Paises;
@@ -24,6 +25,9 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	
 	@Autowired
 	private BeneficiarioRepository beneficiarioRepository;
+	
+	@Autowired
+	private AfiliadoRepository afiliadoRepository;
 
 	@Override
 	@Transactional(readOnly=true)
@@ -103,9 +107,9 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	}
 
 	@Override
-	public AfiliadoCustom findAfiliadoByClave(String clave) {
-		return iAfiliadoDao.findAfiliadoByClave(clave);
-	}
-	
+	@Transactional(readOnly = true)
+	public List<AfiliadoCustom> getAfiliadoByParams(String[] campos) {
+		return afiliadoRepository.getAfiliadoByParams(campos);
+	}	
 
 }

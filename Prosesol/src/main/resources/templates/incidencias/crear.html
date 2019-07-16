@@ -23,45 +23,91 @@
 						<div class="card">
 							<div class="card-header">Nueva Incidencia</div>
 							<div class="card-body">
-								<p>Captura la información del afiliado para crear una nueva incidencia</p>
+								<p>Captura la información solicitada para dar de alta la incidencia para el Afiliado</p>
 								<div class="clearfix"></div>
 								<hr>
 								<div class="row">
 									<div class="col-md-12">
-										<form th:action="@{/incidencias/buscar}" method="post">
+										<form class="user" th:action="@{/incidencias/crear}"
+											th:object="${incidencia}" method="post">
 											<div class="row">
-												<div class="form-group col-md-3">
-													<label for="company">Nombre</label><input
-														type="text" name="campos[]"
-														class="form-control form-control-user">
+												<div class="form-group col-md-2">
+													<label for="company">Nombre</label>
+													<label th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}">Nombre Completo</label>
 												</div>
 
-												<div class="form-group col-md-3">
-													<label for="company">Apellido Paterno</label><input type="text"
-														name="campos[]" class="form-control form-control-user">													
+												<div class="form-group col-md-2">
+													<label for="company">Teléfono Fijo</label>
+													<label th:text="${afiliado.telefonoFijo}">Teléfono Fijo</label>
 												</div>
 
-												<div class="form-group col-md-3">
-													<label for="company">Apellido Materno</label> <input type="text"
-														name="campos[]"
-														class="form-control form-control-user">
+												<div class="form-group col-md-2">
+													<label for="company">Teléfono Móvil</label>
+													<label th:text="${afiliado.telefonoMovil}">Teléfono Móvil</label>
 												</div>
 
-												<div class="form-group col-md-3">
-													<label for="company">RFC</label> <input
-														type="text" name="campos[]"
-														class="form-control form-control-user"> 
+												<div class="form-group col-md-2">
+													<label for="company">Clave</label>
+													<label th:text="${afiliado.clave}">Clave</label>
+												</div>	
+												
+												<div class="form-group col-md-2">
+													<label for="company">Estado</label>
+													<label th:text="${afiliado.entidadFederativa}">Estado</label>
 												</div>
 
-												<div class="form-group col-md-3">
-													<label for="company">Teléfono</label> <input type="text"
-														name="campos[]" class="form-control form-control-user">
-												</div>
+												<div class="form-group col-md-2">
+													<label for="company">Municipio</label>
+													<label th:text="${afiliado.municipio}">Municipio</label>
+												</div>										
+											</div>
+											<div class="row">												
 
 												<div class="form-group col-md-3">
-													<label for="company">Clave del asociado</label> <input
-														type="text" name="campos[]"
-														class="form-control form-control-user">
+													<label for="company">Fecha</label> <input
+														type="text" th:field="*{fecha}"
+														class="form-control form-control-user" id="datepicker">
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Hora</label><input type="text"
+														th:field="*{hora}"
+														class="form-control form-control-user" placeholder="">
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Localización</label><input type="text"
+														th:field="*{localizacion}"
+														class="form-control form-control-user" placeholder="">
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Tipo de Incidencia</label> <select
+														th:field="*{tipoIncidencia}" class="custom-select"
+														id="inputGroupSelect01">
+														<option value="">Opciones</option>
+														<option th:value="'Cotización'" th:selected>Cotización</option>
+														<option th:value="'Reembolso'">Reembolso</option>
+													</select>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Beneficio</label> <select
+														name="beneficios" class="custom-select"
+														id="inputGroupSelect01">
+														<option value="">Opciones</option>
+													</select>
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Costo</label><input type="text"
+														name="costo"
+														class="form-control form-control-user" placeholder="">
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Detalle</label>
+													<textarea th:field="*{detalle}">Capture el detalle de la incidencia</textarea>
 												</div>
 											</div>
 
@@ -70,7 +116,8 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<button type="submit"
-														class="btn btn-primary btn-square float-right">Buscar</button>
+														class="btn btn-primary btn-square float-right">Crear
+														Incidencia</button>
 												</div>
 											</div>
 										</form>
