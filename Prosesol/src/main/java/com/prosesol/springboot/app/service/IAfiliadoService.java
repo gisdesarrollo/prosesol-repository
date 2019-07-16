@@ -30,5 +30,5 @@ public interface IAfiliadoService {
 	
 	public Long getIdAfiliadoByRfc(String rfc);
 	
-	public AfiliadoCustom findAfiliadoByClave(String clave);
+	public List<AfiliadoCustom> getAfiliadoByParams(String[] campos);
 }
