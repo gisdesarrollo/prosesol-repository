@@ -1,13 +1,13 @@
 package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,16 +54,32 @@ public class Incidencia implements Serializable{
 	@Column(name = "detalle")
 	private String detalle;
 	
-	@Column(name = "estatus")
-	private String estatus;
+	@Column(name = "proveedor")
+	private String proveedor;
 	
-	@OneToMany(mappedBy = "incidencia", cascade = CascadeType.ALL)
-	private List<RelAfiliadoIncidencia> relAfiliadoIncidencia;
+	@Column(name = "estatus")
+	private int estatus;
+	
+	@OneToMany(mappedBy = "incidencia", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
 	
 	public Incidencia() {
-		relAfiliadoIncidencia = new ArrayList<RelAfiliadoIncidencia>();
+		
 	}
 	
+	public Incidencia(String nombreAfiliado, Date fecha, String hora, String localizacion, String tipoIncidencia,
+			String detalle, int estatus) {
+		this.nombreAfiliado = nombreAfiliado;
+		this.fecha = fecha;
+		this.hora = hora;
+		this.localizacion = localizacion;
+		this.tipoIncidencia = tipoIncidencia;
+		this.detalle = detalle;
+		this.estatus = estatus;
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -120,19 +136,20 @@ public class Incidencia implements Serializable{
 		this.detalle = detalle;
 	}
 
-	public String getEstatus() {
+	public int getEstatus() {
 		return estatus;
 	}
 
-	public void setEstatus(String estatus) {
+	public void setEstatus(int estatus) {
 		this.estatus = estatus;
 	}
 	
-	public List<RelAfiliadoIncidencia> getRelAfiliadoIncidencia() {
+	public Set<RelAfiliadoIncidencia> getRelAfiliadoIncidencia() {
 		return relAfiliadoIncidencia;
 	}
 
-	public void setRelAfiliadoIncidencia(List<RelAfiliadoIncidencia> relAfiliadoIncidencia) {
+	public void setRelAfiliadoIncidencia(Set<RelAfiliadoIncidencia> relAfiliadoIncidencia) {
 		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
 	}
+
 }

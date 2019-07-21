@@ -4,13 +4,17 @@ public enum AfiliadoAsistencia {
 	
 	NOMBRE{
 		@Override
-		public String addQuery(String campo, boolean where) {
+		public String addQuery(String campo, boolean where, Long idCcUsuario) {
 			
 			String whereClause = "where";
 			
 			if(campo != "") {
 				if(where) {
-					whereClause += " nombre like '" + campo + "'";
+					whereClause += " s.id = a.servicio.id and "
+								   + "cc.id = s.centroContacto.id and "
+								   + "cc.id = " + idCcUsuario + " and "
+								   + "a.nombre like '" + campo + "'";
+								   
 				}
 			}else {
 				return null;
@@ -23,18 +27,24 @@ public enum AfiliadoAsistencia {
 	APELLIDO_PATERNO{
 
 		@Override
-		public String addQuery(String campo, boolean where) {
+		public String addQuery(String campo, boolean where, Long idCcUsuario) {
 
 			String whereClause = "where";
 			String andClause = " and";
 			
 			if(campo != "") {
 				if(where) {
-					whereClause += " apellidoPaterno like '" + campo + "'";
+					whereClause += " s.id = a.servicio.id and "
+								   + "cc.id = s.centroContacto.id and "
+								   + "cc.id = " + idCcUsuario + " and "								
+								   + " apellido_paterno like '" + campo + "'";
 					
 					return whereClause;
 				}else {
-					andClause += " apellidoPaterno like '" + campo + "'";
+					andClause += " s.id = a.servicio.id and "
+							   + "cc.id = s.centroContacto.id and "
+							   + "cc.id = " + idCcUsuario + " and "
+							   + " apellido_paterno like '" + campo + "'";
 					
 					return andClause;
 				}
@@ -47,18 +57,24 @@ public enum AfiliadoAsistencia {
 	APELLIDO_MATERNO{
 
 		@Override
-		public String addQuery(String campo, boolean where) {
+		public String addQuery(String campo, boolean where, Long idCcUsuario) {
 			
 			String whereClause = "where";
 			String andClause = " and";
 			
 			if(campo != "") {
 				if(where) {
-					whereClause += " apellidoMaterno like '" + campo + "'";
+					whereClause += " s.id = a.servicio.id and "
+								   + "cc.id = s.centroContacto.id and "
+								   + "cc.id = " + idCcUsuario + " and " 
+								   + " apellido_materno like '" + campo + "'";
 					
 					return whereClause;
 				}else {
-					andClause += " apellidoMaterno like '" + campo + "'";
+					andClause += " s.id = a.servicio.id and "
+								 + "cc.id = s.centroContacto.id and "
+								 + "cc.id = " + idCcUsuario + " and "
+								 + " apellido_materno like '" + campo + "'";
 					
 					return andClause;
 				}
@@ -71,18 +87,24 @@ public enum AfiliadoAsistencia {
 	RFC{
 
 		@Override
-		public String addQuery(String campo, boolean where) {
+		public String addQuery(String campo, boolean where, Long idCcUsuario) {
 
 			String whereClause = "where";
 			String andClause = " and";
 			
 			if(campo != "") {
 				if(where) {
-					whereClause += " rfc like '" + campo + "'";
+					whereClause += " s.id = a.servicio.id and "
+							 	   + "cc.id = s.centroContacto.id and "
+							 	   + "cc.id = " + idCcUsuario + " and " 
+							 	   + " rfc like '" + campo + "'";
 					
 					return whereClause;
 				}else {
-					andClause += " rfc like '" + campo + "'";
+					andClause += " s.id = a.servicio.id and "
+						 	   	 + "cc.id = s.centroContacto.id and "
+						 	   	 + "cc.id = " + idCcUsuario + " and " 
+								 + " rfc like '" + campo + "'";
 					
 					return andClause;
 				}
@@ -96,7 +118,7 @@ public enum AfiliadoAsistencia {
 	TELEFONO{
 
 		@Override
-		public String addQuery(String campo, boolean where) {
+		public String addQuery(String campo, boolean where, Long idCcUsuario) {
 			
 			String whereClause = "where";
 			String andClause = " and";
@@ -104,11 +126,17 @@ public enum AfiliadoAsistencia {
 			
 			if(campo != "") {
 				if(where) {
-					whereClause += " telefonoFijo = " + campo + orClause + " telefonoMovil = " + campo;
+					whereClause += " s.id = a.servicio.id and "
+							 	   	 + "cc.id = s.centroContacto.id and "							 	   	 
+									 + "telefono_fijo = " + campo + orClause + " telefono_movil = " + campo + " and "
+									 + "cc.id = " + idCcUsuario;
 					
 					return whereClause;
 				}else {
-					andClause += " telefonoFijo = " + campo + orClause + " telefonoMovil = " + campo;
+					andClause += " s.id = a.servicio.id and "
+						 	   	 + "cc.id = s.centroContacto.id and "							
+						 	   	 + "telefono_fijo = " + campo + orClause + " telefono_movil = " + campo + " and "
+						 	   	 + "cc.id = " + idCcUsuario;
 					
 					return andClause;
 				}
@@ -121,18 +149,24 @@ public enum AfiliadoAsistencia {
 	CLAVE{
 
 		@Override
-		public String addQuery(String campo, boolean where) {
+		public String addQuery(String campo, boolean where, Long idCcUsuario) {
 			
 			String whereClause = "where";
 			String andClause = " and";
 			
 			if(campo != "") {
 				if(where) {
-					whereClause += " clave like '" + campo + "'";
+					whereClause += " s.id = a.servicio.id and "
+						 	   	 + "cc.id = s.centroContacto.id and "
+						 	   	 + "cc.id = " + idCcUsuario + " and "
+								 + " clave like '" + campo + "'";
 					
 					return whereClause;
 				}else {
-					andClause += " clave like '" + campo + "'";
+					andClause += " s.id = a.servicio.id and "
+						 	   	 + "cc.id = s.centroContacto.id and "
+						 	   	 + "cc.id = " + idCcUsuario + " and " 
+								 + " clave like '" + campo + "'";
 					
 					return andClause;
 				}
@@ -142,6 +176,6 @@ public enum AfiliadoAsistencia {
 		}		
 	};
 
-	public abstract String addQuery(String campo, boolean where) ;
+	public abstract String addQuery(String campo, boolean where, Long idCcUsuario) ;
 	
 }

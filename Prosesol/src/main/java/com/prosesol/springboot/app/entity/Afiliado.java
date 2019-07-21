@@ -1,10 +1,8 @@
 package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -59,7 +57,6 @@ public class Afiliado implements Serializable{
 	@Column(name = "apellido_materno")
 	private String apellidoMaterno;
 
-	@NotNull(message = "{NotNull.afiliado.fechaNacimiento}")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nacimiento")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -84,7 +81,6 @@ public class Afiliado implements Serializable{
 	private String pais;
 
 	@Column(name = "curp")
-//	@NotEmpty(message = "{TextField.curp.empty.afiliado.message}")
 	@Size(min = 18, message = "{TextField.curp.min.afiliado.message}")
 	private String curp;
 
@@ -94,7 +90,6 @@ public class Afiliado implements Serializable{
 	private Long nss;
 
 	@Column(name = "rfc")
-	@NotEmpty(message = "{TextField.rfc.empty.afiliado.message}")
 	@Size(min = 12, max = 13, message = "{TextField.rfc.min.afiliado.message}")
 	private String rfc;
 
@@ -104,7 +99,6 @@ public class Afiliado implements Serializable{
 	@Column(name = "telefono_movil")
 	private Long telefonoMovil;
 
-	@NotEmpty(message = "El email no debe quedar vacío")
 	@Column(name = "email")
 	private String email;
 
@@ -181,15 +175,14 @@ public class Afiliado implements Serializable{
 	@JoinColumn(name = "id_cta_comercial")
 	private Cuenta cuenta;
 	
-	@OneToMany(mappedBy = "afiliado", cascade = CascadeType.ALL)
-	private List<RelAfiliadoIncidencia> relAfiliadoIncidencia;
+	@OneToMany(mappedBy = "afiliado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
 
 	@Transient
 	private Integer corte;
 
 	public Afiliado() {
 		beneficiarios = new HashSet<Beneficiario>();
-		relAfiliadoIncidencia = new ArrayList<RelAfiliadoIncidencia>();
 	}
 
 	public Set<Beneficiario> getBeneficiarios() {
@@ -508,11 +501,11 @@ public class Afiliado implements Serializable{
 		this.corte = corte;
 	}
 	
-	public List<RelAfiliadoIncidencia> getRelAfiliadoIncidencia() {
+	public Set<RelAfiliadoIncidencia> getRelAfiliadoIncidencia() {
 		return relAfiliadoIncidencia;
 	}
 
-	public void setRelAfiliadoIncidencia(List<RelAfiliadoIncidencia> relAfiliadoIncidencia) {
+	public void setRelAfiliadoIncidencia(Set<RelAfiliadoIncidencia> relAfiliadoIncidencia) {
 		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
 	}
 
@@ -532,7 +525,7 @@ public class Afiliado implements Serializable{
 		return builder.toString();
 	}
 	
-	public String getQuery(String campo, boolean where, AfiliadoAsistencia tipoQuery) {
-		return tipoQuery.addQuery(campo, where);
+	public String getQuery(String campo, boolean where, AfiliadoAsistencia tipoQuery, Long idCcUsuario) {
+		return tipoQuery.addQuery(campo, where, idCcUsuario);
 	}
 }

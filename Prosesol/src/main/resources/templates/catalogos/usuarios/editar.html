@@ -61,11 +61,11 @@
 
 												<div class="form-group col-md-3">
 													<label for="company">Perfil</label> 
-														<select name="perfil" th:field="${perfiles}" 
+														<select name="perfiles" th:field="*{perfiles}" 
 															    class="custom-select" id="inputGroupSelect01">
-														<option th:each="perfil : ${perfiles}"
+														<option th:each="perfil : ${litaPerfiles}"
 																th:value="${perfil.id}" 
-																th:text="${perfil.descripcion}"
+																th:text="${perfil.nombre}"
 																th:selected="false">
 														</option>
 													</select> <small class="form-text text-danger"

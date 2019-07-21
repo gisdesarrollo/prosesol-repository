@@ -108,8 +108,8 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<AfiliadoCustom> getAfiliadoByParams(String[] campos) {
-		return afiliadoRepository.getAfiliadoByParams(campos);
+	public List<AfiliadoCustom> getAfiliadoByParams(String[] campos, Long idCcUsuario) {
+		return afiliadoRepository.getAfiliadoByParams(campos, idCcUsuario);
 	}	
 
 }

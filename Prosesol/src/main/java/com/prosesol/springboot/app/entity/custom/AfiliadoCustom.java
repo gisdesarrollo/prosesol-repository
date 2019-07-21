@@ -1,5 +1,7 @@
 package com.prosesol.springboot.app.entity.custom;
 
+import com.prosesol.springboot.app.entity.Servicio;
+
 public class AfiliadoCustom {
 
 	private Long id;
@@ -19,12 +21,16 @@ public class AfiliadoCustom {
 	private String municipio;
 	
 	private String entidadFederativa;
+	
+	private Servicio servicio;
+	
+	private int estatus;
 
 	public AfiliadoCustom() {}
 
 	public AfiliadoCustom(Long id, String nombre, String apellidoPaterno, String apellidoMaterno, 
 			Long telefonoFijo, Long telefonoMovil, String clave, String municipio, 
-			String entidadFederativa) {
+			String entidadFederativa, Servicio servicio, int estatus) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellidoPaterno = apellidoPaterno;
@@ -34,6 +40,8 @@ public class AfiliadoCustom {
 		this.telefonoMovil = telefonoMovil;
 		this.municipio = municipio;
 		this.entidadFederativa = entidadFederativa;
+		this.servicio = servicio;
+		this.estatus = estatus;
 	}
 	
 	public Long getId() {
@@ -106,6 +114,22 @@ public class AfiliadoCustom {
 
 	public void setEntidadFederativa(String entidadFederativa) {
 		this.entidadFederativa = entidadFederativa;
+	}
+	
+	public Servicio getServicio() {
+		return servicio;
+	}
+
+	public void setServicio(Servicio servicio) {
+		this.servicio = servicio;
+	}
+	
+	public int getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(int estatus) {
+		this.estatus = estatus;
 	}
 
 	@Override

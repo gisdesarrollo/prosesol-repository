@@ -28,7 +28,7 @@
 								<hr>
 								<div class="row">
 									<div class="col-md-12">
-										<form class="user" th:action="@{/incidencias/crear}"
+										<form class="user" th:action="@{/incidencias/guardar}"
 											th:object="${incidencia}" method="post">
 											<div class="row">
 												<div class="form-group col-md-2">
@@ -64,15 +64,16 @@
 											<div class="row">												
 
 												<div class="form-group col-md-3">
-													<label for="company">Fecha</label> <input
+													<label for="company">Fecha de Afiliacion</label> <input
 														type="text" th:field="*{fecha}"
-														class="form-control form-control-user" id="datepicker">
+														class="form-control form-control-user escogerFecha" 
+														placeholder="">
 												</div>
 												
 												<div class="form-group col-md-3">
-													<label for="company">Hora</label><input type="text"
-														th:field="*{hora}"
-														class="form-control form-control-user" placeholder="">
+													<label for="company">Hora</label><input type="text" name="hora"
+													 th:field="*{hora}" placeholder="hh:mm:ss"
+														class="form-control form-control-user" >
 												</div>
 												
 												<div class="form-group col-md-3">
@@ -92,25 +93,35 @@
 												</div>
 												
 												<div class="form-group col-md-3">
-													<label for="company">Beneficio</label> <select
-														name="beneficios" class="custom-select"
-														id="inputGroupSelect01">
-														<option value="">Opciones</option>
-													</select>
-												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Costo</label><input type="text"
-														name="costo"
-														class="form-control form-control-user" placeholder="">
-												</div>
-												
-												<div class="form-group col-md-3">
 													<label for="company">Detalle</label>
 													<textarea th:field="*{detalle}">Capture el detalle de la incidencia</textarea>
 												</div>
 											</div>
-
+											<div class="card">
+												<div class="card-header">Beneficios</div>
+												<div class="card-body">
+													<p>Listado de beneficios</p>
+													<div class="clearfix"></div>
+													<hr>
+														<div class="row" th:each="relServicioBeneficio, iterStat : ${relServicioBeneficios}">
+															<div class="form-group col-md-3">
+																<label for="company">Beneficio</label> 
+																<input type="checkbox" 
+																	th:name="|relServicioBeneficios[${iterStat.index}].beneficio.id|"
+																	th:value="${relServicioBeneficio.getBeneficio().getId()}"
+																	class="form-control form-control-user" >
+																<label th:text="${relServicioBeneficio.getBeneficio().getNombre()}"></label>
+															</div>
+															<div class="form-group col-md-3">
+																<label for="company">Costo</label> 
+																<input type="text" 
+																	th:name="|relServicioBeneficios[${iterStat.index}].costo|"
+																	th:value="${relServicioBeneficio.getCosto()}"
+																	class="form-control form-control-user" >
+															</div>
+														</div>
+												</div>
+											</div>
 											<hr>
 											<div class="clearfix"></div>
 											<div class="row">
