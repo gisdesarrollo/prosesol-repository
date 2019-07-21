@@ -65,11 +65,11 @@ public class CargaMasivaController {
 			
 		}catch(Exception ne) {
 			
-			String error = new CustomUserException().getMessage();
-			String[] errorMessage = error.split("\\:");
+//			String error = new CustomUserException().getMessage();
+//			String[] errorMessage = error.split("\\:");
 			
 			logger.error("Formato incorrecto", ne);
-			redirect.addFlashAttribute("error", errorMessage[0]);
+			redirect.addFlashAttribute("error", "Error al momento de realizar la inserción masiva");
 			
 			return "redirect:/cargaMasiva/afiliados";
 		}

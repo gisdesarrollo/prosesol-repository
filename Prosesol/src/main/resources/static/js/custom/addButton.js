@@ -1,15 +1,20 @@
 $(document).ready(function(){
 	
 	var rowBeneficios = $("#rowBeneficios").html();
+	var i = $('#listaBeneficio').length + 1;
 	
-	$(".addRow").click(function(){
+	$(".addRow").on('click', function(){
 		
-		$("#listaBeneficio").append(rowBeneficios);
+		$(rowBeneficios).appendTo("#listaBeneficio");
+		i++;
 		
 	});
 	
-	$("#removeRow").click(function(){
-		$("#listaBeneficios").remove(rowBeneficios);
+	$("#listaBeneficio").on('click', '.removeRow', function(){
+		if(i > 2){
+			$(this).parents('#rowBeneficios').remove();
+			i--;
+		}
 	});
 	
 });

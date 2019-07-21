@@ -1,21 +1,24 @@
 package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
+import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
 
 @Table(name = "beneficios")
 @Entity
-public class Beneficio implements Serializable{
+public class Beneficio implements Serializable {
 
 	/**
 	 * 
@@ -26,20 +29,27 @@ public class Beneficio implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_beneficio", unique = true, nullable = false)
 	private Long id;
-	
+
 	@Column(name = "nombre")
 	private String nombre;
-	
+
 	@Column(name = "descripcion")
 	private String descripcion;
-		
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "beneficios")
-	private List<Servicio> servicios;
+
+	@OneToMany(mappedBy = "beneficio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<RelServicioBeneficio> relServicioBeneficio;
 	
+	@OneToMany(mappedBy = "beneficio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
+
 	public Beneficio() {
-		servicios = new ArrayList<Servicio>();
 	}
-	
+
+	public Beneficio(String nombre, String descripcion) {
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -64,27 +74,32 @@ public class Beneficio implements Serializable{
 		this.descripcion = descripcion;
 	}
 
-	public List<Servicio> getServicios() {
-		return servicios;
+	public Set<RelServicioBeneficio> getRelServicioBeneficio() {
+		return relServicioBeneficio;
 	}
 
-	public void setServicios(List<Servicio> servicios) {
-		this.servicios = servicios;
+	public void setRelServicioBeneficio(Set<RelServicioBeneficio> relServicioBeneficio) {
+		this.relServicioBeneficio = relServicioBeneficio;
+	}
+
+	public Set<RelAfiliadoIncidencia> getRelAfiliadoIncidencia() {
+		return relAfiliadoIncidencia;
+	}
+
+	public void setRelAfiliadoIncidencia(Set<RelAfiliadoIncidencia> relAfiliadoIncidencia) {
+		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
 	}
 	
 	@Override
 	public String toString() {
 
 		StringBuffer buffer = new StringBuffer();
-		
-		buffer.append("Id: [").append(id).append("] ")
-			  .append("Nombre: [").append(nombre).append("] ")
-			  .append("Descripción: [").append(descripcion).append("] ");
-		
+
+		buffer.append("Id: [").append(id).append("] ").append("Nombre: [").append(nombre).append("] ")
+				.append("Descripción: [").append(descripcion).append("] ");
+
 		return buffer.toString();
-		
+
 	}
 
-
-	
 }

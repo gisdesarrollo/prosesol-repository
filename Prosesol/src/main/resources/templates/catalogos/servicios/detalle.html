@@ -86,11 +86,11 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr th:each="beneficio : ${listaBeneficios}">
+												<tr th:each="beneficio , iterStat : ${listaBeneficios}">
 													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')" th:text="${beneficio.id}"></td>
 													<td th:text="${beneficio.nombre}"></td>
-													<td th:text="${beneficio.descripcion}"></td>
-													<td th:text="${beneficio.costo}"></td>
+													<td th:text="${servicio.relServicioBeneficio[__${iterStat.index}__].descripcion}"></td>
+													<td th:text="${servicio.relServicioBeneficio[__${iterStat.index}__].costo}"></td>
 												</tr>
 											</tbody>
 										</table>

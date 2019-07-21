@@ -50,7 +50,8 @@
 												<div class="form-group col-md-3">
 													<label for="company">Costo de Inscripción
 														(Titular)*</label> <input type="text"
-														th:field="*{inscripcionTitular}"
+														name="inscripcionTitular"
+														value="0.00"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('inscripcionTitular')}"
@@ -59,7 +60,9 @@
 
 												<div class="form-group col-md-3">
 													<label for="company">Costo de Servicio (Titular)*</label> <input
-														type="text" th:field="*{costoTitular}"
+														type="text" 
+														name="costoTitular"
+														value="0.00"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('costoTitular')}"
@@ -69,7 +72,8 @@
 												<div class="form-group col-md-3">
 													<label for="company">Costo de Inscripción
 														(Beneficiario)*</label> <input type="text"
-														th:field="*{inscripcionBeneficiario}"
+														name="inscripcionBeneficiario"
+														value="0.00"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('inscripcionBeneficiario')}"
@@ -79,7 +83,8 @@
 												<div class="form-group col-md-3">
 													<label for="company">Costo de Servicio
 														(Beneficiario)*</label> <input type="text"
-														th:field="*{costoBeneficiario}"
+														name="costoBeneficiario"
+														value="0.00"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
 														th:if="${#fields.hasErrors('costoBeneficiario')}"
@@ -100,7 +105,7 @@
 												
 												<div class="form-group col-md-3">
 													<label for="company">Centro de Asistencia</label> <select
-														th:field="*{tipoPrivacidad}" class="custom-select"
+														th:field="*{centroContacto}" class="custom-select"
 														id="inputGroupSelect01">
 														<option value="">Opciones</option>
 														<option th:each="centro : ${centros}"
@@ -130,13 +135,13 @@
 																<div class="row" id="listaBeneficio">
 																	<div class="form-group col-md-3">
 																		<label for="user">Lista de beneficios</label> <select
-																			name="beneficio" th:field="*{beneficios}"
+																			name="beneficio[]"
 																			class="custom-select">
 																			<option value="">Seleccione una opción</option>
-																			<option
-																				th:each="beneficio, iterStat : ${lBeneficios}"
+																			<option th:field="*{relServicioBeneficio}"
+																				th:each="beneficio : ${lBeneficios}"
 																				th:value="${beneficio.id}"
-																				th:text="${beneficio.nombre}" th:selected="true" />
+																				th:text="${beneficio.nombre}" th:selected="false" />
 																		</select>
 																	</div>
 																	<div class="form-group col-md-3">
@@ -146,17 +151,17 @@
 																	</div>
 																	<div class="form-group col-md-3">
 																		<label>Costo</label> <input type="text"
-																			class="form-control form-control-user" name="costo[]">
+																			class="form-control form-control-user" name="costo[]"
+																			value="0.00">
 																	</div>
 																	<div class="form-group col-md-3">
-																		<button type="button" id="removeRow"
-																			class="btn btn-primary rounded-circle"
+																		<button type="button"
+																			class="btn btn-primary rounded-circle removeRow"
 																			style="position: absolute; top: 30px; left: 30px;">
 																			<i class="fa fa-minus"></i>
 																		</button>
 																	</div>
 																</div>
-																<div id="result"></div>
 																<div class="row">
 																	<div class="col-sm-12">
 																		<button type="button"

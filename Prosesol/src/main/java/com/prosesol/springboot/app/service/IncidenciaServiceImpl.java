@@ -28,11 +28,13 @@ public class IncidenciaServiceImpl implements IIncidenciaService{
 	}
 
 	@Override
+	@Transactional
 	public void save(Incidencia incidencia) {
 		incidenciaDao.save(incidencia);
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
 		incidenciaDao.deleteById(id);
 	}

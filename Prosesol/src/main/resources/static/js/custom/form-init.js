@@ -69,6 +69,14 @@ $( document ).ready(function() {
         maxDate: "today"
     });
 	
+	$(".escogerFecha").datepicker({
+		format : 'dd/mm/yyyy',
+        changeMonth : true,
+        changeYear : true,
+        yearRange: '-100y:c+nn',
+        maxDate: "today"
+	});
+	
 	$('.curpText').keypress(function(e){
 		
 		var max = 18;

@@ -78,11 +78,14 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@ModelAttribute("perfiles")Perfil perfiles, @Valid Usuario usuario, 
-						  BindingResult result, Model model, RedirectAttributes redirect, SessionStatus status) {
+	public String guardar(@Valid Usuario usuario, BindingResult result, Model model, 
+							     RedirectAttributes redirect, SessionStatus status) {
 		
 		String passwordUser = null;	
-		Perfil perfil = perfilService.findById(perfiles.getId());
+		
+		for(Perfil perfil : usuario.getPerfiles()) {
+			System.out.println(perfil);
+		}
 		
 		if(result.hasErrors()) {
 			model.addAttribute("titulo", "Crear Usuario");
@@ -91,7 +94,6 @@ public class UsuarioController {
 		
 		if(usuario.getId() != null) {
 			logger.info("Registro: " + usuario.getNombre() + " editado con éxito");
-			usuarioService.updateRelUsuarioPerfil(usuario.getId(), perfil.getId());
 		}else {
 			
 			usuario.setEstatus(true);
@@ -100,8 +102,6 @@ public class UsuarioController {
 			for(int i = 0;i < 2; i++) {
 				passwordUser = passwordEncoder.encode(password);
 			}
-			
-			usuario.getPerfiles().add(perfil);
 			usuario.setPassword(passwordUser);
 			
 		}
@@ -150,7 +150,7 @@ public class UsuarioController {
 	 * Dentro del list box de crear usuario 
 	 */
 	
-	@ModelAttribute("perfiles")
+	@ModelAttribute("litaPerfiles")
 	public List<Perfil> listaPerfiles(){
 		return perfilService.findAll();
 	}
