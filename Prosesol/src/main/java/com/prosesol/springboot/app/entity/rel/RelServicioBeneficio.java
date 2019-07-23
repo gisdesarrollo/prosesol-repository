@@ -72,10 +72,5 @@ public class RelServicioBeneficio implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	@Override
-	public String toString() {
-		return "RelServicioBeneficio [servicio=" + servicio + ", beneficio=" + beneficio + ", costo=" + costo
-				+ ", descripcion=" + descripcion + "]";
-	}
 
 }

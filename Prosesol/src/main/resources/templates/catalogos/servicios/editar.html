@@ -104,8 +104,10 @@
 												</div>									
 											</div>	
 											
-											<div
-												th:replace="catalogos/servicios/plantilla-beneficios :: tBeneficios"></div>
+											<div th:if="${#lists.size(relServicioBeneficios) > 0}"
+												th:replace="catalogos/servicios/plantilla-beneficios-editar :: tBeneficios"></div>
+											<div th:unless="${not #lists.size(relServicioBeneficios) > 0}"
+												th:replace="catalogos/servicios/plantilla-beneficios-crear :: tBeneficios"></div>
 											
 											<a class="btn btn-primary" data-toggle="collapse" href="#agregarBeneficio" role="button" aria-expanded="false"
    												aria-controls="agregarBeneficio">Agregar Beneficio</a>
@@ -117,46 +119,63 @@
 															<div class="card-header">Beneficios</div>
 																<div class="card-body">
 																<div class="clearfix"></div>
-																<div class="row" id="listaBeneficio" th:each="relBeneficio, iterStat : ${relServiciosBeneficios}">
-																	<div class="form-group col-md-3">
-																		<label for="user">Lista de beneficios</label> 
-																		<select	name="beneficio[]" class="custom-select" th:value="${relBeneficio.beneficio}">
-																			<option value="">Seleccione una opción</option>
-																			<option th:each="beneficio : ${lBeneficios}"
-																				    th:value="${beneficio.id}"
-																				    th:text="${beneficio.nombre}"
-																				    th:selected="${beneficio.id == relBeneficio.beneficio.getId()}"/>																				    
-																		</select>
+																	<div class="row">
+																	<div class="col-md-12">
+																		<table class="table table-bordered" id="tBeneficios" 
+																			   >
+																			<thead>
+																				<tr>
+																					<th>#</th>
+																					<th>Beneficios</th>
+																					<th>Descripción</th>
+																					<th>Costo</th>
+																				</tr>
+																			</thead>
+																			<tbody id="tbBeneficios">
+																				<tr id="rec-1" th:each="relBeneficio, iterStat : ${relServicioBeneficios}">
+																					<td><span class="sn">1</span>.</td>
+																					<td>
+																						<select	name="beneficio[]" 
+																								class="custom-select" 
+																								th:value="${relBeneficio.beneficio.getId()}">
+																							<option value="">Seleccione una opción</option>
+																							<option th:each="beneficio : ${lBeneficios}"
+																								    th:value="${beneficio.id}"
+																								    th:text="${beneficio.nombre}"
+																								    th:selected="${beneficio.id == relBeneficio.beneficio.getId()}"/>			    
+																						</select>
+																					</td>
+																					<td>
+																						<input type="text" name="descripcion[]"
+																						   th:value="${relBeneficio.getDescripcion()}"																		    
+																						   class="form-control form-control-user">
+																					</td>
+																					<td>
+																						<input type="text" name="costo[]"
+																						   th:value="${relBeneficio.getCosto()}" 
+																						   class="form-control form-control-user" >
+																					</td>
+																					<td>
+																						<button type="button"
+																							class="btn btn-primary rounded-circle removeRow"
+																							data-id="1">
+																							<i class="fa fa-minus"></i>
+																						</button>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	<div class="row">
+																		<div class="col-sm-12">
+																			<button type="button"
+																				class="btn btn-primary rounded-circle float-right addRow">
+																				<i class="fa fa-plus"></i>
+																			</button>
+																		</div>
 																	</div>
-																	<div class="form-group col-md-3">
-																		<label>Descripcion</label> 
-																		<input type="text" name="descripcion[]"
-																			   th:value="${relBeneficio.getDescripcion()}"																		    
-																			   class="form-control form-control-user">
-																	</div>
-																	<div class="form-group col-md-3">
-																		<label>Costo</label> 
-																		<input type="text" name="costo[]"
-																			   th:value="${relBeneficio.getCosto()}" 
-																			   class="form-control form-control-user" >
-																	</div>
-																	<div class="form-group col-md-3">
-																		<button type="button"
-																			class="btn btn-primary rounded-circle removeRow"
-																			style="position: absolute; top: 30px; left: 30px;">
-																			<i class="fa fa-minus"></i>
-																		</button>
-																	</div>
-																</div>	
-																<div class="row">
-																	<div class="col-sm-12">
-																		<button type="button"
-																			class="btn btn-primary rounded-circle float-right addRow">
-																			<i class="fa fa-plus"></i>
-																		</button>
-																	</div>
-																</div>
-																</div>
+																</div>																
+															</div>
+														</div>
 														</div>
 													</div>													
 												</div>												

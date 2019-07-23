@@ -1,7 +1,6 @@
 package com.prosesol.springboot.app.entity.composite.id;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class RelServicioBeneficioId implements Serializable{
 	
@@ -40,7 +39,11 @@ public class RelServicioBeneficioId implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(servicio, beneficio);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((beneficio == null) ? 0 : beneficio.hashCode());
+		result = prime * result + ((servicio == null) ? 0 : servicio.hashCode());
+		return result;
 	}
 
 	@Override
@@ -63,6 +66,5 @@ public class RelServicioBeneficioId implements Serializable{
 		} else if (!servicio.equals(other.servicio))
 			return false;
 		return true;
-	}
-
+	}	
 }

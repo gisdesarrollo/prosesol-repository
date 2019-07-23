@@ -1,20 +1,28 @@
 $(document).ready(function(){
 	
-	var rowBeneficios = $("#rowBeneficios").html();
-	var i = $('#listaBeneficio').length + 1;
-	
-	$(".addRow").on('click', function(){
+	$(document).delegate('.addRow', 'click', function(){
 		
-		$(rowBeneficios).appendTo("#listaBeneficio");
-		i++;
+		var content = $('#tBeneficiosHidden tr'),
+		size = $('#tBeneficios > tbody > tr').length + 1,
+		element = null,
+		element = content.clone();
+		element.attr('id', "rec-"+size);
+		element.find('.removeRow').attr('data-id', size);
+		element.appendTo("#tbBeneficios");
+		element.find('.sn').html(size);
 		
 	});
 	
-	$("#listaBeneficio").on('click', '.removeRow', function(){
-		if(i > 2){
-			$(this).parents('#rowBeneficios').remove();
-			i--;
-		}
+	$(document).delegate('.removeRow', 'click', function(){
+		var id = $(this).attr("data-id");
+		var targetDiv = $(this).attr('targetDiv');
+		
+		$('#rec-' + id).remove();
+		
+		$('#tbBeneficios tr').each(function(index){
+			$(this).find('span.sn').html(index + 1);
+		});
+		
 	});
 	
 });
