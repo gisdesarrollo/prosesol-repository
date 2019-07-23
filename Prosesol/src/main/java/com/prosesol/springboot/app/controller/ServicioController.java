@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.prosesol.springboot.app.entity.Beneficio;
 import com.prosesol.springboot.app.entity.CentroContacto;
 import com.prosesol.springboot.app.entity.Servicio;
+import com.prosesol.springboot.app.entity.dto.RelServicioBeneficioDto;
 import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
 import com.prosesol.springboot.app.service.IBeneficioService;
 import com.prosesol.springboot.app.service.ICentroContactoService;
@@ -149,14 +150,14 @@ public class ServicioController {
 	public String guardar(@RequestParam(name = "beneficio[]", required = false) Long[] idBeneficio,
 			@RequestParam(name = "descripcion[]", required = false) String[] descripcion,
 			@RequestParam(name = "costo[]", required = false) Double[] costo, @Valid Servicio servicio,
-			BindingResult result, Model model, RedirectAttributes redirect, SessionStatus status) {
+			@ModelAttribute RelServicioBeneficioDto relServicioBeneficioDto,
+			BindingResult result, Model model, RedirectAttributes redirect, SessionStatus status) throws Exception{
 
 		logger.info("Entra al método para guardar o modificar el servicio");
 
+		String flashMessage = "";
 		RelServicioBeneficio relServicioBeneficio = new RelServicioBeneficio();
-		Long[] nBeneficio = Arrays.copyOfRange(idBeneficio, 1, idBeneficio.length);
-		String[] nDescripcion = Arrays.copyOfRange(descripcion, 1, descripcion.length);
-		Double[] nCosto = Arrays.copyOfRange(costo, 1, costo.length);
+		
 				
 		try {
 						
@@ -171,24 +172,44 @@ public class ServicioController {
 					return "catalogos/servicios/crear";
 				}
 			}
-
-			String flashMessage = (servicio.getId() != null) ? "Registro editado con éxito"
-					: "Registro creado con éxito";
-
-			servicio.setEstatus(true);			
-
-			servicioService.save(servicio);
 			
-			for (int i = 0; i < nBeneficio.length; i++) {
+			if(servicio.getId() != null) {
+				
+				for(RelServicioBeneficio relSB : relServicioBeneficioDto.getRelServicioBeneficios()) {
+					
+					relServicioBeneficio.setServicio(servicio);
+					relServicioBeneficio.setBeneficio(relSB.getBeneficio());
+					relServicioBeneficio.setDescripcion(relSB.getDescripcion());
+					relServicioBeneficio.setCosto(relSB.getCosto());
+										
+					relServicioBeneficioService.save(relServicioBeneficio);
+				}
+				
+				flashMessage = "Registro editado con éxito";
+				
+			}else {
+				
+				Long[] nBeneficio = Arrays.copyOfRange(idBeneficio, 1, idBeneficio.length);
+				String[] nDescripcion = Arrays.copyOfRange(descripcion, 1, descripcion.length);
+				Double[] nCosto = Arrays.copyOfRange(costo, 1, costo.length);
+				
+				servicio.setEstatus(true);			
 
-				Beneficio beneficio = beneficioService.findById(nBeneficio[i]);
+				servicioService.save(servicio);
+				
+				for (int i = 0; i < nBeneficio.length; i++) {
 
-				relServicioBeneficio.setServicio(servicio);
-				relServicioBeneficio.setBeneficio(beneficio);
-				relServicioBeneficio.setDescripcion(nDescripcion[i]);
-				relServicioBeneficio.setCosto(nCosto[i]);
-				relServicioBeneficioService.save(relServicioBeneficio);
+					Beneficio beneficio = beneficioService.findById(nBeneficio[i]);
 
+					relServicioBeneficio.setServicio(servicio);
+					relServicioBeneficio.setBeneficio(beneficio);
+					relServicioBeneficio.setDescripcion(nDescripcion[i]);
+					relServicioBeneficio.setCosto(nCosto[i]);
+					relServicioBeneficioService.save(relServicioBeneficio);
+
+				}			
+				
+				flashMessage = "Registro creado con éxito";
 			}			
 			
 			status.setComplete();
@@ -197,14 +218,12 @@ public class ServicioController {
 
 			if (servicio.getId() != null) {
 				redirect.addFlashAttribute("error", "Error al momento de guardar el servicio");
+				return "redirect:/servicios/ver";
 			} else {
 				redirect.addFlashAttribute("error", "El servicio no se ha podido guardar");
 				servicioService.delete(servicio.getId());
+				return "redirect:/servicios/ver";
 			}
-
-			logger.error("Error al momento de guardar el servicio", ex);
-
-			return "redirect:/servicios/ver";
 
 		}
 
@@ -246,8 +265,8 @@ public class ServicioController {
 		}
 
 		model.addAttribute("servicio", servicio);
-		model.addAttribute("relServiciosBeneficios", getRelServicioBeneficioByIdServicio(id));
-
+		model.addAttribute("relServicioBeneficios", getRelServicioBeneficioByIdServicio(id));	
+		
 		return "catalogos/servicios/editar";
 
 	}
@@ -302,7 +321,6 @@ public class ServicioController {
 	 * @return
 	 */
 
-	@ModelAttribute("listaBeneficios")
 	public List<RelServicioBeneficio> getRelServicioBeneficioByIdServicio(Long idServicio) {
 
 		List<RelServicioBeneficio> relServicioBeneficio = relServicioBeneficioService
