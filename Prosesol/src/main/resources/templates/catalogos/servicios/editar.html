@@ -104,10 +104,8 @@
 												</div>									
 											</div>	
 											
-											<div th:if="${#lists.size(relServicioBeneficios) > 0}"
-												th:replace="catalogos/servicios/plantilla-beneficios-editar :: tBeneficios"></div>
-											<div th:unless="${not #lists.size(relServicioBeneficios) > 0}"
-												th:replace="catalogos/servicios/plantilla-beneficios-crear :: tBeneficios"></div>
+											<!-- <div
+												th:replace="catalogos/servicios/plantilla-beneficios-editar :: tBeneficios"></div> --> 
 											
 											<a class="btn btn-primary" data-toggle="collapse" href="#agregarBeneficio" role="button" aria-expanded="false"
    												aria-controls="agregarBeneficio">Agregar Beneficio</a>
@@ -126,41 +124,38 @@
 																			<thead>
 																				<tr>
 																					<th>#</th>
+																					<th></th>
 																					<th>Beneficios</th>
 																					<th>Descripción</th>
 																					<th>Costo</th>
 																				</tr>
 																			</thead>
 																			<tbody id="tbBeneficios">
-																				<tr id="rec-1" th:each="relBeneficio, iterStat : ${relServicioBeneficios}">
+																				<tr id="rec-1" th:each="relBeneficio, iterStat : ${relServicioBeneficios}" >
 																					<td><span class="sn">1</span>.</td>
 																					<td>
-																						<select	name="beneficio[]" 
-																								class="custom-select" 
-																								th:value="${relBeneficio.beneficio.getId()}">
+																						<input type ="checkbox" 
+																							   th:name="|relServicioBeneficios[${iterStat.index}].beneficio.id|"
+																							   th:value="${relBeneficio.getBeneficio().getId()}">
+																					</td>
+																					<td>
+																						<select	class="custom-select" name="beneficio[]">
 																							<option value="">Seleccione una opción</option>
-																							<option th:each="beneficio : ${lBeneficios}"
+																							<option th:each="beneficio, cBeneficio : ${lBeneficios}"
 																								    th:value="${beneficio.id}"
 																								    th:text="${beneficio.nombre}"
 																								    th:selected="${beneficio.id == relBeneficio.beneficio.getId()}"/>			    
 																						</select>
 																					</td>
 																					<td>
-																						<input type="text" name="descripcion[]"
+																						<input type="text" th:name="|relServicioBeneficios[${iterStat.index}].descripcion|"
 																						   th:value="${relBeneficio.getDescripcion()}"																		    
 																						   class="form-control form-control-user">
 																					</td>
 																					<td>
-																						<input type="text" name="costo[]"
+																						<input type="text" th:name="|relServicioBeneficios[${iterStat.index}].costo|"
 																						   th:value="${relBeneficio.getCosto()}" 
 																						   class="form-control form-control-user" >
-																					</td>
-																					<td>
-																						<button type="button"
-																							class="btn btn-primary rounded-circle removeRow"
-																							data-id="1">
-																							<i class="fa fa-minus"></i>
-																						</button>
 																					</td>
 																				</tr>
 																			</tbody>
@@ -171,6 +166,11 @@
 																				class="btn btn-primary rounded-circle float-right addRow">
 																				<i class="fa fa-plus"></i>
 																			</button>
+																		</div>
+																		<div class="col-sm-12">
+																			<a th:href="@{/servicios/eliminarBeneficios/} + ${servicio.id}"
+																			   th:text="'Borrar'"
+																			   onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar</a>
 																		</div>
 																	</div>
 																</div>																

@@ -16,6 +16,5 @@ public interface IRelServicioBeneficioService {
 	
 	public List<RelServicioBeneficio> getRelServicioBeneficioByIdServicio(Long id);
 	
-	public void updateRelServicioBeneficio(Long idServicio, Long idBeneficio, Double costo, String descripcion, Long idServicioBeneficio);
-	
+	public void deleteBeneficioByIdBeneficioAndIdServicio(Long idServicio, Long idBeneficio);
 }

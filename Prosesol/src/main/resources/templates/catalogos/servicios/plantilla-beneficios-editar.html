@@ -5,18 +5,27 @@
 	<div th:fragment="tBeneficios" class="d-none">
 		<div style="display: none">
 			<table id="tBeneficiosHidden">
-				<tr id="" th:each="relBeneficio, iterStat : ${relServiciosBeneficios}">
+				<tr id=""
+					th:each="relBeneficio, iterStat : ${relServicioBeneficios}">
 					<td><span class="sn"></span>.</td>
-					<td><select name="beneficio[]" class="custom-select">
-							<option value="">Seleccione una opción</option>
-							<option th:field="*{relServicioBeneficio}"
-								th:each="beneficio : ${lBeneficios}" th:value="${beneficio.id}"
-								th:text="${beneficio.nombre}" th:selected="false" />
+					<td><input type="checkbox"
+						th:name="|relServicioBeneficios[${iterStat.index}].beneficio.id|"
+						th:value="${relBeneficio.getBeneficio().getId()}">
+					</td>
+					<td><select
+						name="|relServicioBeneficios[${iterStat.index}].beneficio.id|"
+						class="custom-select">
+							<option value="">Seleccione una opciÃ³n</option>
+							<option th:each="beneficio : ${lBeneficios}"
+								th:value="${beneficio.id}" th:text="${beneficio.nombre}"
+								th:selected="false" />
 					</select></td>
 					<td><input type="text" class="form-control form-control-user"
-						name="descripcion[]"></td>
+						th:name="|relServicioBeneficios[${iterStat.index}].descripcion|"
+						th:value="${relBeneficio.getDescripcion()}"></td>
 					<td><input type="text" class="form-control form-control-user"
-						name="costo[]" value="0.00"></td>
+						th:name="|relServicioBeneficios[${iterStat.index}].costo|"
+						th:value="${relBeneficio.getCosto()}" value="0.00"></td>
 					<td>
 						<button type="button"
 							class="btn btn-primary rounded-circle removeRow" data-id="1">
