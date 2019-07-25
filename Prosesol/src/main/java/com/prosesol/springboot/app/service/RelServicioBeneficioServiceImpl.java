@@ -47,8 +47,9 @@ public class RelServicioBeneficioServiceImpl implements IRelServicioBeneficioSer
 
 	@Override
 	@Transactional
-	public void updateRelServicioBeneficio(Long idServicio, Long idBeneficio, Double costo, String descripcion, Long idServicioBeneficio) {
-		relServicioBeneficioDao.updateRelServicioBeneficio(idServicio, idBeneficio, costo, descripcion, idServicioBeneficio);
+	public void deleteBeneficioByIdBeneficioAndIdServicio(Long idServicio, Long idBeneficio) {
+		relServicioBeneficioDao.deleteBeneficioByIdBeneficioAndIdServicio(idServicio, idBeneficio);
 	}
+
 
 }

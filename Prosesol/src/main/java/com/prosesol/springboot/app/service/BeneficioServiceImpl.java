@@ -22,11 +22,13 @@ public class BeneficioServiceImpl implements IBeneficioService{
 	}
 
 	@Override
+	@Transactional
 	public void save(Beneficio beneficio) {
 		beneficioDao.save(beneficio);		
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
 		beneficioDao.deleteById(id);
 		

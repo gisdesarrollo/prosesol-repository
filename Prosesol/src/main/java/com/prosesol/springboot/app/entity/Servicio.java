@@ -77,7 +77,7 @@ public class Servicio implements Serializable {
 	@JoinColumn(name = "id_centro_contacto")
 	private CentroContacto centroContacto;
 
-	@OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<RelServicioBeneficio> relServicioBeneficio;
 
 	public Servicio() {

@@ -17,16 +17,19 @@ public class ServicioServiceImpl implements IServicioService {
 	private IServicioDao servicioDao;
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Servicio> findAll() {
 		return (List<Servicio>) servicioDao.findAll();
 	}
 
 	@Override
+	@Transactional
 	public void save(Servicio servicio) {
 		servicioDao.save(servicio);
 	}
 
 	@Override
+	@Transactional
 	public void delete(Long id) {
 		servicioDao.deleteById(id);
 		;
