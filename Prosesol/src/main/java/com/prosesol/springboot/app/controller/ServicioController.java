@@ -64,9 +64,13 @@ public class ServicioController {
 	public String crear(Map<String, Object> model) {
 
 		Servicio servicio = new Servicio();
-
+		boolean titular = false;
+		boolean beneficiario = false;
+		
 		model.put("servicio", servicio);
 		model.put("titulo", "Crear Servicio");
+		model.put("titular", titular);
+		model.put("beneficiario", beneficiario);
 
 		logger.info("Id servicio desde el método de crear: " + servicio.getId());
 
@@ -147,88 +151,109 @@ public class ServicioController {
 
 	@Secured("ROLE_ADMINISTRADOR")
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@RequestParam(name = "beneficio[]", required = false) Long[] idBeneficio,
-			@RequestParam(name = "descripcion[]", required = false) String[] descripcion,
-			@RequestParam(name = "costo[]", required = false) Double[] costo, @Valid Servicio servicio,
-			@ModelAttribute RelServicioBeneficioDto relServicioBeneficios, BindingResult result, Model model,
-			RedirectAttributes redirect, SessionStatus status) throws Exception {
+	public String guardar(@Valid Servicio servicio,  BindingResult result, Model model,
+			RedirectAttributes redirect, SessionStatus status,
+			@RequestParam(name = "beneficio[]", required = false) List<Long> idBeneficio,
+			@RequestParam(name = "descripcion[]", required = false) List<String> descripcion,
+			@RequestParam(name = "beneficiario[]", required = false) List<Long> beneficiario,
+			@RequestParam(name = "titular[]", required = false) List<Long> titular,
+			@ModelAttribute RelServicioBeneficioDto relServicioBeneficios) throws Exception {
 
 		logger.info("Entra al método para guardar o modificar el servicio");
 
 		String flashMessage = "";
 		RelServicioBeneficio relServicioBeneficio = new RelServicioBeneficio();
-
+		
+		if (result.hasErrors()) {
+			redirect.addFlashAttribute("error", "Campos incompletos");
+			return "catalogos/servicios/crear";
+		}
+		
 		try {
-
-			if (servicio.getId() != null) {
-				if (result.hasErrors()) {
-					model.addAttribute("titulo", "Crear Membresia");
-					return "catalogos/servicios/editar";
-				}
-			} else {
-				if (result.hasErrors()) {
-					model.addAttribute("titulo", "Crear Membresia");
-					return "catalogos/servicios/crear";
-				}
-			}
-
+			
 			flashMessage = (servicio.getId() != null) ? "Registro editado correctamente"
 					: "Registro creado correctamente";
 
-			servicio.setEstatus(true);
-
-			servicioService.save(servicio);
-
 			if (servicio.getId() != null) {
 
+				servicio.setEstatus(true);
+				servicioService.save(servicio);
+				
 				int counter = 0;
 
-				for (RelServicioBeneficio relSB : relServicioBeneficios.getRelServicioBeneficios()) {
-
-					if (relSB.getBeneficio() != null) {
-
-						System.out.println(relSB.getBeneficio().getId());
-						System.out.println(idBeneficio[counter]);
-						
-						if(relSB.getBeneficio().getId() != idBeneficio[counter]) {
-							relServicioBeneficioService.deleteBeneficioByIdBeneficioAndIdServicio(servicio.getId(), relSB.getBeneficio().getId());
-						}
-
-						Beneficio beneficio = beneficioService.findById(idBeneficio[counter]);
-
-						relServicioBeneficio.setServicio(servicio);
-						relServicioBeneficio.setBeneficio(beneficio);
-						relServicioBeneficio.setDescripcion(relSB.getDescripcion());
-						relServicioBeneficio.setCosto(relSB.getCosto());
-						relServicioBeneficioService.save(relServicioBeneficio);
-
-						counter++;
-
-					} 
-				}
+//				for (RelServicioBeneficio relSB : relServicioBeneficios.getRelServicioBeneficios()) {
+//
+//					if (relSB.getBeneficio() != null) {
+//
+//						System.out.println(relSB.getBeneficio().getId());
+//						System.out.println(idBeneficio[counter]);
+//						
+//						if(relSB.getBeneficio().getId() != idBeneficio[counter]) {
+//							relServicioBeneficioService.deleteBeneficioByIdBeneficioAndIdServicio(servicio.getId(), relSB.getBeneficio().getId());
+//						}
+//
+//						Beneficio beneficio = beneficioService.findById(idBeneficio[counter]);
+//
+//						relServicioBeneficio.setServicio(servicio);
+//						relServicioBeneficio.setBeneficio(beneficio);
+//						relServicioBeneficio.setDescripcion(relSB.getDescripcion());
+//						relServicioBeneficioService.save(relServicioBeneficio);
+//
+//						counter++;
+//
+//					} 
+//				}
 
 			} else {
 
-				Long[] nBeneficio = Arrays.copyOfRange(idBeneficio, 1, idBeneficio.length);
-				String[] nDescripcion = Arrays.copyOfRange(descripcion, 1, descripcion.length);
-				Double[] nCosto = Arrays.copyOfRange(costo, 1, costo.length);
-
-				for (int i = 0; i < nBeneficio.length; i++) {
-
-					System.out.println(nBeneficio[i]);
-					System.out.println(nDescripcion[i]);
-					System.out.println(nCosto[i]);
-
-					Beneficio beneficio = beneficioService.findById(nBeneficio[i]);
-
-					relServicioBeneficio.setServicio(servicio);
-					relServicioBeneficio.setBeneficio(beneficio);
-					relServicioBeneficio.setDescripcion(nDescripcion[i]);
-					relServicioBeneficio.setCosto(nCosto[i]);
-					relServicioBeneficioService.save(relServicioBeneficio);
-
+				if(idBeneficio.size() > 0) {
+					
+					descripcion.removeAll(Arrays.asList("", null));
+					
+					servicio.setEstatus(true);
+					servicioService.save(servicio);
+					
+					int dIndex = 0;
+					int tIndex = 0;
+					int bIndex = 0;
+					int countTitular = 1;
+					int countBeneficiario = 1;
+					
+					for(Long beneficio : idBeneficio) {
+						
+						Beneficio nBeneficio = beneficioService.findById(beneficio);
+						
+						relServicioBeneficio.setServicio(servicio);
+						relServicioBeneficio.setBeneficio(nBeneficio);
+						relServicioBeneficio.setDescripcion(descripcion.get(dIndex));
+						
+						if(titular != null && titular.size() >= countTitular) {
+							if(beneficio == titular.get(tIndex)) {
+								relServicioBeneficio.setTitular(true);
+								relServicioBeneficio.setBeneficiario(false);
+								tIndex++;
+								countTitular++;
+							}							
+						}
+						
+						if(beneficiario != null && beneficiario.size() >= countBeneficiario) {
+							if(beneficio == beneficiario.get(bIndex)) {
+								relServicioBeneficio.setTitular(false);
+								relServicioBeneficio.setBeneficiario(true);
+								bIndex++;
+								countBeneficiario++;
+							}							
+						}				
+						
+						relServicioBeneficioService.save(relServicioBeneficio);						
+						dIndex++;
+					}
+					
+				}else {
+					servicio.setEstatus(true);
+					servicioService.save(servicio);
 				}
-
+				
 			}
 
 			status.setComplete();
@@ -236,15 +261,17 @@ public class ServicioController {
 
 		} catch (Exception ex) {
 
-			if (servicio.getId() != null) {
-				redirect.addFlashAttribute("error", "Error al momento de guardar el servicio");
-				ex.printStackTrace();
-				return "redirect:/servicios/ver";
-			} else {
-				redirect.addFlashAttribute("error", "El servicio no se ha podido guardar");
-				servicioService.delete(servicio.getId());
-				return "redirect:/servicios/ver";
-			}
+//			if (servicio.getId() != null) {
+//				redirect.addFlashAttribute("error", "Error al momento de guardar el servicio");
+//				ex.printStackTrace();
+//				return "redirect:/servicios/ver";
+//			} else {
+//				redirect.addFlashAttribute("error", "El servicio no se ha podido guardar");
+//				servicioService.delete(servicio.getId());
+//				return "redirect:/servicios/ver";
+//			}
+			
+			ex.printStackTrace();
 
 		}
 
@@ -311,13 +338,30 @@ public class ServicioController {
 		return "redirect:/servicios/ver";
 	}
 
+	@RequestMapping(value = "/eliminarBeneficios/{id}")
+	public String borrarBeneficios(@PathVariable(value = "id")Long id, @RequestParam("beneficios[]") Long[] beneficios[],
+								   Model model, RedirectAttributes redirect) {
+		
+		Servicio servicio = servicioService.findById(id);
+		long idBeneficio = 0;
+		
+		for(int i = 0; i < beneficios.length; i++) {
+			
+			
+			
+//			relServicioBeneficioService.deleteBeneficioByIdBeneficioAndIdServicio(id, idBeneficio);
+		}
+		
+		return "";
+	}
+	
 	/**
 	 * Cátalogo de beneficios para la vista de creación de servicios
 	 * 
 	 * @return
 	 */
 
-	@ModelAttribute("lBeneficios")
+	@ModelAttribute("beneficios")
 	public List<Beneficio> getAllBeneficios() {
 		return beneficioService.findAll();
 	}

@@ -119,15 +119,13 @@
 																<div class="clearfix"></div>
 																	<div class="row">
 																	<div class="col-md-12">
-																		<table class="table table-bordered" id="tBeneficios" 
-																			   >
+																		<table class="table table-bordered" id="dataTable">
 																			<thead>
 																				<tr>
 																					<th>#</th>
 																					<th></th>
 																					<th>Beneficios</th>
 																					<th>Descripción</th>
-																					<th>Costo</th>
 																				</tr>
 																			</thead>
 																			<tbody id="tbBeneficios">
@@ -151,11 +149,6 @@
 																						<input type="text" th:name="|relServicioBeneficios[${iterStat.index}].descripcion|"
 																						   th:value="${relBeneficio.getDescripcion()}"																		    
 																						   class="form-control form-control-user">
-																					</td>
-																					<td>
-																						<input type="text" th:name="|relServicioBeneficios[${iterStat.index}].costo|"
-																						   th:value="${relBeneficio.getCosto()}" 
-																						   class="form-control form-control-user" >
 																					</td>
 																				</tr>
 																			</tbody>

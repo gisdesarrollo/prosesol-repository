@@ -33,9 +33,12 @@ public class RelServicioBeneficio implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_beneficio")
 	private Beneficio beneficio;
-
-	@Column(name = "costo")
-	private Double costo;
+	
+	@Column(name = "titular")
+	private Boolean titular;
+	
+	@Column(name = "beneficiario")
+	private Boolean beneficiario;
 
 	@Column(name = "descripcion")
 	private String descripcion;
@@ -56,14 +59,6 @@ public class RelServicioBeneficio implements Serializable {
 		this.beneficio = beneficio;
 	}
 
-	public Double getCosto() {
-		return costo;
-	}
-
-	public void setCosto(Double costo) {
-		this.costo = costo;
-	}
-
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -72,5 +67,20 @@ public class RelServicioBeneficio implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public Boolean getTitular() {
+		return titular;
+	}
+
+	public void setTitular(Boolean titular) {
+		this.titular = titular;
+	}
+
+	public Boolean getBeneficiario() {
+		return beneficiario;
+	}
+
+	public void setBeneficiario(Boolean beneficiario) {
+		this.beneficiario = beneficiario;
+	}
 
 }

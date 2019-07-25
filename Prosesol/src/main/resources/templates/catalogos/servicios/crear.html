@@ -118,8 +118,6 @@
 												</div>
 											</div>
 
-											<div th:replace="catalogos/servicios/plantilla-beneficios-crear :: tBeneficios"></div>
-
 											<a class="btn btn-primary" data-toggle="collapse"
 												href="#agregaBeneficio" role="button" aria-expanded="false"
 												aria-controls="agregarBeneficio" id="addListaBeneficios">Agregar
@@ -133,55 +131,46 @@
 																<div class="clearfix"></div>
 																<div class="row">
 																	<div class="col-md-12">
-																		<table class="table table-bordered" width="100%" id="tBeneficios" 
-																			   >
+																		<table class="table table-bordered" id="dataTable">
 																			<thead>
 																				<tr>
-																					<th>#</th>
+																					<th></th>
 																					<th>Beneficios</th>
 																					<th>Descripción</th>
-																					<th>Costo</th>
+																					<th>Titular</th>
+																					<th>Beneficiario</th>
 																				</tr>
 																			</thead>
-																			<tbody id="tbBeneficios">
-																				<tr id="rec-1">
-																					<td><span class="sn">1</span>.</td>
+																			<tbody>
+																				<tr th:each="beneficio, iterStat : ${beneficios}">
 																					<td>
-																						<select	name="beneficio[]"	class="custom-select">
-																							<option value="">Seleccione una opción</option>
-																							<option th:field="*{relServicioBeneficio}"
-																								th:each="beneficio : ${lBeneficios}"
-																								th:value="${beneficio.id}"
-																								th:text="${beneficio.nombre}" th:selected="false" />
-																						</select>
+																						<input type ="checkbox" 
+																							   name="beneficio[]"
+																							   th:value="${beneficio.id}">
+																					</td>
+																					<td>
+																						<label th:text="${beneficio.nombre}"></label>
 																					</td>
 																					<td>
 																						<input type="text"
-																						   class="form-control form-control-user"
-																						   name="descripcion[]">
+																						   name="descripcion[]"
+																						   class="form-control form-control-user">
 																					</td>
 																					<td>
-																						<input type="text" class="form-control form-control-user" 
-																							   name="costo[]" value="0.00">
+																						<input type ="checkbox" 
+																							   name="titular[]"
+																							   th:checked="${titular}"
+																							   th:value="${beneficio.id}">
 																					</td>
 																					<td>
-																						<button type="button"
-																							class="btn btn-primary rounded-circle removeRow"
-																							data-id="1">
-																							<i class="fa fa-minus"></i>
-																						</button>
+																						<input type ="checkbox" 
+																							   name="beneficiario[]"
+																							   th:checked="${beneficiario}"
+																							   th:value=${beneficio.id}>
 																					</td>
 																				</tr>
 																			</tbody>
 																		</table>
-																	<div class="row">
-																		<div class="col-sm-12">
-																			<button type="button"
-																				class="btn btn-primary rounded-circle float-right addRow">
-																				<i class="fa fa-plus"></i>
-																			</button>
-																		</div>
-																	</div>
 																</div>																
 															</div>
 														</div>
