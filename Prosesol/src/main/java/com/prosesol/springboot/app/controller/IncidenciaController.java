@@ -172,8 +172,7 @@ public class IncidenciaController {
 				if(r.getBeneficio() != null) {
 					relAfiliadoIncidencia.setIncidencia(incidencia);
 					relAfiliadoIncidencia.setAfiliado(afiliado);
-					relAfiliadoIncidencia.setBeneficio(r.getBeneficio());				
-					relAfiliadoIncidencia.setCosto(r.getCosto());
+					relAfiliadoIncidencia.setBeneficio(r.getBeneficio());	
 					relAfiliadoIncidencia.setFecha(new Date());
 				}
 				
