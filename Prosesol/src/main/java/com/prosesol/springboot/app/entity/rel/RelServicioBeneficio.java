@@ -43,6 +43,19 @@ public class RelServicioBeneficio implements Serializable {
 	@Column(name = "descripcion")
 	private String descripcion;
 	
+	public RelServicioBeneficio() {
+		
+	}
+	
+	public RelServicioBeneficio(Servicio servicio, Beneficio beneficio, Boolean titular, Boolean beneficiario,
+			String descripcion) {
+		this.servicio = servicio;
+		this.beneficio = beneficio;
+		this.titular = titular;
+		this.beneficiario = beneficiario;
+		this.descripcion = descripcion;
+	}
+
 	public Servicio getServicio() {
 		return servicio;
 	}

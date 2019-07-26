@@ -103,10 +103,7 @@
 														th:errors="*{tipoPrivacidad}"></small>
 												</div>									
 											</div>	
-											
-											<!-- <div
-												th:replace="catalogos/servicios/plantilla-beneficios-editar :: tBeneficios"></div> --> 
-											
+																						
 											<a class="btn btn-primary" data-toggle="collapse" href="#agregarBeneficio" role="button" aria-expanded="false"
    												aria-controls="agregarBeneficio">Agregar Beneficio</a>
    											<br></br>
@@ -122,50 +119,45 @@
 																		<table class="table table-bordered" id="dataTable">
 																			<thead>
 																				<tr>
-																					<th>#</th>
 																					<th></th>
 																					<th>Beneficios</th>
 																					<th>Descripción</th>
+																					<th>Titular</th>
+																					<th>Beneficiario</th>
 																				</tr>
 																			</thead>
 																			<tbody id="tbBeneficios">
-																				<tr id="rec-1" th:each="relBeneficio, iterStat : ${relServicioBeneficios}" >
-																					<td><span class="sn">1</span>.</td>
+																				<tr th:each="beneficio, iterStat : ${relServicioBeneficios}">
 																					<td>
 																						<input type ="checkbox" 
-																							   th:name="|relServicioBeneficios[${iterStat.index}].beneficio.id|"
-																							   th:value="${relBeneficio.getBeneficio().getId()}">
+																							   name="beneficio[]"
+																							   th:value="${beneficio.getBeneficio().getId()}"
+																							   >
 																					</td>
 																					<td>
-																						<select	class="custom-select" name="beneficio[]">
-																							<option value="">Seleccione una opción</option>
-																							<option th:each="beneficio, cBeneficio : ${lBeneficios}"
-																								    th:value="${beneficio.id}"
-																								    th:text="${beneficio.nombre}"
-																								    th:selected="${beneficio.id == relBeneficio.beneficio.getId()}"/>			    
-																						</select>
+																						<label th:text="${beneficio.getBeneficio().getNombre()}"></label>
 																					</td>
 																					<td>
-																						<input type="text" th:name="|relServicioBeneficios[${iterStat.index}].descripcion|"
-																						   th:value="${relBeneficio.getDescripcion()}"																		    
-																						   class="form-control form-control-user">
+																						<input type="text"
+																						   name="descripcion[]"
+																						   class="form-control form-control-user"
+																						   th:value="${beneficio.getDescripcion()}">
+																					</td>
+																					<td>
+																						<input type ="checkbox" 
+																							   name="titular[]"
+																							   th:checked="${beneficio.getTitular()}"
+																							   th:value="${beneficio.getBeneficio().getId()}">
+																					</td>
+																					<td>
+																						<input type ="checkbox" 
+																							   name="beneficiario[]"
+																							   th:checked="${beneficio.getBeneficiario()}"
+																							   th:value=${beneficio.getBeneficio().getId()}>
 																					</td>
 																				</tr>
 																			</tbody>
 																		</table>
-																	<div class="row">
-																		<div class="col-sm-12">
-																			<button type="button"
-																				class="btn btn-primary rounded-circle float-right addRow">
-																				<i class="fa fa-plus"></i>
-																			</button>
-																		</div>
-																		<div class="col-sm-12">
-																			<a th:href="@{/servicios/eliminarBeneficios/} + ${servicio.id}"
-																			   th:text="'Borrar'"
-																			   onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar</a>
-																		</div>
-																	</div>
 																</div>																
 															</div>
 														</div>
