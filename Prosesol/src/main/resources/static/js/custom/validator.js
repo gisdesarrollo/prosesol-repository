@@ -14,20 +14,7 @@ $('.formInput')
 					var nssLength = 11;
 					var rfcLength = 13;
 
-					if (!$('.rfcText').val()) {
-
-						rfcText.remove();
-
-						if ($('.rfcText').after().next('.validation').length == 0) {
-							$('.rfcText')
-									.after(
-											"<span class='validation' style='color:red;margin-bottom: 20px;'>Campo requerido</span>");
-						}
-						e.preventDefault();
-						if (!focusSet) {
-							$('.rfcText').focus();
-						}
-					} else if ($('.rfcText').val()) {
+					if ($('.rfcText').val()) {
 
 						rfcText.remove()
 						var inputLength = $('.rfcText').val().length;
@@ -43,21 +30,7 @@ $('.formInput')
 						}
 					}
 
-					if ($('.nssText').length) {
-						if (!$('.nssText').val()) {
-
-							nssText.remove();
-
-							if ($('.nssText').after().next('.validation').length == 0) {
-								$('.nssText')
-										.after(
-												"<span class='validation' style='color:red;margin-bottom: 20px;'>Campo requerido</span>");
-							}
-							e.preventDefault();
-							if (!focusSet) {
-								$('.nssText').focus();
-							}
-						} else if ($('.nssText').val()) {
+					if ($('.nssText').val()) {
 
 							nssText.remove();
 							var inputLength = $('.nssText').val().length;

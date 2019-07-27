@@ -13,7 +13,7 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
 			<li class="breadcrumb-item">Afiliados</li>
-			<li class="breadcrumb-item active">Crear</li>
+			<li class="breadcrumb-item active">Editar</li>
 		</ol>
 
 		<div class="container-fluid">
@@ -90,15 +90,6 @@
 													</select><small class="form-text text-danger"
 														th:if="${#fields.hasErrors('estadoCivil')}"
 														th:errors="*{estadoCivil}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Número de dependientes</label><input
-														type="text" th:field="*{numeroDependientes}"
-														class="form-control form-control-user"> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('numeroDependientes')}"
-														th:errors="*{numeroDependientes}"></small>
 												</div>
 
 												<div class="form-group col-md-3">

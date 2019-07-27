@@ -29,8 +29,8 @@ import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
 import com.prosesol.springboot.app.util.AfiliadoAsistencia;
 
 @Entity
-@Table(name = "afiliados")
-public class Afiliado implements Serializable{
+@Table(name = "candidatos")
+public class Candidato implements Serializable{
 
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class Afiliado implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_afiliado")
+	@Column(name = "id_candidato")
 	private Long id;
 
 	@Column(name = "clave")
@@ -179,7 +179,7 @@ public class Afiliado implements Serializable{
 	@Transient
 	private Integer corte;
 
-	public Afiliado() {
+	public Candidato() {
 		beneficiarios = new HashSet<Beneficiario>();
 	}
 
