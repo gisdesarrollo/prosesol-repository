@@ -63,7 +63,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		if(IS_ADMIN || IS_USUARIO) {
 			return "/home";
 		}else if(IS_ASISTENCIA) {
-			return "/homeAsistencia";
+			return "/incidencias/home";
 		}else {
 			throw new IllegalStateException();
 		}

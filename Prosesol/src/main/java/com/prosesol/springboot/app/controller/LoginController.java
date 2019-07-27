@@ -17,7 +17,7 @@ public class LoginController {
 
 	private String url;
 	
-	@GetMapping(value = {"login", "/home", "/homeAsistencia", "/"})
+	@GetMapping(value = {"login", "/home", "/"})
 	public String login(@RequestParam(value = "error", required = false)String error, 
 			@RequestParam(value = "logout", required = false)String logout,
 			Model model,  Principal principal, RedirectAttributes redirect) {
@@ -33,7 +33,7 @@ public class LoginController {
 				if(authority.getAuthority().equals("ROLE_ADMINISTRADOR") || authority.getAuthority().equals("ROLE_USUARIO")) {
 					url = "/home";
 				}else if(authority.getAuthority().equals("ROLE_ASISTENCIA")) {
-					url = "/homeAsistencia";
+					url = "/incidencias/home";
 				}
 			});
 			

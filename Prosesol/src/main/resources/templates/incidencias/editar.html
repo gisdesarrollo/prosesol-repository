@@ -13,7 +13,7 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
 			<li class="breadcrumb-item">Incidencias</li>
-			<li class="breadcrumb-item active">Crear</li>
+			<li class="breadcrumb-item active">Editar</li>
 		</ol>
 
 		<div class="container-fluid">
@@ -21,9 +21,9 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Nueva Incidencia <b style="float:right">Servicio: [[${afiliado.servicio.nombre}]]</b></div>
+							<div class="card-header">Editar Incidencia <b style="float:right">Servicio: [[${afiliado.servicio.nombre}]]</b></div>
 							<div class="card-body">
-								<p>Captura la información solicitada para dar de alta la incidencia para el Afiliado</p>
+								<p>Captura la información solicitada para editar la incidencia para el Afiliado</p>
 								<div class="clearfix"></div>
 								<hr>
 								<div class="row">
@@ -100,7 +100,7 @@
 											<div class="card">
 												<div class="card-header">Beneficios</div>
 												<div class="card-body">
-													<p>Seleccione el/los beneficio(s) para poder crear la incidencia</p>
+													<p>Seleccione el/los beneficio(s)</p>
 													<div class="clearfix"></div>
 													<hr>
 														<div class="row">
@@ -114,17 +114,17 @@
 																				</tr>
 																			</thead>
 																			<tbody>
-																				<tr th:each="relServicioBeneficio, iterStat : ${relServicioBeneficios}">																					
+																				<tr th:each="beneficio, iterStat : ${relServicioBeneficios}">																					
 																					<td>
-																						<label th:text="${relServicioBeneficio.getBeneficio().getNombre()}"></label>
+																						<label th:text="${beneficio.getBeneficio().getNombre()}"></label>
 																					</td>
 																					<td>
-																						<label th:text="${relServicioBeneficio.getDescripcion()}"></label>
+																						<label th:text="${beneficio.getDescripcion()}"></label>
 																					</td>
 																					<td>
 																						<input type ="checkbox" 
 																							   th:name="|relServicioBeneficios[${iterStat.index}].beneficio.id|"
-																							   th:value="${relServicioBeneficio.getBeneficio().getId()}">
+																							   th:value="${beneficio.getBeneficio().getId()}">
 																					</td>
 																				</tr>
 																			</tbody>
@@ -138,7 +138,7 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<button type="submit"
-														class="btn btn-primary btn-square float-right">Crear
+														class="btn btn-primary btn-square float-right">Editar
 														Incidencia</button>
 												</div>
 											</div>

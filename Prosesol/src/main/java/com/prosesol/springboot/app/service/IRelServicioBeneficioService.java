@@ -17,4 +17,6 @@ public interface IRelServicioBeneficioService {
 	public List<RelServicioBeneficio> getRelServicioBeneficioByIdServicio(Long id);
 	
 	public void deleteBeneficioByIdBeneficioAndIdServicio(Long idServicio, Long idBeneficio);
+	
+	public List<RelServicioBeneficio> getBeneficioByIdAfiliado(Long idAfiliado);
 }

@@ -89,7 +89,6 @@ public class AfiliadoController {
 		Afiliado afiliado = new Afiliado();
 		
 		model.put("afiliado", afiliado);
-		model.put("titulo", "Crear Afiliado");
 		
 		return "catalogos/afiliados/crear";
 	}
@@ -135,7 +134,6 @@ public class AfiliadoController {
 		}
 
 		model.put("afiliado", afiliado);
-		model.put("titulo", "Crear Afiliado");
 
 		return "catalogos/afiliados/editar";
 

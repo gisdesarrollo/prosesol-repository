@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
@@ -12,7 +12,7 @@
 
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item"><a th:href="@{/afiliados/ver}">Afiliados</a></li>
+			<li class="breadcrumb-item"><a th:href="@{/candidatos/ver}">Candidatos</a></li>
 			<li class="breadcrumb-item active">Crear</li>
 		</ol>
 
@@ -21,17 +21,16 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Nuevo Afiliado</div>
+							<div class="card-header">Nuevo Candidato</div>
 							<div class="card-body">
-								<p>Captura la información solicitada para dar de alta un
-									nuevo Afiliado</p>
-									<p align="right" ><b th:text="'Clave de afiliado: '+ '' + *{clave}"></b></p>
+								<p>Captura la información para dar de alta un
+									nuevo Candidato</p>									
 								<div class="clearfix"></div>
 								<hr>
 								<div class="row">
 									<div class="col-md-12">
-										<form class="formInput" th:action="@{/afiliados/crear}"
-											th:object="${afiliado}" method="post">
+										<form class="formInput" th:action="@{/candidatos/guardar}"
+											th:object="${candidato}" method="post">
 											<div class="row">
 												<div class="form-group col-md-3">
 													<label for="company">Nombre</label> <input type="text"
@@ -217,21 +216,6 @@
 														th:if="${#fields.hasErrors('codigoPostal')}"
 														th:errors="*{codigoPostal}"></small>
 												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">¿Cuénta con crédito Infonavit?</label>
-													<input type="checkbox" id="infonavitCB"/>
-													<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Número de Infonavit</label><input
-														type="text" th:field="*{numeroInfonavit}" 
-														class="form-control form-control-user" id="inputNumeroInfonavit">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('numeroInfonavit')}"
-														th:errors="*{numeroInfonavit}"></small>
-												</div>
 												
 												<div class="form-group col-md-3">
 													<label for="company">Servicio</label>
@@ -247,17 +231,7 @@
 														th:if="${#fields.hasErrors('servicio')}"
 														th:errors="*{servicio}"></small>
 												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Fecha de Afiliacion</label> <input
-														type="text" th:field="*{fechaAfiliacion}"
-														class="form-control form-control-user" id="fechaAfiliacion"
-														placeholder=""> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('fechaAfiliacion')}"
-														th:errors="*{fechaAfiliacion}"></small>
-												</div>
-												
+																								
 												<div class="form-group col-md-3">
 													<label for="company">Fecha de Corte</label> 
 													<select	name ="corte" th:field="*{corte}" class="custom-select"
@@ -310,21 +284,6 @@
 														th:if="${#fields.hasErrors('promotor')}"
 														th:errors="*{promotor}"></small>
 												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Cuenta</label>
-													<select	name ="cuenta" th:field="*{cuenta}" class="custom-select"
-														id="cuentas" >			
-														<option value="">Ninguno</option>	
-														<option th:each="cuenta : ${cuentas}"
-															    th:value="${cuenta.id}"
-															    th:text="${cuenta.razonSocial}"
-															    th:selected="false"></option>
-													</select>
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('cuenta')}"
-														th:errors="*{cuenta}"></small>
-												</div>
 											</div>
 
 											<hr>
@@ -332,7 +291,7 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<button type="submit" class="btn btn-primary btn-square float-right">Crear
-														Afiliado</button>
+														Candidato</button>
 												</div>
 											</div>
 										</form>
