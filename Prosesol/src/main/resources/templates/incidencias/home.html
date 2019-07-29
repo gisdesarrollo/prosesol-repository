@@ -47,10 +47,10 @@
 										<td th:text="${incidencia.hora}">Hora de incidencia</td>
 										<td th:text="${incidencia.localizacion}">Localización</td>
 										<td th:text="${incidencia.detalle}">Detalle de la incidencia</td>
-										<td th:case="1" th:text="Abierto"></td>
-										<td th:case="2" th:text="En Proceso"></td>
-										<td th:case="3" th:text="Completado"></td>
-										<td th:case="4" th:text="Cancelado"></td>
+										<td th:case="1" style="color:#3139ec">Abierto</td>
+										<td th:case="2" style="color:#c9d23d">En Proceso</td>
+										<td th:case="3" style="color:#0e950c">Completado</td>
+										<td th:case="4" style="color:#ff0606">Cancelado</td>
 										<td>
 											<div class="dropdown">
 												<button class="btn btn-primary btn-sm dropdown-toggle"

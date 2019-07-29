@@ -41,7 +41,8 @@
 						<div class="dropdown-header text-center">
 							<strong>Cuenta</strong>
 						</div>
-						<a class="dropdown-item" th:href="@{/}"> <i class="fas fa-key"></i>
+						<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')" class="dropdown-item" 
+						   th:href="@{/usuarios/password}"> <i class="fas fa-key"></i>
 							Cambiar contraseña
 						</a> <a class="dropdown-item" data-toggle="modal"
 							onclick="document.getElementById('logoutform').submit();"

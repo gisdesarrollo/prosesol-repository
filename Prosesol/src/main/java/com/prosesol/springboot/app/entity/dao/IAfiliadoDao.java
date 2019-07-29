@@ -19,4 +19,7 @@ public interface IAfiliadoDao extends CrudRepository<Afiliado, Long>{
 	@Query("select a.id from Afiliado a where a.rfc like %:rfc%")
 	public Long getIdAfiliadoByRfc(@Param("rfc")String rfc);
 	
+	@Query("select a.id from Afiliado a where a.servicio = ?1")
+	public Long getAfiliadoByIdServicio(@Param("id") Long idServicio);
+	
 }

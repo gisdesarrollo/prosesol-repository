@@ -20,4 +20,8 @@ public interface IRelServicioBeneficioDao extends CrudRepository<RelServicioBene
 	@Query(value = "select r.id_servicio, r.id_beneficio, r.descripcion, r.titular, r.beneficiario from rel_servicios_beneficios r, afiliados a where r.id_servicio = a.id_servicio and a.is_beneficiario = r.beneficiario and a.id_afiliado = ?1 order by r.id_beneficio", nativeQuery = true)
 	public List<RelServicioBeneficio> getBeneficioByIdAfiliado(Long idAfiliado);
 	
+	@Modifying
+	@Query("update RelServicioBeneficio r set r.descripcion = null, r.titular = false, r.beneficiario = false where id_beneficio = ?1")
+	public void removeBeneficiobyIdBeneficio(Long idBeneficio);
+	
 }

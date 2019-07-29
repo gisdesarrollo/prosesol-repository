@@ -52,9 +52,15 @@ public class RelServicioBeneficioServiceImpl implements IRelServicioBeneficioSer
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<RelServicioBeneficio> getBeneficioByIdAfiliado(Long idAfiliado) {
 		return relServicioBeneficioDao.getBeneficioByIdAfiliado(idAfiliado);
+	}
+
+	@Override
+	@Transactional
+	public void removeBeneficiobyIdBeneficio(Long idBeneficio) {
+		relServicioBeneficioDao.removeBeneficiobyIdBeneficio(idBeneficio);
 	}
 
 

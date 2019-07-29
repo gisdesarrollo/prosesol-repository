@@ -13,4 +13,5 @@ public interface IUsuarioDao extends CrudRepository<Usuario, Long>{
 	@Modifying
 	@Query(value = "update rel_usuarios_perfiles r set r.id_perfil = ?1 where r.id_usuario = ?2", nativeQuery = true)
 	public void updateRelUsuarioPerfil(Long idPerfil, Long idUsuario);
+	
 }

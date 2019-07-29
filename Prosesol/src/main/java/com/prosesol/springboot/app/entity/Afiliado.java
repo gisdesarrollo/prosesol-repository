@@ -21,7 +21,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -60,6 +59,7 @@ public class Afiliado implements Serializable{
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nacimiento")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@NotNull
 	private Date fechaNacimiento;
 
 	@Column(name = "lugar_nacimiento")

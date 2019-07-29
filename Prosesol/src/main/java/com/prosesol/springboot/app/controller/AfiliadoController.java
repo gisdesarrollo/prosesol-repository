@@ -1,7 +1,8 @@
 package com.prosesol.springboot.app.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -25,11 +27,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.josketres.rfcfacil.Rfc;
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.Periodicidad;
@@ -42,7 +44,6 @@ import com.prosesol.springboot.app.service.IPeriodicidadService;
 import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
 import com.prosesol.springboot.app.util.CalcularFecha;
-import com.prosesol.springboot.app.util.Mail;
 import com.prosesol.springboot.app.util.Paises;
 import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 
@@ -70,10 +71,7 @@ public class AfiliadoController {
 
 	@Autowired
 	private ICuentaService cuentaService;
-
-//	@Autowired
-//	private IEmailService emailService;
-
+	
 	@Autowired
 	private CalcularFecha calcularFechas;
 
@@ -145,15 +143,10 @@ public class AfiliadoController {
 			Model model, RedirectAttributes redirect, SessionStatus status) {
 
 		System.out.println(clave);
-
 		Periodicidad periodicidad = new Periodicidad();
-		Mail mail = new Mail();
-
-		Map<String, Object> modelEmail = new HashMap<String, Object>();
-
 		String mensajeFlash = null;
-
 		Date date = new Date();
+		Rfc rfc = null;
 
 		try {
 
@@ -171,8 +164,24 @@ public class AfiliadoController {
 				mensajeFlash = "Registro editado con éxito";
 			} else {
 
-				afiliado.setIsBeneficiario(false);
-				mensajeFlash = "Registro creado con éxito";
+				if(afiliado.getRfc() == null || afiliado.getRfc().equals("")) {
+					LocalDate fechaNacimiento = afiliado.getFechaNacimiento().toInstant()
+												.atZone(ZoneId.systemDefault())
+												.toLocalDate();
+					
+					rfc = new Rfc.Builder()
+								     .name(afiliado.getNombre())
+								     .firstLastName(afiliado.getApellidoPaterno())
+								     .secondLastName(afiliado.getApellidoMaterno())
+								     .birthday(fechaNacimiento.getDayOfMonth(), fechaNacimiento.getMonthValue(), fechaNacimiento.getYear())
+								     .build();
+					
+					afiliado.setRfc(rfc.toString());
+					
+					System.out.println(rfc.toString());
+				}
+				
+				afiliado.setIsBeneficiario(false);			
 
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
@@ -182,18 +191,8 @@ public class AfiliadoController {
 				afiliado.setFechaAlta(date);
 //				afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 				afiliado.setClave(clave);
-
-				// Se crea el cuerpo del mensaje para los afiliados con inscripción
-
-				mail.setTo(afiliado.getEmail());
-				mail.setFrom("prosesol@example.org");
-				mail.setSubject("BIENVENIDO A PROSESOL");
-
-				modelEmail.put("afiliado", afiliado);
-
-				mail.setModel(modelEmail);
-
-//				emailService.sendSimpleMessage(mail, bandera);
+				
+				mensajeFlash = "Registro creado con éxito";
 
 			}
 
@@ -203,11 +202,21 @@ public class AfiliadoController {
 			afiliadoService.save(afiliado);
 			status.setComplete();
 
-		} catch (Exception e) {
+		} catch (DataIntegrityViolationException e) {
 
 			e.printStackTrace();
 			logger.error("Error al momento de ejecutar el proceso: " + e);
-			return "/error/error_500";
+			
+			redirect.addFlashAttribute("error", "El RFC ya existe en la base de datos: " + rfc);
+			
+			return "redirect:/afiliados/ver";
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Error al momento de ejecutar el proceso: " + e);
+			
+			redirect.addFlashAttribute("error", "Ocurrió un error al momento de insertar el Afiliado");
+			
+			return "redirect:/afiliados/ver";
 		}
 
 		return "redirect:/afiliados/ver";
@@ -272,17 +281,6 @@ public class AfiliadoController {
 
 		return "redirect:/afiliados/ver";
 
-	}
-	
-	
-	@Secured("ROLE_ADMINISTRADOR")
-	@RequestMapping(value="/cambiarPassword/{id}")
-	public String cambiarPassword(@RequestParam("id")Long idAfiliado, RedirectAttributes redirect,
-			SessionStatus status) {
-		
-		
-		
-		return null;
 	}
 	
 	/**
@@ -373,7 +371,7 @@ public class AfiliadoController {
 	@ModelAttribute("clave")
 	public String getClaveAfiliado() {
 
-		String claveAfiliado = "";
+		String claveAfiliado = "PR-";
 
 		for (int i = 0; i < 10; i++) {
 			claveAfiliado += (clave.charAt((int) (Math.random() * clave.length())));

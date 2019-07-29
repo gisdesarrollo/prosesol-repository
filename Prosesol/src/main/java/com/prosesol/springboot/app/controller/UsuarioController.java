@@ -145,6 +145,50 @@ public class UsuarioController {
 		return "redirect:/usuarios/ver";
 	}
 	
+	@RequestMapping(value = "/password")
+	public String password(Model model) {
+		
+		Usuario usuario = new Usuario();
+
+		model.addAttribute("usuario", usuario);
+		
+		return "/catalogos/usuarios/password";
+	}
+	
+	@RequestMapping(value = "/cambiar", method = RequestMethod.POST)
+	public String cambiar(@ModelAttribute(name = "username")String username, 
+						  @ModelAttribute(name = "password")String password,
+						  RedirectAttributes redirect, SessionStatus status) {
+		
+		String passwordUser = null;
+		Usuario usuario = new Usuario();
+		
+		try {
+			
+			System.out.println(username);
+			System.out.println(password);
+			
+			usuario = usuarioService.findByUsername(username);
+			for(int i = 0;i < 2; i++) {
+				passwordUser = passwordEncoder.encode(password);
+			}
+			
+			usuario.setPassword(passwordUser);
+			
+			System.out.println(passwordUser);
+			System.out.println(usuario.toString());
+			
+			usuarioService.save(usuario);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		redirect.addFlashAttribute("success", "Contraseña modificada exitosamente");
+		
+		return "redirect:/home";
+	}
+	
 	/**
 	 * Método para mostrar los perfiles
 	 * Dentro del list box de crear usuario 
