@@ -44,7 +44,6 @@ public class Usuario implements Serializable{
 	private String password;
 	
 	@Column
-	@NotEmpty(message = "El correo electrónico es obligatorio")
 	private String email;
 		
 	@OneToOne(cascade = CascadeType.ALL)
