@@ -119,15 +119,21 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			</dependency>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			</dependency>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			</dependency>			
+		</dependency>
+		<!-- Dependecia que genera el RFC -->
+		<dependency>
+			<groupId>com.josketres</groupId>
+			<artifactId>rfcfacil</artifactId>
+			<version>2.0.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

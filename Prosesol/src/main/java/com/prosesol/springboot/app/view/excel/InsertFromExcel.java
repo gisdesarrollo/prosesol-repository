@@ -256,7 +256,7 @@ public class InsertFromExcel {
 
 	private String getClaveAfiliado() {
 
-		String claveAfiliado = "";
+		String claveAfiliado = "PR-";
 
 		for (int i = 0; i < 10; i++) {
 			claveAfiliado += (clave.charAt((int) (Math.random() * clave.length())));

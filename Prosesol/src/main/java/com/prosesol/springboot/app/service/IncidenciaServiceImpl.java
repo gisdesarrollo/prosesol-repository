@@ -39,4 +39,10 @@ public class IncidenciaServiceImpl implements IIncidenciaService{
 		incidenciaDao.deleteById(id);
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<Incidencia> getIncidenciasByUserName(String username) {
+		return incidenciaDao.getIncidenciasByUserName(username);
+	}
+
 }

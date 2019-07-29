@@ -1,6 +1,12 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
+<style>
+	.btnEliminarBeneficios{
+		position:relative;
+		left:720px;
+	}
+</style>
 <meta charset="utf-8" />
 <body
 	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
@@ -113,6 +119,7 @@
 														<div class="card">
 															<div class="card-header">Beneficios</div>
 																<div class="card-body">
+																<p>Seleccione el/los beneficio(s) para editar</p>
 																<div class="clearfix"></div>
 																	<div class="row">
 																	<div class="col-md-12">
@@ -129,7 +136,8 @@
 																			<tbody id="tbBeneficios">
 																				<tr th:each="beneficio, iterStat : ${relServicioBeneficios}">
 																					<td>
-																						<input type ="checkbox" 
+																						<input class="cbBeneficio"
+																							   type ="checkbox" 
 																							   name="beneficio[]"
 																							   th:value="${beneficio.getBeneficio().getId()}"
 																							   >
@@ -169,8 +177,14 @@
 											<div class="clearfix"></div>											
 											<div class="row">
 												<div class="col-sm-12">
-													<button type="submit"
-														class="btn btn-primary btn-square float-right">Guardar cambios</button>
+													<button type="submit" style="position:absolute; bottom:0px; right:20px;"
+														class="btn btn-primary btn-square float-right btnEliminarBeneficios"
+														name="action" value="delete">Eliminar Beneficio(s)</button>
+												</div>
+												<div class="col-sm-12">
+													<button type="submit" style="position:absolute; bottom:0px; right:20px;"
+														class="btn btn-primary btn-square float-right"
+														name="action" value="save">Guardar cambios</button>
 												</div>
 											</div>
 										</form>

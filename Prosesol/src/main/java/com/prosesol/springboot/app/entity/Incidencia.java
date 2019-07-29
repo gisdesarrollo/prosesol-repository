@@ -135,6 +135,14 @@ public class Incidencia implements Serializable{
 	public void setDetalle(String detalle) {
 		this.detalle = detalle;
 	}
+	
+	public String getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(String proveedor) {
+		this.proveedor = proveedor;
+	}
 
 	public int getEstatus() {
 		return estatus;

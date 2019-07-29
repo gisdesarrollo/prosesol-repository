@@ -14,4 +14,5 @@ public interface IIncidenciaService {
 	
 	public void deleteById(Long id);
 	
+	public List<Incidencia> getIncidenciasByUserName(String username);	
 }

@@ -38,10 +38,7 @@ public class CalcularSaldoScheduler {
 	@Scheduled(fixedDelay = 100000)
 	@Transactional
 	public void calcularSaldoScheduler() throws ParseException, MessagingException, IOException {
-		
-		Mail mail = new Mail();
-		Map<String, Object> model = new HashMap<String, Object>();
-		
+				
 		System.out.println("Method executed at every 10 seconds. Current time is :: " + new Date());
 		
 		String pattern = "yyyy-MM-dd";

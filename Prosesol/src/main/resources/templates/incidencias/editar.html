@@ -96,6 +96,23 @@
 													<label for="company">Detalle</label>
 													<textarea th:field="*{detalle}">Capture el detalle de la incidencia</textarea>
 												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Proveedor</label><input type="text"
+														th:field="*{proveedor}"
+														class="form-control form-control-user" placeholder="">
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Estatus</label> <select
+														th:field="*{estatus}" class="custom-select"
+														id="inputGroupSelect01">
+														<option th:each="status : ${estatusIncidencia}"
+																th:value="${status.key}"
+																th:text="${status.value}"
+																th:selected="${status.key} == *{estatus}"/>
+													</select>
+												</div>
 											</div>
 											<div class="card">
 												<div class="card-header">Beneficios</div>
@@ -114,7 +131,7 @@
 																				</tr>
 																			</thead>
 																			<tbody>
-																				<tr th:each="beneficio, iterStat : ${relServicioBeneficios}">																					
+																				<tr th:each="beneficio, iterStat : ${relServicioBeneficio}">																					
 																					<td>
 																						<label th:text="${beneficio.getBeneficio().getNombre()}"></label>
 																					</td>
@@ -124,7 +141,8 @@
 																					<td>
 																						<input type ="checkbox" 
 																							   th:name="|relServicioBeneficios[${iterStat.index}].beneficio.id|"
-																							   th:value="${beneficio.getBeneficio().getId()}">
+																							   th:value="${beneficio.getBeneficio().getId()}"
+																							   th:checked="${beneficio.getBeneficio().getId()} == ${relServicioBeneficios[__${iterStat.index}__].beneficio.id}">
 																					</td>
 																				</tr>
 																			</tbody>

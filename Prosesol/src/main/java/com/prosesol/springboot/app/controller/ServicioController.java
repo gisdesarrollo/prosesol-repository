@@ -27,7 +27,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.prosesol.springboot.app.entity.Beneficio;
 import com.prosesol.springboot.app.entity.CentroContacto;
 import com.prosesol.springboot.app.entity.Servicio;
-import com.prosesol.springboot.app.entity.dto.RelServicioBeneficioDto;
 import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
 import com.prosesol.springboot.app.service.IBeneficioService;
 import com.prosesol.springboot.app.service.ICentroContactoService;
@@ -52,6 +51,8 @@ public class ServicioController {
 
 	@Autowired
 	private IRelServicioBeneficioService relServicioBeneficioService;
+	
+	private Long idServicioGeneral;
 
 	/**
 	 * Método para la creación de un Servicio
@@ -150,7 +151,7 @@ public class ServicioController {
 	 */
 
 	@Secured("ROLE_ADMINISTRADOR")
-	@RequestMapping(value = "/crear", method = RequestMethod.POST)
+	@RequestMapping(value = "/crear", method = RequestMethod.POST, params = "action=save")
 	public String guardar(@Valid Servicio servicio, BindingResult result, Model model, RedirectAttributes redirect,
 			SessionStatus status, @RequestParam(name = "beneficio[]", required = false) List<Long> idBeneficio,
 			@RequestParam(name = "descripcion[]", required = false) List<String> descripcion,
@@ -171,9 +172,6 @@ public class ServicioController {
 
 		try {
 
-			flashMessage = (servicio.getId() != null) ? "Registro editado correctamente"
-					: "Registro creado correctamente";
-
 			if (servicio.getId() != null) {
 
 				descripcion.removeAll(Arrays.asList("", null));
@@ -181,85 +179,142 @@ public class ServicioController {
 				servicio.setEstatus(true);
 				servicioService.save(servicio);
 
-				if (idBeneficio.size() > 0) {
+				if (idBeneficio != null) {
 
 					int cBeneficio = 0;
 					String desc = null;
 
-					for (RelServicioBeneficio relSB : relServicioBeneficios) {
-
-						if (idBeneficio.size() > cBeneficio) {
-
-							if (relSB.getBeneficio().getId() == idBeneficio.get(cBeneficio)) {
-
-								Beneficio beneficio = beneficioService.findById(idBeneficio.get(cBeneficio));
-								RelServicioBeneficio nRelServicioBeneficio = null;
-
-								for (String d : descripcion) {
-									if (!relSB.getDescripcion().equals(d)) {
-										desc = d;
-										nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
-												null, desc);
-										
-										break;
+					if(relServicioBeneficios.size() > 0) {
+						for (RelServicioBeneficio relSB : relServicioBeneficios) {
+	
+							if (idBeneficio.size() > cBeneficio) {
+	
+								if (relSB.getBeneficio().getId() == idBeneficio.get(cBeneficio)) {
+	
+									Beneficio beneficio = beneficioService.findById(idBeneficio.get(cBeneficio));
+									RelServicioBeneficio nRelServicioBeneficio = null;
+	
+									for (String d : descripcion) {
+										if (!relSB.getDescripcion().equals(d)) {
+											desc = d;
+											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
+													null, desc);
+											
+											break;
+										}
 									}
-								}
-
-								for (Long t : titular) {
-									if (relSB.getBeneficio().getId() == t) {
-										nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
-												false, desc);
+	
+									for (Long t : titular) {
+										if (relSB.getBeneficio().getId() == t) {
+											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
+													false, desc);
+										}
 									}
-								}
-
-								for (Long b : beneficiario) {
-									if (relSB.getBeneficio().getId() == b) {
-										nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
-												true, desc);
+	
+									for (Long b : beneficiario) {
+										if (relSB.getBeneficio().getId() == b) {
+											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
+													true, desc);
+										}
 									}
-								}
-
-								relServicioBeneficioService.save(nRelServicioBeneficio);
-							} else {
-
-								Beneficio beneficio = beneficioService.findById(idBeneficio.get(cBeneficio));
-								RelServicioBeneficio nRelServicioBeneficio = null;
-
-								for (String d : descripcion) {
-									if (!relSB.getDescripcion().equals(d)) {
-										desc = d;
-										nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
-												null, desc);
-										
-										break;
+	
+									relServicioBeneficioService.save(nRelServicioBeneficio);
+								} else {
+	
+									Beneficio beneficio = beneficioService.findById(idBeneficio.get(cBeneficio));
+									RelServicioBeneficio nRelServicioBeneficio = null;
+	
+									for (String d : descripcion) {
+										if (!relSB.getDescripcion().equals(d)) {
+											desc = d;
+											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
+													null, desc);
+											
+											break;
+										}
 									}
-								}
-
-								for (Long t : titular) {
-									if (relSB.getBeneficio().getId() != t) {
-										nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
-												false, desc);
+	
+									for (Long t : titular) {
+										if (relSB.getBeneficio().getId() != t) {
+											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
+													false, desc);
+										}
 									}
-								}
-
-								for (Long b : beneficiario) {
-									if (relSB.getBeneficio().getId() != b) {
-										nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
-												true, desc);
+	
+									for (Long b : beneficiario) {
+										if (relSB.getBeneficio().getId() != b) {
+											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
+													true, desc);
+										}
 									}
+	
+									relServicioBeneficioService.save(nRelServicioBeneficio);
 								}
-
-								relServicioBeneficioService.save(nRelServicioBeneficio);
+								cBeneficio++;
 							}
-							cBeneficio++;
 						}
+						
+						flashMessage = "Beneficio editado correctamente";
+						
+					}else {
+						
+						RelServicioBeneficio relSB = null;
+						
+						int cTitular = 0;
+						int cBeneficiario = 0;
+						int cDescripcion = 0;
+						
+						Boolean t = null;
+						Boolean b = null;
+						
+						for(Long id : idBeneficio) {
+							Beneficio beneficio = beneficioService.findById(id);
+							
+							if(titular.size() > cTitular && beneficio.getId() == titular.get(cTitular)) {	
+								t = true;
+								relSB = new RelServicioBeneficio(servicio, beneficio, t, false, null);
+								if(descripcion != null && descripcion.size() > cDescripcion) {
+									relSB = new RelServicioBeneficio(servicio, beneficio, t, false, descripcion.get(cDescripcion));
+									
+									cDescripcion++;
+								}else {
+									relSB = new RelServicioBeneficio(servicio, beneficio, t, false, null);
+									cDescripcion++;
+								}
+								
+								cTitular++;
+							}
+							
+							if(beneficiario.size() > cBeneficiario && beneficio.getId() == beneficiario.get(cBeneficiario)) {
+								b = true;								
+								relSB = new RelServicioBeneficio(servicio, beneficio, false, b, null);		
+								
+								if(descripcion != null && descripcion.size() > cDescripcion) {
+									relSB = new RelServicioBeneficio(servicio, beneficio, false, b, descripcion.get(cDescripcion));
+									
+									cDescripcion++;
+								}else {
+									relSB = new RelServicioBeneficio(servicio, beneficio, false, b, null);
+									cDescripcion++;
+								}
+								
+								cBeneficiario++;
+							}
+							
+							
+							
+							relServicioBeneficioService.save(relSB);
+						}
+					
+						flashMessage = "Servicio editado correctamente";
 					}
 
-				}
+				}		
+				
 
 			} else {
 
-				if (idBeneficio.size() > 0) {
+				if (idBeneficio != null && idBeneficio.size() > 0) {
 
 					descripcion.removeAll(Arrays.asList("", null));
 
@@ -308,6 +363,8 @@ public class ServicioController {
 				}
 
 			}
+			
+			flashMessage = "Servicio creado correctamente";
 
 			status.setComplete();
 			redirect.addFlashAttribute("success", flashMessage);
@@ -361,10 +418,10 @@ public class ServicioController {
 				}
 
 				int countSB = 0;
-				int countB = 0;
-
+				
 				for (Beneficio beneficio : beneficios) {
-					if (beneficio.getId() == relServicioBeneficios.get(countSB).getBeneficio().getId()) {
+					if (relServicioBeneficios.size() > countSB && beneficio.getId() == relServicioBeneficios.get(countSB).getBeneficio().getId()) {
+											
 						RelServicioBeneficio relServicioBeneficio = new RelServicioBeneficio(
 								relServicioBeneficios.get(countSB).getServicio(),
 								relServicioBeneficios.get(countSB).getBeneficio(),
@@ -376,12 +433,11 @@ public class ServicioController {
 
 						countSB++;
 					} else {
+												
 						RelServicioBeneficio relServicioBeneficio = new RelServicioBeneficio(
-								relServicioBeneficios.get(countB).getServicio(), beneficio, false, false, null);
+								servicio, beneficio, false, false, null);
 
 						nRelServicioBeneficio.add(relServicioBeneficio);
-
-						countB++;
 					}
 
 				}
@@ -395,6 +451,8 @@ public class ServicioController {
 			ex.printStackTrace();
 			return "redirect:/servicios/ver";
 		}
+		
+		idServicioGeneral = idServicio;
 
 		model.addAttribute("servicio", servicio);
 		model.addAttribute("relServicioBeneficios", nRelServicioBeneficio);
@@ -414,27 +472,46 @@ public class ServicioController {
 	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 
-		if (id > 0) {
-			servicioService.delete(id);
-			redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+		
+		try {
+			if (id > 0) {
+				servicioService.delete(id);
+				redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+			}
+		}catch(Exception e) {
+			logger.error("Ocurrió un error al momento de eliminar el registro", e);
+			redirect.addFlashAttribute("error", "El servicio no se puede eliminar porque está asignado a un Afiliado");
 		}
 
 		return "redirect:/servicios/ver";
 	}
 
-	@RequestMapping(value = "/eliminarBeneficios/{id}")
-	public String borrarBeneficios(@PathVariable(value = "id") Long id,
-			@RequestParam("beneficios[]") Long[] beneficios[], Model model, RedirectAttributes redirect) {
-
-		Servicio servicio = servicioService.findById(id);
-		long idBeneficio = 0;
-
-		for (int i = 0; i < beneficios.length; i++) {
-
-//			relServicioBeneficioService.deleteBeneficioByIdBeneficioAndIdServicio(id, idBeneficio);
+	/**
+	 * Método para borrar los beneficios en una lista
+	 * @param beneficios
+	 * @param model
+	 * @param redirect
+	 * @return
+	 */
+	
+	@RequestMapping(value = "/crear", method = RequestMethod.POST, params = "action=delete")
+	public String borrarBeneficios(@RequestParam(name = "beneficio[]", required = false) 
+						List<Long> beneficios, Model model, RedirectAttributes redirect) {
+		try {
+			
+			for(Long beneficio : beneficios) {
+				relServicioBeneficioService.removeBeneficiobyIdBeneficio(beneficio);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Ocurrió un error al momento de realizar la eliminación de los beneficios", e);			
+			return "redirect:/servicios/ver";
 		}
-
-		return "";
+		
+		redirect.addFlashAttribute("success", "Beneficios eliminados correctamente");
+		
+		return "redirect:/servicios/editar/" + idServicioGeneral;
 	}
 
 	/**

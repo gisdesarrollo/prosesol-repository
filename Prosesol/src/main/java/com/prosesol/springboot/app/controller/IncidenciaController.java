@@ -3,7 +3,9 @@ package com.prosesol.springboot.app.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -25,6 +27,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.Beneficio;
 import com.prosesol.springboot.app.entity.Incidencia;
 import com.prosesol.springboot.app.entity.Usuario;
 import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
@@ -68,10 +71,24 @@ public class IncidenciaController {
 	 * @return
 	 */
 
-	@GetMapping(value = { "/home" })
-	public String ver(Model model) {
+	@GetMapping(value = { "/home", "/" })
+	public String ver(Model model, RedirectAttributes redirect) {
 
-		model.addAttribute("incidencias", incidenciaService.findAll());
+		try {
+
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String username = authentication.getName();
+
+			List<Incidencia> incidencias = incidenciaService.getIncidenciasByUserName(username);
+
+			model.addAttribute("incidencias", incidencias);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			redirect.addFlashAttribute("error", "Ocurrió un error al momento de obtener los datos");
+			return "/incidencias/home";
+		}
 
 		return "/incidencias/home";
 	}
@@ -111,18 +128,20 @@ public class IncidenciaController {
 
 		LOG.info("Método que realiza la búsqueda del Afiliado");
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Usuario usuario = usuarioDao.findByUsername(authentication.getName());
-
-		List<AfiliadoCustom> afiliados = afiliadoService.getAfiliadoByParams(campos,
-				usuario.getCentroContacto().getId());
-
 		try {
+
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			Usuario usuario = usuarioDao.findByUsername(authentication.getName());
+
+			List<AfiliadoCustom> afiliados = afiliadoService.getAfiliadoByParams(campos,
+					usuario.getCentroContacto().getId());
 
 			if (afiliados.size() == 0) {
 				redirect.addFlashAttribute("error", "Registro no encontrado");
 				return "redirect:/incidencias/buscar";
 			}
+
+			model.addAttribute("afiliados", afiliados);
 
 		} catch (Exception e) {
 			redirect.addFlashAttribute("error", "Error al momento de realizar la búsqueda");
@@ -131,8 +150,6 @@ public class IncidenciaController {
 
 			return "redirect:/incidencias/buscar";
 		}
-
-		model.addAttribute("afiliados", afiliados);
 
 		return "/incidencias/resultado";
 	}
@@ -198,20 +215,28 @@ public class IncidenciaController {
 
 			for (RelServicioBeneficio relSB : relServicioBeneficio) {
 
-				System.out.println(relSB.getDescripcion());
+				System.out.println(relSB.getBeneficio().toString());
 
 				if (relSB.getBeneficio().getId() == relAfiliadoIncidencia.get(index).getBeneficio().getId()) {
 
-					RelServicioBeneficio beneficio = new RelServicioBeneficio(relSB.getServicio(), relSB.getBeneficio(), relSB.getTitular(), relSB.getBeneficiario(), relSB.getDescripcion());
+					RelServicioBeneficio beneficio = new RelServicioBeneficio(relSB.getServicio(), relSB.getBeneficio(),
+							relSB.getTitular(), relSB.getBeneficiario(), relSB.getDescripcion());
 					beneficio.setBeneficio(relAfiliadoIncidencia.get(index).getBeneficio());
 					relServicioBeneficios.add(beneficio);
 
 					index++;
+				} else {
+					RelServicioBeneficio beneficio = new RelServicioBeneficio();
+					Beneficio b = new Beneficio();
+					b.setId(0L);
+					beneficio.setBeneficio(b);
+					relServicioBeneficios.add(beneficio);
 				}
 			}
 
 			model.addAttribute("incidencia", incidencia);
 			model.addAttribute("afiliado", afiliado);
+			model.addAttribute("relServicioBeneficio", relServicioBeneficio);
 			model.addAttribute("relServicioBeneficios", relServicioBeneficios);
 
 			idAfiliado = afiliado.getId();
@@ -241,7 +266,7 @@ public class IncidenciaController {
 			RedirectAttributes redirect, SessionStatus status) {
 
 		try {
-			
+
 			List<RelServicioBeneficio> relServicioBeneficio = relServicioBeneficios.getRelServicioBeneficios();
 			RelAfiliadoIncidencia relAfiliadoIncidencia = new RelAfiliadoIncidencia();
 			Afiliado afiliado = afiliadoService.findById(idAfiliado);
@@ -250,8 +275,11 @@ public class IncidenciaController {
 
 			incidencia.setNombreAfiliado(
 					afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' ' + afiliado.getApellidoPaterno());
-			incidencia.setEstatus(1);
-
+			
+			if(incidencia.getId() == null) {
+				incidencia.setEstatus(1);
+			}
+	
 			incidenciaService.save(incidencia);
 
 			for (RelServicioBeneficio r : relServicioBeneficio) {
@@ -274,7 +302,7 @@ public class IncidenciaController {
 		return "redirect:/incidencias/home";
 	}
 
-	@RequestMapping(value = "/eliminar", method = RequestMethod.POST)
+	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable("id") Long id, RedirectAttributes redirect) {
 
 		if (id > 0) {
@@ -299,6 +327,19 @@ public class IncidenciaController {
 		List<RelServicioBeneficio> relServicioBeneficios = relServicioBeneficio
 				.getBeneficioByIdAfiliado(afiliado.getId());
 		return relServicioBeneficios;
+	}
+	
+	@ModelAttribute("estatusIncidencia")
+	public Map<Integer, String> getEstatusIncidencia(){
+		
+		Map<Integer, String> estatusIncidencia = new HashMap<Integer, String>();
+		estatusIncidencia.put(1, "Abierto");
+		estatusIncidencia.put(2, "En Proceso");
+		estatusIncidencia.put(3, "Completado");
+		estatusIncidencia.put(4, "Cancelado");
+		
+		return estatusIncidencia;
+		
 	}
 
 }
