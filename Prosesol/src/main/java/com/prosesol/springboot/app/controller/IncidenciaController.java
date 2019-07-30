@@ -63,6 +63,12 @@ public class IncidenciaController {
 	private IRelAfiliadoIncidenciaService relAfiliadoIncidenciaService;
 
 	private Long idAfiliado;
+	
+	@GetMapping(value = "/home")
+	public String home() {
+		
+		return "/incidencias/home";
+	}
 
 	/**
 	 * Método que muestra todas las incidencias creadas en la pantalla de home
@@ -250,9 +256,7 @@ public class IncidenciaController {
 				incidencia = incidenciaService.findById(id);
 				
 				String nombre = incidencia.getNombreAfiliado();
-				String[] nombreCompleto = nombre.split(" ");
-				
-				System.out.println(nombreCompleto[0] +  nombreCompleto[2] + nombreCompleto[3]);
+				String[] nombreCompleto = nombre.split(" ");			
 				
 				Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0] + " " + nombreCompleto[1], nombreCompleto[2], nombreCompleto[3]);
 				
@@ -299,7 +303,7 @@ public class IncidenciaController {
 				relServicioBeneficio.removeAll(Arrays.asList(null, null));
 
 				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
-						+ afiliado.getApellidoPaterno());
+						+ afiliado.getApellidoMaterno());
 
 				if (incidencia.getId() == null) {
 					incidencia.setEstatus(1);
@@ -324,7 +328,7 @@ public class IncidenciaController {
 				System.out.println(incidencia.toString());
 
 				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
-						+ afiliado.getApellidoPaterno());
+						+ afiliado.getApellidoMaterno());
 
 				incidencia.setEstatus(1);
 
