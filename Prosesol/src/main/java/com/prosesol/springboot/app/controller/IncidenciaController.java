@@ -63,6 +63,11 @@ public class IncidenciaController {
 	private IRelAfiliadoIncidenciaService relAfiliadoIncidenciaService;
 
 	private Long idAfiliado;
+	
+	@GetMapping(value = "/home")
+	public String home() {
+		return "incidencias/home";
+	}
 
 	/**
 	 * Método que muestra todas las incidencias creadas en la pantalla de home
@@ -221,7 +226,7 @@ public class IncidenciaController {
 
 					System.out.println(relSB.getBeneficio().toString());
 
-					if (relSB.getBeneficio().getId() == relAfiliadoIncidencia.get(index).getBeneficio().getId()) {
+					if (relAfiliadoIncidencia.size() > index && relSB.getBeneficio().getId() == relAfiliadoIncidencia.get(index).getBeneficio().getId()) {
 
 						RelServicioBeneficio beneficio = new RelServicioBeneficio(relSB.getServicio(),
 								relSB.getBeneficio(), relSB.getTitular(), relSB.getBeneficiario(),
@@ -252,16 +257,29 @@ public class IncidenciaController {
 				String nombre = incidencia.getNombreAfiliado();
 				String[] nombreCompleto = nombre.split(" ");
 				
-				System.out.println(nombreCompleto[0] +  nombreCompleto[2] + nombreCompleto[3]);
-				
-				Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0] + " " + nombreCompleto[1], nombreCompleto[2], nombreCompleto[3]);
-				
-				Afiliado afiliado = afiliadoService.findById(claveAfiliado);
-				
-				model.addAttribute("afiliado", afiliado);
-				model.addAttribute("incidencia", incidencia);
-				
-				idAfiliado = claveAfiliado;
+				System.out.println(nombreCompleto.length);
+								
+				if(nombreCompleto.length == 3) {
+					
+					System.out.println(nombreCompleto[0] + nombreCompleto[1] +  nombreCompleto[2]);
+					
+					Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0], nombreCompleto[1], nombreCompleto[2]);
+					Afiliado afiliado = afiliadoService.findById(claveAfiliado);
+					
+					model.addAttribute("afiliado", afiliado);
+					model.addAttribute("incidencia", incidencia);
+					
+					idAfiliado = claveAfiliado;
+				}	
+				if(nombreCompleto.length == 4) {
+					Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0] + " " + nombreCompleto[1], nombreCompleto[2], nombreCompleto[3]);
+					Afiliado afiliado = afiliadoService.findById(claveAfiliado);
+					
+					model.addAttribute("afiliado", afiliado);
+					model.addAttribute("incidencia", incidencia);
+					
+					idAfiliado = claveAfiliado;
+				}
 			}
 
 		} catch (Exception e) {
@@ -299,7 +317,7 @@ public class IncidenciaController {
 				relServicioBeneficio.removeAll(Arrays.asList(null, null));
 
 				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
-						+ afiliado.getApellidoPaterno());
+						+ afiliado.getApellidoMaterno());
 
 				if (incidencia.getId() == null) {
 					incidencia.setEstatus(1);
@@ -324,7 +342,7 @@ public class IncidenciaController {
 				System.out.println(incidencia.toString());
 
 				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
-						+ afiliado.getApellidoPaterno());
+						+ afiliado.getApellidoMaterno());
 
 				incidencia.setEstatus(1);
 
