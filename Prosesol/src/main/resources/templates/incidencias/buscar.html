@@ -2,88 +2,81 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
-<body
-	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-	<header th:replace="fragments/header :: header"></header>
-	<div class="app-body">
-		<div th:replace="fragments/sidebar :: sidebar"></div>
+<body>
+	<div class="page-wrapper">
+		<!-- Page Top Bar Area -->
+		<div th:replace="fragments/header :: header"></div>
+		<div class="layout-container-area mt-70">
+			<!-- Side Menu Area -->
+			<div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<main class="main">
+			<!-- Layout Container -->
+			<div class="layout-container sidemenu-container">
+				<div class="container-fluid">
+					<div class="row ">
+						<div class="card-body bg-white appwork bg-boxshadow-2">
+							<h5 class="card-title">Buscar Afiliado</h5>
+							<div class="card-subtitle text-muted mb-3">Captura la
+								información del afiliado para crear una nueva incidencia</div>
 
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Incidencias</li>
-			<li class="breadcrumb-item active">Crear</li>
-		</ol>
+							<div class="clearfix"></div>
+							<hr>
 
-		<div class="container-fluid">
-			<div class="animated fadeIn">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-							<div th:replace="fragments/navbar :: div-messages"></div>
-							<div class="card-header">Nueva Incidencia</div>
-							<div class="card-body">
-								<p>Captura la información del afiliado para crear una nueva incidencia</p>
-								<div class="clearfix"></div>
-								<hr>
+
+							<form th:action="@{/incidencias/resultado}" method="post">
 								<div class="row">
-									<div class="col-md-12">
-										<form th:action="@{/incidencias/resultado}" method="post">
-											<div class="row">
-												<div class="form-group col-md-3">
-													<label for="company">Nombre</label><input
-														type="text" name="campos[]"
-														class="form-control form-control-user">
-												</div>
+									<div class="form-group col-md-3">
+										<label for="company">Nombre</label> <input type="text"
+											name="campos[]" class="form-control ">
+									</div>
 
-												<div class="form-group col-md-3">
-													<label for="company">Apellido Paterno</label><input type="text"
-														name="campos[]" class="form-control form-control-user">													
-												</div>
+									<div class="form-group col-md-3">
+										<label for="company">Apellido Paterno</label><input
+											type="text" name="campos[]" class="form-control ">
+									</div>
 
-												<div class="form-group col-md-3">
-													<label for="company">Apellido Materno</label> <input type="text"
-														name="campos[]"
-														class="form-control form-control-user">
-												</div>
+									<div class="form-group col-md-3">
+										<label for="company">Apellido Materno</label> <input
+											type="text" name="campos[]" class="form-control ">
+									</div>
 
-												<div class="form-group col-md-3">
-													<label for="company">RFC</label> <input
-														type="text" name="campos[]"
-														class="form-control form-control-user"> 
-												</div>
+									<div class="clearfix"></div>
 
-												<div class="form-group col-md-3">
-													<label for="company">Teléfono</label> <input type="text"
-														name="campos[]" class="form-control form-control-user">
-												</div>
+									<div class="form-group col-md-3">
+										<label for="company">RFC</label> <input type="text"
+											name="campos[]" class="form-control ">
+									</div>
 
-												<div class="form-group col-md-3">
-													<label for="company">Clave del asociado</label> <input
-														type="text" name="campos[]"
-														class="form-control form-control-user">
-												</div>
-											</div>
+									<div class="form-group col-md-3">
+										<label for="company">Teléfono</label> <input type="text"
+											name="campos[]" class="form-control ">
+									</div>
 
-											<hr>
-											<div class="clearfix"></div>
-											<div class="row">
-												<div class="col-sm-12">
-													<button type="submit"
-														class="btn btn-primary btn-square float-right">Buscar</button>
-												</div>
-											</div>
-										</form>
+									<div class="form-group col-md-3">
+										<label for="company">Clave del asociado</label> <input
+											type="text" name="campos[]" class="form-control ">
+									</div>
+
+
+									<div class="clearfix"></div>
+
+									<div class="col-sm-3 pull-right">
+										<button type="submit"
+											class="btn btn-primary btn-square float-right">Buscar</button>
 									</div>
 								</div>
-							</div>
+							</form>
+
 						</div>
+
 					</div>
+
 				</div>
+
+
 			</div>
+
 		</div>
-		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
 </body>
