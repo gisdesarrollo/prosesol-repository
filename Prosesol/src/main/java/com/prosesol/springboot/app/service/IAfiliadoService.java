@@ -20,6 +20,8 @@ public interface IAfiliadoService {
 	
 	public void insertBeneficiarioUsingJpa(Afiliado beneficiario, Long id);
 	
+	public Long getIdAfiliadoByNombreCompleto(String nombre, String apellidoPaterno, String apellidoMaterno);
+	
 	public List<Afiliado> getAfiliadoAssignedBeneficiario(Long id);
 	
 	public List<String> getAllEstados();
