@@ -181,65 +181,88 @@ public class IncidenciaController {
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable("id") Long id, Model model, RedirectAttributes redirect) {
 
-		Incidencia incidencia = new Incidencia();
-		List<RelServicioBeneficio> relServicioBeneficio = new ArrayList<RelServicioBeneficio>();
-		List<RelAfiliadoIncidencia> relAfiliadoIncidencia = relAfiliadoIncidenciaService
-				.getRelAfiliadoIncidenciaByIdIncidencia(id);
-
-		Afiliado afiliado = afiliadoService.findById(relAfiliadoIncidencia.get(0).getAfiliado().getId());
-
-		// Lista para agregar la relación entre los beneficios del afiliado y la lista
-		// de beneficios ya creada
-		List<RelServicioBeneficio> relServicioBeneficios = new ArrayList<RelServicioBeneficio>();
-
 		try {
 
-			if (id > 0) {
-				incidencia = incidenciaService.findById(id);
-				if (incidencia == null) {
+			Incidencia incidencia = new Incidencia();
+			List<RelServicioBeneficio> relServicioBeneficio = new ArrayList<RelServicioBeneficio>();
+			List<RelAfiliadoIncidencia> relAfiliadoIncidencia = relAfiliadoIncidenciaService
+					.getRelAfiliadoIncidenciaByIdIncidencia(id);
 
-					LOG.info("No se ha encontrado la incidencia con ID: " + id);
-					redirect.addFlashAttribute("error", "No se ha encontrado la incidencia");
+			System.out.println(relAfiliadoIncidencia.size());
+			
+			if (relAfiliadoIncidencia.size() > 0) {
+
+				Afiliado afiliado = afiliadoService.findById(relAfiliadoIncidencia.get(0).getAfiliado().getId());
+
+				// Lista para agregar la relación entre los beneficios del afiliado y la lista
+				// de beneficios ya creada
+				List<RelServicioBeneficio> relServicioBeneficios = new ArrayList<RelServicioBeneficio>();
+
+				if (id > 0) {
+					incidencia = incidenciaService.findById(id);
+					if (incidencia == null) {
+
+						LOG.info("No se ha encontrado la incidencia con ID: " + id);
+						redirect.addFlashAttribute("error", "No se ha encontrado la incidencia");
+						return "redirect:/incidencias/home";
+					}
+				} else {
+					LOG.info("Incidencia con ID cero no existe");
+					redirect.addFlashAttribute("error", "El ID de la incidencia no puede ser cero");
+
 					return "redirect:/incidencias/home";
 				}
-			} else {
-				LOG.info("Incidencia con ID cero no existe");
-				redirect.addFlashAttribute("error", "El ID de la incidencia no puede ser cero");
 
-				return "redirect:/incidencias/home";
-			}
+				relServicioBeneficio = getBeneficioByAfiliado(afiliado);
 
-			relServicioBeneficio = getBeneficioByAfiliado(afiliado);
+				int index = 0;
 
-			int index = 0;
+				for (RelServicioBeneficio relSB : relServicioBeneficio) {
 
-			for (RelServicioBeneficio relSB : relServicioBeneficio) {
+					System.out.println(relSB.getBeneficio().toString());
 
-				System.out.println(relSB.getBeneficio().toString());
+					if (relSB.getBeneficio().getId() == relAfiliadoIncidencia.get(index).getBeneficio().getId()) {
 
-				if (relSB.getBeneficio().getId() == relAfiliadoIncidencia.get(index).getBeneficio().getId()) {
+						RelServicioBeneficio beneficio = new RelServicioBeneficio(relSB.getServicio(),
+								relSB.getBeneficio(), relSB.getTitular(), relSB.getBeneficiario(),
+								relSB.getDescripcion());
+						beneficio.setBeneficio(relAfiliadoIncidencia.get(index).getBeneficio());
+						relServicioBeneficios.add(beneficio);
 
-					RelServicioBeneficio beneficio = new RelServicioBeneficio(relSB.getServicio(), relSB.getBeneficio(),
-							relSB.getTitular(), relSB.getBeneficiario(), relSB.getDescripcion());
-					beneficio.setBeneficio(relAfiliadoIncidencia.get(index).getBeneficio());
-					relServicioBeneficios.add(beneficio);
-
-					index++;
-				} else {
-					RelServicioBeneficio beneficio = new RelServicioBeneficio();
-					Beneficio b = new Beneficio();
-					b.setId(0L);
-					beneficio.setBeneficio(b);
-					relServicioBeneficios.add(beneficio);
+						index++;
+					} else {
+						RelServicioBeneficio beneficio = new RelServicioBeneficio();
+						Beneficio b = new Beneficio();
+						b.setId(0L);
+						beneficio.setBeneficio(b);
+						relServicioBeneficios.add(beneficio);
+					}
 				}
+
+				model.addAttribute("incidencia", incidencia);
+				model.addAttribute("afiliado", afiliado);
+				model.addAttribute("relServicioBeneficio", relServicioBeneficio);
+				model.addAttribute("relServicioBeneficios", relServicioBeneficios);
+
+				idAfiliado = afiliado.getId();
+
+			}else {
+				incidencia = incidenciaService.findById(id);
+				
+				String nombre = incidencia.getNombreAfiliado();
+				String[] nombreCompleto = nombre.split(" ");
+				
+				System.out.println(nombreCompleto[0] +  nombreCompleto[2] + nombreCompleto[3]);
+				
+				Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0] + " " + nombreCompleto[1], nombreCompleto[2], nombreCompleto[3]);
+				
+				Afiliado afiliado = afiliadoService.findById(claveAfiliado);
+				
+				model.addAttribute("afiliado", afiliado);
+				model.addAttribute("incidencia", incidencia);
+				
+				idAfiliado = claveAfiliado;
 			}
-
-			model.addAttribute("incidencia", incidencia);
-			model.addAttribute("afiliado", afiliado);
-			model.addAttribute("relServicioBeneficio", relServicioBeneficio);
-			model.addAttribute("relServicioBeneficios", relServicioBeneficios);
-
-			idAfiliado = afiliado.getId();
 
 		} catch (Exception e) {
 
@@ -271,28 +294,41 @@ public class IncidenciaController {
 			RelAfiliadoIncidencia relAfiliadoIncidencia = new RelAfiliadoIncidencia();
 			Afiliado afiliado = afiliadoService.findById(idAfiliado);
 
-			relServicioBeneficio.removeAll(Arrays.asList(null, null));
+			if (relServicioBeneficio != null) {
 
-			incidencia.setNombreAfiliado(
-					afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' ' + afiliado.getApellidoPaterno());
-			
-			if(incidencia.getId() == null) {
-				incidencia.setEstatus(1);
-			}
-	
-			incidenciaService.save(incidencia);
+				relServicioBeneficio.removeAll(Arrays.asList(null, null));
 
-			for (RelServicioBeneficio r : relServicioBeneficio) {
+				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
+						+ afiliado.getApellidoPaterno());
 
-				if (r.getBeneficio() != null) {
-					relAfiliadoIncidencia.setIncidencia(incidencia);
-					relAfiliadoIncidencia.setAfiliado(afiliado);
-					relAfiliadoIncidencia.setBeneficio(r.getBeneficio());
-					relAfiliadoIncidencia.setFecha(new Date());
-
-					relAfiliadoIncidenciaService.save(relAfiliadoIncidencia);
+				if (incidencia.getId() == null) {
+					incidencia.setEstatus(1);
 				}
 
+				incidenciaService.save(incidencia);
+
+				for (RelServicioBeneficio r : relServicioBeneficio) {
+
+					if (r.getBeneficio() != null) {
+						relAfiliadoIncidencia.setIncidencia(incidencia);
+						relAfiliadoIncidencia.setAfiliado(afiliado);
+						relAfiliadoIncidencia.setBeneficio(r.getBeneficio());
+						relAfiliadoIncidencia.setFecha(new Date());
+
+						relAfiliadoIncidenciaService.save(relAfiliadoIncidencia);
+					}
+
+				}
+			} else {
+
+				System.out.println(incidencia.toString());
+
+				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
+						+ afiliado.getApellidoPaterno());
+
+				incidencia.setEstatus(1);
+
+				incidenciaService.save(incidencia);
 			}
 
 		} catch (Exception e) {
@@ -328,18 +364,18 @@ public class IncidenciaController {
 				.getBeneficioByIdAfiliado(afiliado.getId());
 		return relServicioBeneficios;
 	}
-	
+
 	@ModelAttribute("estatusIncidencia")
-	public Map<Integer, String> getEstatusIncidencia(){
-		
+	public Map<Integer, String> getEstatusIncidencia() {
+
 		Map<Integer, String> estatusIncidencia = new HashMap<Integer, String>();
 		estatusIncidencia.put(1, "Abierto");
 		estatusIncidencia.put(2, "En Proceso");
 		estatusIncidencia.put(3, "Completado");
 		estatusIncidencia.put(4, "Cancelado");
-		
+
 		return estatusIncidencia;
-		
+
 	}
 
 }

@@ -110,6 +110,12 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	@Transactional(readOnly = true)
 	public List<AfiliadoCustom> getAfiliadoByParams(String[] campos, Long idCcUsuario) {
 		return afiliadoRepository.getAfiliadoByParams(campos, idCcUsuario);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Long getIdAfiliadoByNombreCompleto(String nombre, String apellidoPaterno, String apellidoMaterno) {
+		return iAfiliadoDao.getIdAfiliadoByNombreCompleto(nombre, apellidoPaterno, apellidoMaterno);
 	}	
 
 }

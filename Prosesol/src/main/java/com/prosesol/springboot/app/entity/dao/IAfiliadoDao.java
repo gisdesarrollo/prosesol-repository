@@ -22,4 +22,7 @@ public interface IAfiliadoDao extends CrudRepository<Afiliado, Long>{
 	@Query("select a.id from Afiliado a where a.servicio = ?1")
 	public Long getAfiliadoByIdServicio(@Param("id") Long idServicio);
 	
+	@Query(value = "select a.id_afiliado from afiliados a where a.nombre like ?1 and a.apellido_paterno like ?2 and a.apellido_materno like ?3", nativeQuery = true)
+	public Long getIdAfiliadoByNombreCompleto(String nombre, String apellidoPaterno, String apellidoMaterno);
+	
 }

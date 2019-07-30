@@ -160,4 +160,13 @@ public class Incidencia implements Serializable{
 		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
 	}
 
+	@Override
+	public String toString() {
+		return "Incidencia [id=" + id + ", nombreAfiliado=" + nombreAfiliado + ", fecha=" + fecha + ", hora=" + hora
+				+ ", localizacion=" + localizacion + ", tipoIncidencia=" + tipoIncidencia + ", detalle=" + detalle
+				+ ", proveedor=" + proveedor + ", estatus=" + estatus + "]";
+	}
+
+
+	
 }
