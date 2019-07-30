@@ -71,7 +71,7 @@ public class IncidenciaController {
 	 * @return
 	 */
 
-	@GetMapping(value = { "/home", "/" })
+	@GetMapping(value = "/ver")
 	public String ver(Model model, RedirectAttributes redirect) {
 
 		try {
@@ -90,7 +90,7 @@ public class IncidenciaController {
 			return "/incidencias/home";
 		}
 
-		return "/incidencias/home";
+		return "/incidencias/ver";
 	}
 
 	/**
@@ -299,7 +299,7 @@ public class IncidenciaController {
 			e.printStackTrace();
 		}
 
-		return "redirect:/incidencias/home";
+		return "redirect:/incidencias/ver";
 	}
 
 	@RequestMapping(value = "/eliminar/{id}")

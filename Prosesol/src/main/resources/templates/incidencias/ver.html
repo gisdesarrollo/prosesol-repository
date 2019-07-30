@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8" />
+<body>
+	<div class="page-wrapper">
+		<!-- Page Top Bar Area -->
+		<div th:replace="fragments/header :: header"></div>
+		<div class="layout-container-area mt-70">
+			<!-- Side Menu Area -->
+			<div th:replace="fragments/sidebar :: sidebar"></div>
+
+			<!-- Layout Container -->
+			<div class="layout-container sidemenu-container">
+
+				<div class="container-fluid">
+					<div class="row ">
+<div class="col-md mb-4">
+							<!-- Card Body -->
+							<div class="card-body bg-white appwork bg-boxshadow-2">
+								<h5 class="card-title">Incidencias</h5>
+								<div class="card-subtitle text-muted mb-3">incidencias</div>
+
+								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+									th:href="@{/afiliados/crear}"
+									class="btn m-2 rounded-0 btn-sm btn-primary"><i
+									class="fas fa-user-plus"> </i> Nuevo inci</a>
+
+								<div class="clearfix"></div>
+								<hr>
+
+								<div class="row">
+								<table id="dataTable" class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th>Id</th>
+										<th>Nombre completo del Afiliado</th>
+										<th>Fecha de creación de incidencia</th>
+										<th>Hora de incidencia</th>
+										<th>Localización</th>
+										<th>Detalle de la incidencia</th>
+										<th>Estatus</th>
+										<th>Opciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="incidencia : ${incidencias}"
+										th:switch="${incidencia.estatus}">
+										<td th:text="${incidencia.id}">Id</td>
+										<td th:text="${incidencia.nombreAfiliado}">Nombre completo del Afiliado</td>
+										<td th:text="${incidencia.fecha}">Fecha de creación de incidencia</td>
+										<td th:text="${incidencia.hora}">Hora de incidencia</td>
+										<td th:text="${incidencia.localizacion}">Localización</td>
+										<td th:text="${incidencia.detalle}">Detalle de la incidencia</td>
+										<td th:case="1" style="color:#3139ec">Abierto</td>
+										<td th:case="2" style="color:#c9d23d">En Proceso</td>
+										<td th:case="3" style="color:#0e950c">Completado</td>
+										<td th:case="4" style="color:#ff0606">Cancelado</td>
+										<td>
+											<div class="dropdown">
+												<button class="btn btn-primary btn-sm dropdown-toggle"
+													type="button" id="dropdownMenuButton"
+													data-toggle="dropdown" aria-haspopup="true"
+													aria-expanded="false">Opciones</button>
+												<div class="dropdown-menu animated--fade-in"
+													aria-labelledby="dropdownMenuButton">
+													<a class="dropdown-item"
+														th:href="@{/incidencias/editar/} + ${incidencia.id}"
+														th:text="'Editar'"> </a> <a class="dropdown-item"
+														th:href="@{/incidencias/eliminar/} + ${incidencia.id}"
+														th:text="'Borrar'"
+														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
+													</a>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+								
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					
+				</div>
+
+
+			</div>
+
+		</div>
+	</div>
+	<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+
+</html>
+
