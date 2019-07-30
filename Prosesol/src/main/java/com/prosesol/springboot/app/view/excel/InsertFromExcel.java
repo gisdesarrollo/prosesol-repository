@@ -2,6 +2,8 @@ package com.prosesol.springboot.app.view.excel;
 
 import java.text.Collator;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.josketres.rfcfacil.Rfc;
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.Periodicidad;
@@ -55,202 +58,212 @@ public class InsertFromExcel {
 
 	@Autowired
 	private CalcularFecha calcularFechas;
-	
+
 	private String servicioString;
 	private String periodoString;
-	private String promotorString;	
+	private String promotorString;
 	private String cuentaString;
 	private String isBeneficiario;
 	private String rfcAfiliado;
-	
+
 	private int corte;
 	private Long idAfiliado;
-	
+
 	public void insertToDBFromExcel(Map<Integer, String> listValues) throws CustomUserException {
 
-		LOGGER.info("Inicia la inserción de datos de carga masiva");	
-		
+		LOGGER.info("Inicia la inserción de datos de carga masiva");
+
 		Collator collator = Collator.getInstance(new Locale("es"));
-		
+
 		Afiliado afiliado = new Afiliado();
 		Periodicidad periodicidad = new Periodicidad();
-		
-		Map<Integer, String> treeMap = new TreeMap<Integer, String>(
-					(Comparator<Integer>)(o1, o2) -> o1.compareTo(o2)
-				);
+
+		Map<Integer, String> treeMap = new TreeMap<Integer, String>((Comparator<Integer>) (o1, o2) -> o1.compareTo(o2));
 		treeMap.putAll(listValues);
-		
+
 		List<String> afiliadoValues = new ArrayList<String>();
 		List<Periodicidad> periodos = periodicidadService.findAll();
 		List<Cuenta> cuentas = cuentaService.findAll();
 		List<Promotor> promotores = promotorService.findAll();
 		List<Servicio> servicios = servicioService.findAll();
-		
-		for(Entry<Integer, String> values : treeMap.entrySet()) {
+
+		for (Entry<Integer, String> values : treeMap.entrySet()) {
 			afiliadoValues.add(values.getValue());
 			System.out.println("Clave: " + values.getKey() + " Valor: " + values.getValue());
-			
+
 			try {
-				
-				if(values.getKey().equals(0)) {
+
+				if (values.getKey().equals(0)) {
 					afiliado.setNombre(values.getValue());
 				}
-				if(values.getKey().equals(1)) {
+				if (values.getKey().equals(1)) {
 					afiliado.setApellidoPaterno(values.getValue());
 				}
-				if(values.getKey().equals(2)) {
+				if (values.getKey().equals(2)) {
 					afiliado.setApellidoMaterno(values.getValue());
 				}
-				if(values.getKey().equals(3)) {
+				if (values.getKey().equals(3)) {
 					afiliado.setFechaNacimiento(new SimpleDateFormat("yyyy/MM/dd").parse(values.getValue()));
 				}
-				if(values.getKey().equals(4)) {
+				if (values.getKey().equals(4)) {
 					afiliado.setLugarNacimiento(values.getValue());
 				}
-				if(values.getKey().equals(5)) {
+				if (values.getKey().equals(5)) {
 					afiliado.setEstadoCivil(values.getValue());
 				}
-				if(values.getKey().equals(6)) {
+				if (values.getKey().equals(6)) {
 					afiliado.setNumeroDependientes(Integer.parseInt(values.getValue()));
 				}
-				if(values.getKey().equals(7)) {
+				if (values.getKey().equals(7)) {
 					afiliado.setOcupacion(values.getValue());
 				}
-				if(values.getKey().equals(8)) {
+				if (values.getKey().equals(8)) {
 					afiliado.setSexo(values.getValue());
 				}
-				if(values.getKey().equals(9)) {
+				if (values.getKey().equals(9)) {
 					afiliado.setPais(values.getValue());
 				}
-				if(values.getKey().equals(10)) {
+				if (values.getKey().equals(10)) {
 					afiliado.setCurp(values.getValue());
 				}
-				if(values.getKey().equals(11)) {
+				if (values.getKey().equals(11)) {
 					afiliado.setNss(Long.parseLong(values.getValue()));
 				}
-				if(values.getKey().equals(12)) {
+				if (values.getKey().equals(12)) {
 					afiliado.setRfc(values.getValue());
 				}
-				if(values.getKey().equals(13)) {
+				if (values.getKey().equals(13)) {
 					afiliado.setTelefonoFijo(Long.parseLong(values.getValue()));
 				}
-				if(values.getKey().equals(14)) {
+				if (values.getKey().equals(14)) {
 					afiliado.setTelefonoMovil(Long.parseLong(values.getValue()));
 				}
-				if(values.getKey().equals(15)) {
+				if (values.getKey().equals(15)) {
 					afiliado.setEmail(values.getValue());
 				}
-				if(values.getKey().equals(16)) {
+				if (values.getKey().equals(16)) {
 					afiliado.setDireccion(values.getValue());
 				}
-				if(values.getKey().equals(17)) {
+				if (values.getKey().equals(17)) {
 					afiliado.setMunicipio(values.getValue());
 				}
-				if(values.getKey().equals(18)) {
+				if (values.getKey().equals(18)) {
 					afiliado.setCodigoPostal(Long.parseLong(values.getValue()));
 				}
-				if(values.getKey().equals(19)) {
+				if (values.getKey().equals(19)) {
 					afiliado.setEntidadFederativa((values.getValue()));
 				}
-				if(values.getKey().equals(20)) {
-					afiliado.setInfonavit(values.getValue());				
+				if (values.getKey().equals(20)) {
+					afiliado.setInfonavit(values.getValue());
 				}
-				if(values.getKey().equals(21)) {
+				if (values.getKey().equals(21)) {
 					afiliado.setNumeroInfonavit(Long.parseLong(values.getValue()));
 				}
-				if(values.getKey().equals(22)) {
+				if (values.getKey().equals(22)) {
 					afiliado.setFechaAfiliacion(new SimpleDateFormat("yyyy/MM/dd").parse(values.getValue()));
 				}
-				if(values.getKey().equals(23)) {
+				if (values.getKey().equals(23)) {
 					servicioString = values.getValue();
 				}
-				if(values.getKey().equals(24)) {
+				if (values.getKey().equals(24)) {
 					periodoString = values.getValue();
 				}
-				if(values.getKey().equals(25)) {
+				if (values.getKey().equals(25)) {
 					afiliado.setComentarios(values.getValue());
 				}
-				if(values.getKey().equals(26)) {
+				if (values.getKey().equals(26)) {
 					isBeneficiario = values.getValue();
 				}
-				if(values.getKey().equals(27)) {
+				if (values.getKey().equals(27)) {
 					rfcAfiliado = values.getValue();
 				}
-				if(values.getKey().equals(28)) {
+				if (values.getKey().equals(28)) {
 					promotorString = values.getValue();
 				}
-				if(values.getKey().equals(29)) {
+				if (values.getKey().equals(29)) {
 					cuentaString = values.getValue();
 				}
-				if(values.getKey().equals(30)) {
+				if (values.getKey().equals(30)) {
 					corte = Integer.parseInt(values.getValue());
 				}
-				
-				if(servicioString != null) {
-					for(Servicio servicio : servicios) {
-						if(servicioString.equals(servicio.getNombre())) {
+
+				if (servicioString != null) {
+					for (Servicio servicio : servicios) {
+						if (servicioString.equals(servicio.getNombre())) {
 							afiliado.setServicio(servicio);
 						}
 					}
 				}
-				
-				if(promotorString != null) {
-					for(Promotor promotor : promotores) {
-						if(promotorString.equals(promotor.getNombre())) {
+
+				if (promotorString != null) {
+					for (Promotor promotor : promotores) {
+						if (promotorString.equals(promotor.getNombre())) {
 							afiliado.setPromotor(promotor);
 						}
 					}
 				}
-				
-				if(periodoString != null) {
-					for(Periodicidad periodo : periodos) {
-						if(periodoString.equals(periodo.getNombre())) {
+
+				if (periodoString != null) {
+					for (Periodicidad periodo : periodos) {
+						if (periodoString.equals(periodo.getNombre())) {
 							periodicidad = periodo;
 							afiliado.setPeriodicidad(periodo);
 						}
 					}
 				}
-				
-				if(cuentaString != null) {
-					for(Cuenta cuenta : cuentas) {
-						if(cuentaString.equals(cuenta.getRazonSocial())) {
+
+				if (cuentaString != null) {
+					for (Cuenta cuenta : cuentas) {
+						if (cuentaString.equals(cuenta.getRazonSocial())) {
 							afiliado.setCuenta(cuenta);
 						}
 					}
-				}						
-				
-			}catch(Exception e) {
-				
+				}
+
+			} catch (Exception e) {
+
 				new CustomUserException("Error al momento de leer el archivo");
 //				e.printStackTrace();
-				
+
 			}
-				
+
 		}
-		
+
 		collator.setStrength(Collator.PRIMARY);
-		if(collator.equals(isBeneficiario, "Sí")) {
+		if (collator.equals(isBeneficiario, "Sí")) {
 			afiliado.setIsBeneficiario(true);
-			
-			idAfiliado = afiliadoService.getIdAfiliadoByRfc(rfcAfiliado);					
-		}else if(isBeneficiario.equals("No")) {
-			
+
+			idAfiliado = afiliadoService.getIdAfiliadoByRfc(rfcAfiliado);
+		} else if (isBeneficiario.equals("No")) {
+
 			afiliado.setIsBeneficiario(false);
-			
-			Date fechaCorte = calcularFechas.calcularFechas(periodicidad, corte);	
+
+			Date fechaCorte = calcularFechas.calcularFechas(periodicidad, corte);
 			afiliado.setFechaCorte(fechaCorte);
 		}
-		
+
 		afiliado.setFechaAlta(new Date());
 		afiliado.setEstatus(3);
 		afiliado.setClave(getClaveAfiliado());
-		
+
+		if (afiliado.getRfc() == null) {
+			LocalDate fechaNacimiento = afiliado.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault())
+					.toLocalDate();
+
+			Rfc rfc = new Rfc.Builder().name(afiliado.getNombre()).firstLastName(afiliado.getApellidoPaterno())
+					.secondLastName(afiliado.getApellidoMaterno()).birthday(fechaNacimiento.getDayOfMonth(),
+							fechaNacimiento.getMonthValue(), fechaNacimiento.getYear())
+					.build();
+
+			afiliado.setRfc(rfc.toString());
+		}
+
 		afiliadoService.save(afiliado);
-		
+
 		if (collator.equals(isBeneficiario, "Sí")) {
 			afiliadoService.insertBeneficiarioUsingJpa(afiliado, idAfiliado);
 		}
-		
+
 		LOGGER.info("Termina la inserción de afiliado desde la carga masiva");
 	}
 
