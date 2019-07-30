@@ -344,8 +344,6 @@ public class IncidenciaController {
 				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
 						+ afiliado.getApellidoMaterno());
 
-				incidencia.setEstatus(1);
-
 				incidenciaService.save(incidencia);
 			}
 
