@@ -1,88 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
-<meta charset="utf-8" />
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8" />
+<body>
+	<div class="page-wrapper">
+		<!-- Page Top Bar Area -->
+		<div th:replace="fragments/header :: header"></div>
+		<div class="layout-container-area mt-70">
+			<!-- Side Menu Area -->
+			<div th:replace="fragments/sidebar :: sidebar"></div>
 
-<body
-	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-	<header th:replace="fragments/header :: header"></header>
-	<div class="app-body">
-		<div th:replace="fragments/sidebar :: sidebar"></div>
+			<!-- Layout Container -->
+			<div class="layout-container sidemenu-container">
+				<div class="container-fluid">
+					<div class="row ">
 
-		<main class="main">
+						<div class="col-md mb-4">
+							<!-- Card Body -->
+							<div class="card-body bg-white appwork bg-boxshadow-2">
+								<h5 class="card-title">Periodos</h5>
+								<div class="card-subtitle text-muted">Lista de
+									periodos que se brindan dentro de cada servicio registrado</div>
 
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Catálogos</li>
-			<li class="breadcrumb-item active">Periodos</li>
-		</ol>
-
-		<div class="container-fluid">
-			<div class="animated fadeIn">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">Periodos</div>
-							<div class="card-body">
 								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-									th:href="@{/periodicidades/crear}"
+									th:href="@{/periodos/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
 									class="fas fa-user-plus"></i> Nuevo Periodo</a>
 
 								<div class="clearfix"></div>
 								<hr>
-								
+
 								<div class="row">
-									<div class="col-md-12">
-										<table class="table table-bordered" id="dataTable">
-											<thead>
-												<tr>
-													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
-													<th>Nombre</th>
-													<th>Periodo</th>
-													<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Opciones</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr th:each="periodo : ${periodicidad}">
-													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-														th:text="${periodo.id}"></td>
-														<td th:text="${periodo.nombre}"></td>
-													<td th:text="${periodo.periodo}"></td>
-													<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
-														<div class="dropdown">
-												<button class="btn btn-primary btn-sm dropdown-toggle"
-																type="button" id="dropdownMenuButton"
-																data-toggle="dropdown" aria-haspopup="true"
-																aria-expanded="false">Opciones</button>
-															<div class="dropdown-menu animated--fade-in"
-																aria-labelledby="dropdownMenuButton">
-																<a class="dropdown-item"
-																	th:href="@{/periodicidades/editar/} + ${periodo.id}"
-																	th:text="'Editar'"> </a> <a class="dropdown-item"
-																	th:href="@{/periodicidades/eliminar/} + ${periodo.id}"
-																	th:text="'Borrar'"
-																	onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
-																</a>
-															</div>
+									<table class="table table-bordered" id="dataTable">
+										<thead>
+											<tr>
+												<th>Opciones</th>
+												<th>Nombre</th>
+												<th>Descripción</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="periodo : ${periodicidad}">
+												<td>
+												<div class="dropdown">
+														<button class="btn btn-info btn-xs dropdown-toggle"
+															type="button" id="dropdownMenuButton"
+															data-toggle="dropdown" aria-haspopup="true"
+															aria-expanded="false">
+															<i class="fas fa-stream"></i>
+														</button>
+														<div class="dropdown-menu animated--fade-in"
+															aria-labelledby="dropdownMenuButton">
+																														
+															<a class="dropdown-item"
+																th:href="@{/periodos/editar/} + ${periodo.id}"
+																th:text="'Editar'"> </a> 
+
+															<a class="dropdown-item border-top text-danger"
+																th:href="@{/periodos/eliminar/} + ${periodo.id}"
+																th:text="'Borrar'"
+																onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')"></a>
 														</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
+													</div>	
+												</td>
+												<td th:text="${periodo.nombre}"></td>
+												<td th:text="${periodo.periodo}"></td>
+											</tr>
+										</tbody>
+									</table>
+
 								</div>
 							</div>
 						</div>
+
 					</div>
+
 				</div>
+
+
 			</div>
+
 		</div>
-		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
-
 </body>
 
 </html>
