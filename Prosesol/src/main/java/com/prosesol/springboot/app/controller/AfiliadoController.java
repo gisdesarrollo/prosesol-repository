@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -45,6 +48,7 @@ import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
 import com.prosesol.springboot.app.util.CalcularFecha;
 import com.prosesol.springboot.app.util.Paises;
+import com.prosesol.springboot.app.util.paginator.PageRender;
 import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 
 @Controller
@@ -223,15 +227,18 @@ public class AfiliadoController {
 	}
 
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
-	public String ver(Model model, Authentication authentication) {
+	public String ver(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
 
-		if (authentication != null) {
-			logger.info("Usuario autenticado: ".concat(authentication.getName()));
-		}
-
+		Pageable pageRequest = PageRequest.of(page, 10);
+	
+		Page<Afiliado> afiliados = afiliadoService.findAll(pageRequest);
+		
+		PageRender<Afiliado> pageRender = new PageRender<>("/afiliados/ver", afiliados);
+		
 		model.addAttribute("titulo", "Afiliados");
-		model.addAttribute("afiliados", afiliadoService.findAll());
-
+		model.addAttribute("afiliados", afiliados);
+		model.addAttribute("page", pageRender);
+		
 		return "catalogos/afiliados/ver";
 	}
 
