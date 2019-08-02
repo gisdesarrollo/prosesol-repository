@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="description" content="Colors">
@@ -9,19 +10,29 @@
 
     <!-- Title -->
     <title> Prosesol </title>
-
+    
     <!-- Favicon -->
     <link rel="icon" th:href="@{/img/core-img/favicon.ico}">
     <script src="https://kit.fontawesome.com/20afb9912e.js"></script>
-
+    
     <!-- Core Stylesheet -->
     <link rel="stylesheet" th:href="@{/style.css}">
-
+    
     <!-- Responsive Stylesheet -->
     <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    
+    <!-- Responsive Stylesheet -->
+    <link rel="stylesheet" th:href="@{/custom/css-helpers-master/helpers.css}">
+    
+    <!-- Plugins -->
+    <link th:href="@{/custom/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/custom/bootstrap-timepicker/css/bootstrap-timepicker.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.6/b-flash-1.5.6/datatables.min.css" />
 
 </head>
+
 <body>
 
 </body>
+
 </html>

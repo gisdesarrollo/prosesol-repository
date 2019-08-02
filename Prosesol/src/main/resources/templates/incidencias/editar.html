@@ -38,21 +38,25 @@
 
 												<div class="form-group col-md-2">
 													<label for="company">Teléfono Fijo</label>
+													<br>
 													<label th:text="${afiliado.telefonoFijo}">Teléfono Fijo</label>
 												</div>
 
 												<div class="form-group col-md-2">
 													<label for="company">Teléfono Móvil</label>
+													<br>
 													<label th:text="${afiliado.telefonoMovil}">Teléfono Móvil</label>
 												</div>
 
 												<div class="form-group col-md-2">
 													<label for="company">Clave</label>
+													<br>
 													<label th:text="${afiliado.clave}">Clave</label>
 												</div>	
 												
 												<div class="form-group col-md-2">
 													<label for="company">Estado</label>
+													<br>
 													<label th:text="${afiliado.entidadFederativa}">Estado</label>
 												</div>
 
@@ -77,10 +81,15 @@
 												</div>
 												
 												<div class="form-group col-md-3">
-													<label for="company">Localización</label><input type="text"
-														th:field="*{localizacion}"
-														class="form-control form-control-user" placeholder="">
-												</div>
+														<label for="company">Localización</label><input type="text"
+															th:field="*{localizacion}"
+															class="form-control form-control-user" placeholder="">
+													</div>
+													<div class="form-group col-md-3">
+														<label for="company">Localización</label><input type="text"
+															th:field="*{servicio.nombre}"
+															class="form-control form-control-user" placeholder="">
+													</div>
 												
 												<div class="form-group col-md-3">
 													<label for="company">Tipo de Incidencia</label> <select
@@ -89,6 +98,8 @@
 														<option value="">Opciones</option>
 														<option th:value="'Cotización'" th:selected>Cotización</option>
 														<option th:value="'Reembolso'">Reembolso</option>
+														<option th:value="'Asistencia Médica'">Asistencia Médica</option>
+														<option th:value="'Otros'">Otros</option>
 													</select>
 												</div>
 												
@@ -101,6 +112,12 @@
 													<label for="company">Proveedor</label><input type="text"
 														th:field="*{proveedor}"
 														class="form-control form-control-user" placeholder="">
+												</div>
+												
+												<div class="form-group col-md-3">
+													<label for="company">Fecha de creación</label>
+													<br>
+													<label th:text="*{fechaCreacion}"></label>
 												</div>
 												
 												<div class="form-group col-md-3">

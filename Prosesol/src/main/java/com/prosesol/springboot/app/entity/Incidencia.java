@@ -60,6 +60,11 @@ public class Incidencia implements Serializable{
 	@Column(name = "estatus")
 	private int estatus;
 	
+	@Column(name = "fecha_creacion")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "dd/MM/yy")
+	private Date fechaCreacion;
+	
 	@OneToMany(mappedBy = "incidencia", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
 	
@@ -159,14 +164,20 @@ public class Incidencia implements Serializable{
 	public void setRelAfiliadoIncidencia(Set<RelAfiliadoIncidencia> relAfiliadoIncidencia) {
 		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
 	}
+	
+	public Date getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
 
 	@Override
 	public String toString() {
 		return "Incidencia [id=" + id + ", nombreAfiliado=" + nombreAfiliado + ", fecha=" + fecha + ", hora=" + hora
 				+ ", localizacion=" + localizacion + ", tipoIncidencia=" + tipoIncidencia + ", detalle=" + detalle
-				+ ", proveedor=" + proveedor + ", estatus=" + estatus + "]";
+				+ ", proveedor=" + proveedor + ", estatus=" + estatus + ", fechaCreacion=" + fechaCreacion + "]";
 	}
-
-
 	
 }

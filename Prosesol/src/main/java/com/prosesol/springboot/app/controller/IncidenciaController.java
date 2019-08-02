@@ -321,6 +321,7 @@ public class IncidenciaController {
 
 				if (incidencia.getId() == null) {
 					incidencia.setEstatus(1);
+					incidencia.setFechaCreacion(new Date());
 				}
 
 				incidenciaService.save(incidencia);
@@ -338,8 +339,11 @@ public class IncidenciaController {
 
 				}
 			} else {
-
-				System.out.println(incidencia.toString());
+				
+				if (incidencia.getId() == null) {
+					incidencia.setEstatus(1);
+					incidencia.setFechaCreacion(new Date());
+				}
 
 				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
 						+ afiliado.getApellidoMaterno());

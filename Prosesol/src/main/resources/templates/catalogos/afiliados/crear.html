@@ -347,6 +347,13 @@
 		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
+	<script type="text/javascript"
+			src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+	<script type="text/javascript">
+		$("form").validate({
+			debug: true
+		});
+	</script>
 </body>
 
 </html>

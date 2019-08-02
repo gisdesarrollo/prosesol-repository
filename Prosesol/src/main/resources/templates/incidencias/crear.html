@@ -1,165 +1,183 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
-<body
-	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-	<header th:replace="fragments/header :: header"></header>
-	<div class="app-body">
-		<div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<main class="main">
+<body>
+    <div class="page-wrapper">
+        <!-- Page Top Bar Area -->
+        <div th:replace="fragments/header :: header"></div>
+        <div class="layout-container-area mt-70">
+            <!-- Side Menu Area -->
+            <div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item">Incidencias</li>
-			<li class="breadcrumb-item active">Crear</li>
-		</ol>
+            <!-- Layout Container -->
+            <div class="layout-container sidemenu-container">
+                <div class="container-fluid">
+                    <div class="row ">
+                        <div class="col-md mb-4">
+                            <div class="card-body bg-white appwork bg-boxshadow-2">
+                                <h5 class="card-title">Crear Incidencia</h5>
+                                <div class="card-subtitle text-muted">Captura la información solicitada para dar de alta la Incidencia para el Afiliado</div>
 
-		<div class="container-fluid">
-			<div class="animated fadeIn">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">Nueva Incidencia <b style="float:right">Servicio: [[${afiliado.servicio.nombre}]]</b></div>
-							<div class="card-body">
-								<p>Captura la información solicitada para dar de alta la incidencia para el Afiliado</p>
-								<div class="clearfix"></div>
-								<hr>
-								<div class="row">
-									<div class="col-md-12">
-										<form class="user" th:action="@{/incidencias/guardar}"
-											th:object="${incidencia}" method="post">
-											<div class="row">
-												<div class="form-group col-md-2">
-													<label for="company">Nombre</label>
-													<label th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}">Nombre Completo</label>
-												</div>
+                                <div class="clearfix"></div>
+                                <hr>
 
-												<div class="form-group col-md-2">
-													<label for="company">Teléfono Fijo</label>
-													<label th:text="${afiliado.telefonoFijo}">Teléfono Fijo</label>
-												</div>
+                                <form class="user" th:action="@{/incidencias/guardar}" th:object="${incidencia}" method="post">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h3>
+                                                Nombre: <span class="text-info" th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}"></span>
+                                                <th:block th:switch="${afiliado.estatus}">
+                                                    <span class="text-success pull-right" th:case="'1'">Activo [ <span th:text="${afiliado.clave}">Clave</span> ]</span>
+                                                    <span class="text-danger pull-right" th:case="'2'">Inactivo</span>
+                                                </th:block>
+                                            </h3>
+                                        </div>
 
-												<div class="form-group col-md-2">
-													<label for="company">Teléfono Móvil</label>
-													<label th:text="${afiliado.telefonoMovil}">Teléfono Móvil</label>
-												</div>
+                                        <div class="col-12">
+                                            <h4>
+                                                Servicio: <span class="text-info" th:text="${afiliado.servicio.nombre}"></span>
+                                                <span class="text-muted pull-right" th:text="${afiliado.isBeneficiario} ? 'Beneficiario' : 'Titular'"></span>
+                                            </h4>
+                                        </div>
 
-												<div class="form-group col-md-2">
-													<label for="company">Clave</label>
-													<label th:text="${afiliado.clave}">Clave</label>
-												</div>	
-												
-												<div class="form-group col-md-2">
-													<label for="company">Estado</label>
-													<label th:text="${afiliado.entidadFederativa}">Estado</label>
-												</div>
+                                    </div>
 
-												<div class="form-group col-md-2">
-													<label for="company">Municipio</label>
-													<label th:text="${afiliado.municipio}">Municipio</label>
-												</div>										
+                                    <div class="row">
+
+                                        <div class="col-12">
+                                            <h5>
+                                                Teléfono Móvil: <span class="text-info" th:text="${afiliado.telefonoMovil}"></span>
+                                                <span class="text-muted pull-right" th:text="${afiliado.entidadFederativa}"></span>
+                                            </h5>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <h5>
+                                                Teléfono Fijo: <span class="text-info" th:text="${afiliado.telefonoFijo}"></span>
+                                                <span class="text-muted pull-right" th:text="${afiliado.municipio}"></span>
+                                            </h5>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <h3>
+                                        Datos de la Incidencia
+                                    </h3>
+                                    <div class="row">
+
+                                        <div class="form-group col-md-3">
+                                            <label for="company">Fecha de Solicitud</label>
+                                            <input type="text" th:field="*{fecha}" class="form-control form-control-user fecha" placeholder="">
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label for="company">Hora</label>
+                                            <input type="text" name="hora" th:field="*{hora}" placeholder="hh:mm:ss" class="hora form-control form-control-user">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-3">
+                                            <label for="company">Localización de Solicitud</label>
+                                            <input type="text" th:field="*{localizacion}" class="form-control form-control-user" placeholder="">
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label for="company">Tipo de Incidencia</label>
+											<select th:field="*{tipoIncidencia}" class="form-control" id="inputGroupSelect01">
+											<option value="">Opciones</option>
+											<option th:value="'Cotización'" th:selected>Cotización</option>
+											<option th:value="'Reembolso'">Reembolso</option>
+											<option th:value="'Asistencia Médica'">Asistencia Médica</option>
+											<option th:value="'Otros'">Otros</option>
+										</select>
+										</div>
+										
+										<div class="form-group col-md-3">
+												<label for="company">Fecha de creación</label>
+												<br>
+												<label th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></label>
 											</div>
-											<div class="row">												
 
-												<div class="form-group col-md-3">
-													<label for="company">Fecha de Incidencia</label> <input
-														type="text" th:field="*{fecha}"
-														class="form-control form-control-user escogerFecha" 
-														placeholder="">
-												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Hora</label><input type="text" name="hora"
-													 th:field="*{hora}" placeholder="hh:mm:ss"
-														class="form-control form-control-user" >
-												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Localización</label><input type="text"
-														th:field="*{localizacion}"
-														class="form-control form-control-user" placeholder="">
-												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Tipo de Incidencia</label> <select
-														th:field="*{tipoIncidencia}" class="custom-select"
-														id="inputGroupSelect01">
-														<option value="">Opciones</option>
-														<option th:value="'Cotización'" th:selected>Cotización</option>
-														<option th:value="'Reembolso'">Reembolso</option>
-													</select>
-												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Detalle</label>
-													<textarea th:field="*{detalle}">Capture el detalle de la incidencia</textarea>
-												</div>
-												
-												<div class="form-group col-md-3">
-													<label for="company">Proveedor</label><input type="text"
-														th:field="*{proveedor}"
-														class="form-control form-control-user" placeholder="">
-												</div>
-											</div>
-											<div class="card">
-												<div class="card-header">Beneficios</div>
-												<div class="card-body">
-													<p>Seleccione el/los beneficio(s) para poder crear la incidencia</p>
-													<div class="clearfix"></div>
-													<hr>
-														<div class="row">
-																	<div class="col-md-12">
-																		<table class="table table-bordered" id="dataTable">
-																			<thead>
-																				<tr>																					
-																					<th>Beneficios</th>
-																					<th>Descripción</th>
-																					<th></th>
-																				</tr>
-																			</thead>
-																			<tbody>
-																				<tr th:each="relServicioBeneficio, iterStat : ${relServicioBeneficios}">																					
-																					<td>
-																						<label th:text="${relServicioBeneficio.getBeneficio().getNombre()}"></label>
-																					</td>
-																					<td>
-																						<label th:text="${relServicioBeneficio.getDescripcion()}"></label>
-																					</td>
-																					<td>
-																						<input type ="checkbox" 
-																							   th:name="|relServicioBeneficios[${iterStat.index}].beneficio.id|"
-																							   th:value="${relServicioBeneficio.getBeneficio().getId()}">
-																					</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																</div>																
-															</div>
-												</div>
-											</div>
-											<hr>
-											<div class="clearfix"></div>
-											<div class="row">
-												<div class="col-sm-12">
-													<button type="submit"
-														class="btn btn-primary btn-square float-right">Crear
-														Incidencia</button>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</main>
-	</div>
-	<footer th:replace="fragments/footer :: footer"></footer>
+                                        <div class="form-group col-md-3">
+                                            <label for="company">Proveedor de Asistencia</label>
+                                            <input type="text" th:field="*{proveedor}" class="form-control form-control-user" placeholder="">
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <h3>
+                                        Detalle de la Solicitud
+                                    </h3>
+                                    <p>Detalla la solicitud para solventar la incidencia del Afiliado</p>
+                                    <div class="row">
+
+                                        <div class="form-group col-md-8">
+                                            <textarea th:field="*{detalle}"></textarea>
+                                        </div>
+
+                                    </div>
+
+                                    <hr>
+                                    <h3>
+                                        Beneficios
+                                    </h3>
+                                    <p>Selecciona el beneficio que se utilizará para la Incidencia. Si la Incidencia es una cotización, reembolso o no aplica, esto no es necesario.</p>
+
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Beneficios</th>
+                                                <th>Descripción</th>
+                                                <th>Seleccionar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="relServicioBeneficio, iterStat : ${relServicioBeneficios}">
+                                                <td>
+                                                    <label th:text="${relServicioBeneficio.getBeneficio().getNombre()}"></label>
+                                                </td>
+                                                <td>
+                                                    <label th:text="${relServicioBeneficio.getDescripcion()}"></label>
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox" th:name="|relServicioBeneficios[${iterStat.index}].beneficio.id|" th:value="${relServicioBeneficio.getBeneficio().getId()}">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                    <hr>
+                                    <div class="clearfix"></div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-primary btn-square float-right">Crear
+												Incidencia</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragments/footer :: footer"></footer>
+    <script th:src="@{/custom/tinymce/js/tinymce/tinymce.min.js}"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            height: 300,
+            menubar: false
+        });
+    </script>
 </body>
 
 </html>
