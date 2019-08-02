@@ -87,14 +87,20 @@
 
                                         <div class="form-group col-md-3">
                                             <label for="company">Tipo de Incidencia</label>
-                                            <select th:field="*{tipoIncidencia}" class="form-control" id="inputGroupSelect01">
-												<option value="">Opciones</option>
-												<option th:value="'Asistencia'" th:selected>Asistencia</option>
-												<option th:value="'Cotización'">Cotización</option>
-												<option th:value="'Reembolso'">Reembolso</option>
-												<option th:value="'Otros'">Otros</option>
-											</select>
-                                        </div>
+											<select th:field="*{tipoIncidencia}" class="form-control" id="inputGroupSelect01">
+											<option value="">Opciones</option>
+											<option th:value="'Cotización'" th:selected>Cotización</option>
+											<option th:value="'Reembolso'">Reembolso</option>
+											<option th:value="'Asistencia Médica'">Asistencia Médica</option>
+											<option th:value="'Otros'">Otros</option>
+										</select>
+										</div>
+										
+										<div class="form-group col-md-3">
+												<label for="company">Fecha de creación</label>
+												<br>
+												<label th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></label>
+											</div>
 
                                         <div class="form-group col-md-3">
                                             <label for="company">Proveedor de Asistencia</label>

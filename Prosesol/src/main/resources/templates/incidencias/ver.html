@@ -91,6 +91,7 @@
 										<tr>
 											<th>Id</th>
 											<th>Nombre completo del Afiliado</th>
+											<th>Fecha de solicitud de incidencia</th>
 											<th>Fecha de creación de incidencia</th>
 											<th>Hora de incidencia</th>
 											<th>Localización</th>
@@ -104,7 +105,8 @@
 											th:switch="${incidencia.estatus}">
 											<td th:text="${incidencia.id}">Id</td>
 											<td th:text="${incidencia.nombreAfiliado}">Nombre completo del Afiliado</td>
-											<td th:text="${incidencia.fecha}">Fecha de creación de incidencia</td>
+											<td th:text="${incidencia.fecha}">Fecha de solicitud de incidencia</td>
+											<td th:text="${incidencia.fechaCreacion}">Fecha de creación de incidencia</td>
 											<td th:text="${incidencia.hora}">Hora de incidencia</td>
 											<td th:text="${incidencia.localizacion}">Localización</td>
 											<td th:text="${incidencia.detalle}">Detalle de la incidencia</td>

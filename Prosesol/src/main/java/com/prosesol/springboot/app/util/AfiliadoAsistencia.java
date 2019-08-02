@@ -13,7 +13,7 @@ public enum AfiliadoAsistencia {
 					whereClause += " s.id = a.servicio.id and "
 								   + "cc.id = s.centroContacto.id and "
 								   + "cc.id = " + idCcUsuario + " and "
-								   + "a.nombre like '" + campo + "'";
+								   + "a.nombre like '%" + campo + "%'";
 								   
 				}
 			}else {
@@ -37,14 +37,14 @@ public enum AfiliadoAsistencia {
 					whereClause += " s.id = a.servicio.id and "
 								   + "cc.id = s.centroContacto.id and "
 								   + "cc.id = " + idCcUsuario + " and "								
-								   + " apellido_paterno like '" + campo + "'";
+								   + " apellido_paterno like '%" + campo + "%'";
 					
 					return whereClause;
 				}else {
 					andClause += " s.id = a.servicio.id and "
 							   + "cc.id = s.centroContacto.id and "
 							   + "cc.id = " + idCcUsuario + " and "
-							   + " apellido_paterno like '" + campo + "'";
+							   + " apellido_paterno like '%" + campo + "%'";
 					
 					return andClause;
 				}
@@ -67,14 +67,14 @@ public enum AfiliadoAsistencia {
 					whereClause += " s.id = a.servicio.id and "
 								   + "cc.id = s.centroContacto.id and "
 								   + "cc.id = " + idCcUsuario + " and " 
-								   + " apellido_materno like '" + campo + "'";
+								   + " apellido_materno like '%" + campo + "%'";
 					
 					return whereClause;
 				}else {
 					andClause += " s.id = a.servicio.id and "
 								 + "cc.id = s.centroContacto.id and "
 								 + "cc.id = " + idCcUsuario + " and "
-								 + " apellido_materno like '" + campo + "'";
+								 + " apellido_materno like '%" + campo + "%'";
 					
 					return andClause;
 				}

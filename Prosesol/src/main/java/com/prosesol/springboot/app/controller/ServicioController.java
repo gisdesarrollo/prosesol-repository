@@ -178,6 +178,8 @@ public class ServicioController {
 
 				servicio.setEstatus(true);
 				servicioService.save(servicio);
+				
+				System.out.println(descripcion.size());
 
 				if (idBeneficio != null) {
 
@@ -195,26 +197,36 @@ public class ServicioController {
 									RelServicioBeneficio nRelServicioBeneficio = null;
 	
 									for (String d : descripcion) {
-										if (!relSB.getDescripcion().equals(d)) {
+										if(relSB.getDescripcion() != null) {
+											if (!relSB.getDescripcion().equals(d)) {
+												desc = d;
+												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
+														null, desc);
+												
+												break;
+											}
+										}else {
 											desc = d;
 											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
 													null, desc);
-											
-											break;
 										}
 									}
 	
-									for (Long t : titular) {
-										if (relSB.getBeneficio().getId() == t) {
-											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
-													false, desc);
+									if(titular != null) {									
+										for (Long t : titular) {
+											if (relSB.getBeneficio().getId() == t) {
+												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
+														false, desc);
+											}
 										}
 									}
-	
-									for (Long b : beneficiario) {
-										if (relSB.getBeneficio().getId() == b) {
-											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
-													true, desc);
+									
+									if(beneficiario != null) {	
+										for (Long b : beneficiario) {
+											if (relSB.getBeneficio().getId() == b) {
+												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
+														true, desc);
+											}
 										}
 									}
 	
@@ -225,26 +237,36 @@ public class ServicioController {
 									RelServicioBeneficio nRelServicioBeneficio = null;
 	
 									for (String d : descripcion) {
-										if (!relSB.getDescripcion().equals(d)) {
+										if(relSB.getDescripcion() != null) {
+											if (!relSB.getDescripcion().equals(d)) {
+												desc = d;
+												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
+														null, desc);
+												
+												break;
+											}
+										}else {
 											desc = d;
 											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
 													null, desc);
-											
-											break;
 										}
 									}
 	
-									for (Long t : titular) {
-										if (relSB.getBeneficio().getId() != t) {
-											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
-													false, desc);
+									if(titular != null) {
+										for (Long t : titular) {
+											if (relSB.getBeneficio().getId() != t) {
+												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
+														false, desc);
+											}
 										}
 									}
-	
-									for (Long b : beneficiario) {
-										if (relSB.getBeneficio().getId() != b) {
-											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
-													true, desc);
+									
+									if(beneficiario != null) {	
+										for (Long b : beneficiario) {
+											if (relSB.getBeneficio().getId() != b) {
+												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
+														true, desc);
+											}
 										}
 									}
 	
@@ -270,7 +292,7 @@ public class ServicioController {
 						for(Long id : idBeneficio) {
 							Beneficio beneficio = beneficioService.findById(id);
 							
-							if(titular.size() > cTitular && beneficio.getId() == titular.get(cTitular)) {	
+							if(titular != null && titular.size() > cTitular && beneficio.getId() == titular.get(cTitular)) {	
 								t = true;
 								relSB = new RelServicioBeneficio(servicio, beneficio, t, false, null);
 								if(descripcion != null && descripcion.size() > cDescripcion) {
@@ -285,7 +307,7 @@ public class ServicioController {
 								cTitular++;
 							}
 							
-							if(beneficiario.size() > cBeneficiario && beneficio.getId() == beneficiario.get(cBeneficiario)) {
+							if(beneficiario != null && beneficiario.size() > cBeneficiario && beneficio.getId() == beneficiario.get(cBeneficiario)) {
 								b = true;								
 								relSB = new RelServicioBeneficio(servicio, beneficio, false, b, null);		
 								
