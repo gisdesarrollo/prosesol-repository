@@ -2,32 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
-<body
-	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-	<header th:replace="fragments/header :: header"></header>
-	<div class="app-body">
-		<div th:replace="fragments/sidebar :: sidebar"></div>
+<body>
+	<div class="page-wrapper">
+		<!-- Page Top Bar Area -->
+		<div th:replace="fragments/header :: header"></div>
+		<div class="layout-container-area mt-70">
+			<!-- Side Menu Area -->
+			<div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<main class="main">
+			<!-- Layout Container -->
+			<div class="layout-container sidemenu-container">
+				<div class="container-fluid">
+					<div class="row ">
 
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item ">Home</li>
-			<li class="breadcrumb-item ">Incidencias</li>
-			<li class="breadcrumb-item active">Resultado de la búsqueda</li>
-		</ol>
+						<div class="card-body bg-white appwork bg-boxshadow-2">
+							<h5 class="card-title">Resultados de búsqueda</h5>
+							<div class="card-subtitle text-muted">Estas son las coincidencias que arrojó la búsqueda.</div>
 
-		<div class="container-fluid">
-			<div class="animated fadeIn">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card card-accent-primary">
-							<div class="card-header">Incidencias</div>
-							<div class="card-body">
-								<div class="clearfix"></div>
-								<hr>
-								<div class="row">
-									<div class="col-md-12">
-										<table class="table table-bordered" id="dataTable"
+							<div class="clearfix"></div>
+							<hr>
+
+							<div class="row">
+							<table class="table table-bordered" id="dataTable"
 											width="100%" cellspacing="0">
 											<thead>
 												<tr>
@@ -61,18 +57,20 @@
 												</tr>
 											</tbody>
 										</table>
-									</div>
-								</div>
 							</div>
 						</div>
+						
+						
 					</div>
+					
 				</div>
+
+
 			</div>
+
 		</div>
-		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
-
 </body>
 
 </html>

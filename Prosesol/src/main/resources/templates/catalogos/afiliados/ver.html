@@ -20,7 +20,7 @@
 							<!-- Card Body -->
 							<div class="card-body bg-white appwork bg-boxshadow-2">
 								<h5 class="card-title">Afiliados</h5>
-								<div class="card-subtitle text-muted mb-3">Lista de
+								<div class="card-subtitle text-muted">Lista de
 									afiliados activos de la plantilla Prosesol</div>
 
 								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
@@ -38,16 +38,13 @@
 											<tr>
 												<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Opciones</th>
 												<th>Nombre</th>
-												<th>Tipo de afiliado</th>
-												<th>Estatus</th>
-												<th>Estado de afiliación</th>
+												<th>Estatus Afiliación</th>
 												<th>Servicio</th>
 												<th>Saldo</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:switch="${afiliado.estatus}"
-												th:each="afiliado : ${afiliados}">
+											<tr th:switch="${afiliado.estatus}" th:each="afiliado : ${afiliados}">
 
 												<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 													<div class="dropdown">
@@ -91,26 +88,24 @@
 												</td>
 
 												<td>
-													<span th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}"></span>
+													<span class="bold" th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}"></span>
 													<br>
-													Clave: <span class="text-muted pull-righ" th:text="${afiliado.clave}"></span>		
+													<span class="" th:text="${not afiliado.isBeneficiario} ? 'Num Beneficiarios: ' : 'Titular: '"></span>
+													<span class="pull-right text-muted" th:text="${not afiliado.isBeneficiario} ? ${#lists.size(afiliado.beneficiarios)} : ${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoPaterno}"></span>
 													<br>
-													Fecha Afiliación: <span class="text-muted pull-right" th:text="${afiliado.fechaAfiliacion}"></span>
+													Clave: <span class="pull-right text-muted" th:text="${afiliado.clave}"></span>
 												</td>
 												
 												<td>
-													<span class="badge badge-info" th:unless="${afiliado.isBeneficiario}">Titular</span>
-													<span class="badge badge-primary" th:if="${afiliado.isBeneficiario}">Beneficiario</span>
-												</td>
-												
-												<td>
-													<span th:case="1" class="badge badge-success" th:text="Activo"></span>
-													<span th:case="2" class="badge badge-dark" th:text="Inactivo"></span>
-													<span th:case="3" class="badge badge-primary" th:text="Candidato"></span>										
-												</td>
-												
-												<td>
-													<span th:text="${not afiliado.isBeneficiario} ? 'Beneficiarios: ' + ${#lists.size(afiliado.beneficiarios)} : 'Titular: ' + ${afiliado.nombre}"></span>
+													Afiliación: <span class="pull-right text-muted" th:text="${afiliado.fechaAfiliacion}"></span>
+													<br>
+													Tipo: <span class="pull-right text-muted" th:unless="${afiliado.isBeneficiario}">Titular</span>
+													<span class="pull-right text-muted" th:if="${afiliado.isBeneficiario}">Beneficiario</span>
+													<br>
+													Estado: 
+													<span th:case="1" class="pull-right text-muted" th:text="Activo"></span>
+													<span th:case="2" class="pull-right text-muted" th:text="Inactivo"></span>
+													<span th:case="3" class="pull-right text-muted" th:text="Candidato"></span>									
 												</td>
 
 												<td>
@@ -122,8 +117,9 @@
 												</td>
 												
 												<td>
-													<span th:text="${afiliado.saldoAcumulado}"></span>
-													<span th:text="${afiliado.saldoCorte}"></span>
+													Acumulado: <span class="pull-right text-muted" th:text="${#numbers.formatDecimal(afiliado.saldoAcumulado,0, 'COMMA', 2, 'POINT')}"></span>
+													<br>
+													Prox Corte: <span class="pull-right text-muted" th:text="${#numbers.formatDecimal(afiliado.saldoCorte,0, 'COMMA', 2, 'POINT')}"></span>
 												</td>
 																							
 											</tr>

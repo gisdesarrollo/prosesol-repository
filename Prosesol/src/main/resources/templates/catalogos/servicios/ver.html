@@ -1,98 +1,102 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
-<body
-	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-	<header th:replace="fragments/header :: header"></header>
-	<div class="app-body">
-		<div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<main class="main">
+<body>
+    <div class="page-wrapper">
+        <!-- Page Top Bar Area -->
+        <div th:replace="fragments/header :: header"></div>
+        <div class="layout-container-area mt-70">
+            <!-- Side Menu Area -->
+            <div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item ">Home</li>
-			<li class="breadcrumb-item ">Catálogos</li>
-			<li class="breadcrumb-item active">Servicios</li>
-		</ol>
+            <!-- Layout Container -->
+            <div class="layout-container sidemenu-container">
+                <div class="container-fluid">
+                    <div class="row ">
 
-		<div class="container-fluid">
-			<div class="animated fadeIn">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-						<div th:replace="fragments/navbar :: div-messages"></div>
-							<div class="card-header">Servicios</div>
-							<div class="card-body">							
-								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-									th:href="@{/servicios/crear}"
-									class="btn btn-square btn-primary btn-sm"><i
+                        <div class="col-md mb-4">
+                            <!-- Card Body -->
+                            <div class="card-body bg-white appwork bg-boxshadow-2">
+                                <h5 class="card-title">Servicios</h5>
+                                <div class="card-subtitle text-muted">Lista de Servicios que contienen Beneficios, ésta lista determina el costo de inscripción y mensual que se le cobrará al Afiliado y determinará el Centro de Asistencia que llevará las Incidencias.</div>
+
+                                <a sec:authorize="hasRole('ROLE_ADMINISTRADOR')" th:href="@{/servicios/crear}" class="btn btn-square btn-primary btn-sm"><i
 									class="fas fa-user-plus"></i> Nuevo Servicio</a>
-								<div class="clearfix"></div>
-								<hr>
-								<div class="row">
-									<div class="col-md-12">
-										<table class="table table-bordered" id="dataTable">
-								<thead>
-									<tr>
-										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
-										<th>Nombre</th>
-										<th>Notas</th>
-										<th>Costo de Inscripción (Titular)</th>
-										<th>Costo de Servicio (Titular)</th>
-										<th>Costo de Inscripción (Beneficiario)</th>
-										<th>Costo de Servicio (Beneficiario)</th>
-										<th>Estatus</th>
-										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="servicio : ${servicios}">
-										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"><a
-										class="btn btn-primary btn-sm"
-										th:href="@{/servicios/detalle/} + ${servicio.id}"
-										th:text="${servicio.id}"></a></td>
-										<td th:text="${servicio.nombre}"></td>
-										<td th:text="${servicio.nota}"></td>
-										<td th:text="${servicio.inscripcionTitular}"></td>
-										<td th:text="${servicio.costoTitular}"></td>
-										<td th:text="${servicio.inscripcionBeneficiario}"></td>
-										<td th:text="${servicio.costoBeneficiario}"></td>
-										<td th:if="${servicio.estatus}">Activo</td>
-										<td th:unless="${servicio.estatus}">Inactivo</td>
-										<td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
-											<div class="dropdown">
-												<button class="btn btn-primary btn-sm dropdown-toggle"
-													type="button" id="dropdownMenuButton"
-													data-toggle="dropdown" aria-haspopup="true"
-													aria-expanded="false">Opciones</button>
-												<div class="dropdown-menu animated--fade-in"
-													aria-labelledby="dropdownMenuButton">
-													<a class="dropdown-item"
-														th:href="@{/servicios/editar/} + ${servicio.id}"
-														th:text="'Editar'"> </a> <a class="dropdown-item"
-														th:href="@{/servicios/eliminar/} + ${servicio.id}"
-														th:text="'Borrar'"
-														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
-													</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</main>
-	</div>
-	<footer th:replace="fragments/footer :: footer"></footer>
 
+                                <div class="clearfix"></div>
+                                <hr>
+
+                                <div class="">
+                                    <table class="table table-bordered" id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Opciones</th>
+                                                <th>Nombre</th>
+                                                <th>Costo Titular</th>
+                                                <th>Costo Beneficiario</th>
+                                                <th>Estatus</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="servicio : ${servicios}">
+
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-info btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															<i class="fas fa-stream"></i>
+														</button>
+                                                        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+
+                                                            <!-- <a class="dropdown-item" th:href="@{/servicios/detalle/} + ${servicio.id}" th:text="'Ver'"> </a> -->
+
+                                                            <a class="dropdown-item" th:href="@{/servicios/editar/} + ${servicio.id}" th:text="'Editar'"> </a>
+
+                                                            <a class="dropdown-item border-top text-danger" th:href="@{/servicios/eliminar/} + ${servicio.id}" th:text="'Borrar'" onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')"></a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <span class="bold" th:text="${servicio.nombre}"></span>
+                                                    <br>
+                                                    <span class="text-muted" th:text="${servicio.nota}"></span>
+                                                </td>
+                                                
+                                                <td>
+                                                    Inscripción: <span class="text-muted pull-right" th:text="${servicio.inscripcionTitular}"></span>
+                                                    <br> Periodo: <span class="text-muted pull-right" th:text="${servicio.costoTitular}"></span>
+                                                </td>
+                                                
+                                                <td>
+                                                    Inscripción: <span class="text-muted pull-right" th:text="${servicio.inscripcionBeneficiario}"></span>
+													<br> 
+													Periodo: <span class="text-muted pull-right" th:text="${servicio.costoBeneficiario}"></span>
+												</td>
+																								
+												<td>
+													<span th:text="${servicio.estatus} ? 'Activo' : 'Inactivo'"></span>
+												</td>
+												
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 
 </html>
