@@ -2,105 +2,94 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
-<body
-	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-	<header th:replace="fragments/header :: header"></header>
-	<div class="app-body">
-		<div th:replace="fragments/sidebar :: sidebar"></div>
+<body>
+	<div class="page-wrapper">
+		<!-- Page Top Bar Area -->
+		<div th:replace="fragments/header :: header"></div>
+		<div class="layout-container-area mt-70">
+			<!-- Side Menu Area -->
+			<div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<main class="main">
+			<!-- Layout Container -->
+			<div class="layout-container sidemenu-container">
+				<div class="container-fluid">
+					<div class="row ">
 
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item"><a th:href="@{/promotores/ver}">Promotores</a></li>
-			<li class="breadcrumb-item active">Crear</li>
-		</ol>
+						<div class="col-md mb-4">
+							<!-- Card Body -->
+							<div class="card-body bg-white appwork bg-boxshadow-2">
+								<h5 class="card-title">Editar Promotor</h5>
 
-		<div class="container-fluid">
-			<div class="animated fadeIn">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">Editar Promotor</div>
-							<div class="card-body">
-								<p>Captura la información solicitada para dar editar la información del promotor</p>
 								<div class="clearfix"></div>
 								<hr>
-								<div class="row">
-									<div class="col-md-12">
-										<form class="user" th:action="@{/promotores/crear}"
-											th:object="${promotor}" method="post">
-											<div class="row">
-												<div class="form-group col-md-3">
-													<label for="company">Nombre*</label> <input type="text"
-														th:field="*{nombre}"
-														class="form-control form-control-user"> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('nombre')}"
-														th:errors="*{nombre}"></small>
-												</div>
 
-												<div class="form-group col-md-3">
-													<label for="company">Apellido Paterno*</label><input
-														type="text" th:field="*{apellidoPaterno}"
-														class="form-control form-control-user"> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('apellidoPaterno')}"
-														th:errors="*{apellidoPaterno}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Apellido Materno*</label> <input
-														type="text" th:field="*{apellidoMaterno}"
-														class="form-control form-control-user"> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('apellidoMaterno')}"
-														th:errors="*{apellidoMaterno}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Fecha de Alta*</label> <input
-														type="text" th:field="*{fechaAlta}"
-														class="form-control form-control-user" id="datepicker">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('fechaAlta')}"
-														th:errors="*{fechaAlta}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Edad</label> <input type="text"
-														th:field="*{edad}" class="form-control form-control-user">
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('edad')}" th:errors="*{edad}"></small>
-												</div>
-
-												<div class="form-group col-md-3">
-													<label for="company">Correo electrónico*</label> <input
-														type="email" th:field="*{email}"
-														class="form-control form-control-user"> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
-												</div>
-											</div>
-
-											<hr>
-											<div class="clearfix"></div>
-											<div class="row">
-												<div class="col-sm-12">
-													<button type="submit"
-														class="btn btn-primary btn-square float-right">Guardar cambios</button>
-												</div>
-											</div>
-										</form>
+								<form class="user" th:action="@{/promotores/crear}"
+									th:object="${promotor}" method="post">
+									<div class="row">
+																				
+										<div class="form-group col-md-4">
+											<label for="company">Nombre</label> 
+											<input type="text"
+												th:field="*{nombre}"
+												class="form-control form-control-user">
+										</div>
+										
+										<div class="form-group col-md-4">
+											<label for="company">Apellido Paterno</label> 
+											<input type="text"
+												th:field="*{apellidoPaterno}"
+												class="form-control form-control-user">
+										</div>
+										
+										<div class="form-group col-md-4">
+											<label for="company">Apellido Materno</label> 
+											<input type="text"
+												th:field="*{apellidoMaterno}"
+												class="form-control form-control-user">
+										</div>
+										
+										<div class="form-group col-md-4">
+											<label for="company">Fecha Alta</label> 
+											<input type="text"
+												th:field="*{fechaAlta}"
+												class="form-control form-control-user">
+										</div>
+										
+										<div class="form-group col-md-4">
+											<label for="company">Edad</label> 
+											<input type="text"
+												th:field="*{edad}"
+												class="form-control form-control-user">
+										</div>
+										
+										<div class="form-group col-md-4">
+											<label for="company">Correo Electrónico</label> 
+											<input type="text"
+												th:field="*{email}"
+												class="form-control form-control-user">
+										</div>
 									</div>
-								</div>
+
+									<hr>
+									<div class="clearfix"></div>
+									<div class="row">
+										<div class="col-sm-12">
+											<button type="submit"
+												class="btn btn-primary btn-square float-right">Editar Promotor</button>
+										</div>
+									</div>
+								</form>
 							</div>
 						</div>
+
 					</div>
+
 				</div>
+
+
 			</div>
+
 		</div>
-		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
 </body>

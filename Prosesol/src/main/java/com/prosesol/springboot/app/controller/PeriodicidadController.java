@@ -23,7 +23,7 @@ import com.prosesol.springboot.app.service.IPeriodicidadService;
 
 @Controller
 @SessionAttributes("periodicidad")
-@RequestMapping("/periodicidades")
+@RequestMapping("/periodos")
 public class PeriodicidadController {
 
 	@Autowired 
