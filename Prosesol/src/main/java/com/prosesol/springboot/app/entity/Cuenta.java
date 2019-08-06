@@ -17,7 +17,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -55,7 +54,6 @@ public class Cuenta implements Serializable {
 	@Transient
 	private Boolean selected;
 
-	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_alta")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")

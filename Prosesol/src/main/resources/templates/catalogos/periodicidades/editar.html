@@ -2,76 +2,67 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
-<body
-	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-	<header th:replace="fragments/header :: header"></header>
-	<div class="app-body">
-		<div th:replace="fragments/sidebar :: sidebar"></div>
+<body>
+	<div class="page-wrapper">
+		<!-- Page Top Bar Area -->
+		<div th:replace="fragments/header :: header"></div>
+		<div class="layout-container-area mt-70">
+			<!-- Side Menu Area -->
+			<div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<main class="main">
+			<!-- Layout Container -->
+			<div class="layout-container sidemenu-container">
+				<div class="container-fluid">
+					<div class="row ">
 
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item"><a th:href="@{/periodicidades/ver}">Periodos</a></li>
-			<li class="breadcrumb-item active">Crear</li>
-		</ol>
+						<div class="col-md mb-4">
+							<!-- Card Body -->
+							<div class="card-body bg-white appwork bg-boxshadow-2">
+								<h5 class="card-title">Editar Periodo</h5>
 
-		<div class="container-fluid">
-			<div class="animated fadeIn">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">Editar Periodo</div>
-							<div class="card-body">
-								<p>Captura la información solicitada para modificar los datos del periodo</p>
 								<div class="clearfix"></div>
 								<hr>
-								<div class="row">
-									<div class="col-md-12">
-										<form class="user" th:action="@{/periodicidades/crear}"
-											th:object="${periodicidad}" method="post">
-											<div class="row">
-												<div class="form-group col-md-3">
-													<label for="company">Nombre</label> <input type="text"
-														th:field="*{nombre}"
-														class="form-control form-control-user"> <small
-														class="form-text text-danger"
-														th:if="${#fields.hasErrors('nombre')}"
-														th:errors="*{nombre}"></small>
-												</div>
-												<div class="form-group col-md-3">
-													<label for="company">Periodo</label> <select	
-													    name ="periodo" th:field="*{periodo}" class="custom-select"
-														id="inputGroupSelect01">
-														<option th:each="periodo : ${periodos}"
-															    th:value="${periodo}"
-															    th:text="${periodo}"
-															    th:selected="${periodo.MENSUAL}"/>
-													</select>
-													<small class="form-text text-danger"
-														th:if="${#fields.hasErrors('periodo')}"
-														th:errors="*{periodo}"></small>
-												</div>
 
-											</div>
+								<form class="user" th:action="@{/periodos/crear}"
+									th:object="${periodicidad}" method="post">
+									<div class="row">
+										<div class="form-group col-md-4">
+											<label for="company">Nombre*</label> <input type="text"
+												th:field="*{nombre}" class="form-control form-control-user">
+										</div>
 
-											<hr>
-											<div class="clearfix"></div>
-											<div class="row">
-												<div class="col-sm-12">
-													<button type="submit" class="btn btn-primary btn-square float-right">Guardar cambios</button>
-												</div>
-											</div>
-										</form>
+										<div class="form-group col-md-4">
+											<label for="company">Periodo</label> <select name="periodo"
+												th:field="*{periodo}" class="custom-select"
+												id="inputGroupSelect01">
+												<option th:each="periodo : ${periodos}"
+													th:value="${periodo}" th:text="${periodo}"
+													th:selected="${periodo.MENSUAL}" />
+											</select>
+										</div>
 									</div>
-								</div>
+
+									<hr>
+									<div class="clearfix"></div>
+									<div class="row">
+										<div class="col-sm-12">
+											<button type="submit"
+												class="btn btn-primary btn-square float-right">Editar
+												Periodo</button>
+										</div>
+									</div>
+								</form>
 							</div>
 						</div>
+
 					</div>
+
 				</div>
+
+
 			</div>
+
 		</div>
-		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
 </body>

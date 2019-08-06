@@ -58,11 +58,15 @@ public class BeneficioController {
 	
 		String flashMessage = (beneficio.getId() != null) ? "Registro editado correctamente" : "Registro creado correctamente";
 		
-		beneficioService.save(beneficio);
-		status.setComplete();
-		redirect.addFlashAttribute("success", flashMessage);
-		
-		LOGGER.info("El beneficio se ha guardado correctamente");
+		try {
+			beneficioService.save(beneficio);
+			status.setComplete();
+			redirect.addFlashAttribute("success", flashMessage);
+			
+			LOGGER.info("El beneficio se ha guardado correctamente");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		return "redirect:/beneficios/ver";
 	}

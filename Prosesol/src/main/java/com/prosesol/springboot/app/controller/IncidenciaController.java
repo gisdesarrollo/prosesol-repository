@@ -1,5 +1,7 @@
 package com.prosesol.springboot.app.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -106,7 +108,7 @@ public class IncidenciaController {
 	 */
 
 	@RequestMapping(value = "/buscar")
-	public String crear(Model model) {
+	public String buscar(Model model) {
 
 		LOG.info("Entra el método de buscar el afiliado por cualquier parámetro mostrado");
 
@@ -128,7 +130,7 @@ public class IncidenciaController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/resultado", method = RequestMethod.POST)
-	public String buscar(@RequestParam(name = "campos[]") String[] campos, Model model, RedirectAttributes redirect)
+	public String resultado(@RequestParam(name = "campos[]") String[] campos, Model model, RedirectAttributes redirect)
 			throws Exception {
 
 		LOG.info("Método que realiza la búsqueda del Afiliado");
@@ -173,12 +175,17 @@ public class IncidenciaController {
 
 		Incidencia incidencia = new Incidencia();
 
-		Afiliado afiliado = afiliadoService.findById(id);
-		idAfiliado = id;
-
-		model.addAttribute("afiliado", afiliado);
-		model.addAttribute("incidencia", incidencia);
-		model.addAttribute("relServicioBeneficios", getBeneficioByAfiliado(afiliado));
+		try {
+			Afiliado afiliado = afiliadoService.findById(id);
+			idAfiliado = id;
+	
+			model.addAttribute("afiliado", afiliado);
+			model.addAttribute("incidencia", incidencia);
+			model.addAttribute("relServicioBeneficios", getBeneficioByAfiliado(afiliado));
+		}catch(Exception e) {
+			LOG.error("Error al momento de crear la incidencia", e);
+			e.printStackTrace();
+		}
 
 		return "incidencias/crear";
 	}
@@ -323,6 +330,13 @@ public class IncidenciaController {
 					incidencia.setEstatus(1);
 					incidencia.setFechaCreacion(new Date());
 				}
+				
+				DateFormat df = new SimpleDateFormat("HH:mm a");
+				Date date = null;
+				
+				date = df.parse(incidencia.getHora());
+				String hora = new SimpleDateFormat("H:mm:ss").format(date);
+				incidencia.setHora(hora);
 
 				incidenciaService.save(incidencia);
 
@@ -344,7 +358,14 @@ public class IncidenciaController {
 					incidencia.setEstatus(1);
 					incidencia.setFechaCreacion(new Date());
 				}
-
+				
+				DateFormat df = new SimpleDateFormat("HH:mm a");
+				Date date = null;
+				
+				date = df.parse(incidencia.getHora());
+				String hora = new SimpleDateFormat("H:mm:ss").format(date);
+				incidencia.setHora(hora);
+				
 				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
 						+ afiliado.getApellidoMaterno());
 

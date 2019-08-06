@@ -42,7 +42,6 @@ import com.prosesol.springboot.app.entity.Promotor;
 import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 import com.prosesol.springboot.app.service.ICuentaService;
-//import com.prosesol.springboot.app.service.IEmailService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
 import com.prosesol.springboot.app.service.IPromotorService;
 import com.prosesol.springboot.app.service.IServicioService;
@@ -60,7 +59,7 @@ public class AfiliadoController {
 	
 	@Value("${app.clave}")
 	private String clave;
-
+	
 	@Autowired
 	private IAfiliadoService afiliadoService;
 
@@ -235,13 +234,12 @@ public class AfiliadoController {
 		
 		PageRender<Afiliado> pageRender = new PageRender<>("/afiliados/ver", afiliados);
 		
-		model.addAttribute("titulo", "Afiliados");
 		model.addAttribute("afiliados", afiliados);
 		model.addAttribute("page", pageRender);
 		
 		return "catalogos/afiliados/ver";
 	}
-
+		
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 

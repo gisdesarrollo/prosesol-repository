@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.controller;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -61,6 +62,7 @@ public class CuentaController {
 		String flashMessage = (cuenta.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
 		
 		cuenta.setEstatus("Activo");
+		cuenta.setFechaAlta(new Date());
 		
 		cuentaService.save(cuenta);
 		status.setComplete();
