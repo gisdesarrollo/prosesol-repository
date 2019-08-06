@@ -128,17 +128,22 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+		<!-- DataTable -->
+		<dependency>
+		  <groupId>com.github.darrachequesne</groupId>
+		  <artifactId>spring-data-jpa-datatables</artifactId>
+		  <version>5.0.0</version>
+		</dependency>
 		<!-- Dependecia que genera el RFC -->
 		<dependency>
 			<groupId>com.josketres</groupId>
 			<artifactId>rfcfacil</artifactId>
 			<version>2.0.2</version>
 		</dependency>
-		<!-- Datatable repository -->
 		<dependency>
-			<groupId>com.github.darrachequesne</groupId>
-			<artifactId>spring-data-jpa-datatables</artifactId>
-			<version>5.0.0</version>
+		  <groupId>com.github.darrachequesne</groupId>
+		  <artifactId>spring-data-jpa-datatables</artifactId>
+		  <version>5.0.0</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -141,7 +141,7 @@
                                                         <tbody>
                                                             <tr th:each="beneficio, iterStat : ${relServicioBeneficios}">
                                                                 <td class="text-center">
-                                                                    <input class="cbBeneficio" type="checkbox" name="beneficio[]" th:checked="${beneficio.getBeneficio()}" th:value="${beneficio.getBeneficio().getId()}">
+                                                                    <input class="cbBeneficio" type="checkbox" name="beneficio[]" th:value="${beneficio.getBeneficio().getId()}">
                                                                 </td>
                                                                 <td>
                                                                     <label th:text="${beneficio.getBeneficio().getNombre()}"></label>

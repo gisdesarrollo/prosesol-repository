@@ -1,8 +1,22 @@
-$(document).ready(function(){
-//	$('#dataTable').DataTable({
-//		"searching" : true,
-//		"paging" : false,
-//		"ordering" : false,
-//		"info" : false
-//	});
+$(document).ready(function(){	
+	var table = $('#afiliados').DataTable({						
+		'ajax' : '/data/afiliados',
+		'processing' : true,
+		'serverSide' : true,
+		'paging' : true,
+		columns : [{
+			data : 'nombre'
+		},{
+			data : 'apellidoPaterno'
+		},{
+			data : 'apellidoMaterno'
+		},{
+			data : 'clave'
+		},{
+			data : 'saldoAcumulado',
+			defaultContent : ""
+		}
+		],
+		dataSrc : ""
+	});
 });

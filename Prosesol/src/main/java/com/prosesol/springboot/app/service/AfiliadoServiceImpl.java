@@ -124,6 +124,6 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	@Transactional(readOnly = true)
 	public Page<Afiliado> findAll(Pageable pageable) {
 		return iAfiliadoDao.findAll(pageable);
-	}	
+	}
 
 }
