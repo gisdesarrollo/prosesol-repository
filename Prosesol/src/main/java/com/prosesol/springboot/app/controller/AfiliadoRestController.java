@@ -42,9 +42,8 @@ public class AfiliadoRestController {
 				
 			for(Afiliado afiliado : afiliados) {
 				data += "{" +
-						"\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
-						"\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
-						"\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
+						"\"id\" :" + "\"" +afiliado.getId() + "\", " +
+						"\"nombre\" :" + "\"" + afiliado.getNombre() + " " + afiliado.getApellidoPaterno() + " " + afiliado.getApellidoMaterno() + "\", " +
 						"\"clave\" :" + "\"" +afiliado.getClave() + "\", " +
 						"\"saldoAcumulado\" : " + "\"" + afiliado.getSaldoAcumulado() + "\"" +
 						"}";
