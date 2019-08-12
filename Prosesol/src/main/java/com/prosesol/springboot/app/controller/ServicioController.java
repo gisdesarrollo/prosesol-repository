@@ -2,6 +2,7 @@ package com.prosesol.springboot.app.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ public class ServicioController {
 
 	@Autowired
 	private IRelServicioBeneficioService relServicioBeneficioService;
-	
+
 	private Long idServicioGeneral;
 
 	/**
@@ -162,8 +163,6 @@ public class ServicioController {
 
 		String flashMessage = "";
 		RelServicioBeneficio relServicioBeneficio = new RelServicioBeneficio();
-		List<RelServicioBeneficio> relServicioBeneficios = relServicioBeneficioService
-				.getRelServicioBeneficioByIdServicio(servicio.getId());
 
 		if (result.hasErrors()) {
 			redirect.addFlashAttribute("error", "Campos incompletos");
@@ -172,169 +171,22 @@ public class ServicioController {
 
 		try {
 
+			// Verifica si se necesita editar el servicio o se deberá de crear
+
 			if (servicio.getId() != null) {
-
-				descripcion.removeAll(Arrays.asList("", null));
-
+				
 				servicio.setEstatus(true);
 				servicioService.save(servicio);
-				
-				System.out.println(descripcion.size());
 
-				if (idBeneficio != null) {
+				// Verifica si el servicio se editará con todo y beneficios
 
-					int cBeneficio = 0;
-					String desc = null;
-
-					if(relServicioBeneficios.size() > 0) {
-						for (RelServicioBeneficio relSB : relServicioBeneficios) {
-	
-							if (idBeneficio.size() > cBeneficio) {
-	
-								if (relSB.getBeneficio().getId() == idBeneficio.get(cBeneficio)) {
-	
-									Beneficio beneficio = beneficioService.findById(idBeneficio.get(cBeneficio));
-									RelServicioBeneficio nRelServicioBeneficio = null;
-	
-									for (String d : descripcion) {
-										if(relSB.getDescripcion() != null) {
-											if (!relSB.getDescripcion().equals(d)) {
-												desc = d;
-												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
-														null, desc);
-												
-												break;
-											}
-										}else {
-											desc = d;
-											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
-													null, desc);
-										}
-									}
-	
-									if(titular != null) {									
-										for (Long t : titular) {
-											if (relSB.getBeneficio().getId() == t) {
-												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
-														false, desc);
-											}
-										}
-									}
-									
-									if(beneficiario != null) {	
-										for (Long b : beneficiario) {
-											if (relSB.getBeneficio().getId() == b) {
-												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
-														true, desc);
-											}
-										}
-									}
-	
-									relServicioBeneficioService.save(nRelServicioBeneficio);
-								} else {
-	
-									Beneficio beneficio = beneficioService.findById(idBeneficio.get(cBeneficio));
-									RelServicioBeneficio nRelServicioBeneficio = null;
-	
-									for (String d : descripcion) {
-										if(relSB.getDescripcion() != null) {
-											if (!relSB.getDescripcion().equals(d)) {
-												desc = d;
-												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
-														null, desc);
-												
-												break;
-											}
-										}else {
-											desc = d;
-											nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, null,
-													null, desc);
-										}
-									}
-	
-									if(titular != null) {
-										for (Long t : titular) {
-											if (relSB.getBeneficio().getId() != t) {
-												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true,
-														false, desc);
-											}
-										}
-									}
-									
-									if(beneficiario != null) {	
-										for (Long b : beneficiario) {
-											if (relSB.getBeneficio().getId() != b) {
-												nRelServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
-														true, desc);
-											}
-										}
-									}
-	
-									relServicioBeneficioService.save(nRelServicioBeneficio);
-								}
-								cBeneficio++;
-							}
-						}
-						
-						flashMessage = "Beneficio editado correctamente";
-						
-					}else {
-						
-						RelServicioBeneficio relSB = null;
-						
-						int cTitular = 0;
-						int cBeneficiario = 0;
-						int cDescripcion = 0;
-						
-						Boolean t = null;
-						Boolean b = null;
-						
-						for(Long id : idBeneficio) {
-							Beneficio beneficio = beneficioService.findById(id);
-							
-							if(titular != null && titular.size() > cTitular && beneficio.getId() == titular.get(cTitular)) {	
-								t = true;
-								relSB = new RelServicioBeneficio(servicio, beneficio, t, false, null);
-								if(descripcion != null && descripcion.size() > cDescripcion) {
-									relSB = new RelServicioBeneficio(servicio, beneficio, t, false, descripcion.get(cDescripcion));
-									
-									cDescripcion++;
-								}else {
-									relSB = new RelServicioBeneficio(servicio, beneficio, t, false, null);
-									cDescripcion++;
-								}
-								
-								cTitular++;
-							}
-							
-							if(beneficiario != null && beneficiario.size() > cBeneficiario && beneficio.getId() == beneficiario.get(cBeneficiario)) {
-								b = true;								
-								relSB = new RelServicioBeneficio(servicio, beneficio, false, b, null);		
-								
-								if(descripcion != null && descripcion.size() > cDescripcion) {
-									relSB = new RelServicioBeneficio(servicio, beneficio, false, b, descripcion.get(cDescripcion));
-									
-									cDescripcion++;
-								}else {
-									relSB = new RelServicioBeneficio(servicio, beneficio, false, b, null);
-									cDescripcion++;
-								}
-								
-								cBeneficiario++;
-							}
-							
-							
-							
-							relServicioBeneficioService.save(relSB);
-						}
-					
-						flashMessage = "Servicio editado correctamente";
-					}
-
-				}		
-				
+				if (idBeneficio != null && idBeneficio.size() > 0) {
+					editarServiciosConBeneficios(servicio, idBeneficio, descripcion, titular, beneficiario);
+				}
 
 			} else {
+
+				// Verifica si el servicio se creará con todo y beneficios
 
 				if (idBeneficio != null && idBeneficio.size() > 0) {
 
@@ -380,31 +232,22 @@ public class ServicioController {
 					}
 
 				} else {
+
+					// Solamente se inserta el servicio
+
 					servicio.setEstatus(true);
 					servicioService.save(servicio);
 				}
 
 			}
-			
+
 			flashMessage = "Servicio creado correctamente";
 
 			status.setComplete();
 			redirect.addFlashAttribute("success", flashMessage);
 
 		} catch (Exception ex) {
-
-//			if (servicio.getId() != null) {
-//				redirect.addFlashAttribute("error", "Error al momento de guardar el servicio");
-//				ex.printStackTrace();
-//				return "redirect:/servicios/ver";
-//			} else {
-//				redirect.addFlashAttribute("error", "El servicio no se ha podido guardar");
-//				servicioService.delete(servicio.getId());
-//				return "redirect:/servicios/ver";
-//			}
-
 			ex.printStackTrace();
-
 		}
 
 		logger.info("Id servicio desde el método de guardar: " + servicio.getId());
@@ -440,10 +283,11 @@ public class ServicioController {
 				}
 
 				int countSB = 0;
-				
+
 				for (Beneficio beneficio : beneficios) {
-					if (relServicioBeneficios.size() > countSB && beneficio.getId() == relServicioBeneficios.get(countSB).getBeneficio().getId()) {
-											
+					if (relServicioBeneficios.size() > countSB
+							&& beneficio.getId() == relServicioBeneficios.get(countSB).getBeneficio().getId()) {
+
 						RelServicioBeneficio relServicioBeneficio = new RelServicioBeneficio(
 								relServicioBeneficios.get(countSB).getServicio(),
 								relServicioBeneficios.get(countSB).getBeneficio(),
@@ -455,9 +299,9 @@ public class ServicioController {
 
 						countSB++;
 					} else {
-												
-						RelServicioBeneficio relServicioBeneficio = new RelServicioBeneficio(
-								servicio, beneficio, false, false, null);
+
+						RelServicioBeneficio relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false,
+								false, null);
 
 						nRelServicioBeneficio.add(relServicioBeneficio);
 					}
@@ -473,7 +317,7 @@ public class ServicioController {
 			ex.printStackTrace();
 			return "redirect:/servicios/ver";
 		}
-		
+
 		idServicioGeneral = idServicio;
 
 		model.addAttribute("servicio", servicio);
@@ -494,13 +338,12 @@ public class ServicioController {
 	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 
-		
 		try {
 			if (id > 0) {
 				servicioService.delete(id);
 				redirect.addFlashAttribute("success", "Registro eliminado correctamente");
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logger.error("Ocurrió un error al momento de eliminar el registro", e);
 			redirect.addFlashAttribute("error", "El servicio no se puede eliminar porque está asignado a un Afiliado");
 		}
@@ -510,29 +353,30 @@ public class ServicioController {
 
 	/**
 	 * Método para borrar los beneficios en una lista
+	 * 
 	 * @param beneficios
 	 * @param model
 	 * @param redirect
 	 * @return
 	 */
-	
+
 	@RequestMapping(value = "/crear", method = RequestMethod.POST, params = "action=delete")
-	public String borrarBeneficios(@RequestParam(name = "beneficio[]", required = false) 
-						List<Long> beneficios, Model model, RedirectAttributes redirect) {
+	public String borrarBeneficios(@RequestParam(name = "beneficio[]", required = false) List<Long> beneficios,
+			Model model, RedirectAttributes redirect) {
 		try {
-			
-			for(Long beneficio : beneficios) {
+
+			for (Long beneficio : beneficios) {
 				relServicioBeneficioService.removeBeneficiobyIdBeneficio(beneficio);
 			}
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("Ocurrió un error al momento de realizar la eliminación de los beneficios", e);			
+			logger.error("Ocurrió un error al momento de realizar la eliminación de los beneficios", e);
 			return "redirect:/servicios/ver";
 		}
-		
+
 		redirect.addFlashAttribute("success", "Beneficios eliminados correctamente");
-		
+
 		return "redirect:/servicios/editar/" + idServicioGeneral;
 	}
 
@@ -575,6 +419,77 @@ public class ServicioController {
 
 		return centrosContacto;
 
+	}
+
+	/**
+	 * Método que edita o inserta beneficios
+	 * 
+	 * @param servicio
+	 * @param idBeneficio
+	 * @param descripcion
+	 * @param titular'
+	 * @param beneficiario
+	 */
+
+	public void editarServiciosConBeneficios(Servicio servicio, List<Long> idBeneficio, List<String> descripcion,
+			List<Long> titular, List<Long> beneficiario) {
+
+		RelServicioBeneficio relServicioBeneficio = null;
+		List<Beneficio> beneficios = beneficioService.findAll();
+		Map<Long, String> beneficioDescripcion = new HashMap<Long, String>();
+		
+		int countDescripcion = 0;
+		
+		for(Beneficio b : beneficios) {
+			beneficioDescripcion.put(b.getId(), descripcion.get(countDescripcion));
+			countDescripcion++;
+		}
+		
+		for(Long id : idBeneficio) {
+			 Beneficio beneficio = beneficioService.findById(id);
+			 
+			 boolean isTitular = false;
+			 boolean isBeneficiario = false;
+			 
+			 for(Long idTitular : titular) {				 
+				 if(titular != null && id == idTitular) {					 
+					 for(Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+							if(entry.getKey() == id) {
+								relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true, false, entry.getValue());
+								break;
+							}
+					 }			
+					 
+					 isTitular = true;
+					 break;
+				 }
+			 }
+			 
+			 for(Long idBeneficiario : beneficiario) {
+				 if(beneficiario != null && id == idBeneficiario) {
+					 
+					 for(Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+							if(entry.getKey() == id) {
+								relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false, true, entry.getValue());
+								break;
+							}
+					 }
+					 
+					 isBeneficiario = true;	
+					 break;
+				 }			 
+			 }
+			 if(isTitular && isBeneficiario) {
+				 for(Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+						if(entry.getKey() == id) {
+							relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true, true, entry.getValue());
+							break;
+						}
+				 }			 
+			 }
+			 
+			 relServicioBeneficioService.save(relServicioBeneficio);
+		}
 	}
 
 }
