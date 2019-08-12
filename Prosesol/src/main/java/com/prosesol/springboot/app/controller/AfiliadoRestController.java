@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
-import com.prosesol.springboot.app.service.IAfiliadoService;
 
 @RestController
 public class AfiliadoRestController {
@@ -22,18 +21,16 @@ public class AfiliadoRestController {
 	@Autowired
 	public IAfiliadoDao afiliadoDao;
 	
-	@Autowired
-	public IAfiliadoService afiliadoService;
-	
 	@RequestMapping(value = "/data/afiliados", method = RequestMethod.GET)
 	public @ResponseBody void getAfiliado(DataTablesInput input, HttpServletResponse response){
 		
 		System.out.println(input.getLength());
 		DataTablesOutput<Afiliado> dtoAfiliado = afiliadoDao.findAll(input);
-//		List<Afiliado> lengthDB = afiliadoService.findAll();
 		
 		try {
 			List<Afiliado> afiliados = dtoAfiliado.getData();
+			
+			Double saldoAcumulado = new Double(0L);
 			
 			String data = "";
 			int totalAfiliados = afiliados.size();
@@ -45,7 +42,7 @@ public class AfiliadoRestController {
 						"\"id\" :" + "\"" +afiliado.getId() + "\", " +
 						"\"nombre\" :" + "\"" + afiliado.getNombre() + " " + afiliado.getApellidoPaterno() + " " + afiliado.getApellidoMaterno() + "\", " +
 						"\"clave\" :" + "\"" +afiliado.getClave() + "\", " +
-						"\"saldoAcumulado\" : " + "\"" + afiliado.getSaldoAcumulado() + "\"" +
+						"\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\"" +
 						"}";
 				if(index < totalAfiliados) {
 					data += ",";
@@ -67,10 +64,4 @@ public class AfiliadoRestController {
 		}
 	}
 	
-//	@JsonView(DataTablesOutput.View.class)
-//	@RequestMapping(value = "/data/afiliados", method = RequestMethod.GET)
-//	public DataTablesOutput<Afiliado> getAfiliado(DataTablesInput input){
-//		System.out.println(input.getLength());
-//		return afiliadoDao.findAll(input);
-//	}
 }
