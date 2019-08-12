@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,7 +50,7 @@ public class CandidatoController {
 	@Autowired
 	private ICuentaService cuentaService;
 	
-	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@GetMapping(value = "/ver")
 	public String ver(Model model) {
 		
@@ -58,6 +59,7 @@ public class CandidatoController {
 		return "catalogos/candidatos/ver";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@GetMapping(value = "/crear")
 	public String crear(Model model) {
 		
@@ -67,6 +69,7 @@ public class CandidatoController {
 		return "catalogos/candidatos/crear";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable("id")Long id, Model model, RedirectAttributes redirect) {
 		
@@ -98,6 +101,7 @@ public class CandidatoController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public String guardar(@Valid Candidato candidato, BindingResult result, RedirectAttributes redirect, SessionStatus status) {
 		
@@ -126,6 +130,7 @@ public class CandidatoController {
 		return "redirect:/candidatos/ver";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable("id")Long id, RedirectAttributes redirect) {
 		

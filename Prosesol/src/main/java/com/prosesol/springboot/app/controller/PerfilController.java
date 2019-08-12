@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class PerfilController {
 	@Autowired
 	private IRoleService roleService;
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@GetMapping(value = "/ver")
 	public String ver(Model model) {
 		
@@ -47,6 +49,7 @@ public class PerfilController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		
@@ -60,6 +63,7 @@ public class PerfilController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Perfil perfil, BindingResult result, Model model, RedirectAttributes redirect,
 						  SessionStatus status) {
@@ -85,6 +89,7 @@ public class PerfilController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	private String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 		
@@ -108,6 +113,7 @@ public class PerfilController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/borrar/{id}")
 	public String borrar(@PathVariable("id")Long id, RedirectAttributes redirect) {
 		

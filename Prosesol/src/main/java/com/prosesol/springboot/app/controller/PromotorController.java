@@ -8,7 +8,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +31,7 @@ public class PromotorController {
 	@Autowired
 	private IPromotorService promotorService;
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 		
@@ -41,7 +41,7 @@ public class PromotorController {
 		return "catalogos/promotores/ver";
 	}
 	
-	@Secured("ROLE_ADMINISTRADOR")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		
@@ -54,7 +54,7 @@ public class PromotorController {
 		
 	}
 	
-	@Secured("ROLE_ADMINISTRADOR")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Promotor promotor, BindingResult result, Model model, RedirectAttributes redirect,
 						 SessionStatus status) {
@@ -75,7 +75,7 @@ public class PromotorController {
 		return "redirect:/promotores/ver";
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
@@ -99,7 +99,7 @@ public class PromotorController {
 
 	}
 	
-	@RequestMapping(value = "/eliminar/{id}")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 		
 		if(id > 0) {
