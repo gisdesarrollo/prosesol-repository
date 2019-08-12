@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +31,7 @@ public class BeneficioController {
 	@Autowired
 	private IBeneficioService beneficioService;
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 		
@@ -40,6 +42,7 @@ public class BeneficioController {
 		return "/catalogos/beneficios/ver";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		
@@ -50,6 +53,7 @@ public class BeneficioController {
 		return "catalogos/beneficios/crear";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Beneficio beneficio, BindingResult result, Model model, 
 						  RedirectAttributes redirect, SessionStatus status) {
@@ -71,6 +75,7 @@ public class BeneficioController {
 		return "redirect:/beneficios/ver";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable("id")Long id, Map<String, Object> model, RedirectAttributes redirect) {
 		
@@ -99,6 +104,7 @@ public class BeneficioController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable("id")Long id, RedirectAttributes redirect) {
 		

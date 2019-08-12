@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -60,6 +61,7 @@ public class BeneficiarioController {
 	
 	private static Long idAfiliado;
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear/{id}")
 	public String crear(@PathVariable("id")Long id, Map<String, Object> model) {
 		
@@ -74,6 +76,7 @@ public class BeneficiarioController {
 		return "catalogos/beneficiarios/crear";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@ModelAttribute("clave") String clave,
 						  @Valid Afiliado afiliado, BindingResult result, Model model, 

@@ -31,6 +31,7 @@ public class PeriodicidadController {
 	
 	private final Log LOGGER = LogFactory.getLog(this.getClass());
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 		
@@ -55,6 +56,7 @@ public class PeriodicidadController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, 
 			Map<String, Object> model, RedirectAttributes redirect) {
@@ -78,6 +80,7 @@ public class PeriodicidadController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "crear", method = RequestMethod.POST)
 	public String guardar(@Valid Periodicidad periodicidad, BindingResult result, Model model, 
 						  RedirectAttributes redirect, SessionStatus status) {

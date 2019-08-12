@@ -1,4 +1,4 @@
-package com.prosesol.springboot.app.controller;
+     package com.prosesol.springboot.app.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +12,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -62,6 +61,7 @@ public class ServicioController {
 	 * @return
 	 */
 
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 
@@ -87,6 +87,7 @@ public class ServicioController {
 	 * @return
 	 */
 
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 
@@ -105,6 +106,7 @@ public class ServicioController {
 	 * @return
 	 */
 
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/detalle/{id}")
 	public String detalle(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
@@ -151,7 +153,7 @@ public class ServicioController {
 	 * @return
 	 */
 
-	@Secured("ROLE_ADMINISTRADOR")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST, params = "action=save")
 	public String guardar(@Valid Servicio servicio, BindingResult result, Model model, RedirectAttributes redirect,
 			SessionStatus status, @RequestParam(name = "beneficio[]", required = false) List<Long> idBeneficio,
@@ -265,7 +267,7 @@ public class ServicioController {
 	 * @return
 	 */
 
-	@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long idServicio, Model model, RedirectAttributes redirect) {
 
@@ -335,7 +337,7 @@ public class ServicioController {
 	 * @return
 	 */
 
-	@RequestMapping(value = "/eliminar/{id}")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 
 		try {
@@ -360,6 +362,7 @@ public class ServicioController {
 	 * @return
 	 */
 
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST, params = "action=delete")
 	public String borrarBeneficios(@RequestParam(name = "beneficio[]", required = false) List<Long> beneficios,
 			Model model, RedirectAttributes redirect) {

@@ -51,7 +51,7 @@ public class UsuarioController {
 	@Autowired
 	private ICentroContactoService centroContactoService;
 	
-	@Secured("ROLE_ADMINISTRADOR")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 				
@@ -63,6 +63,7 @@ public class UsuarioController {
 		return "catalogos/usuarios/ver";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		
@@ -77,6 +78,7 @@ public class UsuarioController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Usuario usuario, BindingResult result, Model model, 
 							     RedirectAttributes redirect, SessionStatus status) {
@@ -112,6 +114,7 @@ public class UsuarioController {
 		return "redirect:/usuarios/ver";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 		
@@ -134,6 +137,7 @@ public class UsuarioController {
 		return "catalogos/usuarios/editar";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 		
@@ -145,6 +149,7 @@ public class UsuarioController {
 		return "redirect:/usuarios/ver";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/password")
 	public String password(Model model) {
 		
@@ -155,6 +160,7 @@ public class UsuarioController {
 		return "/catalogos/usuarios/password";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/cambiar", method = RequestMethod.POST)
 	public String cambiar(@ModelAttribute(name = "username")String username, 
 						  @ModelAttribute(name = "password")String password,

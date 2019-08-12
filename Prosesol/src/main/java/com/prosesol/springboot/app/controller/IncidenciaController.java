@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -66,6 +67,7 @@ public class IncidenciaController {
 
 	private Long idAfiliado;
 	
+	@Secured("ROLE_ASISTENCIA")
 	@GetMapping(value = "/home")
 	public String home() {
 		return "incidencias/home";
@@ -78,6 +80,7 @@ public class IncidenciaController {
 	 * @return
 	 */
 
+	@Secured("ROLE_ASISTENCIA")
 	@GetMapping(value = "/ver")
 	public String ver(Model model, RedirectAttributes redirect) {
 
@@ -107,6 +110,7 @@ public class IncidenciaController {
 	 * @return
 	 */
 
+	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/buscar")
 	public String buscar(Model model) {
 
@@ -129,6 +133,8 @@ public class IncidenciaController {
 	 * @return
 	 * @throws Exception
 	 */
+	
+	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/resultado", method = RequestMethod.POST)
 	public String resultado(@RequestParam(name = "campos[]") String[] campos, Model model, RedirectAttributes redirect)
 			throws Exception {
@@ -170,6 +176,7 @@ public class IncidenciaController {
 	 * @return
 	 */
 
+	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/crear/{id}")
 	public String crear(@PathVariable("id") Long id, Model model) {
 
@@ -190,6 +197,7 @@ public class IncidenciaController {
 		return "incidencias/crear";
 	}
 
+	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable("id") Long id, Model model, RedirectAttributes redirect) {
 
@@ -309,6 +317,7 @@ public class IncidenciaController {
 	 * @return
 	 */
 
+	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public String guardar(@Valid Incidencia incidencia, @ModelAttribute RelServicioBeneficioDto relServicioBeneficios,
 			RedirectAttributes redirect, SessionStatus status) {
@@ -379,6 +388,7 @@ public class IncidenciaController {
 		return "redirect:/incidencias/ver";
 	}
 
+	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable("id") Long id, RedirectAttributes redirect) {
 
