@@ -20,7 +20,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -39,15 +38,12 @@ public class Promotor implements Serializable {
 	@Column(name = "nombre")
 	private String nombre;
 
-	@NotEmpty(message = "Proporcione el Apellido Paterno")
 	@Column(name = "apellido_paterno")
 	private String apellidoPaterno;
 
-	@NotEmpty(message = "Proporcione el Apellido Materno")
 	@Column(name = "apellido_materno")
 	private String apellidoMaterno;
 
-	@NotNull(message = "Coloque una fecha")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_alta")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -56,7 +52,6 @@ public class Promotor implements Serializable {
 	@Column(name = "edad")
 	private Integer edad;
 
-	@NotEmpty(message = "Proporcione el email del promotor")
 	@Column(name = "email")
 	private String email;
 

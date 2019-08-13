@@ -18,12 +18,13 @@
 						<div class="col-md mb-4">
 							<!-- Card Body -->
 							<div class="card-body bg-white appwork bg-boxshadow-2">
+							<div th:replace="fragments/navbar :: div-messages"></div> 
 								<h5 class="card-title">Periodos</h5>
 								<div class="card-subtitle text-muted">Lista de
 									periodos que se brindan dentro de cada servicio registrado</div>
 
 								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-									th:href="@{/periodos/crear}"
+									th:href="@{/periodicidades/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
 									class="fas fa-user-plus"></i> Nuevo Periodo</a>
 
@@ -53,11 +54,11 @@
 															aria-labelledby="dropdownMenuButton">
 																														
 															<a class="dropdown-item"
-																th:href="@{/periodos/editar/} + ${periodo.id}"
+																th:href="@{/periodicidades/editar/} + ${periodo.id}"
 																th:text="'Editar'"> </a> 
 
 															<a class="dropdown-item border-top text-danger"
-																th:href="@{/periodos/eliminar/} + ${periodo.id}"
+																th:href="@{/periodicidades/eliminar/} + ${periodo.id}"
 																th:text="'Borrar'"
 																onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')"></a>
 														</div>

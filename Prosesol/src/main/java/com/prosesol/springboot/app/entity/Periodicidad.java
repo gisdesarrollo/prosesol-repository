@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
 @Entity(name = "periodicidades")
 public class Periodicidad implements Serializable{
@@ -24,6 +25,7 @@ public class Periodicidad implements Serializable{
 	private Long id;
 	
 	@Column(name = "nombre")
+	@NotEmpty(message = "Proporcione el nombre del Periodo")
 	private String nombre;
 		
 	@Column(name = "periodo")

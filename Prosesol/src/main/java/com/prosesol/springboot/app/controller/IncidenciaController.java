@@ -322,11 +322,13 @@ public class IncidenciaController {
 	public String guardar(@Valid Incidencia incidencia, @ModelAttribute RelServicioBeneficioDto relServicioBeneficios,
 			RedirectAttributes redirect, SessionStatus status) {
 
+		String messageStatus = null;
+		
 		try {
 
 			List<RelServicioBeneficio> relServicioBeneficio = relServicioBeneficios.getRelServicioBeneficios();
 			RelAfiliadoIncidencia relAfiliadoIncidencia = new RelAfiliadoIncidencia();
-			Afiliado afiliado = afiliadoService.findById(idAfiliado);
+			Afiliado afiliado = afiliadoService.findById(idAfiliado);		
 
 			if (relServicioBeneficio != null) {
 
@@ -361,6 +363,9 @@ public class IncidenciaController {
 					}
 
 				}
+				
+				messageStatus = "Incidencia editada correctamente";
+				
 			} else {
 				
 				if (incidencia.getId() == null) {
@@ -379,12 +384,16 @@ public class IncidenciaController {
 						+ afiliado.getApellidoMaterno());
 
 				incidenciaService.save(incidencia);
+				
+				messageStatus = "Incidencia creada correctamente";					
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			redirect.addFlashAttribute("error", "Ocurrió un problema en el sistema, contacte al administrador");
 		}
 
+		redirect.addFlashAttribute("success", messageStatus);
 		return "redirect:/incidencias/ver";
 	}
 

@@ -11,7 +11,7 @@ public interface IPeriodicidadService {
 	
 	public void save(Periodicidad periodicidad);
 	
-	public void delete(Long id);
+	public void deleteById(Long id);
 	
 	public Periodicidad findById(Long id);
 	

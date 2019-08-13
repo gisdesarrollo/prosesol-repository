@@ -35,7 +35,6 @@ public class Cuenta implements Serializable {
 	@Column(name = "razon_social")
 	private String razonSocial;
 
-	@NotEmpty(message = "Proporcione el RFC de la empresa")
 	@Column(name = "rfc", length = 15)
 	private String rfc;
 

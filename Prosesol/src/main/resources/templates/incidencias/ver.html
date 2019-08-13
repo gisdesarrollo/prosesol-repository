@@ -16,8 +16,9 @@
             <div class="layout-container sidemenu-container">
                 <div class="container-fluid">
                     <div class="row ">
-                        <div class="col-md mb-4">
+                        <div class="col-md mb-4">						                    	
                             <div class="card-body bg-white appwork bg-boxshadow-2">
+                            <div th:replace="fragments/navbar :: div-messages"></div> 
                                 <h5 class="card-title">Incidencias Abiertas o En Proceso</h5>
 
                                 <a sec:authorize="hasRole('ROLE_ASISTENCIA')" th:href="@{/incidencias/buscar}" class="btn m-2 rounded-0 btn-sm btn-primary"><i
