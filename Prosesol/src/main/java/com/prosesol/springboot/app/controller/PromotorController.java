@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.controller;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -7,6 +8,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,18 +61,26 @@ public class PromotorController {
 	public String guardar(@Valid Promotor promotor, BindingResult result, Model model, RedirectAttributes redirect,
 						 SessionStatus status) {
 		
-		if(result.hasErrors()) {
-			model.addAttribute("titulo", "Crear Promotor");
-			return "catalogos/promotores/crear";
+		try {
+			if(result.hasErrors()) {
+				model.addAttribute("titulo", "Crear Promotor");
+				return "catalogos/promotores/crear";
+			}
+			
+			String flashMessage = (promotor.getId() != null) ? "Promotor editado con éxito" : "Promotor creado con éxito";
+			
+			promotor.setEstatus(true);
+			promotor.setFechaAlta(new Date());
+			
+			promotorService.save(promotor);
+			status.setComplete();
+			redirect.addFlashAttribute("success", flashMessage);
+		}catch(Exception e) {
+			e.printStackTrace();
+			redirect.addFlashAttribute("error", "Ocurrió un problema en el sistema, contacte al administrador");
+			
+			return "redirect:/promotores/ver";
 		}
-		
-		String flashMessage = (promotor.getId() != null) ? "Promotor editado con éxito" : "Promotor creado con éxito";
-		
-		promotor.setEstatus(true);
-		
-		promotorService.save(promotor);
-		status.setComplete();
-		redirect.addFlashAttribute("success", flashMessage);
 		
 		return "redirect:/promotores/ver";
 	}
@@ -100,11 +110,28 @@ public class PromotorController {
 	}
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+	@RequestMapping(value = "eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 		
-		if(id > 0) {
-			promotorService.delete(id);
-			redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+		try {
+			
+			if(id > 0) {
+				promotorService.delete(id);
+				redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+			}
+		}catch(DataIntegrityViolationException dive) {
+			dive.printStackTrace();
+			
+			redirect.addFlashAttribute("error", "No se puede eliminar el promotor porque está asociado a uno o más afiliados");
+			
+			return "redirect:/promotores/ver";
+		}catch(Exception e) {
+			
+			e.printStackTrace();
+			redirect.addFlashAttribute("error", "Ocurrió un error en el sistema, contacte al administrador");
+			
+			return "redirect:/promotores/ver";
+			
 		}
 		
 		return "redirect:/promotores/ver";

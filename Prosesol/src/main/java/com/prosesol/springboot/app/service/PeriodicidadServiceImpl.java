@@ -40,7 +40,7 @@ public class PeriodicidadServiceImpl implements IPeriodicidadService{
 
 	@Override
 	@Transactional
-	public void delete(Long id) {
+	public void deleteById(Long id) {
 		periodicidadDao.deleteById(id);
 		
 	}

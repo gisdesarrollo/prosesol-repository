@@ -155,7 +155,6 @@ public class AfiliadoController {
 		try {
 
 			if (result.hasErrors()) {
-				model.addAttribute("titulo", "Crear Afiliado");
 				return "catalogos/afiliados/crear";
 			}
 

@@ -183,8 +183,10 @@ public class ServicioController {
 				// Verifica si el servicio se editará con todo y beneficios
 
 				if (idBeneficio != null && idBeneficio.size() > 0) {
-					editarServiciosConBeneficios(servicio, idBeneficio, descripcion, titular, beneficiario);
+					editarServiciosConBeneficios(servicio, idBeneficio, descripcion, titular, beneficiario);				
 				}
+				
+				flashMessage = "Servicio editado correctamente";
 
 			} else {
 
@@ -232,19 +234,19 @@ public class ServicioController {
 						relServicioBeneficioService.save(relServicioBeneficio);
 						dIndex++;
 					}
+					
+					flashMessage = "Servicio creado correctamente";
 
-				} else {
-
-					// Solamente se inserta el servicio
+				} else { // Solamente se inserta el servicio
 
 					servicio.setEstatus(true);
 					servicioService.save(servicio);
+					
+					flashMessage = "Servicio creado correctamente";
 				}
 
-			}
-
-			flashMessage = "Servicio creado correctamente";
-
+			}	
+			
 			status.setComplete();
 			redirect.addFlashAttribute("success", flashMessage);
 

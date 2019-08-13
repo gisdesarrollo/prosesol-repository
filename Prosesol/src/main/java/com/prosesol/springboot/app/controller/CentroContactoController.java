@@ -64,9 +64,7 @@ public class CentroContactoController {
 		LOG.info("Entra al método de guardar");
 		
 		if(result.hasErrors()) {
-			
-			LOG.error("Error de usuario");
-			return "redirect:/centros/ver";
+			return "catalogos/centros/crear";
 			
 		}
 				

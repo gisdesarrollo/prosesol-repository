@@ -63,6 +63,13 @@ public class BeneficioController {
 		String flashMessage = (beneficio.getId() != null) ? "Registro editado correctamente" : "Registro creado correctamente";
 		
 		try {
+			
+			if(result.hasErrors()) {
+				
+				redirect.addFlashAttribute("error", "Campos incompletos");
+				return "catalogos/beneficios/crear";
+			}
+			
 			beneficioService.save(beneficio);
 			status.setComplete();
 			redirect.addFlashAttribute("success", flashMessage);
