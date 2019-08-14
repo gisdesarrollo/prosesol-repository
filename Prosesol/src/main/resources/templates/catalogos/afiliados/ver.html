@@ -1,7 +1,7 @@
-﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="fragments/head :: head"></head>
-<meta charset="utf-8" />
 <body>
 	<div class="page-wrapper">
 		<!-- Page Top Bar Area -->
@@ -19,6 +19,7 @@
 						<div class="col-md mb-4">
 							<!-- Card Body -->
 							<div class="card-body bg-white appwork bg-boxshadow-2">
+								<div th:replace="fragments/navbar :: div-messages"></div>
 								<h5 class="card-title">Afiliados</h5>
 								<div class="card-subtitle text-muted">Lista de
 									afiliados activos de la plantilla Prosesol</div>
@@ -31,16 +32,20 @@
 								<div class="clearfix"></div>
 								<hr>
 
-								<div class="row">
+								<div>
 									<table id="afiliados"
 										class="table table-bordered">
 										<thead>
 											<tr>
+												<th>Opciones</th>
 												<th>Nombre</th>
 												<th>Apellido Paterno</th>
-												<th>Apellido Materno</th>	
+												<th>Apellido Materno</th>
 												<th>Clave</th>	
-												<th>Saldo</th>				
+												<th>Saldo</th>
+												<th>Tipo de Afiliado</th>
+												<th>Estatus</th>
+												<th>Servicio</th>
 											</tr>
 										</thead>
 									</table>

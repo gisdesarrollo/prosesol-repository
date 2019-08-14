@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="fragments/head :: head"></head>
 <meta charset="utf-8" />
 <body>
@@ -18,6 +19,7 @@
 						<div class="col-md mb-4">
 							<!-- Card Body -->
 							<div class="card-body bg-white appwork bg-boxshadow-2">
+							<div th:replace="fragments/navbar :: div-messages"></div> 
 								<h5 class="card-title">Beneficios</h5>
 								<div class="card-subtitle text-muted">Lista de
 									beneficios que se brindan dentro de cada servicio registrado</div>

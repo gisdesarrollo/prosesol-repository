@@ -146,11 +146,12 @@ public class Afiliado implements Serializable{
 	@Column(name = "inscripcion")
 	private Double inscripcion;
 
-	@NotNull
+	@NotNull(message = "Seleccione el tipo de servicio")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_servicio")
 	private Servicio servicio;
 
+	@NotNull(message = "Seleccione el periodo del servicio")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_periodicidad")
 	private Periodicidad periodicidad;

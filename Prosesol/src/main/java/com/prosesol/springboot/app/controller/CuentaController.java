@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,7 +38,7 @@ public class CuentaController {
 		return "catalogos/cuentas/ver";
 	}
 	
-	@Secured("ROLE_ADMINISTRADOR")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 		Cuenta cuenta = new Cuenta();
@@ -49,30 +49,38 @@ public class CuentaController {
 		return "catalogos/cuentas/crear";
 	}
 	
-	@Secured("ROLE_ADMINISTRADOR")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Cuenta cuenta, BindingResult result, Model model, RedirectAttributes redirect,
 						  SessionStatus status) {
 		
-		if(result.hasErrors()) {
-			model.addAttribute("titulo", "Crear Cuenta");
-			return "/catalogos/cuentas/crear";
+		try {
+			if(result.hasErrors()) {
+				model.addAttribute("titulo", "Crear Cuenta");
+				return "/catalogos/cuentas/crear";
+			}
+			
+			String flashMessage = (cuenta.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
+			
+			cuenta.setEstatus("Activo");
+			cuenta.setFechaAlta(new Date());
+			
+			cuentaService.save(cuenta);
+			status.setComplete();
+			redirect.addFlashAttribute("success", flashMessage);		
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+			redirect.addFlashAttribute("error", "Oucrrió un error en el sistema, contacte al administrador");
+			
+			return "redirect:/cuentas/ver";
 		}
-		
-		String flashMessage = (cuenta.getId() != null) ? "Registro editado con éxito" : "Registro creado con éxito";
-		
-		cuenta.setEstatus("Activo");
-		cuenta.setFechaAlta(new Date());
-		
-		cuentaService.save(cuenta);
-		status.setComplete();
-		redirect.addFlashAttribute("success", flashMessage);
 		
 		return "redirect:/cuentas/ver";
 		
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 
@@ -98,12 +106,28 @@ public class CuentaController {
 
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 		
-		if(id > 0) {
-			cuentaService.delete(id);
-			redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+		try {
+			if(id > 0) {
+				cuentaService.delete(id);
+				redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+			}
+		}catch(DataIntegrityViolationException dive) {
+			dive.printStackTrace();
+			
+			redirect.addFlashAttribute("error", "No se puede eliminar la cuenta porque está asociado a un o más afiliados");
+			
+			return "redirect:/cuentas/ver";
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+			redirect.addFlashAttribute("error", "Oucrrió un error en el sistema, contacte al administrador");
+			
+			return "redirect:/cuentas/ver";
 		}
 		
 		return "redirect:/cuentas/ver";

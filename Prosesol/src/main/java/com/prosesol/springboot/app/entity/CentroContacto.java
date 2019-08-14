@@ -16,7 +16,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "centros_contactos")
@@ -40,11 +39,9 @@ public class CentroContacto implements Serializable{
 	private String descripcion;
 	
 	@Column(name = "telefono1")
-	@NotNull(message = "${text.centroContacto.telefonos}")
 	private Long telefono1;
 	
 	@Column(name = "telefono2")
-	@NotNull(message = "${text.centroContacto.telefonos}")
 	private Long telefono2;
 	
 	@Column(name = "nombre_responsable")

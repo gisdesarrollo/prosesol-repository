@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ public class CentroContactoController {
 	@Autowired
 	private CentroContactoServiceImpl centroContactoService;
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
 	public String crear(Model model) {
 		
@@ -43,6 +45,7 @@ public class CentroContactoController {
 		return "catalogos/centros/crear";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@GetMapping(value = "/ver")
 	public String ver(Model model) {
 		
@@ -53,6 +56,7 @@ public class CentroContactoController {
 		return "catalogos/centros/ver";
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid CentroContacto centroContacto, BindingResult result, Model model, 
 						  RedirectAttributes redirect,  SessionStatus status) {
@@ -60,9 +64,7 @@ public class CentroContactoController {
 		LOG.info("Entra al método de guardar");
 		
 		if(result.hasErrors()) {
-			
-			LOG.error("Error de usuario");
-			return "redirect:/centros/ver";
+			return "catalogos/centros/crear";
 			
 		}
 				
@@ -81,6 +83,7 @@ public class CentroContactoController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable("id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
 		
@@ -110,6 +113,7 @@ public class CentroContactoController {
 		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable("id")Long id,  RedirectAttributes redirect) {
 		

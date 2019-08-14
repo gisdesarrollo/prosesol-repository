@@ -54,6 +54,7 @@ public class CargaMasivaController {
 		}		
 	}
 	
+	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String uploadXlsx(@RequestParam("file")MultipartFile fileXlsx, RedirectAttributes redirect, 
 							 HttpServletResponse response){				

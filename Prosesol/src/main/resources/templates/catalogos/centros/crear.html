@@ -29,6 +29,7 @@
 										<div class="form-group col-md-4">
 											<label for="company">Nombre*</label> <input type="text"
 												th:field="*{nombre}" class="form-control form-control-user">
+											<small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
 										</div>
 										
 										<div class="form-group col-md-4">

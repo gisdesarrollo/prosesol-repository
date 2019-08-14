@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
 import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
@@ -30,6 +31,7 @@ public class Beneficio implements Serializable {
 	@Column(name = "id_beneficio", unique = true, nullable = false)
 	private Long id;
 
+	@NotEmpty(message = "Proporcione el nombre del beneficio")
 	@Column(name = "nombre")
 	private String nombre;
 
