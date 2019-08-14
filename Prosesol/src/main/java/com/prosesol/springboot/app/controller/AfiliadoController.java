@@ -199,7 +199,7 @@ public class AfiliadoController {
 
 			}
 
-			afiliado.setEstatus(3);
+			afiliado.setEstatus(1);
 			logger.info(mensajeFlash);
 
 			afiliadoService.save(afiliado);
@@ -222,6 +222,7 @@ public class AfiliadoController {
 			return "redirect:/afiliados/ver";
 		}
 
+		redirect.addFlashAttribute("success", mensajeFlash);
 		return "redirect:/afiliados/ver";
 	}
 
