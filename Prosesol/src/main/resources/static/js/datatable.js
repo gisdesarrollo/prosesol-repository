@@ -1,6 +1,6 @@
 $(function(){
-	
-	var table = $('#afiliados').DataTable({						
+
+	$('#afiliados').DataTable({
 		'ajax' : '/data/afiliados',
 		'processing' : true,
 		'serverSide' : true,
@@ -15,9 +15,19 @@ $(function(){
 		},{
 			data : 'nombre'
 		},{
+		    data : 'apellidoPaterno'
+		},{
+		    data : 'apellidoMaterno'
+		},{
 			data : 'clave'
 		},{
 			data : 'saldoAcumulado'
+		},{
+		    data : "isBeneficiario"
+		},{
+		    data: 'estatus'
+		},{
+		    data : 'servicio.nombre'
 		}],
 		dataSrc : ""
 	});

@@ -19,51 +19,59 @@ import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
 @RestController
 public class AfiliadoRestController {
 
-	@Autowired
-	public IAfiliadoDao afiliadoDao;
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
-	@RequestMapping(value = "/data/afiliados", method = RequestMethod.GET)
-	public @ResponseBody void getAfiliado(DataTablesInput input, HttpServletResponse response){
-		
-		System.out.println(input.getLength());
-		DataTablesOutput<Afiliado> dtoAfiliado = afiliadoDao.findAll(input);
-		
-		try {
-			List<Afiliado> afiliados = dtoAfiliado.getData();
-			
-			Double saldoAcumulado = new Double(0L);
-			
-			String data = "";
-			int totalAfiliados = afiliados.size();
-			int index = 1;
-		
-				
-			for(Afiliado afiliado : afiliados) {
-				data += "{" +
-						"\"id\" :" + "\"" +afiliado.getId() + "\", " +
-						"\"nombre\" :" + "\"" + afiliado.getNombre() + " " + afiliado.getApellidoPaterno() + " " + afiliado.getApellidoMaterno() + "\", " +
-						"\"clave\" :" + "\"" +afiliado.getClave() + "\", " +
-						"\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\"" +
-						"}";
-				if(index < totalAfiliados) {
-					data += ",";
-				}
-				
-				index++;
-			}
-			
-			String json = "{" +
-						  "\"recordsTotal\" : " + dtoAfiliado.getRecordsTotal() + "," +
-						  "\"recordsFiltered\" : " + dtoAfiliado.getRecordsFiltered() + "," +
-						  "\"data\" : [" + data + "]" +
-						  "}";
-			
-			response.setStatus(200);
-			response.getWriter().write(json);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+    @Autowired
+    public IAfiliadoDao afiliadoDao;
+
+    @Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+    @RequestMapping(value = "/data/afiliados", method = RequestMethod.GET)
+    public @ResponseBody
+    void getAfiliado(DataTablesInput input, HttpServletResponse response) {
+
+        System.out.println(input.getColumns());
+        DataTablesOutput<Afiliado> dtoAfiliado = afiliadoDao.findAll(input);
+
+        try {
+            List<Afiliado> afiliados = dtoAfiliado.getData();
+
+            Double saldoAcumulado = new Double(0L);
+
+            String data = "";
+            int totalAfiliados = afiliados.size();
+            int index = 1;
+
+
+            for (Afiliado afiliado : afiliados) {
+                data += "{" +
+                        "\"id\" :" + "\"" + afiliado.getId() + "\", " +
+                        "\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
+                        "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
+                        "\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
+                        "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
+                        "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                        "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
+                        "\"estatus\" : " + "\"" + (afiliado.getEstatus() == 1 ? "Activo" : "Inactivo") + "\", " +
+                        "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}" +
+                        "}";
+                if (index < totalAfiliados) {
+                    data += ",";
+                }
+
+                System.out.println(data);
+
+                index++;
+            }
+
+            String json = "{" +
+                    "\"recordsTotal\" : " + dtoAfiliado.getRecordsTotal() + "," +
+                    "\"recordsFiltered\" : " + dtoAfiliado.getRecordsFiltered() + "," +
+                    "\"data\" : [" + data + "]" +
+                    "}";
+
+            response.setStatus(200);
+            response.getWriter().write(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
