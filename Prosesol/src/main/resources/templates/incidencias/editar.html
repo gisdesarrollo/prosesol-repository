@@ -79,13 +79,13 @@
 									<div class="row">
 
 										<div class="form-group col-md-3">
-											<label for="company">Fecha de Solicitud</label> <input
+											<label >Fecha de Solicitud</label> <input
 												type="text" th:field="*{fecha}"
 												class="form-control form-control-user fecha" placeholder="">
 										</div>
 
 										<div class="form-group col-md-3">
-											<label for="company">Hora</label> <input type="text"
+											<label >Hora</label> <input type="text"
 												name="hora" th:field="*{hora}" placeholder="hh:mm:ss"
 												class="hora form-control form-control-user">
 										</div>
@@ -93,25 +93,25 @@
 
 									<div class="row">
 										<div class="form-group col-md-3">
-											<label for="company">Fecha de creación</label> <br> <input
+											<label >Fecha de creación</label> <br> <input
 												readonly class="form-control"
 												th:value="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></input>
 										</div>
 
 										<div class="form-group col-md-3">
-											<label for="company">Localización de Solicitud</label> <input
+											<label >Localización de Solicitud</label> <input
 												type="text" th:field="*{localizacion}"
 												class="form-control form-control-user" placeholder="">
 										</div>
 
 										<div class="form-group col-md-3">
-											<label for="company">Proveedor de Asistencia</label> <input
+											<label >Proveedor de Asistencia</label> <input
 												type="text" th:field="*{proveedor}"
 												class="form-control form-control-user" placeholder="">
 										</div>
 
 										<div class="form-group col-md-3">
-											<label for="company">Tipo de Incidencia</label> <select
+											<label >Tipo de Incidencia</label> <select
 												th:field="*{tipoIncidencia}" class="form-control"
 												id="inputGroupSelect01">
 												<option value="">Opciones</option>
@@ -135,7 +135,7 @@
 										</div>
 
 										<div class="col-md-2">
-											<label for="company">Estatus de Incidencia</label> <select
+											<label >Estatus de Incidencia</label> <select
 												th:field="*{estatus}" class="form-control"
 												id="inputGroupSelect01">
 												<option th:value="'1'" th:selected>Abierto</option>

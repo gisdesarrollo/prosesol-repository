@@ -1,9 +1,16 @@
 package com.prosesol.springboot.app.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.prosesol.springboot.app.async.AsyncComponent;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -28,6 +35,9 @@ public class CargaMasivaController {
 	
 	@Autowired
 	private ReportesExcelImpl reportesExcelImpl;
+
+	@Autowired
+	private AsyncComponent asyncComponent;
 
 	@GetMapping("/afiliados")
 	public String cargaMasiva() {
@@ -56,14 +66,20 @@ public class CargaMasivaController {
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String uploadXlsx(@RequestParam("file")MultipartFile fileXlsx, RedirectAttributes redirect, 
-							 HttpServletResponse response){				
-		
+	public String uploadXlsx(HttpServletRequest request, HttpServletResponse response,
+							 RedirectAttributes redirect){
+
 		try {
-			
-			XSSFWorkbook workbook = new XSSFWorkbook(fileXlsx.getInputStream());			
-			reportesExcelImpl.leerArchivoCargaMasiva(workbook);
-			
+
+			Boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+
+			if(isMultipart){
+				System.out.println("Es un archivo pesado");
+			}
+
+//			XSSFWorkbook workbook = new XSSFWorkbook(fileXlsx.getInputStream());
+//			reportesExcelImpl.leerArchivoCargaMasiva(workbook);
+
 		}catch(Exception ne) {
 			
 //			String error = new CustomUserException().getMessage();
@@ -78,5 +94,7 @@ public class CargaMasivaController {
 		return "redirect:/afiliados/ver";
 		
 	}
-	
+
+
+
 }

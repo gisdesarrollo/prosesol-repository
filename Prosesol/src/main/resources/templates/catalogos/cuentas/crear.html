@@ -27,41 +27,41 @@
 									th:object="${cuenta}" method="post">
 									<div class="row">
 										<div class="form-group col-md-4">
-											<label for="company">Razón Social*</label> <input type="text"
+											<label >Razón Social*</label> <input type="text"
 												th:field="*{razonSocial}" class="form-control form-control-user">
 											<small class="form-text text-danger" th:if="${#fields.hasErrors('razonSocial')}" th:errors="*{razonSocial}"></small>
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">RFC</label> 
+											<label >RFC</label>
 											<input type="text"
 												th:field="*{rfc}"
 												class="form-control form-control-user">
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">Dirección</label> 
+											<label >Dirección</label>
 											<input type="text"
 												th:field="*{direccion}"
 												class="form-control form-control-user">
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">Código Postal</label> 
+											<label >Código Postal</label>
 											<input type="text"
 												th:field="*{codigoPostal}"
 												class="form-control form-control-user">
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">País</label> 
+											<label >País</label>
 											<input type="text"
 												th:field="*{pais}"
 												class="form-control form-control-user">
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">Correo Electrónico</label> 
+											<label >Correo Electrónico</label>
 											<input type="text"
 												th:field="*{email}"
 												class="form-control form-control-user">

@@ -1,33 +1,12 @@
 package com.prosesol.springboot.app.view.excel;
 
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.prosesol.springboot.app.entity.*;
+import com.prosesol.springboot.app.exception.CustomUserException;
+import com.prosesol.springboot.app.service.*;
+import com.prosesol.springboot.app.util.Paises;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataValidation;
-import org.apache.poi.ss.usermodel.DataValidationConstraint;
-import org.apache.poi.ss.usermodel.DataValidationHelper;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFDataValidationHelper;
@@ -36,675 +15,593 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.prosesol.springboot.app.entity.Afiliado;
-import com.prosesol.springboot.app.entity.Cuenta;
-import com.prosesol.springboot.app.entity.Periodicidad;
-import com.prosesol.springboot.app.entity.Promotor;
-import com.prosesol.springboot.app.entity.Servicio;
-import com.prosesol.springboot.app.exception.CustomUserException;
-import com.prosesol.springboot.app.service.IAfiliadoService;
-import com.prosesol.springboot.app.service.ICuentaService;
-import com.prosesol.springboot.app.service.IPeriodicidadService;
-import com.prosesol.springboot.app.service.IPromotorService;
-import com.prosesol.springboot.app.service.IReportesExcel;
-import com.prosesol.springboot.app.service.IServicioService;
-import com.prosesol.springboot.app.util.Paises;
+import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Component
 public class ReportesExcelImpl implements IReportesExcel {
 
-	private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT);
-	private static final Log LOGGER = LogFactory.getLog(ReportesExcelImpl.class);
-
-	private static String FILENAME = null;
-
-	private static DataValidation dv = null;
-	private static DataValidationConstraint dvConstraint = null;
-	private static DataValidationHelper dvHelper = null;
-
-	@Autowired
-	private IAfiliadoService afiliadoService;
-
-	@Autowired
-	private IPeriodicidadService periodicidadService;
-
-	@Autowired
-	private ICuentaService cuentaService;
-
-	@Autowired
-	private IPromotorService promotorService;
+    private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT);
+    private static final Log LOGGER = LogFactory.getLog(ReportesExcelImpl.class);
+
+    private static String FILENAME = null;
+
+    private static DataValidation dv = null;
+    private static DataValidationConstraint dvConstraint = null;
+    private static DataValidationHelper dvHelper = null;
 
-	@Autowired
-	private IServicioService servicioService;
-	
-	@Autowired
-	private InsertFromExcel insertFromExcel;
-
-	/**
-	 * Método que genera el reporte del catálogo de afiliados en formato Xlsx
-	 */
-
-	@Override
-	public void generarReporteAfiliadoXlsx(List<Afiliado> afiliados, HttpServletResponse response) {
-
-		FILENAME = "reporte_afiliados.xlsx";
-
-		Workbook workbook = new XSSFWorkbook();
-		Sheet sheet = workbook.createSheet("Reporte Afiliados");
-		Row encabezado = sheet.createRow(0);
-
-		try {
-
-			encabezado.createCell(0).setCellValue("Nombre Afiliado");
-			encabezado.createCell(1).setCellValue("Tipo de Afiliado");
-			encabezado.createCell(2).setCellValue("Estatus");
-			encabezado.createCell(3).setCellValue("Servicio");
-			encabezado.createCell(4).setCellValue("Saldo Acumulado");
-			encabezado.createCell(5).setCellValue("Saldo al Corte");
-			encabezado.createCell(6).setCellValue("Fecha de Afiliación");
-			encabezado.createCell(7).setCellValue("Fecha de Corte");
-			encabezado.createCell(8).setCellValue("Periodo");
-			encabezado.createCell(9).setCellValue("Email");
-
-			int rowNum = 1;
-			for (Afiliado afiliado : afiliados) {
-				Row courseRow = sheet.createRow(rowNum++);
-
-				sheet.autoSizeColumn(rowNum);
-
-				courseRow.createCell(0).setCellValue(afiliado.getNombre() + " " + afiliado.getApellidoPaterno() + " "
-						+ afiliado.getApellidoMaterno());
-				courseRow.createCell(1).setCellValue(afiliado.getIsBeneficiario() ? "Beneficiario" : "Titular");
-
-				if (afiliado.getEstatus() == 1) {
-					courseRow.createCell(2).setCellValue("Activo");
-				} else if (afiliado.getEstatus() == 2) {
-					courseRow.createCell(2).setCellValue("Inactivo");
-				} else if (afiliado.getEstatus() == 3) {
-					courseRow.createCell(2).setCellValue("Candidato");
-				}
-
-				courseRow.createCell(3).setCellValue(afiliado.getServicio().getNombre());
-				courseRow.createCell(4).setCellValue(afiliado.getSaldoAcumulado());
-				courseRow.createCell(5).setCellValue(afiliado.getSaldoCorte());
-				courseRow.createCell(6).setCellValue(DATE_FORMAT.format(afiliado.getFechaAfiliacion()));
-				courseRow.createCell(7).setCellValue(DATE_FORMAT.format(afiliado.getFechaCorte()));
-				courseRow.createCell(8).setCellValue(afiliado.getPeriodicidad().getNombre());
-				courseRow.createCell(9).setCellValue(afiliado.getEmail());
-			}
-
-			CellStyle theaderStyle = workbook.createCellStyle();
-			theaderStyle.setBorderBottom(BorderStyle.MEDIUM);
-			theaderStyle.setBorderTop(BorderStyle.MEDIUM);
-			theaderStyle.setBorderRight(BorderStyle.MEDIUM);
-			theaderStyle.setBorderLeft(BorderStyle.MEDIUM);
-			theaderStyle.setFillForegroundColor(IndexedColors.GOLD.index);
-			theaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-			CellStyle tbodyStyle = workbook.createCellStyle();
-			tbodyStyle.setBorderBottom(BorderStyle.THIN);
-			tbodyStyle.setBorderTop(BorderStyle.THIN);
-			tbodyStyle.setBorderRight(BorderStyle.THIN);
-			tbodyStyle.setBorderLeft(BorderStyle.THIN);
-
-			makeRowBold(workbook, encabezado);
-
-			response.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
-			workbook.write(response.getOutputStream());
-
-			workbook.close();
-
-		} catch (Exception e) {
-			LOGGER.error("Error al momento de generar el reporte", e);
-		}
+    @Autowired
+    private IAfiliadoService afiliadoService;
 
-	}
+    @Autowired
+    private IPeriodicidadService periodicidadService;
 
-	/**
-	 * Método que genera el reporte del catálogo de afiliados en format Xls
-	 */
+    @Autowired
+    private ICuentaService cuentaService;
 
-	@Override
-	public void generarReporteAfiliadoXls(List<Afiliado> afiliados, HttpServletResponse response) {
-
-		FILENAME = "reporte_afiliados.xls";
-
-		Workbook workbook = new HSSFWorkbook();
-		Sheet sheet = workbook.createSheet("Reporte Afiliados");
-		Row encabezado = sheet.createRow(0);
-
-		try {
-
-			encabezado.createCell(0).setCellValue("Nombre Afiliado");
-			encabezado.createCell(1).setCellValue("Tipo de Afiliado");
-			encabezado.createCell(2).setCellValue("Estatus");
-			encabezado.createCell(3).setCellValue("Servicio");
-			encabezado.createCell(4).setCellValue("Saldo Acumulado");
-			encabezado.createCell(5).setCellValue("Saldo al Corte");
-			encabezado.createCell(6).setCellValue("Fecha de Afiliación");
-			encabezado.createCell(7).setCellValue("Fecha de Corte");
-			encabezado.createCell(8).setCellValue("Periodo");
-			encabezado.createCell(9).setCellValue("Email");
+    @Autowired
+    private IPromotorService promotorService;
 
-			int rowNum = 1;
-			for (Afiliado afiliado : afiliados) {
-				Row courseRow = sheet.createRow(rowNum++);
+    @Autowired
+    private IServicioService servicioService;
 
-				sheet.autoSizeColumn(rowNum);
+    @Autowired
+    private InsertFromExcel insertFromExcel;
 
-				courseRow.createCell(0).setCellValue(afiliado.getNombre() + " " + afiliado.getApellidoPaterno() + " "
-						+ afiliado.getApellidoMaterno());
-				courseRow.createCell(1).setCellValue(afiliado.getIsBeneficiario() ? "Beneficiario" : "Titular");
+    /**
+     * Método que genera el reporte del catálogo de afiliados en formato Xlsx
+     */
 
-				if (afiliado.getEstatus() == 1) {
-					courseRow.createCell(2).setCellValue("Activo");
-				} else if (afiliado.getEstatus() == 2) {
-					courseRow.createCell(2).setCellValue("Inactivo");
-				} else if (afiliado.getEstatus() == 3) {
-					courseRow.createCell(2).setCellValue("Candidato");
-				}
+    @Override
+    public void generarReporteAfiliadoXlsx(List<Afiliado> afiliados, HttpServletResponse response) {
 
-				courseRow.createCell(3).setCellValue(afiliado.getServicio().getNombre());
-				courseRow.createCell(4).setCellValue(afiliado.getSaldoAcumulado());
-				courseRow.createCell(5).setCellValue(afiliado.getSaldoCorte());
-				courseRow.createCell(6).setCellValue(DATE_FORMAT.format(afiliado.getFechaAfiliacion()));
-				courseRow.createCell(7).setCellValue(DATE_FORMAT.format(afiliado.getFechaCorte()));
-				courseRow.createCell(8).setCellValue(afiliado.getPeriodicidad().getNombre());
-				courseRow.createCell(9).setCellValue(afiliado.getEmail());
-			}
+        FILENAME = "reporte_afiliados.xlsx";
 
-			CellStyle theaderStyle = workbook.createCellStyle();
-			theaderStyle.setBorderBottom(BorderStyle.MEDIUM);
-			theaderStyle.setBorderTop(BorderStyle.MEDIUM);
-			theaderStyle.setBorderRight(BorderStyle.MEDIUM);
-			theaderStyle.setBorderLeft(BorderStyle.MEDIUM);
-			theaderStyle.setFillForegroundColor(IndexedColors.GOLD.index);
-			theaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Reporte Afiliados");
+        Row encabezado = sheet.createRow(0);
+
+        try {
+
+            encabezado.createCell(0).setCellValue("Nombre Afiliado");
+            encabezado.createCell(1).setCellValue("Tipo de Afiliado");
+            encabezado.createCell(2).setCellValue("Estatus");
+            encabezado.createCell(3).setCellValue("Servicio");
+            encabezado.createCell(4).setCellValue("Saldo Acumulado");
+            encabezado.createCell(5).setCellValue("Saldo al Corte");
+            encabezado.createCell(6).setCellValue("Fecha de Afiliación");
+            encabezado.createCell(7).setCellValue("Fecha de Corte");
+            encabezado.createCell(8).setCellValue("Periodo");
+            encabezado.createCell(9).setCellValue("Email");
 
-			CellStyle tbodyStyle = workbook.createCellStyle();
-			tbodyStyle.setBorderBottom(BorderStyle.THIN);
-			tbodyStyle.setBorderTop(BorderStyle.THIN);
-			tbodyStyle.setBorderRight(BorderStyle.THIN);
-			tbodyStyle.setBorderLeft(BorderStyle.THIN);
+            int rowNum = 1;
+            for (Afiliado afiliado : afiliados) {
+                Row courseRow = sheet.createRow(rowNum++);
 
-			makeRowBold(workbook, encabezado);
+                sheet.autoSizeColumn(rowNum);
 
-			response.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
-			workbook.write(response.getOutputStream());
+                courseRow.createCell(0).setCellValue(afiliado.getNombre() + " " + afiliado.getApellidoPaterno() + " "
+                        + afiliado.getApellidoMaterno());
+                courseRow.createCell(1).setCellValue(afiliado.getIsBeneficiario() ? "Beneficiario" : "Titular");
 
-			workbook.close();
+                if (afiliado.getEstatus() == 1) {
+                    courseRow.createCell(2).setCellValue("Activo");
+                } else if (afiliado.getEstatus() == 2) {
+                    courseRow.createCell(2).setCellValue("Inactivo");
+                } else if (afiliado.getEstatus() == 3) {
+                    courseRow.createCell(2).setCellValue("Candidato");
+                }
 
-		} catch (Exception e) {
-			LOGGER.error("Error al momento de generar el reporte", e);
-		}
+                courseRow.createCell(3).setCellValue(afiliado.getServicio().getNombre());
+                courseRow.createCell(4).setCellValue(afiliado.getSaldoAcumulado());
+                courseRow.createCell(5).setCellValue(afiliado.getSaldoCorte());
+                courseRow.createCell(6).setCellValue(DATE_FORMAT.format(afiliado.getFechaAfiliacion()));
+                courseRow.createCell(7).setCellValue(DATE_FORMAT.format(afiliado.getFechaCorte()));
+                courseRow.createCell(8).setCellValue(afiliado.getPeriodicidad().getNombre());
+                courseRow.createCell(9).setCellValue(afiliado.getEmail());
+            }
 
-	}
+            CellStyle theaderStyle = workbook.createCellStyle();
+            theaderStyle.setBorderBottom(BorderStyle.MEDIUM);
+            theaderStyle.setBorderTop(BorderStyle.MEDIUM);
+            theaderStyle.setBorderRight(BorderStyle.MEDIUM);
+            theaderStyle.setBorderLeft(BorderStyle.MEDIUM);
+            theaderStyle.setFillForegroundColor(IndexedColors.GOLD.index);
+            theaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
-	/**
-	 * Método que genera el template de carga masiva
-	 */
+            CellStyle tbodyStyle = workbook.createCellStyle();
+            tbodyStyle.setBorderBottom(BorderStyle.THIN);
+            tbodyStyle.setBorderTop(BorderStyle.THIN);
+            tbodyStyle.setBorderRight(BorderStyle.THIN);
+            tbodyStyle.setBorderLeft(BorderStyle.THIN);
 
-	@Override
-	public void generarTemplateAfiliadoXlsx(HttpServletResponse response) {
+            makeRowBold(workbook, encabezado);
 
-		FILENAME = "template.xlsx";
+            response.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
+            workbook.write(response.getOutputStream());
 
-		Workbook workbook = new XSSFWorkbook();
-		XSSFSheet sheet = (XSSFSheet) workbook.createSheet("Afiliado");
-		Row encabezado = sheet.createRow(0);
+            workbook.close();
 
-		String[] afiliadoFields = afiliadoService.getVariablesAfiliado();
+        } catch (Exception e) {
+            LOGGER.error("Error al momento de generar el reporte", e);
+        }
 
-		try {
+    }
 
-			int rowNum = 0;
-			int cellRowNum = 0;
-			for (int i = 2; i < afiliadoFields.length; i++) {
-				sheet.autoSizeColumn(rowNum);
+    /**
+     * Método que genera el template de carga masiva
+     */
 
-				if (afiliadoFields[i].equals("infonavit")) {
-					encabezado.createCell(rowNum++).setCellValue("¿Cuenta con crédito infonavit? (Sí/No)");
-				} else if (afiliadoFields[i].equals("fechaAlta") || afiliadoFields[i].equals("saldoAcumulado")
-						|| afiliadoFields[i].equals("saldoCorte") || afiliadoFields[i].equals("estatus")
-						|| afiliadoFields[i].equals("inscripcion") || afiliadoFields[i].equals("fechaCorte")) {
-					continue;
-				} else if (afiliadoFields[i].equals("isBeneficiario")) {
-					encabezado.createCell(rowNum++).setCellValue("¿Es Beneficiario? (Sí/No)");
-				} else if (afiliadoFields[i].equals("beneficiarios")) {
-					encabezado.createCell(rowNum++).setCellValue("RFC Afiliado (Si es beneficiario)");
-				} else {
-					encabezado.createCell(rowNum++).setCellValue(afiliadoFields[i]);
-				}
+    @Override
+    public void generarTemplateAfiliadoXlsx(HttpServletResponse response) {
 
-				switch (afiliadoFields[i]) {
+        FILENAME = "template.csv";
 
-				case "estadoCivil":
+        Workbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = (XSSFSheet) workbook.createSheet("Afiliado");
+        Row encabezado = sheet.createRow(0);
 
-					CellRangeAddressList addressListEstadoCivil = null;
+        String[] afiliadoFields = afiliadoService.getVariablesAfiliado();
 
-					cellRowNum = rowNum - 1;
+        try {
 
-					String[] listEstadoCivil = { "Soltero(a)", "Casado(a)", "Viudo(a)", "Divorciado(a)",
-							"Desconocido" };
+            int rowNum = 0;
+            int cellRowNum = 0;
+            for (int i = 3; i < afiliadoFields.length; i++) {
+                sheet.autoSizeColumn(rowNum);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                if (afiliadoFields[i].equals("infonavit")) {
+                    encabezado.createCell(rowNum++).setCellValue("¿Cuenta con crédito infonavit? (Sí/No)");
+                } else if (afiliadoFields[i].equals("fechaAlta") || afiliadoFields[i].equals("saldoAcumulado")
+                        || afiliadoFields[i].equals("saldoCorte") || afiliadoFields[i].equals("estatus")
+                        || afiliadoFields[i].equals("inscripcion") || afiliadoFields[i].equals("fechaCorte")
+                        || afiliadoFields[i].equals("relAfiliadoIncidencia")) {
+                    continue;
+                } else if (afiliadoFields[i].equals("isBeneficiario")) {
+                    encabezado.createCell(rowNum++).setCellValue("¿Es Beneficiario? (Sí/No)");
+                } else if (afiliadoFields[i].equals("beneficiarios")) {
+                    encabezado.createCell(rowNum++).setCellValue("RFC Afiliado (Si es beneficiario)");
+                } else {
+                    encabezado.createCell(rowNum++).setCellValue(afiliadoFields[i]);
+                }
 
-					for (int x = 1; x < 999; x++) {
-						addressListEstadoCivil = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                switch (afiliadoFields[i]) {
 
-					dvConstraint = dvHelper.createExplicitListConstraint(listEstadoCivil);
-					dv = dvHelper.createValidation(dvConstraint, addressListEstadoCivil);
+                    case "estadoCivil":
 
-					dv.setSuppressDropDownArrow(true);
+                        CellRangeAddressList addressListEstadoCivil = null;
 
-					sheet.addValidationData(dv);
+                        cellRowNum = rowNum - 1;
 
-					break;
+                        String[] listEstadoCivil = {"Soltero(a)", "Casado(a)", "Viudo(a)", "Divorciado(a)",
+                                "Desconocido"};
 
-				case "sexo":
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-					CellRangeAddressList addressListSexo = null;
+                        for (int x = 1; x < 999; x++) {
+                            addressListEstadoCivil = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					cellRowNum = rowNum - 1;
+                        dvConstraint = dvHelper.createExplicitListConstraint(listEstadoCivil);
+                        dv = dvHelper.createValidation(dvConstraint, addressListEstadoCivil);
 
-					String[] listSexo = { "Masculino", "Femenino" };
+                        dv.setSuppressDropDownArrow(true);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                        sheet.addValidationData(dv);
 
-					for (int x = 1; x < 999; x++) {
-						addressListSexo = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                        break;
 
-					dvConstraint = dvHelper.createExplicitListConstraint(listSexo);
-					dv = dvHelper.createValidation(dvConstraint, addressListSexo);
+                    case "sexo":
 
-					dv.setSuppressDropDownArrow(true);
+                        CellRangeAddressList addressListSexo = null;
 
-					dv.createPromptBox("Error", "Valor no permitido");
-					dv.setErrorStyle(DataValidation.ErrorStyle.STOP);
-					dv.createErrorBox("Error", "Valor no permitido");
+                        cellRowNum = rowNum - 1;
 
-					sheet.addValidationData(dv);
+                        String[] listSexo = {"Masculino", "Femenino"};
 
-					break;
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-				case "pais":
+                        for (int x = 1; x < 999; x++) {
+                            addressListSexo = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					CellRangeAddressList addresListPaises = null;
+                        dvConstraint = dvHelper.createExplicitListConstraint(listSexo);
+                        dv = dvHelper.createValidation(dvConstraint, addressListSexo);
 
-					cellRowNum = rowNum - 1;
-					List<Paises> listaPaises = afiliadoService.getAllPaises();
+                        dv.setSuppressDropDownArrow(true);
 
-					String[] arrayPaises = new String[listaPaises.size()];
+                        dv.createPromptBox("Error", "Valor no permitido");
+                        dv.setErrorStyle(DataValidation.ErrorStyle.STOP);
+                        dv.createErrorBox("Error", "Valor no permitido");
 
-					int rowPaises = 0;
-					for (Paises paises : listaPaises) {
-						arrayPaises[rowPaises++] = paises.toString();
-					}
+                        sheet.addValidationData(dv);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                        break;
 
-					for (int x = 1; x < 999; x++) {
-						addresListPaises = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                    case "pais":
 
-					dvConstraint = dvHelper.createExplicitListConstraint(arrayPaises);
-					dv = dvHelper.createValidation(dvConstraint, addresListPaises);
+                        CellRangeAddressList addresListPaises = null;
 
-					dv.setSuppressDropDownArrow(true);
+                        cellRowNum = rowNum - 1;
+                        List<Paises> listaPaises = afiliadoService.getAllPaises();
 
-					sheet.addValidationData(dv);
+                        String[] arrayPaises = new String[listaPaises.size()];
 
-					break;
+                        int rowPaises = 0;
+                        for (Paises paises : listaPaises) {
+                            arrayPaises[rowPaises++] = paises.toString();
+                        }
 
-				case "entidadFederativa":
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-					CellRangeAddressList addresListEstados = null;
+                        for (int x = 1; x < 999; x++) {
+                            addresListPaises = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					cellRowNum = rowNum - 1;
+                        dvConstraint = dvHelper.createExplicitListConstraint(arrayPaises);
+                        dv = dvHelper.createValidation(dvConstraint, addresListPaises);
 
-					List<String> listaEstados = afiliadoService.getAllEstados();
-					String[] arrayEstados = new String[listaEstados.size()];
+                        dv.setSuppressDropDownArrow(true);
 
-					int rowEstados = 0;
-					for (String estados : listaEstados) {
-						arrayEstados[rowEstados++] = estados;
-					}
+                        sheet.addValidationData(dv);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                        break;
 
-					for (int x = 1; x < 999; x++) {
-						addresListEstados = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                    case "entidadFederativa":
 
-					dvConstraint = dvHelper.createExplicitListConstraint(arrayEstados);
-					dv = dvHelper.createValidation(dvConstraint, addresListEstados);
+                        CellRangeAddressList addresListEstados = null;
 
-					dv.setSuppressDropDownArrow(true);
+                        cellRowNum = rowNum - 1;
 
-					sheet.addValidationData(dv);
+                        List<String> listaEstados = afiliadoService.getAllEstados();
+                        String[] arrayEstados = new String[listaEstados.size()];
 
-					break;
+                        int rowEstados = 0;
+                        for (String estados : listaEstados) {
+                            arrayEstados[rowEstados++] = estados;
+                        }
 
-				case "infonavit":
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-					CellRangeAddressList addresListInfonavit = null;
+                        for (int x = 1; x < 999; x++) {
+                            addresListEstados = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					cellRowNum = rowNum - 1;
+                        dvConstraint = dvHelper.createExplicitListConstraint(arrayEstados);
+                        dv = dvHelper.createValidation(dvConstraint, addresListEstados);
 
-					String[] arrayInfonavit = { "Sí", "No" };
+                        dv.setSuppressDropDownArrow(true);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                        sheet.addValidationData(dv);
 
-					for (int x = 1; x < 999; x++) {
-						addresListInfonavit = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                        break;
 
-					dvConstraint = dvHelper.createExplicitListConstraint(arrayInfonavit);
-					dv = dvHelper.createValidation(dvConstraint, addresListInfonavit);
+                    case "infonavit":
 
-					dv.setSuppressDropDownArrow(true);
+                        CellRangeAddressList addresListInfonavit = null;
 
-					sheet.addValidationData(dv);
+                        cellRowNum = rowNum - 1;
 
-					break;
+                        String[] arrayInfonavit = {"Sí", "No"};
 
-				case "servicio":
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-					CellRangeAddressList addresListServicios = null;
+                        for (int x = 1; x < 999; x++) {
+                            addresListInfonavit = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					cellRowNum = rowNum - 1;
+                        dvConstraint = dvHelper.createExplicitListConstraint(arrayInfonavit);
+                        dv = dvHelper.createValidation(dvConstraint, addresListInfonavit);
 
-					List<Servicio> listaServicios = servicioService.findAll();
-					String[] arrayServicios = new String[listaServicios.size()];
+                        dv.setSuppressDropDownArrow(true);
 
-					int rowServicios = 0;
-					for (Servicio servicios : listaServicios) {
-						arrayServicios[rowServicios++] = servicios.getNombre();
-					}
+                        sheet.addValidationData(dv);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                        break;
 
-					for (int x = 1; x < 999; x++) {
-						addresListServicios = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                    case "servicio":
 
-					dvConstraint = dvHelper.createExplicitListConstraint(arrayServicios);
-					dv = dvHelper.createValidation(dvConstraint, addresListServicios);
+                        CellRangeAddressList addresListServicios = null;
 
-					dv.setSuppressDropDownArrow(true);
+                        cellRowNum = rowNum - 1;
 
-					sheet.addValidationData(dv);
+                        List<Servicio> listaServicios = servicioService.findAll();
+                        String[] arrayServicios = new String[listaServicios.size()];
 
-					break;
-				case "periodicidad":
+                        int rowServicios = 0;
+                        for (Servicio servicios : listaServicios) {
+                            arrayServicios[rowServicios++] = servicios.getNombre();
+                        }
 
-					CellRangeAddressList addresListPeriodos = null;
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-					cellRowNum = rowNum - 1;
-					List<Periodicidad> listaPeriodos = periodicidadService.findAll();
-					String[] arrayPeriodos = new String[listaPeriodos.size()];
+                        for (int x = 1; x < 999; x++) {
+                            addresListServicios = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					int rowPeriodos = 0;
-					for (Periodicidad periodos : listaPeriodos) {
-						arrayPeriodos[rowPeriodos++] = periodos.getNombre();
-					}
+                        dvConstraint = dvHelper.createExplicitListConstraint(arrayServicios);
+                        dv = dvHelper.createValidation(dvConstraint, addresListServicios);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                        dv.setSuppressDropDownArrow(true);
 
-					for (int x = 1; x < 999; x++) {
-						addresListPeriodos = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                        sheet.addValidationData(dv);
 
-					dvConstraint = dvHelper.createExplicitListConstraint(arrayPeriodos);
-					dv = dvHelper.createValidation(dvConstraint, addresListPeriodos);
+                        break;
+                    case "periodicidad":
 
-					dv.setSuppressDropDownArrow(true);
+                        CellRangeAddressList addresListPeriodos = null;
 
-					sheet.addValidationData(dv);
+                        cellRowNum = rowNum - 1;
+                        List<Periodicidad> listaPeriodos = periodicidadService.findAll();
+                        String[] arrayPeriodos = new String[listaPeriodos.size()];
 
-					break;
+                        int rowPeriodos = 0;
+                        for (Periodicidad periodos : listaPeriodos) {
+                            arrayPeriodos[rowPeriodos++] = periodos.getNombre();
+                        }
 
-				case "isBeneficiario":
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-					CellRangeAddressList addresListIsBeneficiario = null;
+                        for (int x = 1; x < 999; x++) {
+                            addresListPeriodos = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					cellRowNum = rowNum - 1;
+                        dvConstraint = dvHelper.createExplicitListConstraint(arrayPeriodos);
+                        dv = dvHelper.createValidation(dvConstraint, addresListPeriodos);
 
-					String[] arrayIsBeneficiario = { "Sí", "No" };
+                        dv.setSuppressDropDownArrow(true);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                        sheet.addValidationData(dv);
 
-					for (int x = 1; x < 999; x++) {
-						addresListIsBeneficiario = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                        break;
 
-					dvConstraint = dvHelper.createExplicitListConstraint(arrayIsBeneficiario);
-					dv = dvHelper.createValidation(dvConstraint, addresListIsBeneficiario);
+                    case "isBeneficiario":
 
-					dv.setSuppressDropDownArrow(true);
+                        CellRangeAddressList addresListIsBeneficiario = null;
 
-					sheet.addValidationData(dv);
+                        cellRowNum = rowNum - 1;
 
-					break;
-				case "promotor":
+                        String[] arrayIsBeneficiario = {"Sí", "No"};
 
-					CellRangeAddressList addresListPromotor = null;
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-					cellRowNum = rowNum - 1;
+                        for (int x = 1; x < 999; x++) {
+                            addresListIsBeneficiario = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					List<Promotor> listaPromotores = promotorService.findAll();
-					String[] arrayPromotor = new String[listaPromotores.size()];
+                        dvConstraint = dvHelper.createExplicitListConstraint(arrayIsBeneficiario);
+                        dv = dvHelper.createValidation(dvConstraint, addresListIsBeneficiario);
 
-					int rowPromotor = 0;
-					for (Promotor promotor : listaPromotores) {
-						arrayPromotor[rowPromotor++] = promotor.getNombre();
-					}
+                        dv.setSuppressDropDownArrow(true);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                        sheet.addValidationData(dv);
 
-					for (int x = 1; x < 999; x++) {
-						addresListPromotor = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                        break;
+                    case "promotor":
 
-					dvConstraint = dvHelper.createExplicitListConstraint(arrayPromotor);
-					dv = dvHelper.createValidation(dvConstraint, addresListPromotor);
+                        CellRangeAddressList addresListPromotor = null;
 
-					dv.setSuppressDropDownArrow(true);
+                        cellRowNum = rowNum - 1;
 
-					sheet.addValidationData(dv);
+                        List<Promotor> listaPromotores = promotorService.findAll();
+                        String[] arrayPromotor = new String[listaPromotores.size()];
 
-					break;
+                        int rowPromotor = 0;
+                        for (Promotor promotor : listaPromotores) {
+                            arrayPromotor[rowPromotor++] = promotor.getNombre();
+                        }
 
-				case "cuenta":
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-					CellRangeAddressList addresListCuenta = null;
+                        for (int x = 1; x < 999; x++) {
+                            addresListPromotor = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					cellRowNum = rowNum - 1;
-					List<Cuenta> listaCuentas = cuentaService.findAll();
-					String[] arrayCuentas = new String[listaCuentas.size()];
+                        dvConstraint = dvHelper.createExplicitListConstraint(arrayPromotor);
+                        dv = dvHelper.createValidation(dvConstraint, addresListPromotor);
 
-					int rowCuentas = 0;
-					for (Cuenta cuentas : listaCuentas) {
-						arrayCuentas[rowCuentas++] = cuentas.getRazonSocial();
-					}
+                        dv.setSuppressDropDownArrow(true);
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                        sheet.addValidationData(dv);
 
-					for (int x = 1; x < 999; x++) {
-						addresListCuenta = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                        break;
 
-					dvConstraint = dvHelper.createExplicitListConstraint(arrayCuentas);
-					dv = dvHelper.createValidation(dvConstraint, addresListCuenta);
+                    case "cuenta":
 
-					dv.setSuppressDropDownArrow(true);
+                        CellRangeAddressList addresListCuenta = null;
 
-					sheet.addValidationData(dv);
+                        cellRowNum = rowNum - 1;
+                        List<Cuenta> listaCuentas = cuentaService.findAll();
+                        String[] arrayCuentas = new String[listaCuentas.size()];
 
-					break;
+                        int rowCuentas = 0;
+                        for (Cuenta cuentas : listaCuentas) {
+                            arrayCuentas[rowCuentas++] = cuentas.getRazonSocial();
+                        }
 
-				case "corte":
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-					CellRangeAddressList addresListCorte = null;
+                        for (int x = 1; x < 999; x++) {
+                            addresListCuenta = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-					cellRowNum = rowNum - 1;
-					List<Integer> listaCorte = new ArrayList<Integer>();
+                        dvConstraint = dvHelper.createExplicitListConstraint(arrayCuentas);
+                        dv = dvHelper.createValidation(dvConstraint, addresListCuenta);
 
-					for (int j = 1; j <= 31; j++) {
-						listaCorte.add(j);
-					}
+                        dv.setSuppressDropDownArrow(true);
 
-					String[] arrayCorte = new String[listaCorte.size()];
+                        sheet.addValidationData(dv);
 
-					int rowCorte = 0;
-					for (Integer corte : listaCorte) {
-						arrayCorte[rowCorte++] = corte.toString();
-					}
+                        break;
 
-					dvHelper = new XSSFDataValidationHelper(sheet);
+                    case "corte":
 
-					for (int x = 1; x < 999; x++) {
-						addresListCorte = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-					}
+                        CellRangeAddressList addresListCorte = null;
 
-					dvConstraint = dvHelper.createExplicitListConstraint(arrayCorte);
-					dv = dvHelper.createValidation(dvConstraint, addresListCorte);
+                        cellRowNum = rowNum - 1;
+                        List<Integer> listaCorte = new ArrayList<Integer>();
 
-					dv.setSuppressDropDownArrow(true);
+                        for (int j = 1; j <= 31; j++) {
+                            listaCorte.add(j);
+                        }
 
-					sheet.addValidationData(dv);
+                        String[] arrayCorte = new String[listaCorte.size()];
 
-					break;
+                        int rowCorte = 0;
+                        for (Integer corte : listaCorte) {
+                            arrayCorte[rowCorte++] = corte.toString();
+                        }
 
-				}
-			}
+                        dvHelper = new XSSFDataValidationHelper(sheet);
 
-			makeRowBold(workbook, encabezado);
+                        for (int x = 1; x < 999; x++) {
+                            addresListCorte = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
+                        }
 
-			response.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
-			workbook.write(response.getOutputStream());
+                        dvConstraint = dvHelper.createExplicitListConstraint(arrayCorte);
+                        dv = dvHelper.createValidation(dvConstraint, addresListCorte);
 
-			workbook.close();
+                        dv.setSuppressDropDownArrow(true);
 
-		} catch (Exception e) {
-			LOGGER.error("Error al momento de generar el template", e);
-		}
+                        sheet.addValidationData(dv);
 
-	}
+                        break;
 
-	/**
-	 * Método que lee el archivo de carga masiva
-	 * @throws CustomUserException 
-	 * @throws ParseException 
-	 */
+                }
 
-	public void leerArchivoCargaMasiva(XSSFWorkbook workbook) throws CustomUserException{
-		
-		LOGGER.info("Método que lee el archivo xlsx ");
+                sheet.autoSizeColumn(i);
 
-		long startTime = System.nanoTime();
+            }
 
-		Sheet sheet = workbook.getSheetAt(0);
+            makeRowBold(workbook, encabezado);
 
-		Row row;
-		Cell cell;
+            response.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
+            workbook.write(response.getOutputStream());
 
-		@SuppressWarnings("unused")
-		int numOfRow = 0;
-		@SuppressWarnings("unused")
-		int numOfCol = 0;
+            workbook.close();
 
-		@SuppressWarnings("rawtypes")
-		Iterator rows = sheet.rowIterator();
+        } catch (Exception e) {
+            LOGGER.error("Error al momento de generar el template", e);
+        }
 
-		@SuppressWarnings("resource")
-		SXSSFWorkbook SXSSF_wb = new SXSSFWorkbook(1000);
+    }
 
-		while (rows.hasNext()) {
+    /**
+     * Método que lee el archivo de carga masiva
+     *
+     * @throws CustomUserException
+     * @throws ParseException
+     */
 
-			Map<Integer, String> listString = new HashMap<Integer, String>();
-			
-			numOfRow++;
+    public void leerArchivoCargaMasiva(XSSFWorkbook workbook) throws CustomUserException {
 
-			row = (Row) rows.next();
-			@SuppressWarnings("rawtypes")
-			Iterator cells = row.cellIterator();
+        LOGGER.info("Método que lee el archivo xlsx ");
 
-			if (row.getRowNum() == 0) {
-				continue;
-			}
+        long startTime = System.nanoTime();
 
-			while (cells.hasNext()) {
+        Sheet sheet = workbook.getSheetAt(0);
 
-				numOfCol++;
+        Row row;
+        Cell cell;
 
-				cell = (Cell) cells.next();
+        @SuppressWarnings("unused")
+        int numOfRow = 0;
+        @SuppressWarnings("unused")
+        int numOfCol = 0;
 
-				if (cell.getCellType() == CellType.STRING) {
+        @SuppressWarnings("rawtypes")
+        Iterator rows = sheet.rowIterator();
 
-					System.out.println("Celdas tipo String: " + cell.getStringCellValue());
-					listString.put(cell.getColumnIndex(), row.getCell(cell.getColumnIndex()).getStringCellValue());
+        @SuppressWarnings("resource")
+        SXSSFWorkbook SXSSF_wb = new SXSSFWorkbook(1000);
 
-				}
-				if (cell.getCellType() == CellType.NUMERIC) {
+        while (rows.hasNext()) {
 
-					if (cell.getColumnIndex() == 3 || cell.getColumnIndex() == 22) {
+            Map<Integer, String> listString = new HashMap<Integer, String>();
 
-						DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-						System.out.println("Celdas tipo fecha: " + df.format(row.getCell(cell.getColumnIndex()).getDateCellValue()));
+            numOfRow++;
 
-						listString.put(cell.getColumnIndex(),
-								df.format(row.getCell(cell.getColumnIndex()).getDateCellValue()));
+            row = (Row) rows.next();
+            @SuppressWarnings("rawtypes")
+            Iterator cells = row.cellIterator();
 
-					}else if(cell.getColumnIndex() == 18 || cell.getColumnIndex() == 30) {
-						
-						System.out.println("Celdas tipo flotante: " + new Double(cell.getNumericCellValue()).intValue());
-						Integer floatColumn = new Double(cell.getNumericCellValue()).intValue();						
-						
-						listString.put(cell.getColumnIndex(), floatColumn.toString());
-						
-					}else {
+            if (row.getRowNum() == 0) {
+                continue;
+            }
 
-						Object object = row.getCell(cell.getColumnIndex()).getNumericCellValue();
-						
-						System.out.println("Celdas tipo numéricas: " + new BigDecimal(object.toString()).toPlainString());
+            while (cells.hasNext()) {
 
-						listString.put(cell.getColumnIndex(), new BigDecimal(object.toString()).toPlainString());
-					}
-				}
+                numOfCol++;
+
+                cell = (Cell) cells.next();
+
+                if (cell.getCellType() == CellType.STRING) {
+
+                    System.out.println("Celdas tipo String: " + cell.getStringCellValue());
+                    listString.put(cell.getColumnIndex(), row.getCell(cell.getColumnIndex()).getStringCellValue());
+
+                }
+                if (cell.getCellType() == CellType.NUMERIC) {
+
+                    if (cell.getColumnIndex() == 3 || cell.getColumnIndex() == 22) {
+
+                        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+                        System.out.println("Celdas tipo fecha: " + df.format(row.getCell(cell.getColumnIndex()).getDateCellValue()));
+
+                        listString.put(cell.getColumnIndex(),
+                                df.format(row.getCell(cell.getColumnIndex()).getDateCellValue()));
+
+                    } else if (cell.getColumnIndex() == 18 || cell.getColumnIndex() == 30) {
+
+                        System.out.println("Celdas tipo flotante: " + new Double(cell.getNumericCellValue()).intValue());
+                        Integer floatColumn = new Double(cell.getNumericCellValue()).intValue();
+
+                        listString.put(cell.getColumnIndex(), floatColumn.toString());
+
+                    } else {
+
+                        Object object = row.getCell(cell.getColumnIndex()).getNumericCellValue();
+
+                        System.out.println("Celdas tipo numéricas: " + new BigDecimal(object.toString()).toPlainString());
+
+                        listString.put(cell.getColumnIndex(), new BigDecimal(object.toString()).toPlainString());
+                    }
+                }
 
 //				System.out.println(cell.getColumnIndex());
-			}
+            }
 
-			numOfCol = 0;
-			
-			insertFromExcel.insertToDBFromExcel(listString);
-			
-		}		
-		
+            numOfCol = 0;
 
-		System.gc();
-		SXSSF_wb.dispose();
+            insertFromExcel.insertToDBFromExcel(listString);
 
-		long endTime = System.nanoTime();
+        }
 
-		LOGGER.info("Tiempo de ejecución en segundos " + (endTime - startTime) / 1000000000);
 
-	}
+        System.gc();
+        SXSSF_wb.dispose();
 
-	private static void makeRowBold(Workbook workbook, Row row) {
+        long endTime = System.nanoTime();
 
-		CellStyle style = workbook.createCellStyle();
-		Font font = workbook.createFont();
-		font.setBold(true);
-		style.setFont(font);
+        LOGGER.info("Tiempo de ejecución en segundos " + (endTime - startTime) / 1000000000);
 
-		for (int i = 0; i < row.getLastCellNum(); i++) {
-			row.getCell(i).setCellStyle(style);
-		}
+    }
 
-	}
+    private static void makeRowBold(Workbook workbook, Row row) {
+
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        for (int i = 0; i < row.getLastCellNum(); i++) {
+            row.getCell(i).setCellStyle(style);
+        }
+
+    }
 
 }

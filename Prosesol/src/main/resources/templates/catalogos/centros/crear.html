@@ -27,48 +27,48 @@
 									th:object="${centroContacto}" method="post">
 									<div class="row">
 										<div class="form-group col-md-4">
-											<label for="company">Nombre*</label> <input type="text"
+											<label >Nombre*</label> <input type="text"
 												th:field="*{nombre}" class="form-control form-control-user">
 											<small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">Descripción</label> 
+											<label >Descripción</label>
 											<input type="text"
 												th:field="*{descripcion}"
 												class="form-control form-control-user">
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">Teléfono 1</label> 
+											<label >Teléfono 1</label>
 											<input type="text"
 												th:field="*{telefono1}"
 												class="form-control form-control-user">
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">Teléfono 2</label> 
+											<label >Teléfono 2</label>
 											<input type="text"
 												th:field="*{telefono2}"
 												class="form-control form-control-user">
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">Nombre del Responsable</label> 
+											<label >Nombre del Responsable</label>
 											<input type="text"
 												th:field="*{nombreResponsable}"
 												class="form-control form-control-user">
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">Teléfono del Responsable</label> 
+											<label >Teléfono del Responsable</label>
 											<input type="text"
 												th:field="*{telefonoResponsable}"
 												class="form-control form-control-user">
 										</div>
 										
 										<div class="form-group col-md-4">
-											<label for="company">Correo del Responsable del Centro</label> 
+											<label >Correo del Responsable del Centro</label>
 											<input type="text"
 												th:field="*{mailResponsable}"
 												class="form-control form-control-user">
