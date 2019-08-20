@@ -10,8 +10,6 @@ public interface IReportesExcel {
 
 	public void generarReporteAfiliadoXlsx(List<Afiliado> afiliados, HttpServletResponse response);
 	
-	public void generarReporteAfiliadoXls(List<Afiliado> afiliados, HttpServletResponse response);
-	
 	public void generarTemplateAfiliadoXlsx(HttpServletResponse response);
 	
 }

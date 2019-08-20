@@ -42,7 +42,6 @@ public class AfiliadoRestController {
 
             for (Afiliado afiliado : afiliados) {
                 data += "{" +
-                        "\"id\" :" + "\"" + afiliado.getId() + "\", " +
                         "\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
                         "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
                         "\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
@@ -50,7 +49,8 @@ public class AfiliadoRestController {
                         "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
                         "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
                         "\"estatus\" : " + "\"" + (afiliado.getEstatus() == 1 ? "Activo" : "Inactivo") + "\", " +
-                        "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}" +
+                        "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
+                        "\"id\" :" + "\"" + afiliado.getId() + "\"" +
                         "}";
                 if (index < totalAfiliados) {
                     data += ",";

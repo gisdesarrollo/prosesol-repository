@@ -32,7 +32,7 @@
 											th:object="${perfil}" method="post">
 											<div class="row">
 												<div class="form-group col-md-3">
-													<label for="company">Nombre Perfil*</label><input
+													<label >Nombre Perfil*</label><input
 														type="text" th:field="*{nombre}"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
@@ -41,7 +41,7 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Descripción</label><input type="text"
+													<label >Descripción</label><input type="text"
 														th:field="*{descripcion}"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
@@ -50,7 +50,7 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Roles</label> <select name="roles"
+													<label >Roles</label> <select name="roles"
 														th:field="*{roles}" class="custom-select"
 														id="inputGroupSelect01">
 														<option th:each="roles : ${roles}" th:value="${roles.id}"

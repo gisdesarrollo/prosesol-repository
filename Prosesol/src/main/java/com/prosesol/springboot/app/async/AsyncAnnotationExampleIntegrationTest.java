@@ -17,26 +17,18 @@ public class AsyncAnnotationExampleIntegrationTest {
 	private AsyncComponent asyncComponent;
 	
 	@Test
-	public void sendAsynchronousMails() throws ExecutionException {
-		asyncComponent.sendMails(100);
-		System.out.println(asyncComponent.getMailSender());
-		
-		sleepALittle(10000);
-		
-		System.out.println(asyncComponent.getMailSender());
-		
-//		stopSendMails();
+	public void sendAsynchronousMails() throws InterruptedException {
+		System.out.println("Starts - invoking an asynchronous method " + Thread.currentThread().getName());
+		asyncComponent.asyncMethodVoidReturnType(true);
+		System.out.println("End - invoking an asynchronous method. " + Thread.currentThread().getName());
+		Thread.sleep(250);
 	}
 
-//	private void stopSendMails() {
-//		asyncComponent.getResult().cancel(true);	
-//	}
-
-	private void sleepALittle(int time) {
-		try {
-			Thread.sleep(time);
-		}catch(InterruptedException e) {
-			e.printStackTrace();
-		}
+	@Test
+	public void sendAsynchronousMailsThrowingException() throws InterruptedException {
+		System.out.println("Starts - invoking an asynchronous method to throw Exception" + Thread.currentThread().getName());
+		asyncComponent.asyncMethodVoidReturnType(false);
+		Thread.sleep(10000);
 	}
+
 }

@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
-</head>
-<body
-	class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-	<header th:replace="fragments/header :: header"></header>
-	<div class="app-body">
-		<div th:replace="fragments/sidebar :: sidebar"></div>
+<head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8"/>
+<body>
+<div class="page-wrapper">
+    <!-- Page Top Bar Area -->
+    <div th:replace="fragments/header :: header"></div>
+    <div class="layout-container-area mt-70">
+        <!-- Side Menu Area -->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<main class="main">
+        <!-- Layout Container -->
+        <div class="layout-container sidemenu-container">
+            <div class="container-fluid">
+                <div class="row ">
 
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item"><a th:href="@{/}">Carga Masiva</a></li>
-			<li class="breadcrumb-item active">Afiliados</li>
-		</ol>
+                    <div class="col-md mb-4">
+                        <!-- Card Body -->
+                        <div class="card-body bg-white appwork bg-boxshadow-2">
+                            <h5 class="card-title">Carga Masiva de Afiliados</h5>
 
-		<div class="container-fluid">
-			<div class="animated fadeIn">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-						<div th:replace="fragments/navbar :: div-messages"></div>
-							<div class="card-header">Carga Masiva</div>
-							<div class="card-body">
-								<p>Carga masiva de Afiliados</p>
-								<div class="clearfix"></div>
-								<hr>
-								<div class="row">
-									<div class="col-md-12">
-										<form th:action="@{/cargaMasiva/upload}" th:object="${file}" method="post" enctype="multipart/form-data">
-											<b>1.- Descargue la <a th:href="@{/cargaMasiva/templateXlsx}">plantilla</a> para realizar la carga masiva de Afiliados</b>
-											<br>
-											<b>2.- Cargue la plantilla con los datos del afiliado que desee guardar en el sistema </b>
-											<div>
-												<input type="file" name="file"/>
-											</div>
-											<hr>
-											<div class="clearfix"></div>
-											<div class="row">
-												<div class="col-sm-12">
-													<button type="submit" class="btn btn-primary btn-square float-right">Cargar Archivo</button>
-												</div>
-											</div>											
-										</form>
-									</div>
-								</div>									
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</main>
-	</div>
-	<footer th:replace="fragments/footer :: footer"></footer>
+                            <div class="clearfix"></div>
+                            <hr>
+                            <form th:action="@{/cargaMasiva/upload}" method="post"
+                                  enctype="multipart/form-data">
+                                <b>1.- Descargue la <a th:href="@{/cargaMasiva/templateXlsx}">plantilla</a> para
+                                    realizar la carga masiva de Afiliados</b>
+                                <br>
+                                <b>2.- Cargue la plantilla con los datos del afiliado que desee guardar en el
+                                    sistema </b>
+                                <div>
+                                    <input type="file" name="file"/>
+                                </div>
+                                <hr>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button type="submit" class="btn btn-primary btn-square float-right">Cargar
+                                            Archivo
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 
 </html>

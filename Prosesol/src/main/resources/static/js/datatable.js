@@ -1,23 +1,22 @@
 $(function(){
 
+    var position = '';
+
+
 	$('#afiliados').DataTable({
 		'ajax' : '/data/afiliados',
 		'processing' : true,
 		'serverSide' : true,
 		'paging' : true,
 		columns : [{
-			data : 'id',
-			render : function(data, type, row, meta){
-				return type === 'display' ?
-						'<button class="btn m-2 rounded-0 btn-sm btn-primary">Editar</button>':
-						data;
-			}
+			data : 'nombre',
+			orderable : true
 		},{
-			data : 'nombre'
+		    data : 'apellidoPaterno',
+		    orderable : true
 		},{
-		    data : 'apellidoPaterno'
-		},{
-		    data : 'apellidoMaterno'
+		    data : 'apellidoMaterno',
+		    orderable : true
 		},{
 			data : 'clave'
 		},{
@@ -28,8 +27,14 @@ $(function(){
 		    data: 'estatus'
 		},{
 		    data : 'servicio.nombre'
-		}],
-		dataSrc : ""
+		},{
+            data : 'id',
+            render : function(data, type, row, meta){
+                return type === 'display' ?
+                        '<button class="btn m-2 rounded-0 btn-sm btn-primary">Editar</button>':
+                        data;
+            }
+        }]
 	});
 	
 	$('#afiliados tbody').on('click', 'button', function(e){

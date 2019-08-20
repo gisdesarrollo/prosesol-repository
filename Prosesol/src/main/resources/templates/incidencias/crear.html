@@ -69,35 +69,35 @@
                                     <div class="row">
 
                                         <div class="form-group col-md-3">
-                                            <label for="company">Fecha de Solicitud</label>
+                                            <label >Fecha de Solicitud</label>
                                             <input type="text" th:field="*{fecha}" class="form-control form-control-user fecha" placeholder="">
                                         </div>
 
                                         <div class="form-group col-md-3">
-                                            <label for="company">Hora</label>
+                                            <label >Hora</label>
                                             <input type="text" name="hora" th:field="*{hora}" placeholder="hh:mm:ss" class="hora form-control form-control-user">
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="form-group col-md-3">
-                                            <label for="company">Fecha de creación</label>
+                                            <label >Fecha de creación</label>
                                             <br>
                                             <input readonly class="form-control" th:value="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></input>
                                         </div>
 
                                         <div class="form-group col-md-3">
-                                            <label for="company">Localización de Solicitud</label>
+                                            <label >Localización de Solicitud</label>
                                             <input type="text" th:field="*{localizacion}" class="form-control form-control-user" placeholder="">
                                         </div>
 
                                         <div class="form-group col-md-3">
-                                            <label for="company">Proveedor de Asistencia</label>
+                                            <label >Proveedor de Asistencia</label>
                                             <input type="text" th:field="*{proveedor}" class="form-control form-control-user" placeholder="">
                                         </div>
 
                                         <div class="form-group col-md-3">
-                                            <label for="company">Tipo de Incidencia</label>
+                                            <label >Tipo de Incidencia</label>
                                             <select th:field="*{tipoIncidencia}" class="form-control" id="inputGroupSelect01">
                                                 <option value="">Opciones</option>
                                                 <option th:value="'Cotización'" th:selected>Cotización</option>

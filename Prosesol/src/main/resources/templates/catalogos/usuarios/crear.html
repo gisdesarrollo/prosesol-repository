@@ -34,7 +34,7 @@
 											th:object="${usuario}" method="post">
 											<div class="row">
 												<div class="form-group col-md-3">
-													<label for="company">Nombre*</label> <input type="text"
+													<label >Nombre*</label> <input type="text"
 														th:field="*{nombre}"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
@@ -43,7 +43,7 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Nombre de usuario*</label> <input
+													<label >Nombre de usuario*</label> <input
 														type="text" th:field="*{username}"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
@@ -52,7 +52,7 @@
 												</div>
 												
 												<div class="form-group col-md-3">
-													<label for="company">Correo electrónico*</label> <input
+													<label >Correo electrónico*</label> <input
 														type="text" th:field="*{email}"
 														class="form-control form-control-user"> <small
 														class="form-text text-danger"
@@ -61,7 +61,7 @@
 												</div>
 
 												<div class="form-group col-md-3">
-													<label for="company">Perfil</label> 
+													<label >Perfil</label>
 														<select name="perfiles" th:field="*{perfiles}" 
 															    class="custom-select" id="inputGroupSelect01">
 														<option th:each="perfil : ${litaPerfiles}"
@@ -75,13 +75,13 @@
 												</div>
 												
 												<div class="form-group col-md-3">
-													<label for="company">¿Es Centro de Asistencia?</label>
+													<label >¿Es Centro de Asistencia?</label>
 													<input type="checkbox" id="cbCentroAsistencia"/>
 													<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
 												</div>
 												
 												<div class="form-group col-md-3">
-													<label for="company">Centro Asistencia</label>
+													<label >Centro Asistencia</label>
 													<select	name ="centroContacto" th:field="*{centroContacto}" class="custom-select"
 														id="inputCentroAsistencia">
 														<option value="">Ninguno</option>
