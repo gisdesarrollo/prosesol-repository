@@ -19,11 +19,4 @@ public class AsyncComponent {
 		}
 	}
 
-	@Async("threadCargaMasiva")
-	public void asyncCargaMasiva(byte[] bs) throws InterruptedException {
-		Thread.sleep(10000);
-
-		System.out.println("Entra al método para la lectura de archvio");
-		System.out.println(new String(bs));
-	}
 }

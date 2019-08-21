@@ -1,22 +1,28 @@
 $(function(){
 
-    var position = '';
-
-
 	$('#afiliados').DataTable({
 		'ajax' : '/data/afiliados',
 		'processing' : true,
 		'serverSide' : true,
 		'paging' : true,
 		columns : [{
-			data : 'nombre',
-			orderable : true
+            data : 'id',
+            render : function(data, type, row, meta){
+
+                return type === 'display' ?	'<div class="dropdown">'+
+                '<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-stream"></i></button>'+
+                '<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" >'+
+                '<a class="dropdown-item" id="editar" >Editar</a>'+
+                '<a class="dropdown-item border-top text-danger" id="borrar">Borrar</a>'+
+                '</div></div>'	:data;
+
+            }
 		},{
-		    data : 'apellidoPaterno',
-		    orderable : true
+			data : 'nombre'
 		},{
-		    data : 'apellidoMaterno',
-		    orderable : true
+		    data : 'apellidoPaterno'
+		},{
+		    data : 'apellidoMaterno'
 		},{
 			data : 'clave'
 		},{
@@ -27,20 +33,31 @@ $(function(){
 		    data: 'estatus'
 		},{
 		    data : 'servicio.nombre'
-		},{
-            data : 'id',
-            render : function(data, type, row, meta){
-                return type === 'display' ?
-                        '<button class="btn m-2 rounded-0 btn-sm btn-primary">Editar</button>':
-                        data;
-            }
-        }]
+		}],
+		dataSrc : ""
+
 	});
-	
-	$('#afiliados tbody').on('click', 'button', function(e){
+
+
+
+	$('#afiliados tbody').on('click', '#editar', function(e){
 		var tr = $(this).closest("tr");
 		var data = $('#afiliados').DataTable().row(tr).data();
 		document.location.href = '/afiliados/editar/' + data.id;
 	});
-	
+
+	$('#afiliados tbody').on('click', '#borrar', function(e){
+
+		var mensaje='Deseas Eliminar Este Afiliado';
+		var confirma=confirm('Deseas Eliminar El Afiliado');
+
+		if(confirma!=false){
+			var tr = $(this).closest("tr");
+			var data = $('#afiliados').DataTable().row(tr).data();
+			document.location.href = '/afiliados/eliminar/' + data.id;
+
+		}else{
+
+		}
+	});
 });
