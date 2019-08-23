@@ -116,6 +116,12 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Override
 	@Transactional(readOnly = true)
+	public List<Afiliado> getAfiliadoBySearchNombreCompleto(String nombre, String apellidoPaterno, String apellidoMaterno) {
+		return iAfiliadoDao.getAfiliadoBySearchNombreCompleto(nombre, apellidoPaterno, apellidoMaterno);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public Long getIdAfiliadoByNombreCompleto(String nombre, String apellidoPaterno, String apellidoMaterno) {
 		return iAfiliadoDao.getIdAfiliadoByNombreCompleto(nombre, apellidoPaterno, apellidoMaterno);
 	}
