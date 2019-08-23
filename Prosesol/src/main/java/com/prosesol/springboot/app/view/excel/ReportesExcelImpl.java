@@ -577,7 +577,7 @@ public class ReportesExcelImpl implements IReportesExcel {
 
             numOfCol = 0;
 
-            insertFromExcel.insertToDBFromExcel(listString);
+//            insertFromExcel.insertToDBFromExcel(listString);
 
         }
 

@@ -35,7 +35,8 @@ public class AfiliadoRestController {
     public @ResponseBody
     void getAfiliado(DataTablesInput input, HttpServletResponse response) {
 
-        System.out.println(input.getColumns());
+        String estatus = "";
+
         DataTablesOutput<Afiliado> dtoAfiliado = afiliadoDao.findAll(input);
 
         try {
@@ -48,6 +49,15 @@ public class AfiliadoRestController {
             int index = 1;
 
             for (Afiliado afiliado : afiliados) {
+
+                if(afiliado.getEstatus() == 1){
+                    estatus = "Activo";
+                }else if(afiliado.getEstatus() == 2){
+                    estatus = "Inactivo";
+                }else if(afiliado.getEstatus() == 3){
+                    estatus = "Candidato";
+                }
+
                 data += "{" +
                         "\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
                         "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
@@ -55,7 +65,7 @@ public class AfiliadoRestController {
                         "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
                         "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
                         "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
-                        "\"estatus\" : " + "\"" + (afiliado.getEstatus() == 1 ? "Activo" : "Inactivo") + "\", " +
+                        "\"estatus\" : " + "\"" + estatus + "\", " +
                         "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
                         "\"id\" :" + "\"" + afiliado.getId() + "\"" +
                         "}";
@@ -68,42 +78,146 @@ public class AfiliadoRestController {
             }
 
             if(data == ""){
+
+                int nIndex = 1;
                 String[] nombreCompleto = input.getSearch().getValue().split(" ");
-                if(nombreCompleto.length == 3){
-                    Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0], nombreCompleto[1], nombreCompleto[2]);
-                    if(claveAfiliado != null && claveAfiliado > 0){
-                        Afiliado afiliado = afiliadoService.findById(claveAfiliado);
-                        data += "{" +
-                                "\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
-                                "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
-                                "\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
-                                "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
-                                "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
-                                "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
-                                "\"estatus\" : " + "\"" + (afiliado.getEstatus() == 1 ? "Activo" : "Inactivo") + "\", " +
-                                "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
-                                "\"id\" :" + "\"" + afiliado.getId() + "\"" +
-                                "}";
+                if(nombreCompleto.length == 2){
+                    List<Afiliado> lAfiliados = afiliadoService.getAfiliadoBySearchNombreCompleto(nombreCompleto[0],
+                            nombreCompleto[1], "");
+                    int totalAfiliadosBusqueda = lAfiliados.size();
+                    if(lAfiliados != null && lAfiliados.size() > 0) {
+                        for (Afiliado afiliado : lAfiliados) {
+
+                            if(afiliado.getEstatus() == 1){
+                                estatus = "Activo";
+                            }else if(afiliado.getEstatus() == 2){
+                                estatus = "Inactivo";
+                            }else if(afiliado.getEstatus() == 3){
+                                estatus = "Candidato";
+                            }
+
+                            data += "{" +
+                                    "\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
+                                    "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
+                                    "\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
+                                    "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
+                                    "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                                    "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
+                                    "\"estatus\" : " + "\"" + estatus + "\", " +
+                                    "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
+                                    "\"id\" :" + "\"" + afiliado.getId() + "\"" +
+                                    "}";
+                            if (nIndex < totalAfiliadosBusqueda) {
+                                data += ",";
+                            }
+
+                            logger.info(data);
+                            nIndex++;
+                        }
                     }
-                    logger.info(data);
+                }
+                if(nombreCompleto.length == 3){
+                    List<Afiliado> lAfiliados = afiliadoService.getAfiliadoBySearchNombreCompleto(
+                            nombreCompleto[0], nombreCompleto[1], nombreCompleto[2]);
+                    int totalAfiliadosBusqueda = lAfiliados.size();
+                    if(lAfiliados != null && lAfiliados.size() > 0) {
+                        for (Afiliado afiliado : lAfiliados) {
+
+                            if(afiliado.getEstatus() == 1){
+                                estatus = "Activo";
+                            }else if(afiliado.getEstatus() == 2){
+                                estatus = "Inactivo";
+                            }else if(afiliado.getEstatus() == 3){
+                                estatus = "Candidato";
+                            }
+
+                            data += "{" +
+                                    "\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
+                                    "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
+                                    "\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
+                                    "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
+                                    "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                                    "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
+                                    "\"estatus\" : " + "\"" + estatus + "\", " +
+                                    "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
+                                    "\"id\" :" + "\"" + afiliado.getId() + "\"" +
+                                    "}";
+                            if (nIndex < totalAfiliadosBusqueda) {
+                                data += ",";
+                            }
+
+                            logger.info(data);
+                            nIndex++;
+                        }
+                    }else{
+                        lAfiliados = afiliadoService.getAfiliadoBySearchNombreCompleto(
+                                nombreCompleto[0] + ' ' + nombreCompleto[1], nombreCompleto[2], "%%");
+                        if(lAfiliados != null && lAfiliados.size() > 0) {
+                            for (Afiliado afiliado : lAfiliados) {
+
+                                if(afiliado.getEstatus() == 1){
+                                    estatus = "Activo";
+                                }else if(afiliado.getEstatus() == 2){
+                                    estatus = "Inactivo";
+                                }else if(afiliado.getEstatus() == 3){
+                                    estatus = "Candidato";
+                                }
+
+                                data += "{" +
+                                        "\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
+                                        "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
+                                        "\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
+                                        "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
+                                        "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                                        "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
+                                        "\"estatus\" : " + "\"" + estatus + "\", " +
+                                        "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
+                                        "\"id\" :" + "\"" + afiliado.getId() + "\"" +
+                                        "}";
+                                if (nIndex < totalAfiliadosBusqueda) {
+                                    data += ",";
+                                }
+
+                                logger.info(data);
+                                nIndex++;
+                            }
+                        }
+                    }
                 }
                 if(nombreCompleto.length == 4){
-                    Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0] + " " + nombreCompleto[1], nombreCompleto[2], nombreCompleto[3]);
-                    if(claveAfiliado != null && claveAfiliado > 0){
-                        Afiliado afiliado = afiliadoService.findById(claveAfiliado);
-                        data += "{" +
-                                "\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
-                                "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
-                                "\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
-                                "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
-                                "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
-                                "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
-                                "\"estatus\" : " + "\"" + (afiliado.getEstatus() == 1 ? "Activo" : "Inactivo") + "\", " +
-                                "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
-                                "\"id\" :" + "\"" + afiliado.getId() + "\"" +
-                                "}";
+                    List<Afiliado> lAfiliados = afiliadoService.getAfiliadoBySearchNombreCompleto(
+                            nombreCompleto[0] + ' ' + nombreCompleto[1], nombreCompleto[2], nombreCompleto[3]);
+                    int totalAfiliadosBusqueda = lAfiliados.size();
+                    if(lAfiliados != null && lAfiliados.size() > 0) {
+                        for (Afiliado afiliado : lAfiliados) {
+
+                            if(afiliado.getEstatus() == 1){
+                                estatus = "Activo";
+                            }else if(afiliado.getEstatus() == 2){
+                                estatus = "Inactivo";
+                            }else if(afiliado.getEstatus() == 3){
+                                estatus = "Candidato";
+                            }
+
+                            data += "{" +
+                                    "\"nombre\" :" + "\"" + afiliado.getNombre() + "\", " +
+                                    "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
+                                    "\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
+                                    "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
+                                    "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                                    "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
+                                    "\"estatus\" : " + "\"" + (afiliado.getEstatus() == 1 ? "Activo" : "Inactivo") + "\", " +
+                                    "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
+                                    "\"id\" :" + "\"" + afiliado.getId() + "\"" +
+                                    "}";
+                            if (nIndex < totalAfiliadosBusqueda) {
+                                data += ",";
+                            }
+
+                            logger.info(data);
+                            nIndex++;
+                        }
                     }
-                    logger.info(data);
                 }
             }
 

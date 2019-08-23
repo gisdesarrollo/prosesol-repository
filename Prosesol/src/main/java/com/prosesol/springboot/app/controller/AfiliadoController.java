@@ -270,7 +270,7 @@ public class AfiliadoController {
 	 */
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
-	@RequestMapping(value = "/ver/{id}")
+	@RequestMapping(value = "/cambiar_estatus/{id}")
 	public String actDesctAfiliado(@PathVariable(value = "id") Long id, RedirectAttributes redirect,
 			SessionStatus status) {
 

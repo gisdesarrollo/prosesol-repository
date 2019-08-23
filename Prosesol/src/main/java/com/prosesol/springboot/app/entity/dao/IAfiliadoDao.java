@@ -24,5 +24,10 @@ public interface IAfiliadoDao extends DataTablesRepository<Afiliado, Long>{
 	
 	@Query(value = "select a.id_afiliado from afiliados a where a.nombre like %?1% and a.apellido_paterno like ?2 and a.apellido_materno like ?3", nativeQuery = true)
 	public Long getIdAfiliadoByNombreCompleto(String nombre, String apellidoPaterno, String apellidoMaterno);
+
+	@Query(value = "select a.* from afiliados a where a.nombre like %?1% and a.apellido_paterno like %?2% " +
+                   "and a.apellido_materno like %?3%", nativeQuery = true)
+	public List<Afiliado> getAfiliadoBySearchNombreCompleto(String nombre, String apellidoPaterno,
+															String apellidoMaterno);
 	
 }

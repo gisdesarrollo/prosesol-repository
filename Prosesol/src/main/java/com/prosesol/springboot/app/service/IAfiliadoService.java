@@ -38,4 +38,7 @@ public interface IAfiliadoService {
 	public Long getIdAfiliadoByRfc(String rfc);
 	
 	public List<AfiliadoCustom> getAfiliadoByParams(String[] campos, Long idCcUsuario);
+
+	public List<Afiliado> getAfiliadoBySearchNombreCompleto(String nombre, String apellidoPaterno,
+															String apellidoMaterno);
 }

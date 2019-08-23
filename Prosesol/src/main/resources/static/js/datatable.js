@@ -13,6 +13,7 @@ $(function(){
                 '<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-stream"></i></button>'+
                 '<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" >'+
                 '<a class="dropdown-item" id="editar" >Editar</a>'+
+                '<a class="dropdown-item border-top text-warning" id="cambiar">Activar o Desactivar Afiliado</a>' +
                 '<a class="dropdown-item border-top text-danger" id="borrar">Borrar</a>'+
                 '</div></div>'	:data;
 
@@ -60,4 +61,10 @@ $(function(){
 
 		}
 	});
+
+	$('#afiliados tbody').on('click', '#cambiar', function(e){
+        var tr = $(this).closest("tr");
+        var data = $('#afiliados').DataTable().row(tr).data();
+        document.location.href = '/afiliados/cambiar_estatus/' + data.id;
+    });
 });
