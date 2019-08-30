@@ -20,6 +20,7 @@
                         <div class="col-md mb-4">
                             <!-- Card Body -->
                             <div class="card-body bg-white appwork bg-boxshadow-2">
+                                <div th:replace="fragments/navbar :: div-messages"></div>
                                 <h5 class="card-title">Editar Servicio</h5>
 
                                 <div class="clearfix"></div>
@@ -170,6 +171,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-primary btn-square btnEliminarBeneficios" name="action" value="delete">Eliminar Beneficio</button>
                                             <button type="submit" class="btn btn-primary btn-square float-right" name="action" value="save">Guardar Servicio</button>
                                         </div>
                                     </div>

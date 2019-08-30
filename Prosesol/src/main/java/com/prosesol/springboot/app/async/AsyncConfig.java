@@ -1,7 +1,6 @@
 package com.prosesol.springboot.app.async;
 
-import com.prosesol.springboot.app.exception.CustomAsynExceptionHandler;
-import org.apache.tomcat.util.threads.ThreadPoolExecutor;
+import com.prosesol.springboot.app.exception.CustomAsyncExceptionHandler;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -36,6 +35,6 @@ public class AsyncConfig implements AsyncConfigurer {
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new CustomAsynExceptionHandler();
+        return new CustomAsyncExceptionHandler();
     }
 }

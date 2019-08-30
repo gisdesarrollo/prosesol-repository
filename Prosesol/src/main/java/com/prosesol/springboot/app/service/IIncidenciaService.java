@@ -1,8 +1,9 @@
 package com.prosesol.springboot.app.service;
 
-import java.util.List;
-
 import com.prosesol.springboot.app.entity.Incidencia;
+import com.prosesol.springboot.app.entity.custom.IncidenciaCustom;
+
+import java.util.List;
 
 public interface IIncidenciaService {
 
@@ -14,5 +15,7 @@ public interface IIncidenciaService {
 	
 	public void deleteById(Long id);
 	
-	public List<Incidencia> getIncidenciasByUserName(String username);	
+	public List<Incidencia> getIncidenciasByUserName(String username);
+
+	public List<IncidenciaCustom> getHistorialIncidenciaByIdAfiliado(Long id);
 }

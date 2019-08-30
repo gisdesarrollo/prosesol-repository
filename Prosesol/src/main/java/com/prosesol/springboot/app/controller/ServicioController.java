@@ -263,7 +263,7 @@ public class ServicioController {
 	/**
 	 * Método para la edición del Servicio
 	 * 
-	 * @param id
+	 * @param idServicio
 	 * @param model
 	 * @param redirect
 	 * @return
@@ -382,7 +382,7 @@ public class ServicioController {
 
 		redirect.addFlashAttribute("success", "Beneficios eliminados correctamente");
 
-		return "redirect:/servicios/editar/" + idServicioGeneral;
+		return "redirect:/servicios/ver/";
 	}
 
 	/**
@@ -455,35 +455,45 @@ public class ServicioController {
 			 
 			 boolean isTitular = false;
 			 boolean isBeneficiario = false;
-			 
-			 for(Long idTitular : titular) {				 
-				 if(titular != null && id == idTitular) {					 
-					 for(Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
-							if(entry.getKey() == id) {
-								relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true, false, entry.getValue());
-								break;
-							}
-					 }			
-					 
-					 isTitular = true;
-					 break;
+
+			 if(titular != null && titular.size() > 0 ) {
+				 for (Long idTitular : titular) {
+					 if (id == idTitular) {
+						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+							 if (entry.getKey() == id) {
+								 relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true, false, entry.getValue());
+								 break;
+							 }
+						 }
+
+						 isTitular = true;
+						 break;
+					 }
+				 }
+			 }else{
+				 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+					 if (entry.getKey() == id) {
+						 relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false, false, entry.getValue());
+						 break;
+					 }
 				 }
 			 }
-			 
-			 for(Long idBeneficiario : beneficiario) {
-				 if(beneficiario != null && id == idBeneficiario) {
-					 
-					 for(Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
-							if(entry.getKey() == id) {
-								relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false, true, entry.getValue());
-								break;
-							}
+
+			 if(beneficiario != null && beneficiario.size() > 0) {
+				 for (Long idBeneficiario : beneficiario) {
+					 if (id == idBeneficiario) {
+						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+							 if (entry.getKey() == id) {
+								 relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false, true, entry.getValue());
+								 break;
+							 }
+						 }
+						 isBeneficiario = true;
+						 break;
 					 }
-					 
-					 isBeneficiario = true;	
-					 break;
-				 }			 
+				 }
 			 }
+
 			 if(isTitular && isBeneficiario) {
 				 for(Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
 						if(entry.getKey() == id) {

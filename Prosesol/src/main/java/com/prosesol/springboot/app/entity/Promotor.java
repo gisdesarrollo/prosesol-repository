@@ -61,7 +61,7 @@ public class Promotor implements Serializable {
 	@OneToMany(mappedBy = "promotor", fetch = FetchType.LAZY)
 	private Set<Afiliado> afiliado;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "rel_promotores_cuentas", joinColumns = @JoinColumn(name = "id_promotor"), inverseJoinColumns = @JoinColumn(name = "id_cta_comercial"), uniqueConstraints = @UniqueConstraint(columnNames = {
 			"id_promotor", "id_cta_comercial" }))
 	private Set<Cuenta> cuentas;

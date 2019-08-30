@@ -4,15 +4,10 @@ import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
+import com.prosesol.springboot.app.util.AfiliadoExcelEval;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,55 +33,44 @@ public class InsertFromExcel {
 
 	private static final Log LOGGER = LogFactory.getLog(InsertFromExcel.class);
 
-	@Value("${app.clave}")
-	private String clave;
-
 	@Autowired
-	private IAfiliadoService afiliadoService;
+	AfiliadoExcelEval afiliadoExcelEval;
 
-	@Autowired
-	private IPeriodicidadService periodicidadService;
+	/**
+	 * Método que funciona para insertar a la BBDD
+	 * @param values
+	 * @return
+	 */
 
-	@Autowired
-	private ICuentaService cuentaService;
+	public List<String> insertAfiliados(String[] values, final int valoresCapturados){
 
-	@Autowired
-	private IPromotorService promotorService;
+		List<String> log = new ArrayList<String>();
 
-	@Autowired
-	private IServicioService servicioService;
+		Map<Integer, String> campos = new HashMap<Integer, String>();
 
-	@Autowired
-	private CalcularFecha calcularFechas;
+		int counter = 0;
+		int startIndex = 0;
+		int endIndex = valoresCapturados;
 
-	private String servicioString;
-	private String periodoString;
-	private String promotorString;
-	private String cuentaString;
-	private String isBeneficiario;
-	private String rfcAfiliado;
+		System.out.println(valoresCapturados);
 
-	private int corte;
-	private Long idAfiliado;
+		//Evalua los datos que vienen del array para generar un TXT con los errores o inserciones
 
-	public List<String> insertAfiliados(String[] values){
+		while(endIndex <= values.length){
 
-		for(String s : values){
-			System.out.println("Valores: " + s);
+			String[] copy = Arrays.copyOfRange(values, startIndex, endIndex);
+
+			for(int i = 0; i < copy.length; i++){
+				campos.put(i, copy[i]);
+			}
+
+			afiliadoExcelEval.evaluarDatosList(campos);
+
+			startIndex = endIndex;
+			endIndex = endIndex * 2;
 		}
 
 		return null;
-	}
-
-	private String getClaveAfiliado() {
-
-		String claveAfiliado = "PR-";
-
-		for (int i = 0; i < 10; i++) {
-			claveAfiliado += (clave.charAt((int) (Math.random() * clave.length())));
-		}
-
-		return claveAfiliado;
 	}
 
 }

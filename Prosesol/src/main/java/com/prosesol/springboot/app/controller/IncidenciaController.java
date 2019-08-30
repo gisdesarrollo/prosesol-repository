@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.prosesol.springboot.app.entity.custom.IncidenciaCustom;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,11 +185,13 @@ public class IncidenciaController {
 
 		try {
 			Afiliado afiliado = afiliadoService.findById(id);
+			List<IncidenciaCustom> historiales = incidenciaService.getHistorialIncidenciaByIdAfiliado(id);
 			idAfiliado = id;
 	
 			model.addAttribute("afiliado", afiliado);
 			model.addAttribute("incidencia", incidencia);
 			model.addAttribute("relServicioBeneficios", getBeneficioByAfiliado(afiliado));
+			model.addAttribute("historiales", historiales);
 		}catch(Exception e) {
 			LOG.error("Error al momento de crear la incidencia", e);
 			e.printStackTrace();
@@ -414,7 +417,7 @@ public class IncidenciaController {
 	/**
 	 * Método que obtiene los beneficios asignados al Afiliado
 	 * 
-	 * @param servicio
+	 * @param afiliado
 	 * @return
 	 */
 

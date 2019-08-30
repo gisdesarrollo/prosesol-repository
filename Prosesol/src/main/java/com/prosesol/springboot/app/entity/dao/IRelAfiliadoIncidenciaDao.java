@@ -11,5 +11,6 @@ public interface IRelAfiliadoIncidenciaDao extends CrudRepository<RelAfiliadoInc
 
 	@Query(value = "select r.id_incidencia, r.id_afiliado, r.id_beneficio, r.fecha, r.costo from rel_afiliados_incidencias r where r.id_incidencia = ?1 order by r.id_beneficio", nativeQuery = true)
 	public List<RelAfiliadoIncidencia> getRelAfiliadoIncidenciaByIdIncidencia(Long id);
-	
+
+
 }
