@@ -154,12 +154,10 @@ public class ReportesExcelImpl implements IReportesExcel {
             for (int i = 3; i < afiliadoFields.length; i++) {
                 sheet.autoSizeColumn(rowNum);
 
-                if (afiliadoFields[i].equals("infonavit")) {
-                    encabezado.createCell(rowNum++).setCellValue("¿Cuenta con crédito infonavit? (Sí/No)");
-                } else if (afiliadoFields[i].equals("fechaAlta") || afiliadoFields[i].equals("saldoAcumulado")
+                if (afiliadoFields[i].equals("fechaAlta") || afiliadoFields[i].equals("saldoAcumulado")
                         || afiliadoFields[i].equals("saldoCorte") || afiliadoFields[i].equals("estatus")
                         || afiliadoFields[i].equals("inscripcion") || afiliadoFields[i].equals("fechaCorte")
-                        || afiliadoFields[i].equals("relAfiliadoIncidencia")) {
+                        || afiliadoFields[i].equals("relAfiliadoIncidencia") || afiliadoFields[i].equals("infonavit")) {
                     continue;
                 } else if (afiliadoFields[i].equals("isBeneficiario")) {
                     encabezado.createCell(rowNum++).setCellValue("¿Es Beneficiario? (Sí/No)");

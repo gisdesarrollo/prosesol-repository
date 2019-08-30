@@ -2,6 +2,7 @@ package com.prosesol.springboot.app.service;
 
 import java.util.List;
 
+import com.prosesol.springboot.app.entity.custom.IncidenciaCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,12 @@ public class IncidenciaServiceImpl implements IIncidenciaService{
 	@Transactional(readOnly = true)
 	public List<Incidencia> getIncidenciasByUserName(String username) {
 		return incidenciaDao.getIncidenciasByUserName(username);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<IncidenciaCustom> getHistorialIncidenciaByIdAfiliado(Long id) {
+		return incidenciaDao.getHistorialIncidenciaByIdAfiliado(id);
 	}
 
 }
