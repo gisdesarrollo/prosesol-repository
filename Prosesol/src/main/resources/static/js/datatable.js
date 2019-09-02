@@ -67,4 +67,6 @@ $(function(){
         var data = $('#afiliados').DataTable().row(tr).data();
         document.location.href = '/afiliados/cambiar_estatus/' + data.id;
     });
+
+    $('#dataTable').DataTable();
 });

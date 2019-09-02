@@ -8,8 +8,6 @@ import com.prosesol.springboot.app.entity.Afiliado;
 
 public interface IReportesExcel {
 
-	public void generarReporteAfiliadoXlsx(List<Afiliado> afiliados, HttpServletResponse response);
-	
 	public void generarTemplateAfiliadoXlsx(HttpServletResponse response);
 	
 }

@@ -1,6 +1,8 @@
 package com.prosesol.springboot.app.controller;
 
 import com.prosesol.springboot.app.async.AsyncCargaMasiva;
+import com.prosesol.springboot.app.entity.LogCM;
+import com.prosesol.springboot.app.service.ILogCMService;
 import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.logging.Log;
@@ -8,16 +10,16 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.List;
 
 @Controller
 @RequestMapping("/cargaMasiva")
@@ -31,8 +33,25 @@ public class CargaMasivaController {
     @Autowired
     private AsyncCargaMasiva asyncCargaMasiva;
 
+    @Autowired
+    private ILogCMService logCMService;
+
     @GetMapping("/afiliados")
-    public String cargaMasiva() {
+    public String cargaMasiva(Model model, RedirectAttributes redirect) {
+
+        List<LogCM> lLogCm = logCMService.findAll();
+
+        try{
+
+            model.addAttribute("reportes", lLogCm);
+
+        }catch(Exception e){
+            e.printStackTrace();
+            redirect.addFlashAttribute("error: ", "Error al momento de generar" +
+                    "la tabla");
+            return "redirect:/cargaMasiva/reportes";
+        }
+
         return "cargaMasiva/afiliados";
     }
 
@@ -68,43 +87,10 @@ public class CargaMasivaController {
 				  System.out.println("File Type: " + file.getContentType());
 
 				  byte[] bytes = file.getBytes();
-				  asyncCargaMasiva.procesaArchivoAsync(bytes);
+				  asyncCargaMasiva.procesaArchivoAsync(file.getName(), bytes);
 			  }
 
-//            System.out.println("Is Multipart");
-//            Iterator<String> iterator = request.getFileNames();
-//            MultipartFile file = request.getFile(iterator.next());
-//
-//            System.out.println("File Length: " + file.getBytes().length);
-//            System.out.println("File Type: " + file.getContentType());
-//
-//            String fileName = file.getOriginalFilename();
-//
-//            System.out.println("File Name: " + fileName);
-//
-//            asyncCargaMasiva.asyncCargaMasiva(file.getBytes());
-//				ServletFileUpload upload = new ServletFileUpload();
-//
-//				FileItemIterator iterator = upload.getItemIterator(request);
-//
-//				while(iterator.hasNext()){
-//					FileItemStream item = iterator.next();
-//					String name = item.getFieldName();
-//					InputStream stream = item.openStream();
-//					if(!item.isFormField()){
-//						String filename = item.getName();
-//						OutputStream out = new FileOutputStream(filename);
-//						stream.close();
-//						out.close();
-//					}
-//				}
-//			XSSFWorkbook workbook = new XSSFWorkbook(fileXlsx.getInputStream());
-//			reportesExcelImpl.leerArchivoCargaMasiva(workbook);
-
         } catch (Exception ne) {
-
-//			String error = new CustomUserException().getMessage();
-//			String[] errorMessage = error.split("\\:");
 
             logger.error("Formato incorrecto", ne);
             redirect.addFlashAttribute("error", "Error al momento de realizar la inserción masiva");
@@ -115,6 +101,27 @@ public class CargaMasivaController {
         redirect.addFlashAttribute("info", "El archivo se está procesando");
         return "redirect:/afiliados/ver";
 
+    }
+
+    @Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+    @GetMapping(value = "/reportes/{id}")
+    public void downloadReporte(@PathVariable("id") Long id, HttpServletResponse response){
+
+        LogCM logCM = logCMService.findById(id);
+
+        response.setContentType("text/plain");
+        response.setHeader("Content-Disposition", "attachment; filename=" + logCM.getNombre());
+
+        byte[] bytes = logCM.getArchivo();
+
+        try{
+            OutputStream outputStream = response.getOutputStream();
+            outputStream.write(bytes);
+            outputStream.flush();
+            outputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

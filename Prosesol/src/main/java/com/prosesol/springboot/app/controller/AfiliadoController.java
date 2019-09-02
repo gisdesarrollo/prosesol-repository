@@ -1,15 +1,12 @@
 package com.prosesol.springboot.app.controller;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import com.josketres.rfcfacil.Rfc;
+import com.prosesol.springboot.app.entity.*;
+import com.prosesol.springboot.app.service.*;
+import com.prosesol.springboot.app.util.CalcularFecha;
+import com.prosesol.springboot.app.util.Paises;
+import com.prosesol.springboot.app.util.paginator.PageRender;
+import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,31 +20,17 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.josketres.rfcfacil.Rfc;
-import com.prosesol.springboot.app.entity.Afiliado;
-import com.prosesol.springboot.app.entity.Cuenta;
-import com.prosesol.springboot.app.entity.Periodicidad;
-import com.prosesol.springboot.app.entity.Promotor;
-import com.prosesol.springboot.app.entity.Servicio;
-import com.prosesol.springboot.app.service.IAfiliadoService;
-import com.prosesol.springboot.app.service.ICuentaService;
-import com.prosesol.springboot.app.service.IPeriodicidadService;
-import com.prosesol.springboot.app.service.IPromotorService;
-import com.prosesol.springboot.app.service.IServicioService;
-import com.prosesol.springboot.app.util.CalcularFecha;
-import com.prosesol.springboot.app.util.Paises;
-import com.prosesol.springboot.app.util.paginator.PageRender;
-import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
+import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Controller
 @SessionAttributes("afiliado")
@@ -290,19 +273,6 @@ public class AfiliadoController {
 		return "redirect:/afiliados/ver";
 
 	}
-	
-	/**
-	 * Descargar Excel
-	 */
-	
-	@Secured("ROLE_ADMINISTRADOR")
-	@GetMapping("/descargar")
-	public void descargar(HttpServletResponse response) throws Exception {
-
-		List<Afiliado> afiliados = afiliadoService.findAll();
-		reportesExcelImpl.generarReporteAfiliadoXlsx(afiliados, response);
-	}
-	
 
 	/**
 	 * Método para mostrar los periodos Dentro del list box de crear afiliados
