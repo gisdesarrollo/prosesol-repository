@@ -1,14 +1,15 @@
 package com.prosesol.springboot.app.view.excel;
 
-import com.prosesol.springboot.app.entity.*;
-import com.prosesol.springboot.app.exception.CustomUserException;
+import com.prosesol.springboot.app.entity.Cuenta;
+import com.prosesol.springboot.app.entity.Periodicidad;
+import com.prosesol.springboot.app.entity.Promotor;
+import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.service.*;
 import com.prosesol.springboot.app.util.Paises;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFDataValidationHelper;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -16,11 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ReportesExcelImpl implements IReportesExcel {
@@ -48,89 +47,6 @@ public class ReportesExcelImpl implements IReportesExcel {
 
     @Autowired
     private IServicioService servicioService;
-
-    @Autowired
-    private InsertFromExcel insertFromExcel;
-
-    /**
-     * Método que genera el reporte del catálogo de afiliados en formato Xlsx
-     */
-
-    @Override
-    public void generarReporteAfiliadoXlsx(List<Afiliado> afiliados, HttpServletResponse response) {
-
-        FILENAME = "reporte_afiliados.xlsx";
-
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Reporte Afiliados");
-        Row encabezado = sheet.createRow(0);
-
-        try {
-
-            encabezado.createCell(0).setCellValue("Nombre Afiliado");
-            encabezado.createCell(1).setCellValue("Tipo de Afiliado");
-            encabezado.createCell(2).setCellValue("Estatus");
-            encabezado.createCell(3).setCellValue("Servicio");
-            encabezado.createCell(4).setCellValue("Saldo Acumulado");
-            encabezado.createCell(5).setCellValue("Saldo al Corte");
-            encabezado.createCell(6).setCellValue("Fecha de Afiliación");
-            encabezado.createCell(7).setCellValue("Fecha de Corte");
-            encabezado.createCell(8).setCellValue("Periodo");
-            encabezado.createCell(9).setCellValue("Email");
-
-            int rowNum = 1;
-            for (Afiliado afiliado : afiliados) {
-                Row courseRow = sheet.createRow(rowNum++);
-
-                sheet.autoSizeColumn(rowNum);
-
-                courseRow.createCell(0).setCellValue(afiliado.getNombre() + " " + afiliado.getApellidoPaterno() + " "
-                        + afiliado.getApellidoMaterno());
-                courseRow.createCell(1).setCellValue(afiliado.getIsBeneficiario() ? "Beneficiario" : "Titular");
-
-                if (afiliado.getEstatus() == 1) {
-                    courseRow.createCell(2).setCellValue("Activo");
-                } else if (afiliado.getEstatus() == 2) {
-                    courseRow.createCell(2).setCellValue("Inactivo");
-                } else if (afiliado.getEstatus() == 3) {
-                    courseRow.createCell(2).setCellValue("Candidato");
-                }
-
-                courseRow.createCell(3).setCellValue(afiliado.getServicio().getNombre());
-                courseRow.createCell(4).setCellValue(afiliado.getSaldoAcumulado());
-                courseRow.createCell(5).setCellValue(afiliado.getSaldoCorte());
-                courseRow.createCell(6).setCellValue(DATE_FORMAT.format(afiliado.getFechaAfiliacion()));
-                courseRow.createCell(7).setCellValue(DATE_FORMAT.format(afiliado.getFechaCorte()));
-                courseRow.createCell(8).setCellValue(afiliado.getPeriodicidad().getNombre());
-                courseRow.createCell(9).setCellValue(afiliado.getEmail());
-            }
-
-            CellStyle theaderStyle = workbook.createCellStyle();
-            theaderStyle.setBorderBottom(BorderStyle.MEDIUM);
-            theaderStyle.setBorderTop(BorderStyle.MEDIUM);
-            theaderStyle.setBorderRight(BorderStyle.MEDIUM);
-            theaderStyle.setBorderLeft(BorderStyle.MEDIUM);
-            theaderStyle.setFillForegroundColor(IndexedColors.GOLD.index);
-            theaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-            CellStyle tbodyStyle = workbook.createCellStyle();
-            tbodyStyle.setBorderBottom(BorderStyle.THIN);
-            tbodyStyle.setBorderTop(BorderStyle.THIN);
-            tbodyStyle.setBorderRight(BorderStyle.THIN);
-            tbodyStyle.setBorderLeft(BorderStyle.THIN);
-
-            makeRowBold(workbook, encabezado);
-
-            response.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
-            workbook.write(response.getOutputStream());
-
-            workbook.close();
-
-        } catch (Exception e) {
-            LOGGER.error("Error al momento de generar el reporte", e);
-        }
-
-    }
 
     /**
      * Método que genera el template de carga masiva
@@ -485,107 +401,6 @@ public class ReportesExcelImpl implements IReportesExcel {
         } catch (Exception e) {
             LOGGER.error("Error al momento de generar el template", e);
         }
-
-    }
-
-    /**
-     * Método que lee el archivo de carga masiva
-     *
-     * @throws CustomUserException
-     * @throws ParseException
-     */
-
-    public void leerArchivoCargaMasiva(XSSFWorkbook workbook) throws CustomUserException {
-
-        LOGGER.info("Método que lee el archivo xlsx ");
-
-        long startTime = System.nanoTime();
-
-        Sheet sheet = workbook.getSheetAt(0);
-
-        Row row;
-        Cell cell;
-
-        @SuppressWarnings("unused")
-        int numOfRow = 0;
-        @SuppressWarnings("unused")
-        int numOfCol = 0;
-
-        @SuppressWarnings("rawtypes")
-        Iterator rows = sheet.rowIterator();
-
-        @SuppressWarnings("resource")
-        SXSSFWorkbook SXSSF_wb = new SXSSFWorkbook(1000);
-
-        while (rows.hasNext()) {
-
-            Map<Integer, String> listString = new HashMap<Integer, String>();
-
-            numOfRow++;
-
-            row = (Row) rows.next();
-            @SuppressWarnings("rawtypes")
-            Iterator cells = row.cellIterator();
-
-            if (row.getRowNum() == 0) {
-                continue;
-            }
-
-            while (cells.hasNext()) {
-
-                numOfCol++;
-
-                cell = (Cell) cells.next();
-
-                if (cell.getCellType() == CellType.STRING) {
-
-                    System.out.println("Celdas tipo String: " + cell.getStringCellValue());
-                    listString.put(cell.getColumnIndex(), row.getCell(cell.getColumnIndex()).getStringCellValue());
-
-                }
-                if (cell.getCellType() == CellType.NUMERIC) {
-
-                    if (cell.getColumnIndex() == 3 || cell.getColumnIndex() == 22) {
-
-                        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-                        System.out.println("Celdas tipo fecha: " + df.format(row.getCell(cell.getColumnIndex()).getDateCellValue()));
-
-                        listString.put(cell.getColumnIndex(),
-                                df.format(row.getCell(cell.getColumnIndex()).getDateCellValue()));
-
-                    } else if (cell.getColumnIndex() == 18 || cell.getColumnIndex() == 30) {
-
-                        System.out.println("Celdas tipo flotante: " + new Double(cell.getNumericCellValue()).intValue());
-                        Integer floatColumn = new Double(cell.getNumericCellValue()).intValue();
-
-                        listString.put(cell.getColumnIndex(), floatColumn.toString());
-
-                    } else {
-
-                        Object object = row.getCell(cell.getColumnIndex()).getNumericCellValue();
-
-                        System.out.println("Celdas tipo numéricas: " + new BigDecimal(object.toString()).toPlainString());
-
-                        listString.put(cell.getColumnIndex(), new BigDecimal(object.toString()).toPlainString());
-                    }
-                }
-
-//				System.out.println(cell.getColumnIndex());
-            }
-
-            numOfCol = 0;
-
-//            insertFromExcel.insertToDBFromExcel(listString);
-
-        }
-
-
-        System.gc();
-        SXSSF_wb.dispose();
-
-        long endTime = System.nanoTime();
-
-        LOGGER.info("Tiempo de ejecución en segundos " + (endTime - startTime) / 1000000000);
 
     }
 
