@@ -58,7 +58,7 @@ public class AsyncCargaMasiva {
                     campos.put(i, valores[i]);
                 }
 
-                resultado = insertCargaMasivaCSV.evaluarDatosList(numeroRegistros, campos);
+                resultado = insertCargaMasivaCSV.evaluarDatosList(nombre, numeroRegistros, campos);
 
                 if(counter == 30000) {
                     counter = 0;
