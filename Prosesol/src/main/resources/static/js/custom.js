@@ -13,5 +13,30 @@ $(document).ready(function(){
 			}
 		}
 	});
+
+    $('#busqueda').click(function(e){
+
+        var validacion = false;
+
+        var nombreBusqueda = $('#nombreBusqueda').val();
+        var apellidoPaternoBusqueda = $('#apellidoPaternoBusqueda').val();
+        var apellidoMaternoBusqueda = $('#apellidoMaternoBusqueda').val();
+        var rfcBusqueda = $('#rfcBusqueda').val();
+        var telefonoBusqueda = $('#telefonoBusqueda').val();
+        var claveBusqueda = $('#claveBusqueda').val();
+
+        if(nombreBusqueda != "" || apellidoPaternoBusqueda != "" || apellidoMaternoBusqueda != ""
+            || rfcBusqueda != "" || telefonoBusqueda != "" || claveBusqueda != ""){
+            validacion = true;
+        }else{
+            validacion = false;
+        }
+
+        if(!validacion){
+            alert("Por favor, ingrese un parámetro de búsqueda");
+            e.preventDefault();
+        }
+    });
+
 });
 	
