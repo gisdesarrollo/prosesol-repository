@@ -65,7 +65,7 @@ public class InsertCargaMasivaCSV {
 	private boolean isValidAfiliado;
 	private boolean isValid;
 
-	public String evaluarDatosList(Integer counterLinea, Map<Integer, String> campos){
+	public String evaluarDatosList(String nombre, Integer counterLinea, Map<Integer, String> campos){
 
 		String log = "";
 		Afiliado afiliado = new Afiliado();
