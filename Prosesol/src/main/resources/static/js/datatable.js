@@ -10,13 +10,13 @@ $(function(){
             render : function(data, type, row, meta){
 
                 return type === 'display' ?	'<div class="dropdown">'+
-                '<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-stream"></i></button>'+
-                '<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" >'+
-                '<a class="dropdown-item" id="editar" >Editar</a>'+
-                '<a class="dropdown-item border-top text-warning" id="cambiar">Activar o Desactivar Afiliado</a>' +
-                '<a class="dropdown-item border-top text-danger" id="borrar">Borrar</a>'+
-                '</div></div>'	:data;
-
+                   '<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-stream"></i></button>'+
+                   '<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" >'+
+                   '<a class="dropdown-item" id="editar" >Editar</a>'+
+                   '<a class="dropdown-item border-top" id="detalle">Detalle</a>'+
+                   '<a class="dropdown-item border-top text-warning" id="cambiar">Activar o Desactivar Afiliado</a>' +
+                   '<a class="dropdown-item border-top text-danger" id="borrar">Borrar</a>'+
+                   '</div></div>'	:data;
             }
 		},{
 			data : 'nombre'
@@ -46,6 +46,18 @@ $(function(){
 		var data = $('#afiliados').DataTable().row(tr).data();
 		document.location.href = '/afiliados/editar/' + data.id;
 	});
+
+	$('#afiliados tbody').on('click', '#detalle', function(e){
+        var tr = $(this).closest("tr");
+        var data = $('#afiliados').DataTable().row(tr).data();
+        document.location.href = '/afiliados/detalle/' + data.id;
+    });
+
+    $('#afiliados tbody').on('click', '#beneficiario', function(e){
+            var tr = $(this).closest("tr");
+            var data = $('#afiliados').DataTable().row(tr).data();
+            document.location.href = '/beneficiarios/crear/' + data.id;
+        });
 
 	$('#afiliados tbody').on('click', '#borrar', function(e){
 
