@@ -1,102 +1,240 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8"/>
 
-<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">	
-	
-	<header th:replace="fragments/header :: header"></header>
-	
-	<div class="app-body">
-		<div th:replace="fragments/sidebar :: sidebar"></div>
-		
-		<main class="main">
+<body>
+<div class="page-wrapper">
+    <!-- Page Top Bar Area -->
+    <div th:replace="fragments/header :: header"></div>
+    <div class="layout-container-area mt-70">
+        <!-- Side Menu Area -->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
 
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item">Home</li>
-			<li class="breadcrumb-item"><a th:href="@{/afiliados/ver}">Catálogos</a></li>
-			<li class="breadcrumb-item active">Afiliados</li>
-		</ol>
-		
-	<div class="container-fluid">
-			<div class="animated fadeIn">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">Afiliados</div>
-							<div class="card-body">
-								<h5 class="m-0 font-weight-bold text-primary" th:text="${titulo}"></h5>
+        <!-- Layout Container -->
+        <div class="layout-container sidemenu-container">
+            <div class="container-fluid">
+                <div class="row ">
 
-								<div class="clearfix"></div>
-								<hr>
+                    <div class="col-md mb-4">
+                        <!-- Card Body -->
+                        <div class="card-body bg-white appwork bg-boxshadow-2">
+                            <h5 class="card-title">Detalle del Afiliado</h5>
 
-			<h4 th:if="${not afiliado.isBeneficiario}" class="card-title">
-							<a class="btn btn-primary btn-xs"
-								th:href="@{/beneficiarios/crear/} + ${afiliado.id}"
-								th:text="'Crear Beneficiario'"></a>
-						</h4>
+                            <div class="clearfix"></div>
 
-						<ul class="list-group">
-							<li class="list-group-item active"
-								th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}"></li>
-							<li class="list-group-item" th:text="${afiliado.fechaNacimiento}"></li>
-							<li class="list-group-item" th:text="${afiliado.lugarNacimiento}"></li>
-							<li class="list-group-item" th:text="${afiliado.estadoCivil}"></li>
-							<li class="list-group-item"
-								th:text="${afiliado.numeroDependientes}"></li>
-							<li class="list-group-item" th:text="${afiliado.ocupacion}"></li>
-							<li class="list-group-item" th:text="${afiliado.sexo}"></li>
-							<li class="list-group-item" th:text="${afiliado.pais}"></li>
-							<li class="list-group-item" th:text="${afiliado.curp}"></li>
-							<li class="list-group-item" th:text="${afiliado.nss}"></li>
-							<li class="list-group-item" th:text="${afiliado.rfc}"></li>
-							<li class="list-group-item" th:text="${afiliado.telefonoFijo}"></li>
-							<li class="list-group-item" th:text="${afiliado.telefonoMovil}"></li>
-							<li class="list-group-item" th:text="${afiliado.email}"></li>
-							<li class="list-group-item"
-								th:text="${afiliado.direccion} + ' ' 
-									   + ${afiliado.municipio} + ' ' 
-									   + ${afiliado.codigoPostal} + ' ' 
-									   + ${afiliado.entidadFederativa}"></li>
-							<li class="list-group-item" th:text="${afiliado.isBeneficiario} ? 'Beneficiario' : 'Titular'"></li>
-						</ul>
 
-						<!-- <div th:if="${#lists.isEmpty(cliente.facturas)}"
-					class="alert alert-info my-4"
-					th:text="'No hay facturas asignadas para el cliente ' + ${cliente.nombre} + ' ' + ${cliente.apellido}"></div> -->
-						
-						<table th:if="${not #lists.isEmpty(afiliado.beneficiarios)}" class="table table-bordered table-striped my-4">
-							<caption>Beneficiarios</caption>
-							<thead class="thead-inverse" >
-								<tr>
-									<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
-									<th>Nombre</th>
-									<th>Apellido Paterno</th>
-									<th>Apellido Materno</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="afiliado : ${beneficiarios}">
-									<td th:text="${afiliado.id}"></td>
-									<td th:text="${afiliado.nombre}"></td>
-									<td th:text="${afiliado.apellidoPaterno}"></td>
-									<td th:text="${afiliado.apellidoMaterno}"></td>
-								</tr>
-							</tbody>
+                            <div class="tabs-left">
+                                <!-- Nav Tabs -->
+                                <ul class="nav nav-tabs">
+                                    <li><a class="nav-link active show" data-toggle="tab" href="#tab-1">Detalle</a>
+                                    </li>
+                                    <li th:if="${afiliado.isBeneficiario == false}"><a class="nav-link" data-toggle="tab" href="#tab-2">Beneficiarios</a></li>
+                                </ul>
+                                <!-- Tab Content -->
+                                <div class="tab-content">
+                                    <div id="tab-1" class="tab-pane active show">
+                                        <!-- Panel Body -->
+                                        <div class="panel-body tab">
 
-						</table>
-				
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</main>
-		</div>
-	
-	<footer th:replace="fragments/footer :: footer"></footer>
+                                            <h5 class="mt-15">Datos del Afiliado: [[${afiliado.nombre} + ' ' +
+												${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}]]</h5>
+                                            <div class="clearfix"></div>
+                                            <div class="row">
+                                                <div class="form-group col-md-3">
+                                                    <label>Clave</label>
+													<br>
+													<label th:text="${afiliado.clave}">Clave</label>
+                                                </div>
 
+                                                <div class="form-group col-md-3">
+                                                    <label>Fecha de Nacimiento</label>
+													<br>
+													<label th:text="${afiliado.fechaNacimiento}">Fecha de Nacimiento</label>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label>Lugar de Nacimiento</label>
+													<br>
+													<label th:text="${afiliado.lugarNacimiento}">Lugar de Nacimiento</label>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label>Estado Civil</label>
+													<br>
+													<label th:text="${afiliado.estadoCivil}">Estado Civil</label>
+                                                </div>
+
+												<div class="form-group col-md-3">
+													<label>Ocupación</label>
+													<br>
+													<label th:text="${afiliado.ocupacion}">Ocupación</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>Sexo</label>
+													<br>
+													<label th:text="${afiliado.sexo}">Sexo</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>País</label>
+													<br>
+													<label th:text="${afiliado.pais}">País</label>
+												</div>
+
+                                            </div>
+
+                                            <h5 class="mt-15">Otros datos</h5>
+                                            <div class="clearfix"></div>
+                                            <div class="row">
+                                                <div class="form-group col-md-3">
+                                                    <label>CURP</label>
+													<br>
+													<label th:text="${afiliado.curp}">CURP</label>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+													<label>RFC</label>
+													<br>
+													<label th:text="${afiliado.rfc}">RFC</label>
+                                                </div>
+
+												<div class="form-group col-md-3">
+													<label>NSS</label>
+													<br>
+													<label th:text="${afiliado.nss}">NSS</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>Teléfono Fijo</label>
+													<br>
+													<label th:text="${afiliado.telefonoFijo}">Teléfono Fijo</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>Teléfono Móvil</label>
+													<br>
+													<label th:text="${afiliado.telefonoMovil}">Teléfono Móvil</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>Dirección</label>
+													<br>
+													<label th:text="${afiliado.direccion}">Dirección</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>Municipio o Delegación</label>
+													<br>
+													<label th:text="${afiliado.municipio}">Municipio o Delegación</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>Código Postal</label>
+													<br>
+													<label th:text="${afiliado.codigoPostal}">Código Postal</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>Estado</label>
+													<br>
+													<label th:text="${afiliado.entidadFederativa}">Estado</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>Fecha de Afiliación</label>
+													<br>
+													<label th:text="${afiliado.fechaAfiliacion}">Fecha de Afiliación</label>
+												</div>
+
+												<div class="form-group col-md-3">
+													<label>Fecha de Corte</label>
+													<br>
+													<label th:text="${afiliado.fechaCorte}">Fecha de Corte</label>
+												</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="tab-2" class="tab-pane">
+                                        <!-- Panel Body -->
+                                        <div class="panel-body tab">
+
+                                            <h5 class="mt-15">Datos del Beneficiario</h5>
+                                            <div class="clearfix"></div>
+
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-center">
+                                                        Nombre
+                                                    </th>
+                                                    <th class="text-center">
+                                                        Apellido Paterno
+                                                    </th>
+                                                    <th class="text-center">
+                                                        Apellido Materno
+                                                    </th>
+                                                    <th class="text-center">
+                                                        Clave
+                                                    </th>
+                                                    <th class="text-center">
+                                                        RFC
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="beneficiario : ${beneficiarios}">
+                                                    <td class="text-center">
+														<label th:text="${beneficiario.nombre}">Nombre</label>
+                                                    </td>
+                                                    <td class="text-center">
+														<label th:text="${beneficiario.apellidoPaterno}">Apellido Paterno</label>
+                                                    </td>
+                                                    <td class="text-center">
+														<label th:text="${beneficiario.apellidoMaterno}">Apellido Materno</label>
+                                                    </td>
+                                                    <td class="text-center">
+														<label th:text="${beneficiario.clave}">Clave</label>
+                                                    </td>
+                                                    <td class="text-center">
+														<label th:text="${beneficiario.rfc}">RFC</label>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <hr>
+							<div th:if="${afiliado.isBeneficiario} == false" class="row">
+								<div class="col-sm-12">
+									<a class="btn btn-primary btn-square float-right"
+									   th:href="@{/beneficiarios/crear/} + ${afiliado.id}"
+									   th:text="'Crear Beneficiario'"></a>
+								</div>
+							</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+</div>
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 
 </html>

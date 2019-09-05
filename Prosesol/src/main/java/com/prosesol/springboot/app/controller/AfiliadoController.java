@@ -92,7 +92,6 @@ public class AfiliadoController {
 
 		model.put("afiliado", afiliadoService.findById(id));
 		model.put("beneficiarios", beneficiarios);
-		model.put("titulo", "Detalle Afiliado" + ' ' + afiliado.getNombre());
 
 		return "catalogos/afiliados/detalle";
 

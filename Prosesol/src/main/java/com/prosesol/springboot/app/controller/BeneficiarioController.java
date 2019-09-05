@@ -1,11 +1,14 @@
 package com.prosesol.springboot.app.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.josketres.rfcfacil.Rfc;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,11 +84,10 @@ public class BeneficiarioController {
 	public String guardar(@ModelAttribute("clave") String clave,
 						  @Valid Afiliado afiliado, BindingResult result, Model model, 
 						  RedirectAttributes redirect, SessionStatus status) {
-		
-		System.out.println(idAfiliado);
+
+		Rfc rfc;
 		
 		Date fechaAlta = new Date();
-//		Periodicidad periodicidad = new Periodicidad();		
 		try {
 			
 			if(result.hasErrors()) {
@@ -93,14 +95,25 @@ public class BeneficiarioController {
 				model.addAttribute("titulo", "Crear Beneficiario");
 				return "catalogos/beneficiarios/crear";
 			}
-			
-//			periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
-//			
-//			Date fechaCorte = calcularFechas.calcularFechas(periodicidad, afiliado.getCorte());
-//			
-//			afiliado.setFechaCorte(fechaCorte);
+
+			if(afiliado.getRfc() == null || afiliado.getRfc().equals("")) {
+				LocalDate fechaNacimiento = afiliado.getFechaNacimiento().toInstant()
+						.atZone(ZoneId.systemDefault())
+						.toLocalDate();
+
+				rfc = new Rfc.Builder()
+						.name(afiliado.getNombre())
+						.firstLastName(afiliado.getApellidoPaterno())
+						.secondLastName(afiliado.getApellidoMaterno())
+						.birthday(fechaNacimiento.getDayOfMonth(), fechaNacimiento.getMonthValue(), fechaNacimiento.getYear())
+						.build();
+
+				afiliado.setRfc(rfc.toString());
+
+				System.out.println(rfc.toString());
+			}
+
 			afiliado.setEstatus(3);
-//			afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
 			afiliado.setIsBeneficiario(true);
 			afiliado.setClave(clave);
 			afiliado.setFechaAlta(fechaAlta);
