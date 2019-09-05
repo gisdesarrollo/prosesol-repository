@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
-public class AsyncCargaMasiva {
+public class AsyncCargaVigor {
 
     protected final Log LOG = LogFactory.getLog(AsyncCargaMasiva.class);
 
@@ -25,9 +25,9 @@ public class AsyncCargaMasiva {
     @Autowired
     private ILogCMService logCMService;
 
-    @Async("threadCargaMasiva")
-    public void procesaArchivoAsync(boolean isVigor, String nombre, byte[] bs,
-                                    Long idCuentaComercial) throws InterruptedException, IOException{
+    @Async("threadCargaVigor")
+    public void procesaArchivoVigorAsync(boolean isVigor, String nombre, byte[] bs, Long idCuentaComercial)
+            throws InterruptedException, IOException {
 
         System.out.println("Entra al método para la lectura de archivo");
 
@@ -86,7 +86,7 @@ public class AsyncCargaMasiva {
     }
 
     public void generarArchivoLog(String nombre, Integer numeroRegistros, List<String> log,
-                                  boolean isVigor){
+                                    boolean isVigor){
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Date fechaCreacion = new Date();

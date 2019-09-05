@@ -31,4 +31,16 @@ public class LogCMServiceImpl implements ILogCMService{
     public void save(LogCM logCM) {
         iLogCMDao.save(logCM);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<LogCM> findAllLogsAfiliados() {
+        return iLogCMDao.findAllLogsAfiliados();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<LogCM> findAllLogsVigor() {
+        return iLogCMDao.findAllLogsVigor();
+    }
 }
