@@ -1,41 +1,28 @@
 package com.prosesol.springboot.app.controller;
 
+import com.josketres.rfcfacil.Rfc;
+import com.prosesol.springboot.app.entity.*;
+import com.prosesol.springboot.app.service.*;
+import com.prosesol.springboot.app.util.CalcularFecha;
+import com.prosesol.springboot.app.util.Paises;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.validation.Valid;
-
-import com.josketres.rfcfacil.Rfc;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.prosesol.springboot.app.entity.Afiliado;
-import com.prosesol.springboot.app.entity.Cuenta;
-import com.prosesol.springboot.app.entity.Periodicidad;
-import com.prosesol.springboot.app.entity.Promotor;
-import com.prosesol.springboot.app.entity.Servicio;
-import com.prosesol.springboot.app.service.IAfiliadoService;
-import com.prosesol.springboot.app.service.ICuentaService;
-import com.prosesol.springboot.app.service.IPeriodicidadService;
-import com.prosesol.springboot.app.service.IPromotorService;
-import com.prosesol.springboot.app.service.IServicioService;
-import com.prosesol.springboot.app.util.CalcularFecha;
-import com.prosesol.springboot.app.util.Paises;
 
 @Controller
 @SessionAttributes("afiliado")
@@ -43,6 +30,9 @@ import com.prosesol.springboot.app.util.Paises;
 public class BeneficiarioController {
 
 	protected Log logger = LogFactory.getLog(BeneficiarioController.class);
+
+	@Value("${app.clave}")
+	private String clave;
 	
 	@Autowired
 	private IAfiliadoService afiliadoService;
@@ -207,17 +197,16 @@ public class BeneficiarioController {
 	 * 
 	 * @param(name = "clave")
 	 */
-	
+
 	@ModelAttribute("clave")
 	public String getClaveAfiliado() {
-		
-		String clave = "0123456789";
-		String claveAfiliado = "";
-		
-		for(int i = 0; i < 10; i++) {
-			claveAfiliado += (clave.charAt((int)(Math.random() * clave.length())));
+
+		String claveAfiliado = "PR-";
+
+		for (int i = 0; i < 10; i++) {
+			claveAfiliado += (clave.charAt((int) (Math.random() * clave.length())));
 		}
-		
+
 		return claveAfiliado;
 	}
 }
