@@ -35,13 +35,17 @@ public class LogCM implements Serializable {
     @Column(name = "archivo")
     private byte[] archivo;
 
+    @Column(name = "is_vigor")
+    private boolean isVigor;
+
     public LogCM(){};
 
-    public LogCM(String nombre, Date fecha, Integer numeroRegistros, byte[] archivo) {
+    public LogCM(String nombre, Date fecha, Integer numeroRegistros, byte[] archivo, boolean isVigor) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.numeroRegistros = numeroRegistros;
         this.archivo = archivo;
+        this.isVigor = isVigor;
     }
 
     public Long getId() {
@@ -82,6 +86,14 @@ public class LogCM implements Serializable {
 
     public void setArchivo(byte[] archivo) {
         this.archivo = archivo;
+    }
+
+    public boolean isVigor() {
+        return isVigor;
+    }
+
+    public void setVigor(boolean vigor) {
+        isVigor = vigor;
     }
 
     @Override

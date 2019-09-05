@@ -12,4 +12,8 @@ public interface ILogCMService {
 
     public void save(LogCM logCM);
 
+    public List<LogCM> findAllLogsAfiliados();
+
+    public List<LogCM> findAllLogsVigor();
+
 }

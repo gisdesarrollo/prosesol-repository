@@ -132,4 +132,17 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 		return iAfiliadoDao.findAll(pageable);
 	}
 
+	@Override
+	@Transactional
+	public void updateEstatusbyIdCuenta(Long id) {
+		iAfiliadoDao.updateEstatusbyIdCuenta(id);
+	}
+
+	@Override
+	@Transactional
+	public void updateEstatusAfiliadoById(Long id) {
+		iAfiliadoDao.updateEstatusAfiliadoById(id);
+	}
+
+
 }

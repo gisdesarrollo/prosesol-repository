@@ -28,6 +28,11 @@ public class AsyncConfig implements AsyncConfigurer {
 	    return new ThreadPoolTaskExecutor();
     }
 
+    @Bean(name = "threadCargaVigor")
+    public Executor threadCargaVigor(){
+	    return new ThreadPoolTaskExecutor();
+    }
+
     @Override
     public Executor getAsyncExecutor() {
         return null;

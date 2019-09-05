@@ -3,6 +3,7 @@ package com.prosesol.springboot.app.entity.dao;
 import java.util.List;
 
 import org.springframework.data.jpa.datatables.repository.DataTablesRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -29,5 +30,13 @@ public interface IAfiliadoDao extends DataTablesRepository<Afiliado, Long>{
                    "and a.apellido_materno like %?3%", nativeQuery = true)
 	public List<Afiliado> getAfiliadoBySearchNombreCompleto(String nombre, String apellidoPaterno,
 															String apellidoMaterno);
+
+	@Modifying
+	@Query("update Afiliado a set a.estatus = 2 where a.cuenta.id = :id")
+	public void updateEstatusbyIdCuenta(@Param("id")Long id);
+
+	@Modifying
+	@Query("update Afiliado a set a.estatus = 1 where a.id = :id")
+	public void updateEstatusAfiliadoById(@Param("id") Long id);
 	
 }

@@ -1,13 +1,12 @@
 package com.prosesol.springboot.app.service;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
 import com.prosesol.springboot.app.util.Paises;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface IAfiliadoService {
 
@@ -41,4 +40,8 @@ public interface IAfiliadoService {
 
 	public List<Afiliado> getAfiliadoBySearchNombreCompleto(String nombre, String apellidoPaterno,
 															String apellidoMaterno);
+
+	public void updateEstatusbyIdCuenta(Long id);
+
+	public void updateEstatusAfiliadoById(Long id);
 }
