@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -187,6 +188,10 @@ public class IncidenciaController {
 			Afiliado afiliado = afiliadoService.findById(id);
 			List<IncidenciaCustom> historiales = incidenciaService.getHistorialIncidenciaByIdAfiliado(id);
 			idAfiliado = id;
+
+			historiales.forEach(historial -> {
+				System.out.println(historial.getDetalle());
+			});
 	
 			model.addAttribute("afiliado", afiliado);
 			model.addAttribute("incidencia", incidencia);
@@ -331,7 +336,9 @@ public class IncidenciaController {
 
 			List<RelServicioBeneficio> relServicioBeneficio = relServicioBeneficios.getRelServicioBeneficios();
 			RelAfiliadoIncidencia relAfiliadoIncidencia = new RelAfiliadoIncidencia();
-			Afiliado afiliado = afiliadoService.findById(idAfiliado);		
+			Afiliado afiliado = afiliadoService.findById(idAfiliado);
+
+			System.out.println(incidencia.getDetalle());
 
 			if (relServicioBeneficio != null) {
 
@@ -351,6 +358,11 @@ public class IncidenciaController {
 				date = df.parse(incidencia.getHora());
 				String hora = new SimpleDateFormat("H:mm:ss").format(date);
 				incidencia.setHora(hora);
+
+				String detalle = incidencia.getDetalle();
+				detalle = detalle.replaceAll("\\<.*?\\>", "");
+
+				incidencia.setDetalle(detalle);
 
 				incidenciaService.save(incidencia);
 
@@ -382,6 +394,11 @@ public class IncidenciaController {
 				date = df.parse(incidencia.getHora());
 				String hora = new SimpleDateFormat("H:mm:ss").format(date);
 				incidencia.setHora(hora);
+
+				String detalle = incidencia.getDetalle();
+				detalle = detalle.replaceAll("\\<.*?\\>", "");
+
+				incidencia.setDetalle(detalle);
 				
 				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
 						+ afiliado.getApellidoMaterno());

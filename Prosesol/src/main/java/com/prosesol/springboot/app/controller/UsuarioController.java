@@ -56,9 +56,13 @@ public class UsuarioController {
 	public String ver(Model model) {
 				
 		logger.info("Entra al método de ver usuario");
-		
-		model.addAttribute("titulo", "Usuarios");
-		model.addAttribute("usuario", usuarioService.findAll());
+
+		try {
+			model.addAttribute("titulo", "Usuarios");
+			model.addAttribute("usuario", usuarioService.findAll());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 		return "catalogos/usuarios/ver";
 	}

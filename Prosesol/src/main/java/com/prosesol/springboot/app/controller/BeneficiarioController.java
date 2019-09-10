@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -72,19 +71,16 @@ public class BeneficiarioController {
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@ModelAttribute("clave") String clave,
-						  @Valid Afiliado afiliado, BindingResult result, Model model, 
+						  Afiliado afiliado, BindingResult result, Model model,
 						  RedirectAttributes redirect, SessionStatus status) {
 
 		Rfc rfc;
 		
 		Date fechaAlta = new Date();
 		try {
-			
-			if(result.hasErrors()) {
-				System.out.println("Error en el proceso");
-				model.addAttribute("titulo", "Crear Beneficiario");
-				return "catalogos/beneficiarios/crear";
-			}
+
+			Afiliado titular = afiliadoService.findById(idAfiliado);
+			Double saldoAcumuladoTitular = titular.getSaldoAcumulado();
 
 			if(afiliado.getRfc() == null || afiliado.getRfc().equals("")) {
 				LocalDate fechaNacimiento = afiliado.getFechaNacimiento().toInstant()
@@ -103,14 +99,25 @@ public class BeneficiarioController {
 				System.out.println(rfc.toString());
 			}
 
-			afiliado.setEstatus(3);
+			afiliado.setEstatus(1);
 			afiliado.setIsBeneficiario(true);
 			afiliado.setClave(clave);
 			afiliado.setFechaAlta(fechaAlta);
-			
+			afiliado.setServicio(titular.getServicio());
+			afiliado.setFechaCorte(titular.getFechaCorte());
+			afiliado.setCuenta(titular.getCuenta());
+			afiliado.setPeriodicidad(titular.getPeriodicidad());
+
+			Double saldoAcumuladoBeneficiario = titular.getServicio().getInscripcionBeneficiario() + titular.getServicio().
+					getCostoBeneficiario();
+
+			saldoAcumuladoTitular = saldoAcumuladoTitular + saldoAcumuladoBeneficiario;
 			
 			afiliadoService.save(afiliado);
 			guardarRelAfiliadoBeneficiario(afiliado, idAfiliado);
+
+			titular.setSaldoAcumulado(saldoAcumuladoTitular);
+			afiliadoService.save(titular);
 			status.setComplete();
 			
 		}catch(Exception e) {

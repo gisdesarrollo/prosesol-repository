@@ -1,16 +1,5 @@
 package com.prosesol.springboot.app.service;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
 import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
@@ -18,6 +7,16 @@ import com.prosesol.springboot.app.repository.AfiliadoRepository;
 import com.prosesol.springboot.app.repository.BeneficiarioRepository;
 import com.prosesol.springboot.app.util.Estados;
 import com.prosesol.springboot.app.util.Paises;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class AfiliadoServiceImpl implements IAfiliadoService{
@@ -104,8 +103,8 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public Long getIdAfiliadoByRfc(String rfc) {
-		return iAfiliadoDao.getIdAfiliadoByRfc(rfc);
+	public Afiliado getAfiliadoByRfc(String rfc) {
+		return iAfiliadoDao.getAfiliadoByRfc(rfc);
 	}
 
 	@Override
@@ -118,6 +117,12 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 	@Transactional(readOnly = true)
 	public List<Afiliado> getAfiliadoBySearchNombreCompleto(String nombre, String apellidoPaterno, String apellidoMaterno) {
 		return iAfiliadoDao.getAfiliadoBySearchNombreCompleto(nombre, apellidoPaterno, apellidoMaterno);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Afiliado> getAfiliadosByFechaCorte(String fecha) {
+		return iAfiliadoDao.getAfiliadosByFechaCorte(fecha);
 	}
 
 	@Override
