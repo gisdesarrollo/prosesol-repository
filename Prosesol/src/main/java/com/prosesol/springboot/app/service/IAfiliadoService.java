@@ -34,12 +34,14 @@ public interface IAfiliadoService {
 	
 	public String[] getVariablesAfiliado();	
 	
-	public Long getIdAfiliadoByRfc(String rfc);
+	public Afiliado getAfiliadoByRfc(String rfc);
 	
 	public List<AfiliadoCustom> getAfiliadoByParams(String[] campos, Long idCcUsuario);
 
 	public List<Afiliado> getAfiliadoBySearchNombreCompleto(String nombre, String apellidoPaterno,
 															String apellidoMaterno);
+
+	public List<Afiliado> getAfiliadosByFechaCorte(String fecha);
 
 	public void updateEstatusbyIdCuenta(Long id);
 

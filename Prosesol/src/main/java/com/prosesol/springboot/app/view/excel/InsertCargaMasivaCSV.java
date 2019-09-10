@@ -50,7 +50,7 @@ public class InsertCargaMasivaCSV {
 	private CalcularFecha calcularFechas;
 
 	private int corte;
-	private Long idAfiliado;
+	private Afiliado titular;
 
 	private String isBeneficiario;
 	private String rfcAfiliado;
@@ -269,20 +269,20 @@ public class InsertCargaMasivaCSV {
 
 							if(!isVigor) {
 
-								Long idAfiliadoByRfc = afiliadoService.getIdAfiliadoByRfc(afiliado.getRfc());
-								if (idAfiliadoByRfc != null && idAfiliadoByRfc > 0) {
+								Afiliado bAfiliado = afiliadoService.getAfiliadoByRfc(afiliado.getRfc());
+								if (bAfiliado != null) {
 									LOG.info(counterLinea + " - " + "El afiliado ya se encuentra registrado");
 									log = counterLinea + " - " + "El afiliado ya se encuentra registrado";
 
 									isValidAfiliado = false;
 								}
 							}else{
-								Long idAfiliadoByRfc = afiliadoService.getIdAfiliadoByRfc(afiliado.getRfc());
-								if (idAfiliadoByRfc != null && idAfiliadoByRfc > 0) {
+								Afiliado bAfiliado = afiliadoService.getAfiliadoByRfc(afiliado.getRfc());
+								if (bAfiliado != null) {
 									LOG.info(counterLinea + " - " + "El afiliado ya se encuentra registrado");
 									log = counterLinea + " - " + "El afiliado ya se encuentra registrado";
 
-									afiliadoService.updateEstatusAfiliadoById(idAfiliadoByRfc);
+									afiliadoService.updateEstatusAfiliadoById(bAfiliado.getId());
 
 									isValidAfiliado = false;
 								}
@@ -520,6 +520,7 @@ public class InsertCargaMasivaCSV {
 
 	private String insertAfiliados(boolean isValidAfiliado, Afiliado afiliado,
 								   Integer counterLinea){
+
 		try {
 
 			if(isValidAfiliado) {
@@ -536,11 +537,26 @@ public class InsertCargaMasivaCSV {
 						afiliado.setEstatus(1);
 						afiliado.setClave(getClaveAfiliado());
 						afiliado.setFechaAlta(new Date());
-						idAfiliado = afiliadoService.getIdAfiliadoByRfc(rfcAfiliado);
+						titular = afiliadoService.getAfiliadoByRfc(rfcAfiliado);
 
-						if(idAfiliado != null && idAfiliado > 0){
+						if(titular != null){
+
+							Double saldoAcumuladoTitular = titular.getSaldoAcumulado();
+							Double saldoAcumuladoBeneficiario = afiliado.getServicio().getCostoBeneficiario() +
+									afiliado.getServicio().getInscripcionBeneficiario();
+
+							saldoAcumuladoTitular = saldoAcumuladoTitular + saldoAcumuladoBeneficiario;
+
+							titular.setSaldoAcumulado(saldoAcumuladoTitular);
+
+							afiliado.setServicio(titular.getServicio());
+							afiliado.setCuenta(titular.getCuenta());
+							afiliado.setFechaCorte(titular.getFechaCorte());
+							afiliado.setPeriodicidad(titular.getPeriodicidad());
+
 							afiliadoService.save(afiliado);
-							afiliadoService.insertBeneficiarioUsingJpa(afiliado, idAfiliado);
+							afiliadoService.save(titular);
+							afiliadoService.insertBeneficiarioUsingJpa(afiliado, titular.getId());
 						}else{
 							log = counterLinea + " - " + "El beneficiario no se ha insertado ya que el Titular no se ha encontrado" +
 									" en el sistema";
@@ -561,6 +577,12 @@ public class InsertCargaMasivaCSV {
 							Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), corte);
 							afiliado.setFechaCorte(fechaCorte);
 						}
+
+						Double saldoAcumuladoTitular = afiliado.getServicio().getCostoTitular() +
+								afiliado.getServicio().getInscripcionTitular();
+
+						afiliado.setSaldoAcumulado(saldoAcumuladoTitular);
+						afiliado.setSaldoCorte(new Double(0.00));
 
 						afiliadoService.save(afiliado);
 					}
@@ -610,11 +632,26 @@ public class InsertCargaMasivaCSV {
 						afiliado.setEstatus(1);
 						afiliado.setClave(getClaveAfiliado());
 						afiliado.setFechaAlta(new Date());
-						idAfiliado = afiliadoService.getIdAfiliadoByRfc(rfcAfiliado);
+						titular = afiliadoService.getAfiliadoByRfc(rfcAfiliado);
 
-						if(idAfiliado != null && idAfiliado > 0){
+						if(titular != null){
+
+							Double saldoAcumuladoTitular = titular.getSaldoAcumulado();
+							Double saldoAcumuladoBeneficiario = afiliado.getServicio().getCostoBeneficiario() +
+									afiliado.getServicio().getInscripcionBeneficiario();
+
+							saldoAcumuladoTitular = saldoAcumuladoTitular + saldoAcumuladoBeneficiario;
+
+							titular.setSaldoAcumulado(saldoAcumuladoTitular);
+
+							afiliado.setServicio(titular.getServicio());
+							afiliado.setCuenta(titular.getCuenta());
+							afiliado.setFechaCorte(titular.getFechaCorte());
+							afiliado.setPeriodicidad(titular.getPeriodicidad());
+
 							afiliadoService.save(afiliado);
-							afiliadoService.insertBeneficiarioUsingJpa(afiliado, idAfiliado);
+							afiliadoService.save(titular);
+							afiliadoService.insertBeneficiarioUsingJpa(afiliado, titular.getId());
 						}else{
 							log = counterLinea + " - " + "El beneficiario no se ha insertado ya que el Titular no se ha encontrado" +
 									" en el sistema";
@@ -636,6 +673,12 @@ public class InsertCargaMasivaCSV {
 							Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), corte);
 							afiliado.setFechaCorte(fechaCorte);
 						}
+
+						Double saldoAcumuladoTitular = afiliado.getServicio().getCostoTitular() +
+								afiliado.getServicio().getInscripcionTitular();
+
+						afiliado.setSaldoAcumulado(saldoAcumuladoTitular);
+						afiliado.setSaldoCorte(new Double(0.00));
 
 						afiliadoService.save(afiliado);
 					}

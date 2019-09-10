@@ -46,7 +46,7 @@ public class Usuario implements Serializable{
 	@Column
 	private String email;
 		
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "id_centro_contacto", referencedColumnName = "id_centro_contacto")
 	@Nullable
 	private CentroContacto centroContacto;

@@ -131,6 +131,8 @@ public class AfiliadoController {
 		System.out.println(clave);
 		Periodicidad periodicidad = new Periodicidad();
 		String mensajeFlash = null;
+		Double saldoAcumulado;
+		Double saldoCorte = new Double(0.00);
 		Date date = new Date();
 		Rfc rfc = null;
 
@@ -172,9 +174,14 @@ public class AfiliadoController {
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
 				Date fechaCorte = calcularFechas.calcularFechas(periodicidad, afiliado.getCorte());
 
+				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
+						afiliado.getServicio().getInscripcionTitular();
+
+				afiliado.setSaldoAcumulado(saldoAcumulado);
+				afiliado.setSaldoCorte(saldoCorte);
 				afiliado.setFechaCorte(fechaCorte);
 				afiliado.setFechaAlta(date);
-//				afiliado.setSaldoAcumulado(afiliado.getServicio().getCosto());
+
 				afiliado.setClave(clave);
 				
 				mensajeFlash = "Registro creado con éxito";

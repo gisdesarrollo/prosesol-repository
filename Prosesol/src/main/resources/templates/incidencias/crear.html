@@ -48,7 +48,7 @@
                                                 <tr th:switch="${historial.estatus}"
                                                     th:each="historial : ${historiales}">
                                                     <td th:text="${historial.fecha}"></td>
-                                                    <td th:text="${historial.detalle}"></td>
+                                                    <td th:utext="${historial.detalle}"></td>
                                                     <td th:case="1" style="color:  #bbb63d" th:text="Abierto"></td>
                                                     <td th:case="2" style="color: #0000FF" th:text="En+' '+Proceso"></td>
                                                     <td th:case="3" style="color: #4a9252" th:text="Completado"></td>
