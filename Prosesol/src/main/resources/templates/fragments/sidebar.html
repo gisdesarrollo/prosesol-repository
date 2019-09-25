@@ -66,10 +66,18 @@
 							<li><a href="#"><i class="fas fa-file-import"></i>
 									Operaciones</a>
 								<ul class="dropdown">
-									<li><a th:href="@{/cargaMasiva/afiliados}">Carga Masiva</a></li>
-								</ul>
-								<ul class="dropdown">
-									<li><a th:href="@{/cargaMasiva/vigor}">Carga Masiva Vigor</a></li>
+									<li><a href="#">- Carga Masiva</a>
+										<ul class="dropdown">
+											<li><a th:href="@{/cargaMasiva/afiliados}">Afiliados</a></li>
+											<li><a th:href="@{/cargaMasiva/vigor}">Vigor</a></li>
+										</ul>
+									</li>
+									<li><a href="#">- Pagos</a>
+										<ul class="dropdown">
+											<li><a th:href="@{/pagos/realizados}">Realizados</a></li>
+											<li><a th:href="@{/pagos/pendientes}">Pendientes</a></li>
+										</ul>
+									</li>
 								</ul>
 							</li>
 

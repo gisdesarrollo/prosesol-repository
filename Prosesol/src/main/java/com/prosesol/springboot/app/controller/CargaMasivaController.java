@@ -2,8 +2,10 @@ package com.prosesol.springboot.app.controller;
 
 import com.prosesol.springboot.app.async.AsyncCargaMasiva;
 import com.prosesol.springboot.app.async.AsyncCargaVigor;
+import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.LogCM;
 import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.ILogCMService;
 import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 import org.apache.commons.logging.Log;
@@ -42,8 +44,8 @@ public class CargaMasivaController {
     @Autowired
     private IAfiliadoService afiliadoService;
 
-    @Value("${afiliado.cuentaComercial.id}")
-    private Long idCuentaComercial;
+    @Autowired
+    private ICuentaService cuentaService;
 
     /**
      * Vista de la tabla de carga masiva de afiliados
@@ -148,7 +150,7 @@ public class CargaMasivaController {
         	      logger.info("File Name: " + file.getOriginalFilename());
 
 				  byte[] bytes = file.getBytes();
-				  asyncCargaMasiva.procesaArchivoAsync(isVigor, nombreArchivo, bytes, idCuentaComercial);
+				  asyncCargaMasiva.procesaArchivoAsync(isVigor, nombreArchivo, bytes, null);
 
 
 			  }else{
@@ -172,8 +174,9 @@ public class CargaMasivaController {
 
     @Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
     @RequestMapping(value = "/upload/vigor", method = RequestMethod.POST)
-    public String uploadCargaVigor(@RequestParam("file") MultipartFile file, HttpServletResponse response,
-                                    RedirectAttributes redirect) {
+    public String uploadCargaVigor(@ModelAttribute("cuenta")Cuenta cuenta,
+                                   @RequestParam("file") MultipartFile file,
+                                   HttpServletResponse response, RedirectAttributes redirect) {
 
         boolean isVigor = true;
 
@@ -181,7 +184,7 @@ public class CargaMasivaController {
 
             if(!file.isEmpty()){
 
-                afiliadoService.updateEstatusbyIdCuenta(idCuentaComercial);
+                afiliadoService.updateEstatusbyIdCuenta(cuenta.getId());
 
                 int indexOfName = file.getOriginalFilename().indexOf(".");
                 String nombreArchivo = null;
@@ -195,7 +198,7 @@ public class CargaMasivaController {
                 logger.info("File Name: " + file.getOriginalFilename());
 
                 byte[] bytes = file.getBytes();
-                asyncCargaVigor.procesaArchivoVigorAsync(isVigor, nombreArchivo, bytes, idCuentaComercial);
+                asyncCargaVigor.procesaArchivoVigorAsync(isVigor, nombreArchivo, bytes, cuenta.getId());
 
 
             }else{
@@ -242,6 +245,16 @@ public class CargaMasivaController {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Obtiene la lista de las cuentas en la BBDD
+     * @return List<Cuenta>
+     */
+    @ModelAttribute("cuentas")
+    public List<Cuenta> getAllCuentas(){
+        List<Cuenta> cuentaList = cuentaService.findAll();
+        return cuentaList;
     }
 
 }

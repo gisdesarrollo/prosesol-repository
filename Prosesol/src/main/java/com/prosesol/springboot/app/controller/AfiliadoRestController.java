@@ -63,6 +63,7 @@ public class AfiliadoRestController {
                         "\"apellidoPaterno\" :" + "\"" + afiliado.getApellidoPaterno() + "\", " +
                         "\"apellidoMaterno\" :" + "\"" + afiliado.getApellidoMaterno() + "\", " +
                         "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
+                        "\"rfc\" :" + "\"" + afiliado.getRfc() + "\", " +
                         "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
                         "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
                         "\"estatus\" : " + "\"" + estatus + "\", " +

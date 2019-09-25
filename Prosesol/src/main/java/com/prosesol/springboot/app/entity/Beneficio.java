@@ -1,25 +1,17 @@
 package com.prosesol.springboot.app.entity;
 
+import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidenciaBeneficio;
+import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-
-import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
-import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
-
 @Table(name = "beneficios")
 @Entity
-public class Beneficio implements Serializable {
+public class
+Beneficio implements Serializable {
 
 	/**
 	 * 
@@ -42,7 +34,7 @@ public class Beneficio implements Serializable {
 	private Set<RelServicioBeneficio> relServicioBeneficio;
 	
 	@OneToMany(mappedBy = "beneficio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
+	private Set<RelAfiliadoIncidenciaBeneficio> relAfiliadoIncidenciaBeneficio;
 
 	public Beneficio() {
 	}
@@ -84,12 +76,12 @@ public class Beneficio implements Serializable {
 		this.relServicioBeneficio = relServicioBeneficio;
 	}
 
-	public Set<RelAfiliadoIncidencia> getRelAfiliadoIncidencia() {
-		return relAfiliadoIncidencia;
+	public Set<RelAfiliadoIncidenciaBeneficio> getRelAfiliadoIncidenciaBeneficio() {
+		return relAfiliadoIncidenciaBeneficio;
 	}
 
-	public void setRelAfiliadoIncidencia(Set<RelAfiliadoIncidencia> relAfiliadoIncidencia) {
-		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
+	public void setRelAfiliadoIncidencia(Set<RelAfiliadoIncidenciaBeneficio> relAfiliadoIncidenciaBeneficio) {
+		this.relAfiliadoIncidenciaBeneficio = relAfiliadoIncidenciaBeneficio;
 	}
 	
 	@Override

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8" />
+<body>
+<div class="page-wrapper">
+    <!-- Page Top Bar Area -->
+    <div th:replace="fragments/header :: header"></div>
+    <div class="layout-container-area mt-70">
+        <!-- Side Menu Area -->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <!-- Layout Container -->
+        <div class="layout-container sidemenu-container">
+            <div class="container-fluid">
+                <div class="row ">
+
+                    <div class="col-md mb-4">
+                        <!-- Card Body -->
+                        <div class="card-body bg-white appwork bg-boxshadow-2">
+                            <div th:replace="fragments/navbar :: div-messages"></div>
+                            <h5 class="card-title">Afiliados con pagos pendientes</h5>
+                            <div class="card-subtitle text-muted">Lista de Afiliados con Pagos Pendientes</div>
+
+                            <div class="clearfix"></div>
+                            <hr>
+
+                            <div>
+                                <table class="table table-bordered" id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Nombre Completo</th>
+                                        <th>RFC</th>
+                                        <th>Monto Total</th>
+                                        <th>Fecha de Corte</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="afiliado : ${afiliados}">
+                                        <td th:text="${afiliado.nombre} + ' ' + ${afiliado.apellidoPaterno} + ' ' + ${afiliado.apellidoMaterno}"></td>
+                                        <td th:text="${afiliado.getRfc()}"></td>
+                                        <td th:text="${#numbers.formatDecimal(afiliado.getSaldoAcumulado(), 0, 2)}"></td>
+                                        <td th:text="${afiliado.getFechaCorte()}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+
+</html>

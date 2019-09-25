@@ -11,19 +11,16 @@ public class RelAfiliadoIncidenciaId implements Serializable{
 	
 	private Long afiliado;
 	
-	private Long beneficio;
-	
 	private Long incidencia;
 	
 	public RelAfiliadoIncidenciaId() {
 		
 	}
 
-	public RelAfiliadoIncidenciaId(Long incidencia, Long afiliado, Long beneficio) {
+	public RelAfiliadoIncidenciaId(Long incidencia, Long afiliado) {
 		
 		this.incidencia = incidencia;
 		this.afiliado = afiliado;
-		this.beneficio = beneficio;
 	}
 	
 	public Long getAfiliado() {
@@ -32,14 +29,6 @@ public class RelAfiliadoIncidenciaId implements Serializable{
 
 	public void setAfiliado(Long afiliado) {
 		this.afiliado = afiliado;
-	}
-
-	public Long getBeneficio() {
-		return beneficio;
-	}
-
-	public void setBeneficio(Long beneficio) {
-		this.beneficio = beneficio;
 	}
 	
 	public Long getIncidencia() {
@@ -55,7 +44,6 @@ public class RelAfiliadoIncidenciaId implements Serializable{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((afiliado == null) ? 0 : afiliado.hashCode());
-		result = prime * result + ((beneficio == null) ? 0 : beneficio.hashCode());
 		result = prime * result + ((incidencia == null) ? 0 : incidencia.hashCode());
 		return result;
 	}
@@ -73,11 +61,6 @@ public class RelAfiliadoIncidenciaId implements Serializable{
 			if (other.afiliado != null)
 				return false;
 		} else if (!afiliado.equals(other.afiliado))
-			return false;
-		if (beneficio == null) {
-			if (other.beneficio != null)
-				return false;
-		} else if (!beneficio.equals(other.beneficio))
 			return false;
 		if (incidencia == null) {
 			if (other.incidencia != null)

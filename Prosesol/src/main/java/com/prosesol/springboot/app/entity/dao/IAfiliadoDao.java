@@ -1,14 +1,12 @@
 package com.prosesol.springboot.app.entity.dao;
 
-import java.util.Date;
-import java.util.List;
-
+import com.prosesol.springboot.app.entity.Afiliado;
 import org.springframework.data.jpa.datatables.repository.DataTablesRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.prosesol.springboot.app.entity.Afiliado;
+import java.util.List;
 
 public interface IAfiliadoDao extends DataTablesRepository<Afiliado, Long>{
 	
@@ -34,6 +32,9 @@ public interface IAfiliadoDao extends DataTablesRepository<Afiliado, Long>{
 
 	@Query(value = "select * from afiliados a where fecha_corte = ?1 and is_beneficiario = false", nativeQuery = true)
 	public List<Afiliado> getAfiliadosByFechaCorte(String fecha);
+
+	@Query(value = "select * from afiliados where fecha_corte <= curdate() and is_beneficiario = false and saldo_corte > 0", nativeQuery = true)
+	public List<Afiliado> getAfiliadosPagoPendiente();
 
 	@Modifying
 	@Query("update Afiliado a set a.estatus = 2 where a.cuenta.id = :id")

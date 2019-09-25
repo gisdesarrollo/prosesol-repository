@@ -42,8 +42,8 @@ public class IncidenciaServiceImpl implements IIncidenciaService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Incidencia> getIncidenciasByUserName(String username) {
-		return incidenciaDao.getIncidenciasByUserName(username);
+	public List<Incidencia> getIncidenciasByUserId(Long id) {
+		return incidenciaDao.getIncidenciasByUserId(id);
 	}
 
 	@Override

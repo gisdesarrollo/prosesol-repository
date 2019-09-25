@@ -1,18 +1,17 @@
 package com.prosesol.springboot.app.controller;
 
-import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.Beneficio;
+import com.prosesol.springboot.app.entity.Incidencia;
+import com.prosesol.springboot.app.entity.Usuario;
+import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
 import com.prosesol.springboot.app.entity.custom.IncidenciaCustom;
+import com.prosesol.springboot.app.entity.custom.RelAfiliadoIncidenciaBeneficioCustom;
+import com.prosesol.springboot.app.entity.dto.RelServicioBeneficioDto;
+import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
+import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidenciaBeneficio;
+import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
+import com.prosesol.springboot.app.service.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,29 +20,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.prosesol.springboot.app.entity.Afiliado;
-import com.prosesol.springboot.app.entity.Beneficio;
-import com.prosesol.springboot.app.entity.Incidencia;
-import com.prosesol.springboot.app.entity.Usuario;
-import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
-import com.prosesol.springboot.app.entity.dao.IUsuarioDao;
-import com.prosesol.springboot.app.entity.dto.RelServicioBeneficioDto;
-import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
-import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
-import com.prosesol.springboot.app.service.IAfiliadoService;
-import com.prosesol.springboot.app.service.IIncidenciaService;
-import com.prosesol.springboot.app.service.IRelAfiliadoIncidenciaService;
-import com.prosesol.springboot.app.service.IRelServicioBeneficioService;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/incidencias")
@@ -59,13 +42,19 @@ public class IncidenciaController {
 	private IIncidenciaService incidenciaService;
 
 	@Autowired
-	private IUsuarioDao usuarioDao;
+	private IUsuarioService usuarioService;
 
 	@Autowired
 	private IRelServicioBeneficioService relServicioBeneficio;
 
 	@Autowired
+	private IRelAfiliadoIncidenciaBeneficioService relAfiliadoIncidenciaBeneficioService;
+
+	@Autowired
 	private IRelAfiliadoIncidenciaService relAfiliadoIncidenciaService;
+
+	@Autowired
+	private IBeneficioService beneficioService;
 
 	private Long idAfiliado;
 	
@@ -90,8 +79,9 @@ public class IncidenciaController {
 
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			String username = authentication.getName();
+			Usuario usuario = usuarioService.findByUsername(username);
 
-			List<Incidencia> incidencias = incidenciaService.getIncidenciasByUserName(username);
+			List<Incidencia> incidencias = incidenciaService.getIncidenciasByUserId(usuario.getId());
 
 			model.addAttribute("incidencias", incidencias);
 
@@ -146,7 +136,7 @@ public class IncidenciaController {
 		try {
 
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			Usuario usuario = usuarioDao.findByUsername(authentication.getName());
+			Usuario usuario = usuarioService.findByUsername(authentication.getName());
 
 			List<AfiliadoCustom> afiliados = afiliadoService.getAfiliadoByParams(campos,
 					usuario.getCentroContacto().getId());
@@ -213,14 +203,14 @@ public class IncidenciaController {
 
 			Incidencia incidencia = new Incidencia();
 			List<RelServicioBeneficio> relServicioBeneficio = new ArrayList<RelServicioBeneficio>();
-			List<RelAfiliadoIncidencia> relAfiliadoIncidencia = relAfiliadoIncidenciaService
-					.getRelAfiliadoIncidenciaByIdIncidencia(id);
+			List<RelAfiliadoIncidenciaBeneficioCustom> relAfiliadoIncidenciaBeneficio = relAfiliadoIncidenciaBeneficioService
+					.getRelAfiliadoIncidenciaBeneficioByIdIncidencia(id);
 
-			System.out.println(relAfiliadoIncidencia.size());
+			System.out.println(relAfiliadoIncidenciaBeneficio.size());
 			
-			if (relAfiliadoIncidencia.size() > 0) {
+			if (relAfiliadoIncidenciaBeneficio != null && relAfiliadoIncidenciaBeneficio.size() > 0) {
 
-				Afiliado afiliado = afiliadoService.findById(relAfiliadoIncidencia.get(0).getAfiliado().getId());
+				Afiliado afiliado = afiliadoService.findById(relAfiliadoIncidenciaBeneficio.get(0).getIdAfiliado());
 
 				// Lista para agregar la relación entre los beneficios del afiliado y la lista
 				// de beneficios ya creada
@@ -249,12 +239,17 @@ public class IncidenciaController {
 
 					System.out.println(relSB.getBeneficio().toString());
 
-					if (relAfiliadoIncidencia.size() > index && relSB.getBeneficio().getId() == relAfiliadoIncidencia.get(index).getBeneficio().getId()) {
+					if (relAfiliadoIncidenciaBeneficio.size() > index && relSB.getBeneficio().getId() ==
+							relAfiliadoIncidenciaBeneficio.get(index).getIdBeneficio()) {
 
 						RelServicioBeneficio beneficio = new RelServicioBeneficio(relSB.getServicio(),
 								relSB.getBeneficio(), relSB.getTitular(), relSB.getBeneficiario(),
 								relSB.getDescripcion());
-						beneficio.setBeneficio(relAfiliadoIncidencia.get(index).getBeneficio());
+
+						Beneficio nBeneficio = beneficioService.findById(relAfiliadoIncidenciaBeneficio.get(index)
+								.getIdBeneficio());
+
+						beneficio.setBeneficio(nBeneficio);
 						relServicioBeneficios.add(beneficio);
 
 						index++;
@@ -327,7 +322,7 @@ public class IncidenciaController {
 
 	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
-	public String guardar(@Valid Incidencia incidencia, @ModelAttribute RelServicioBeneficioDto relServicioBeneficios,
+	public String guardar(Incidencia incidencia, @ModelAttribute RelServicioBeneficioDto relServicioBeneficios,
 			RedirectAttributes redirect, SessionStatus status) {
 
 		String messageStatus = null;
@@ -335,78 +330,132 @@ public class IncidenciaController {
 		try {
 
 			List<RelServicioBeneficio> relServicioBeneficio = relServicioBeneficios.getRelServicioBeneficios();
-			RelAfiliadoIncidencia relAfiliadoIncidencia = new RelAfiliadoIncidencia();
 			Afiliado afiliado = afiliadoService.findById(idAfiliado);
 
 			System.out.println(incidencia.getDetalle());
 
-			if (relServicioBeneficio != null) {
+			incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
+					+ afiliado.getApellidoMaterno());
+
+			if (incidencia.getId() == null) {
+				incidencia.setEstatus(1);
+				incidencia.setFechaCreacion(new Date());
+			}
+
+			DateFormat df = new SimpleDateFormat("HH:mm a");
+			Date date = null;
+
+			date = df.parse(incidencia.getHora());
+			String hora = new SimpleDateFormat("H:mm:ss").format(date);
+			incidencia.setHora(hora);
+
+			String detalle = incidencia.getDetalle();
+			detalle = detalle.replaceAll("\\<.*?\\>", "");
+			incidencia.setDetalle(detalle);
+
+			incidenciaService.save(incidencia);
+
+			if(relServicioBeneficio != null) {
+
+				RelAfiliadoIncidenciaBeneficio relAfiliadoIncidenciaBeneficio = new RelAfiliadoIncidenciaBeneficio();
 
 				relServicioBeneficio.removeAll(Arrays.asList(null, null));
 
-				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
-						+ afiliado.getApellidoMaterno());
-
-				if (incidencia.getId() == null) {
-					incidencia.setEstatus(1);
-					incidencia.setFechaCreacion(new Date());
-				}
-				
-				DateFormat df = new SimpleDateFormat("HH:mm a");
-				Date date = null;
-				
-				date = df.parse(incidencia.getHora());
-				String hora = new SimpleDateFormat("H:mm:ss").format(date);
-				incidencia.setHora(hora);
-
-				String detalle = incidencia.getDetalle();
-				detalle = detalle.replaceAll("\\<.*?\\>", "");
-
-				incidencia.setDetalle(detalle);
-
-				incidenciaService.save(incidencia);
-
 				for (RelServicioBeneficio r : relServicioBeneficio) {
-
 					if (r.getBeneficio() != null) {
-						relAfiliadoIncidencia.setIncidencia(incidencia);
-						relAfiliadoIncidencia.setAfiliado(afiliado);
-						relAfiliadoIncidencia.setBeneficio(r.getBeneficio());
-						relAfiliadoIncidencia.setFecha(new Date());
+						relAfiliadoIncidenciaBeneficio.setIncidencia(incidencia);
+						relAfiliadoIncidenciaBeneficio.setAfiliado(afiliado);
+						relAfiliadoIncidenciaBeneficio.setBeneficio(r.getBeneficio());
+						relAfiliadoIncidenciaBeneficio.setFecha(new Date());
 
-						relAfiliadoIncidenciaService.save(relAfiliadoIncidencia);
+						relAfiliadoIncidenciaBeneficioService.save(relAfiliadoIncidenciaBeneficio);
 					}
-
 				}
-				
-				messageStatus = "Incidencia editada correctamente";
-				
-			} else {
-				
-				if (incidencia.getId() == null) {
-					incidencia.setEstatus(1);
-					incidencia.setFechaCreacion(new Date());
-				}
-				
-				DateFormat df = new SimpleDateFormat("HH:mm a");
-				Date date = null;
-				
-				date = df.parse(incidencia.getHora());
-				String hora = new SimpleDateFormat("H:mm:ss").format(date);
-				incidencia.setHora(hora);
+			}else{
 
-				String detalle = incidencia.getDetalle();
-				detalle = detalle.replaceAll("\\<.*?\\>", "");
+				RelAfiliadoIncidencia relAfiliadoIncidencia = new RelAfiliadoIncidencia();
 
-				incidencia.setDetalle(detalle);
-				
-				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
-						+ afiliado.getApellidoMaterno());
+				relAfiliadoIncidencia.setIncidencia(incidencia);
+				relAfiliadoIncidencia.setAfiliado(afiliado);
+				relAfiliadoIncidencia.setFecha(new Date());
 
-				incidenciaService.save(incidencia);
-				
-				messageStatus = "Incidencia creada correctamente";					
+				relAfiliadoIncidenciaService.save(relAfiliadoIncidencia);
 			}
+
+			if(incidencia.getId() > 0){
+				messageStatus = "Incidencia editada correctamente";
+			}else{
+				messageStatus = "Incidencia creada correctamente";
+			}
+
+
+//			if (relServicioBeneficio != null) {
+//
+//				relServicioBeneficio.removeAll(Arrays.asList(null, null));
+//
+//				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
+//						+ afiliado.getApellidoMaterno());
+//
+//				if (incidencia.getId() == null) {
+//					incidencia.setEstatus(1);
+//					incidencia.setFechaCreacion(new Date());
+//				}
+//
+//				DateFormat df = new SimpleDateFormat("HH:mm a");
+//				Date date = null;
+//
+//				date = df.parse(incidencia.getHora());
+//				String hora = new SimpleDateFormat("H:mm:ss").format(date);
+//				incidencia.setHora(hora);
+//
+//				String detalle = incidencia.getDetalle();
+//				detalle = detalle.replaceAll("\\<.*?\\>", "");
+//
+//				incidencia.setDetalle(detalle);
+//
+//				incidenciaService.save(incidencia);
+//
+//				for (RelServicioBeneficio r : relServicioBeneficio) {
+//
+//					if (r.getBeneficio() != null) {
+//						relAfiliadoIncidenciaBeneficio.setIncidencia(incidencia);
+//						relAfiliadoIncidenciaBeneficio.setAfiliado(afiliado);
+//						relAfiliadoIncidenciaBeneficio.setBeneficio(r.getBeneficio());
+//						relAfiliadoIncidenciaBeneficio.setFecha(new Date());
+//
+//						relAfiliadoIncidenciaBeneficioService.save(relAfiliadoIncidenciaBeneficio);
+//					}
+//
+//				}
+//
+//				messageStatus = "Incidencia editada correctamente";
+//
+//			} else {
+//
+//				if (incidencia.getId() == null) {
+//					incidencia.setEstatus(1);
+//					incidencia.setFechaCreacion(new Date());
+//				}
+//
+//				DateFormat df = new SimpleDateFormat("HH:mm a");
+//				Date date = null;
+//
+//				date = df.parse(incidencia.getHora());
+//				String hora = new SimpleDateFormat("H:mm:ss").format(date);
+//				incidencia.setHora(hora);
+//
+//				String detalle = incidencia.getDetalle();
+//				detalle = detalle.replaceAll("\\<.*?\\>", "");
+//
+//				incidencia.setDetalle(detalle);
+//
+//				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
+//						+ afiliado.getApellidoMaterno());
+//
+//				incidenciaService.save(incidencia);
+//
+//				messageStatus = "Incidencia creada correctamente";
+//			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

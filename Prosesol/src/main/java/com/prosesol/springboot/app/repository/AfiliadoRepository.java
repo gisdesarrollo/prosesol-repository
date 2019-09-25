@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,8 @@ import com.prosesol.springboot.app.util.AfiliadoAsistencia;
 
 @Repository
 public class AfiliadoRepository {
+
+	protected static final Log LOG = LogFactory.getLog(AfiliadoRepository.class);
 
 	@PersistenceContext
 	public EntityManager em;
@@ -113,15 +117,10 @@ public class AfiliadoRepository {
 			}
 		}
 
-		System.out.println(query);
-
+		LOG.info(query);
 		Query sql = em.createQuery(query);
 
 		afiliados = sql.getResultList();
-
-		for (AfiliadoCustom nuevoAfiliado : afiliados) {
-			System.out.println(nuevoAfiliado.toString());
-		}
 
 		return afiliados;
 	}

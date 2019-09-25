@@ -28,7 +28,16 @@
                                 <b>1.- Descargue la <a th:href="@{/cargaMasiva/templateXlsx}">plantilla</a> para
                                     realizar la carga masiva de Afiliados</b>
                                 <br>
-                                <b>2.- Cargue la plantilla con los datos del archivo vigor que desee guardar en el
+                                <b>2.- Escoger el tipo de cuenta a la que será afectada la carga masiva</b>
+                                <div class="form-group col-md-3">
+                                    <select name="cuenta" class="custom-select" id="cuentasVigor">
+                                        <option value="0">Ninguno</option>
+                                        <option th:each="cuenta : ${cuentas}"
+                                                th:value="${cuenta.id}" th:text="${cuenta.razonSocial}"
+                                                th:selected="false"></option>
+                                    </select>
+                                </div>
+                                <b>3.- Cargue la plantilla con los datos del archivo vigor que desee guardar en el
                                     sistema </b>
                                 <div>
                                     <input type="file" name="file"/>
@@ -37,7 +46,7 @@
                                 <div class="clearfix"></div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary btn-square float-right">Cargar
+                                        <button type="submit" class="btn btn-primary btn-square float-right" id="submitCV">Cargar
                                             Archivo
                                         </button>
                                     </div>
