@@ -12,14 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-//@Configuration
-//@EnableScheduling
+@Configuration
+@EnableScheduling
 public class GenerarSaldoCorteScheduler {
 
     private static final Logger LOG = LoggerFactory.getLogger(GenerarSaldoCorteScheduler.class);
@@ -32,23 +28,29 @@ public class GenerarSaldoCorteScheduler {
     @Autowired
     private CalcularFecha calcularFechas;
 
-
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(cron = "0 0 2 * * *", zone = "America/Mexico_City")
 	@Transactional
     public void calcularSaldoScheduler() {
 
         LOG.info("Programa de iniciación con fecha: " + fechaActual);
 
+        Calendar getCurrentTime = new GregorianCalendar(TimeZone.getTimeZone("America/Mexico_City"));
         String pattern = "yyyy-MM-dd";
         DateFormat dateFormat = new SimpleDateFormat(pattern);
         String fecha = dateFormat.format(fechaActual);
 
         List<Afiliado> afiliados = afiliadoService.getAfiliadosByFechaCorte(fecha);
 
+        int hour = getCurrentTime.get(Calendar.HOUR);
+        int minute = getCurrentTime.get(Calendar.MINUTE);
+        int second = getCurrentTime.get(Calendar.SECOND);
+        int year = getCurrentTime.get(Calendar.YEAR);
+
+        LOG.info("Hora Actual: " + hour + ":" + minute + ":" + second + " Año en curso: " + year);
+
         for (Afiliado afiliado : afiliados) {
 
             LOG.info("Id Afiliado: " + afiliado.getId());
-
             if (afiliado.getSaldoCorte() != null) {
 
 				Date fechaCorte = afiliado.getFechaCorte();

@@ -33,6 +33,7 @@
 													<th>Clave</th>
 													<th>Estado</th>
 													<th>Municipio</th>
+													<th>Servicio</th>
 													<th>Estado de membresía</th>
 													<th></th>
 												</tr>
@@ -46,6 +47,7 @@
 													<td th:text="${afiliado.clave}"></td>
 													<td th:text="${afiliado.entidadFederativa}"></td>
 													<td th:text="${afiliado.municipio}"></td>
+													<td th:text="${afiliado.servicio.nombre}"></td>
 													<td th:case="1" style="color: #4a9252" th:text="Activo"></td>
 													<td th:case="2" style="color: #ea3808" th:text="Inactivo"></td>
 													<td th:case="3" style="color: #bbb63d " th:text="Candidato"></td>

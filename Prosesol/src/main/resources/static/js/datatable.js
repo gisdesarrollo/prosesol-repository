@@ -27,6 +27,8 @@ $(function(){
 		},{
 			data : 'clave'
 		},{
+		    data : 'rfc'
+		},{
 			data : 'saldoAcumulado'
 		},{
 		    data : "isBeneficiario"

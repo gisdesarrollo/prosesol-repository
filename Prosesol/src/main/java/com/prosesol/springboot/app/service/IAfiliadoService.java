@@ -43,6 +43,8 @@ public interface IAfiliadoService {
 
 	public List<Afiliado> getAfiliadosByFechaCorte(String fecha);
 
+	public List<Afiliado> getAfiliadosPagoPendiente();
+
 	public void updateEstatusbyIdCuenta(Long id);
 
 	public void updateEstatusAfiliadoById(Long id);

@@ -14,8 +14,8 @@ public interface IIncidenciaService {
 	public void save(Incidencia incidencia);
 	
 	public void deleteById(Long id);
-	
-	public List<Incidencia> getIncidenciasByUserName(String username);
+
+	public List<Incidencia> getIncidenciasByUserId(Long id);
 
 	public List<IncidenciaCustom> getHistorialIncidenciaByIdAfiliado(Long id);
 }

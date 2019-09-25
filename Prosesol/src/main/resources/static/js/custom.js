@@ -38,5 +38,13 @@ $(document).ready(function(){
         }
     });
 
+    $("#submitCV").click(function(e){
+        var cuenta = $("#cuentasVigor").val();
+        if(cuenta == 0){
+            alert("Proporcione una cuenta");
+            e.preventDefault();
+        }
+    });
+
 });
 	
