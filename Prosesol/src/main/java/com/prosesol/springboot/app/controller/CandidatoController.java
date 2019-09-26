@@ -197,7 +197,7 @@ public class CandidatoController {
 	public String activarCandidato(@PathVariable("id") Long id, RedirectAttributes redirect, SessionStatus status){
 
 		Candidato candidato = candidatoService.findById(id);
-
+		String flashMessage = "";
 		try{
 
 			candidato.setEstatus(1);
@@ -205,14 +205,22 @@ public class CandidatoController {
 			candidato.setClave(generarClave.getClave(clave));
 
 			candidatoService.insertCandidatoIntoAfiliado(candidato);
-			candidatoService.deleteById(id);
+
+			candidato.setEstatus(4);
+			candidatoService.save(candidato);
+
+			flashMessage = "El candidato se ha activo con número de clave: " + candidato.getClave();
+
+			status.setComplete();
 		}catch (Exception e){
 			LOG.error("Error al momento de activar al candidato", e);
 			redirect.addFlashAttribute("error", "Error a momento de activar al candidato");
 			return "redirect:/candidatos/ver";
 		}
 
-		return "redirect:/candidatos/ver";
+		redirect.addFlashAttribute("success", flashMessage);
+
+		return "redirect:/afiliados/ver";
 	}
 	
 	/**
