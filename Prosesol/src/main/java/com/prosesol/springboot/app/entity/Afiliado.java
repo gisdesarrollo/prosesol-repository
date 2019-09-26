@@ -508,7 +508,7 @@ public class Afiliado implements Serializable{
 
 		return builder.toString();
 	}
-	
+
 	public String getQuery(String campo, boolean where, AfiliadoAsistencia tipoQuery, Long idCcUsuario) {
 		return tipoQuery.addQuery(campo, where, idCcUsuario);
 	}

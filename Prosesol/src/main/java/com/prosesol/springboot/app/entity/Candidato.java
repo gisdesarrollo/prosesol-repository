@@ -33,7 +33,7 @@ import com.prosesol.springboot.app.util.AfiliadoAsistencia;
 public class Candidato implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -127,7 +127,7 @@ public class Candidato implements Serializable{
 	@Column(name = "fecha_afiliacion")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date fechaAfiliacion;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_corte")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -146,7 +146,7 @@ public class Candidato implements Serializable{
 	@Column(name = "inscripcion")
 	private Double inscripcion;
 
-	@NotNull
+	@NotNull(message = "Seleccione el tipo de servicio")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_servicio")
 	private Servicio servicio;
@@ -172,7 +172,7 @@ public class Candidato implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cta_comercial")
 	private Cuenta cuenta;
-	
+
 	@OneToMany(mappedBy = "afiliado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
 
@@ -189,7 +189,7 @@ public class Candidato implements Serializable{
 
 	public void setBeneficiarios(Set<Beneficiario> beneficiarios) {
 		this.beneficiarios = beneficiarios;
-	}	
+	}
 
 	public Long getId() {
 		return id;
@@ -498,7 +498,7 @@ public class Candidato implements Serializable{
 	public void setCorte(Integer corte) {
 		this.corte = corte;
 	}
-	
+
 	public Set<RelAfiliadoIncidencia> getRelAfiliadoIncidencia() {
 		return relAfiliadoIncidencia;
 	}
@@ -521,9 +521,5 @@ public class Candidato implements Serializable{
 		}
 
 		return builder.toString();
-	}
-	
-	public String getQuery(String campo, boolean where, AfiliadoAsistencia tipoQuery, Long idCcUsuario) {
-		return tipoQuery.addQuery(campo, where, idCcUsuario);
 	}
 }
