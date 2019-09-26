@@ -1,10 +1,19 @@
 package com.prosesol.springboot.app.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import com.josketres.rfcfacil.Rfc;
+import com.prosesol.springboot.app.entity.*;
+import com.prosesol.springboot.app.service.*;
+import com.prosesol.springboot.app.util.GenerarClave;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,22 +27,17 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.prosesol.springboot.app.entity.Candidato;
-import com.prosesol.springboot.app.entity.Cuenta;
-import com.prosesol.springboot.app.entity.Periodicidad;
-import com.prosesol.springboot.app.entity.Promotor;
-import com.prosesol.springboot.app.entity.Servicio;
-import com.prosesol.springboot.app.service.ICandidatoService;
-import com.prosesol.springboot.app.service.ICuentaService;
-import com.prosesol.springboot.app.service.IPeriodicidadService;
-import com.prosesol.springboot.app.service.IPromotorService;
-import com.prosesol.springboot.app.service.IServicioService;
 import com.prosesol.springboot.app.util.Paises;
 
 @Controller
 @RequestMapping("candidatos")
 @SessionAttributes(value = "candidato")
 public class CandidatoController {
+
+	private final static Log LOG = LogFactory.getLog(CandidatoController.class);
+
+	@Value("${app.clave}")
+	private String clave;
 
 	@Autowired
 	private ICandidatoService candidatoService;
@@ -49,6 +53,12 @@ public class CandidatoController {
 
 	@Autowired
 	private ICuentaService cuentaService;
+
+	@Autowired
+	private IAfiliadoService afiliadoService;
+
+	@Autowired
+	private GenerarClave generarClave;
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@GetMapping(value = "/ver")
@@ -104,16 +114,28 @@ public class CandidatoController {
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public String guardar(@Valid Candidato candidato, BindingResult result, RedirectAttributes redirect, SessionStatus status) {
-		
+
 		try {
 			
 			if(result.hasErrors()) {
 				return "catalogos/candidatos/crear";
 			}
-			
+
+			LocalDate fechaNacimiento = candidato.getFechaNacimiento().toInstant()
+												 .atZone(ZoneId.systemDefault())
+												 .toLocalDate();
+
+			Rfc rfc = new Rfc.Builder()
+							 .name(candidato.getNombre())
+					  		 .firstLastName(candidato.getApellidoPaterno())
+							 .secondLastName(candidato.getApellidoMaterno())
+							 .birthday(fechaNacimiento.getDayOfMonth(), fechaNacimiento.getMonthValue(), fechaNacimiento.getYear())
+							 .build();
+
 			String resultado = (candidato.getId() != null) ? "El registro se ha editado con éxito" : "El registro se ha creado con éxito";
 	
 			candidato.setEstatus(3);
+			candidato.setRfc(rfc.toString());
 			
 			candidatoService.save(candidato);
 			status.setComplete();
@@ -161,6 +183,35 @@ public class CandidatoController {
 		}
 		
 		redirect.addFlashAttribute("success", "El registro se ha eliminado correctamente");
+		return "redirect:/candidatos/ver";
+	}
+
+	/**
+	 * Método que cambia el estatus del candidato de Candidato a Activo
+	 * @param id
+	 * @param redirect
+	 * @param status
+	 * @return
+	 */
+	@RequestMapping(value = "/estatus/{id}")
+	public String activarCandidato(@PathVariable("id") Long id, RedirectAttributes redirect, SessionStatus status){
+
+		Candidato candidato = candidatoService.findById(id);
+
+		try{
+
+			candidato.setEstatus(1);
+			candidato.setIsBeneficiario(false);
+			candidato.setClave(generarClave.getClave(clave));
+
+			candidatoService.insertCandidatoIntoAfiliado(candidato);
+			candidatoService.deleteById(id);
+		}catch (Exception e){
+			LOG.error("Error al momento de activar al candidato", e);
+			redirect.addFlashAttribute("error", "Error a momento de activar al candidato");
+			return "redirect:/candidatos/ver";
+		}
+
 		return "redirect:/candidatos/ver";
 	}
 	

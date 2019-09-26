@@ -18,5 +18,7 @@ public interface ICandidatoService {
 	public List<String> getAllEstados();
 	
 	public List<Paises> getAllPaises();
+
+	public void insertCandidatoIntoAfiliado(Candidato id);
 	
 }

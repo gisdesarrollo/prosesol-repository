@@ -164,8 +164,7 @@ public class AfiliadoController {
 								     .build();
 					
 					afiliado.setRfc(rfc.toString());
-					
-					System.out.println(rfc.toString());
+
 				}
 				
 				afiliado.setIsBeneficiario(false);			

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.prosesol.springboot.app.repository.CandidatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,9 @@ public class CandidatoServiceImpl implements ICandidatoService{
 
 	@Autowired
 	private ICandidatoDao candidatoDao;
+
+	@Autowired
+	private CandidatoRepository candidatoRepository;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -57,6 +61,11 @@ public class CandidatoServiceImpl implements ICandidatoService{
 		List<Paises> paises = new ArrayList<Paises>(Arrays.asList(Paises.values()));
 		
 		return paises;
+	}
+
+	@Override
+	public void insertCandidatoIntoAfiliado(Candidato candidato) {
+		candidatoRepository.insertCandidatoIntoAfiliado(candidato);
 	}
 
 }
