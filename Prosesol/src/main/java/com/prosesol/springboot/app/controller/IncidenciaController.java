@@ -12,6 +12,7 @@ import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidenciaBeneficio;
 import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
 import com.prosesol.springboot.app.service.*;
+import com.prosesol.springboot.app.view.excel.IncidenciaXlsx;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.DateFormat;
@@ -388,75 +390,6 @@ public class IncidenciaController {
 				messageStatus = "Incidencia creada correctamente";
 			}
 
-
-//			if (relServicioBeneficio != null) {
-//
-//				relServicioBeneficio.removeAll(Arrays.asList(null, null));
-//
-//				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
-//						+ afiliado.getApellidoMaterno());
-//
-//				if (incidencia.getId() == null) {
-//					incidencia.setEstatus(1);
-//					incidencia.setFechaCreacion(new Date());
-//				}
-//
-//				DateFormat df = new SimpleDateFormat("HH:mm a");
-//				Date date = null;
-//
-//				date = df.parse(incidencia.getHora());
-//				String hora = new SimpleDateFormat("H:mm:ss").format(date);
-//				incidencia.setHora(hora);
-//
-//				String detalle = incidencia.getDetalle();
-//				detalle = detalle.replaceAll("\\<.*?\\>", "");
-//
-//				incidencia.setDetalle(detalle);
-//
-//				incidenciaService.save(incidencia);
-//
-//				for (RelServicioBeneficio r : relServicioBeneficio) {
-//
-//					if (r.getBeneficio() != null) {
-//						relAfiliadoIncidenciaBeneficio.setIncidencia(incidencia);
-//						relAfiliadoIncidenciaBeneficio.setAfiliado(afiliado);
-//						relAfiliadoIncidenciaBeneficio.setBeneficio(r.getBeneficio());
-//						relAfiliadoIncidenciaBeneficio.setFecha(new Date());
-//
-//						relAfiliadoIncidenciaBeneficioService.save(relAfiliadoIncidenciaBeneficio);
-//					}
-//
-//				}
-//
-//				messageStatus = "Incidencia editada correctamente";
-//
-//			} else {
-//
-//				if (incidencia.getId() == null) {
-//					incidencia.setEstatus(1);
-//					incidencia.setFechaCreacion(new Date());
-//				}
-//
-//				DateFormat df = new SimpleDateFormat("HH:mm a");
-//				Date date = null;
-//
-//				date = df.parse(incidencia.getHora());
-//				String hora = new SimpleDateFormat("H:mm:ss").format(date);
-//				incidencia.setHora(hora);
-//
-//				String detalle = incidencia.getDetalle();
-//				detalle = detalle.replaceAll("\\<.*?\\>", "");
-//
-//				incidencia.setDetalle(detalle);
-//
-//				incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
-//						+ afiliado.getApellidoMaterno());
-//
-//				incidenciaService.save(incidencia);
-//
-//				messageStatus = "Incidencia creada correctamente";
-//			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			redirect.addFlashAttribute("error", "Ocurrió un problema en el sistema, contacte al administrador");
@@ -478,6 +411,13 @@ public class IncidenciaController {
 		}
 
 		return "redirect:/incidencias/home";
+	}
+
+	@GetMapping(value = "/excel")
+	public ModelAndView getIncidenciasExcel(){
+		List<Incidencia> incidencias = incidenciaService.findAll();
+
+		return new ModelAndView(new IncidenciaXlsx(), "incidencias", incidencias);
 	}
 
 	/**

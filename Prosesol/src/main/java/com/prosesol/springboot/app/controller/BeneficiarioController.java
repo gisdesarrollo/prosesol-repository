@@ -4,6 +4,7 @@ import com.josketres.rfcfacil.Rfc;
 import com.prosesol.springboot.app.entity.*;
 import com.prosesol.springboot.app.service.*;
 import com.prosesol.springboot.app.util.CalcularFecha;
+import com.prosesol.springboot.app.util.GenerarClave;
 import com.prosesol.springboot.app.util.Paises;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,6 +51,9 @@ public class BeneficiarioController {
 	
 	@Autowired
 	private CalcularFecha calcularFechas;
+
+	@Autowired
+	private GenerarClave generarClave;
 	
 	private static Long idAfiliado;
 	
@@ -70,8 +74,7 @@ public class BeneficiarioController {
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@ModelAttribute("clave") String clave,
-						  Afiliado afiliado, BindingResult result, Model model,
+	public String guardar(Afiliado afiliado, BindingResult result, Model model,
 						  RedirectAttributes redirect, SessionStatus status) {
 
 		Rfc rfc;
@@ -101,7 +104,7 @@ public class BeneficiarioController {
 
 			afiliado.setEstatus(1);
 			afiliado.setIsBeneficiario(true);
-			afiliado.setClave(clave);
+			afiliado.setClave(generarClave.getClave(clave));
 			afiliado.setFechaAlta(fechaAlta);
 			afiliado.setServicio(titular.getServicio());
 			afiliado.setFechaCorte(titular.getFechaCorte());
@@ -197,23 +200,5 @@ public class BeneficiarioController {
 	@ModelAttribute("cuentas")
 	public List<Cuenta> getAllCuentas(){
 		return cuentaService.findAll();
-	}
-	
-	/**
-	 * Método para asignar una clave para el Afiliado
-	 * 
-	 * @param(name = "clave")
-	 */
-
-	@ModelAttribute("clave")
-	public String getClaveAfiliado() {
-
-		String claveAfiliado = "PR-";
-
-		for (int i = 0; i < 10; i++) {
-			claveAfiliado += (clave.charAt((int) (Math.random() * clave.length())));
-		}
-
-		return claveAfiliado;
 	}
 }

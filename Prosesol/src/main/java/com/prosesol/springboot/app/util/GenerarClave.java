@@ -18,5 +18,4 @@ public class GenerarClave {
         return this.clave;
 
     }
-
 }
