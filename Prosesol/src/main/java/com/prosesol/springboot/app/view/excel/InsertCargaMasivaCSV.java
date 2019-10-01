@@ -4,6 +4,7 @@ import com.josketres.rfcfacil.Rfc;
 import com.prosesol.springboot.app.entity.*;
 import com.prosesol.springboot.app.service.*;
 import com.prosesol.springboot.app.util.CalcularFecha;
+import com.prosesol.springboot.app.util.GenerarClave;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,6 +49,9 @@ public class InsertCargaMasivaCSV {
 
 	@Autowired
 	private CalcularFecha calcularFechas;
+
+	@Autowired
+	private GenerarClave generarClave;
 
 	private int corte;
 	private Afiliado titular;
@@ -535,7 +539,7 @@ public class InsertCargaMasivaCSV {
 					if (isBeneficiario.equals("Sí")) {
 						afiliado.setIsBeneficiario(true);
 						afiliado.setEstatus(1);
-						afiliado.setClave(getClaveAfiliado());
+						afiliado.setClave(generarClave.getClave(clave));
 						afiliado.setFechaAlta(new Date());
 						titular = afiliadoService.getAfiliadoByRfc(rfcAfiliado);
 
@@ -570,7 +574,7 @@ public class InsertCargaMasivaCSV {
 					} else if (isBeneficiario.equals("No")) {
 						afiliado.setIsBeneficiario(false);
 						afiliado.setEstatus(1);
-						afiliado.setClave(getClaveAfiliado());
+						afiliado.setClave(generarClave.getClave(clave));
 						afiliado.setFechaAlta(new Date());
 
 						if (corte > 0) {
@@ -630,7 +634,7 @@ public class InsertCargaMasivaCSV {
 					if (isBeneficiario.equals("Sí")) {
 						afiliado.setIsBeneficiario(true);
 						afiliado.setEstatus(1);
-						afiliado.setClave(getClaveAfiliado());
+						afiliado.setClave(generarClave.getClave(clave));
 						afiliado.setFechaAlta(new Date());
 						titular = afiliadoService.getAfiliadoByRfc(rfcAfiliado);
 
@@ -663,7 +667,7 @@ public class InsertCargaMasivaCSV {
 					} else if (isBeneficiario.equals("No")) {
 						afiliado.setIsBeneficiario(false);
 						afiliado.setEstatus(1);
-						afiliado.setClave(getClaveAfiliado());
+						afiliado.setClave(generarClave.getClave(clave));
 						afiliado.setFechaAlta(new Date());
 
 						Cuenta cuenta = cuentaService.findById(idCuentaComercial);
@@ -861,20 +865,4 @@ public class InsertCargaMasivaCSV {
 			return false;
 		}
 	}
-
-	/**
-	 * Genera la clave del Afiliado
-	 * @return
-	 */
-	private String getClaveAfiliado() {
-
-		String claveAfiliado = "PR-";
-
-		for (int i = 0; i < 10; i++) {
-			claveAfiliado += (clave.charAt((int) (Math.random() * clave.length())));
-		}
-
-		return claveAfiliado;
-	}
-
 }

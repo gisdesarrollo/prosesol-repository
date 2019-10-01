@@ -4,6 +4,7 @@ import com.josketres.rfcfacil.Rfc;
 import com.prosesol.springboot.app.entity.*;
 import com.prosesol.springboot.app.service.*;
 import com.prosesol.springboot.app.util.CalcularFecha;
+import com.prosesol.springboot.app.util.GenerarClave;
 import com.prosesol.springboot.app.util.Paises;
 import com.prosesol.springboot.app.util.paginator.PageRender;
 import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
@@ -66,6 +67,9 @@ public class AfiliadoController {
 	@Autowired
 	private MessageSource messageSource;
 
+	@Autowired
+	private GenerarClave generarClave;
+
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
@@ -125,10 +129,9 @@ public class AfiliadoController {
 
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@ModelAttribute(name = "clave") String clave, @Valid Afiliado afiliado, BindingResult result,
+	public String guardar(@Valid Afiliado afiliado, BindingResult result,
 			Model model, RedirectAttributes redirect, SessionStatus status) {
 
-		System.out.println(clave);
 		Periodicidad periodicidad = new Periodicidad();
 		String mensajeFlash = null;
 		Double saldoAcumulado;
@@ -181,7 +184,7 @@ public class AfiliadoController {
 				afiliado.setFechaCorte(fechaCorte);
 				afiliado.setFechaAlta(date);
 
-				afiliado.setClave(clave);
+				afiliado.setClave(generarClave.getClave(clave));
 				
 				mensajeFlash = "Registro creado con éxito";
 
@@ -343,24 +346,6 @@ public class AfiliadoController {
 	@ModelAttribute("cuentas")
 	public List<Cuenta> getAllCuentas() {
 		return cuentaService.findAll();
-	}
-
-	/**
-	 * Método para asignar una clave para el Afiliado
-	 * 
-	 * @param(name = "clave")
-	 */
-
-	@ModelAttribute("clave")
-	public String getClaveAfiliado() {
-
-		String claveAfiliado = "PR-";
-
-		for (int i = 0; i < 10; i++) {
-			claveAfiliado += (clave.charAt((int) (Math.random() * clave.length())));
-		}
-
-		return claveAfiliado;
 	}
 
 }
