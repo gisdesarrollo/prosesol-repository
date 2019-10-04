@@ -334,14 +334,15 @@ public class IncidenciaController {
 			List<RelServicioBeneficio> relServicioBeneficio = relServicioBeneficios.getRelServicioBeneficios();
 			Afiliado afiliado = afiliadoService.findById(idAfiliado);
 
-			System.out.println(incidencia.getDetalle());
-
 			incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
 					+ afiliado.getApellidoMaterno());
 
 			if (incidencia.getId() == null) {
 				incidencia.setEstatus(1);
 				incidencia.setFechaCreacion(new Date());
+				messageStatus = "Incidencia creada correctamente";
+			}else{
+				messageStatus = "Incidencia editada correctamente";
 			}
 
 			DateFormat df = new SimpleDateFormat("HH:mm a");
@@ -382,12 +383,6 @@ public class IncidenciaController {
 				relAfiliadoIncidencia.setFecha(new Date());
 
 				relAfiliadoIncidenciaService.save(relAfiliadoIncidencia);
-			}
-
-			if(incidencia.getId() > 0){
-				messageStatus = "Incidencia editada correctamente";
-			}else{
-				messageStatus = "Incidencia creada correctamente";
 			}
 
 		} catch (Exception e) {
