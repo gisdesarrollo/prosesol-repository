@@ -44,7 +44,7 @@
 									</tr>
 									</thead>
 									<tbody>
-									<tr th:each="candidato : ${candidatos}">
+									<tr th:each="candidato : ${candidatos}" th:if="${candidato.estatus} == 3">
 										<td>
 											<div class="dropdown">
 												<button class="btn btn-info btn-xs dropdown-toggle"
