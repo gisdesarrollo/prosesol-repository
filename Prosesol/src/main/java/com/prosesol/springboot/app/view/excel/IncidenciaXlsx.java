@@ -1,6 +1,7 @@
 package com.prosesol.springboot.app.view.excel;
 
 import com.prosesol.springboot.app.entity.Incidencia;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
@@ -60,7 +61,14 @@ public class IncidenciaXlsx extends AbstractXlsxView {
             row.createCell(2).setCellValue(incidencia.getHora());
             row.createCell(3).setCellValue(incidencia.getLocalizacion());
             row.createCell(4).setCellValue(incidencia.getTipoIncidencia());
-            row.createCell(5).setCellValue(incidencia.getDetalle());
+
+            // Convertir descripción del detalle a UTF-8
+
+            String detalle = StringEscapeUtils.unescapeHtml4(incidencia.getDetalle());
+
+            System.out.println(detalle);
+
+            row.createCell(5).setCellValue(detalle);
             row.createCell(6).setCellValue(incidencia.getProveedor());
             switch (incidencia.getEstatus()){
                 case 1:
@@ -81,6 +89,9 @@ public class IncidenciaXlsx extends AbstractXlsxView {
             row.createCell(8).setCellValue(fechaCreacion);
         }
 
+        for(int i = 0; i < incidencias.size(); i++){
+            sheet.autoSizeColumn(i);
+        }
 
     }
 }
