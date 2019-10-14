@@ -408,7 +408,7 @@ public class InsertCargaMasivaCSV {
 							log = counterLinea + " - " + "El servicio no puede quedar vacío";
 							isValidAfiliado = false;
 						}else{
-							Servicio servicio = getServicioByNombre(campo.getValue());
+							Servicio servicio = servicioService.findById(Long.parseLong(campo.getValue()));
 
 							if(servicio != null){
 								afiliado.setServicio(servicio);
@@ -777,24 +777,24 @@ public class InsertCargaMasivaCSV {
 		return isValid;
 	}
 
-	/**
-	 * Evalúa si el servicio existe en la BBDD
-	 * @param servicio
-	 * @return
-	 */
-	private Servicio getServicioByNombre(String servicio){
-		List<Servicio> listServicios = servicioService.findAll();
-		Servicio nServicio = new Servicio();
-
-		for(Servicio s : listServicios){
-			if(s.getNombre().equals(servicio)){
-				nServicio = s;
-				break;
-			}
-		}
-
-		return nServicio;
-	}
+//	/**
+//	 * Evalúa si el servicio existe en la BBDD
+//	 * @param servicio
+//	 * @return
+//	 */
+//	private Servicio getServicioById(Long id){
+//		List<Servicio> listServicios = servicioService.findAll();
+//		Servicio nServicio = new Servicio();
+//
+//		for(Servicio s : listServicios){
+//			if(s.getNombre().equals(servicio)){
+//				nServicio = s;
+//				break;
+//			}
+//		}
+//
+//		return nServicio;
+//	}
 
 	/**
 	 * Evalúa si existe el periodo en la BBDD

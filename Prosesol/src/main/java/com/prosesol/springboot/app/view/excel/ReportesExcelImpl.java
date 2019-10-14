@@ -69,7 +69,11 @@ public class ReportesExcelImpl implements IReportesExcel {
                 cell.setCellStyle(cellStyle);
             }
 
-            Cell cellServicio = headerServicio.createCell(0);
+            Cell cellHeaderServicio = headerServicio.createCell(0);
+            cellHeaderServicio.setCellValue("ID");
+            cellHeaderServicio.setCellStyle(cellStyle);
+
+            Cell cellServicio = headerServicio.createCell(1);
             cellServicio.setCellValue("Servicios");
             cellServicio.setCellStyle(cellStyle);
 
@@ -83,7 +87,8 @@ public class ReportesExcelImpl implements IReportesExcel {
             for(Servicio servicio : listServicios){
                 Row row = sheetServicios.createRow(rowNum++);
 
-                row.createCell(0).setCellValue(servicio.getNombre());
+                row.createCell(0).setCellValue(servicio.getId());
+                row.createCell(1).setCellValue(servicio.getNombre());
             }
 
             sheetServicios.autoSizeColumn(0);
