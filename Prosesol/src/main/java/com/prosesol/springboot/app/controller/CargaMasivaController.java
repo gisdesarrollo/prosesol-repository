@@ -4,6 +4,7 @@ import com.prosesol.springboot.app.async.AsyncCargaMasiva;
 import com.prosesol.springboot.app.async.AsyncCargaVigor;
 import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.LogCM;
+import com.prosesol.springboot.app.exception.CustomValidatorExcelException;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.ILogCMService;
@@ -105,18 +106,21 @@ public class CargaMasivaController {
 
     @Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
     @GetMapping("/templateXlsx")
-    public void descargarTemplate(HttpServletResponse response) {
+    public String descargarTemplate(HttpServletResponse response, RedirectAttributes redirect) {
 
         try {
 
             reportesExcelImpl.generarTemplateAfiliadoXlsx(response);
 
-        } catch (Exception e) {
+        } catch (CustomValidatorExcelException e) {
 
-            e.printStackTrace();
-            response.setStatus(0);
+            redirect.addFlashAttribute("error", e.getMessage());
+            System.out.println("Error: " + e.getMessage());
+            return "redirect:/cargaMasiva/afiliados";
 
         }
+
+        return null;
     }
 
     /**
@@ -139,7 +143,16 @@ public class CargaMasivaController {
         	  if(!file.isEmpty()){
 
         	      int indexOfName = file.getOriginalFilename().indexOf(".");
+        	      String extension = file.getOriginalFilename().substring(file.getOriginalFilename()
+                          .lastIndexOf(".") + 1);
         	      String nombreArchivo = null;
+
+                  if(!extension.equals("csv")){
+                      redirect.addFlashAttribute("error",
+                              "El archivo no es de tipo CSV, favor de convertir" +
+                                      " el archivo de tipo CSV");
+                      return "redirect:/cargaMasiva/afiliados";
+                  }
 
         	      if(indexOfName != -1){
         	          nombreArchivo = file.getOriginalFilename().substring(0, indexOfName);
