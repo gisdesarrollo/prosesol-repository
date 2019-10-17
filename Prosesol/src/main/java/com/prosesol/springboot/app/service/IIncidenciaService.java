@@ -18,4 +18,12 @@ public interface IIncidenciaService {
 	public List<Incidencia> getIncidenciasByUserId(Long id);
 
 	public List<IncidenciaCustom> getHistorialIncidenciaByIdAfiliado(Long id);
+
+	public Integer getAllIncidenciasACtivas();
+
+	public Integer getAllIncidenciasEnProceso();
+
+	public Integer getAllIncidenciasCompletadas();
+
+	public Integer getAllIncidenciasCanceladas();
 }

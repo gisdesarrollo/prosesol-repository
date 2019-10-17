@@ -52,4 +52,24 @@ public class IncidenciaServiceImpl implements IIncidenciaService{
 		return incidenciaDao.getHistorialIncidenciaByIdAfiliado(id);
 	}
 
+	@Override
+	public Integer getAllIncidenciasACtivas() {
+		return incidenciaDao.getAllIncidenciasACtivas();
+	}
+
+	@Override
+	public Integer getAllIncidenciasEnProceso() {
+		return incidenciaDao.getAllIncidenciasEnProceso();
+	}
+
+	@Override
+	public Integer getAllIncidenciasCompletadas() {
+		return incidenciaDao.getAllIncidenciasCompletadas();
+	}
+
+	@Override
+	public Integer getAllIncidenciasCanceladas() {
+		return incidenciaDao.getAllIncidenciasCanceladas();
+	}
+
 }

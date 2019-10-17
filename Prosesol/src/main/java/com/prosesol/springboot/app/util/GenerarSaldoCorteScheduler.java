@@ -14,8 +14,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-//@Configuration
-//@EnableScheduling
+@Configuration
+@EnableScheduling
 public class GenerarSaldoCorteScheduler {
 
     private static final Logger LOG = LoggerFactory.getLogger(GenerarSaldoCorteScheduler.class);

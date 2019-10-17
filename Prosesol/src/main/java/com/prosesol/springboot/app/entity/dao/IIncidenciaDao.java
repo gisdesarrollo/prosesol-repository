@@ -30,4 +30,16 @@ public interface IIncidenciaDao extends CrudRepository<Incidencia, Long>{
 		   "left join r.beneficio b " +
 			"where r.afiliado.id = ?1")
 	public List<IncidenciaCustom> getHistorialIncidenciaByIdAfiliado(@Param("id") Long id);
+
+	@Query("select count(i) from Incidencia i where estatus = 1")
+	public Integer getAllIncidenciasACtivas();
+
+	@Query("select count(i) from Incidencia i where estatus = 2")
+	public Integer getAllIncidenciasEnProceso();
+
+	@Query("select count(i) from Incidencia i where estatus = 3")
+	public Integer getAllIncidenciasCompletadas();
+
+	@Query("select count(i) from Incidencia i where estatus = 4")
+	public Integer getAllIncidenciasCanceladas();
 }

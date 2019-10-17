@@ -48,4 +48,6 @@ public interface IAfiliadoService {
 	public void updateEstatusbyIdCuenta(Long id);
 
 	public void updateEstatusAfiliadoById(Long id);
+
+	public Integer getTotalAfiliados();
 }
