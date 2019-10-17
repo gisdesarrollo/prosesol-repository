@@ -155,5 +155,10 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 		iAfiliadoDao.updateEstatusAfiliadoById(id);
 	}
 
+	@Override
+	public Integer getTotalAfiliados() {
+		return iAfiliadoDao.getTotalAfiliados();
+	}
+
 
 }

@@ -43,5 +43,7 @@ public interface IAfiliadoDao extends DataTablesRepository<Afiliado, Long>{
 	@Modifying
 	@Query("update Afiliado a set a.estatus = 1 where a.id = :id")
 	public void updateEstatusAfiliadoById(@Param("id") Long id);
-	
+
+	@Query("select count(a) from Afiliado a")
+	public Integer getTotalAfiliados();
 }
