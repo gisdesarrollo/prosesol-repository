@@ -1,8 +1,8 @@
 package com.prosesol.springboot.app.service;
 
-import java.util.List;
-
 import com.prosesol.springboot.app.entity.Servicio;
+
+import java.util.List;
 
 
 public interface IServicioService {
@@ -16,4 +16,6 @@ public interface IServicioService {
 	public Servicio findById(Long id);
 	
 	public String[] getVariablesServicio();
+
+	public String getNombreByIdIncidencia(Long id);
 }

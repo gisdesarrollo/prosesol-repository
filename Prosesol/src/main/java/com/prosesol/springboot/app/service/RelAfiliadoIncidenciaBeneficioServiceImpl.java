@@ -1,7 +1,6 @@
 package com.prosesol.springboot.app.service;
 
 import com.prosesol.springboot.app.entity.dao.IRelAfiliadoIncidenciaBeneficioDao;
-import com.prosesol.springboot.app.entity.dao.IRelAfiliadoIncidenciaDao;
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidenciaBeneficio;
 import com.prosesol.springboot.app.repository.RelAfiliadoIncidenciaBeneficioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +47,5 @@ public class RelAfiliadoIncidenciaBeneficioServiceImpl implements IRelAfiliadoIn
     public List getRelAfiliadoIncidenciaBeneficioByIdIncidencia(Long id) {
         return relAfiliadoIncidenciaBeneficioRepository.getRelAfiliadoIncidenciaBeneficioByIdIncidencia(id);
     }
-
 
 }

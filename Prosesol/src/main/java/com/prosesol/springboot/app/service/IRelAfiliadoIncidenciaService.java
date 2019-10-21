@@ -1,8 +1,8 @@
 package com.prosesol.springboot.app.service;
 
-import java.util.List;
-
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
+
+import java.util.List;
 
 public interface IRelAfiliadoIncidenciaService {
 
@@ -13,7 +13,5 @@ public interface IRelAfiliadoIncidenciaService {
 	public void save(RelAfiliadoIncidencia relAfiliadoIncidencia);
 	
 	public void deleteById(Long id);
-	
-	public List<RelAfiliadoIncidencia> getRelAfiliadoIncidenciaByIdIncidencia(Long id);
-	
+
 }

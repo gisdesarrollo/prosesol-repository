@@ -159,7 +159,7 @@ public class Afiliado implements Serializable{
 	@JoinColumn(name = "id_cta_comercial")
 	private Cuenta cuenta;
 	
-	@OneToMany(mappedBy = "afiliado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "afiliado", fetch = FetchType.LAZY)
 	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
 
 	@Transient
@@ -167,6 +167,7 @@ public class Afiliado implements Serializable{
 
 	public Afiliado() {
 		beneficiarios = new HashSet<Beneficiario>();
+		relAfiliadoIncidencia = new HashSet<RelAfiliadoIncidencia>();
 	}
 
 	public Set<Beneficiario> getBeneficiarios() {

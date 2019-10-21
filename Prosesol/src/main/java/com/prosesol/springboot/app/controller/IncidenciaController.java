@@ -58,6 +58,9 @@ public class IncidenciaController {
 	@Autowired
 	private IBeneficioService beneficioService;
 
+	@Autowired
+	private IncidenciaXlsx incidenciaXlsx;
+
 	private Long idAfiliado;
 	
 	@Secured("ROLE_ASISTENCIA")
@@ -412,7 +415,7 @@ public class IncidenciaController {
 	public ModelAndView getIncidenciasExcel(){
 		List<Incidencia> incidencias = incidenciaService.findAll();
 
-		return new ModelAndView(new IncidenciaXlsx(), "incidencias", incidencias);
+		return new ModelAndView(incidenciaXlsx, "incidencias", incidencias);
 	}
 
 	/**

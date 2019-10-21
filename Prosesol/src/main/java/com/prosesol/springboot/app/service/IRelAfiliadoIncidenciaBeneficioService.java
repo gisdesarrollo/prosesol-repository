@@ -15,4 +15,5 @@ public interface IRelAfiliadoIncidenciaBeneficioService {
     public void deleteById(Long id);
 
     public List getRelAfiliadoIncidenciaBeneficioByIdIncidencia(Long id);
+
 }
