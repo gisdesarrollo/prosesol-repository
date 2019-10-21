@@ -1,14 +1,13 @@
 package com.prosesol.springboot.app.service;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
+import com.prosesol.springboot.app.entity.Servicio;
+import com.prosesol.springboot.app.entity.dao.IServicioDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.prosesol.springboot.app.entity.Servicio;
-import com.prosesol.springboot.app.entity.dao.IServicioDao;
+import java.lang.reflect.Field;
+import java.util.List;
 
 @Service
 public class ServicioServiceImpl implements IServicioService {
@@ -55,4 +54,9 @@ public class ServicioServiceImpl implements IServicioService {
 
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public String getNombreByIdIncidencia(Long id) {
+		return servicioDao.getNombreByIdIncidencia(id);
+	}
 }

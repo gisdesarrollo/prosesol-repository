@@ -2,6 +2,7 @@ package com.prosesol.springboot.app.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -65,11 +66,11 @@ public class Incidencia implements Serializable{
 	@DateTimeFormat(pattern = "dd/MM/yy")
 	private Date fechaCreacion;
 	
-	@OneToMany(mappedBy = "incidencia", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "incidencia", fetch = FetchType.LAZY)
 	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
 	
 	public Incidencia() {
-		
+		relAfiliadoIncidencia = new HashSet<RelAfiliadoIncidencia>();
 	}
 	
 	public Incidencia(String nombreAfiliado, Date fecha, String hora, String localizacion, String tipoIncidencia,

@@ -1,6 +1,5 @@
 package com.prosesol.springboot.app.repository;
 
-import com.prosesol.springboot.app.entity.custom.RelAfiliadoIncidenciaBeneficioCustom;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

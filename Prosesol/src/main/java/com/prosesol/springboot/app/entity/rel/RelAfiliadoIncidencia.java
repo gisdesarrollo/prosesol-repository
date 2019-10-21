@@ -19,17 +19,14 @@ public class RelAfiliadoIncidencia implements Serializable{
 	private static final long serialVersionUID = 1L;
 		
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_afiliado")
 	private Afiliado afiliado;
 	
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_incidencia")
 	private Incidencia incidencia;
-	
-	@Column(name = "costo")
-	private Double costo;
 	
 	@Column(name = "fecha")
 	@Temporal(TemporalType.DATE)
@@ -49,14 +46,6 @@ public class RelAfiliadoIncidencia implements Serializable{
 
 	public void setIncidencia(Incidencia incidencia) {
 		this.incidencia = incidencia;
-	}
-
-	public Double getCosto() {
-		return costo;
-	}
-
-	public void setCosto(Double costo) {
-		this.costo = costo;
 	}
 
 	public Date getFecha() {
