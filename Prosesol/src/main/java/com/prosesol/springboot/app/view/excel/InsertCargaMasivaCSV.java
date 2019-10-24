@@ -2,6 +2,7 @@ package com.prosesol.springboot.app.view.excel;
 
 import com.josketres.rfcfacil.Rfc;
 import com.prosesol.springboot.app.entity.*;
+import com.prosesol.springboot.app.exception.CustomExcelException;
 import com.prosesol.springboot.app.service.*;
 import com.prosesol.springboot.app.util.CalcularFecha;
 import com.prosesol.springboot.app.util.GenerarClave;
@@ -495,13 +496,17 @@ public class InsertCargaMasivaCSV {
 
 			}catch(IllegalArgumentException e){
 				LOG.error(counterLinea + " - " + "Error al momento de leer el archivo", e);
-				log = counterLinea + " - " + "Error al momento de leer el archivo" + e.getMessage();
+				throw new CustomExcelException("Error en la línea " + counterLinea + ": Verifique que los campos " +
+						"sean correctos");
+
 			}catch (ParseException pe){
 				LOG.error(counterLinea + " - " + "Error al momento de convertir la fecha: ", pe);
 				log = counterLinea + " - " + "Error al momento de convertir la fecha: " + pe.getMessage();
+
 			}catch(Exception e){
 				LOG.error(counterLinea + " - " + "Error al momento de leer el archivo", e);
 				log = counterLinea + " - " + "Error al momento de leer el archivo" + e.getMessage();
+
 			}
 		}
 

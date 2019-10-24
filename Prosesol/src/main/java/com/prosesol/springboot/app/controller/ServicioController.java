@@ -91,9 +91,12 @@ public class ServicioController {
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 
-		model.addAttribute("titulo", "Membresía");
-		model.addAttribute("servicios", servicioService.findAll());
-
+		try {
+			model.addAttribute("titulo", "Membresía");
+			model.addAttribute("servicios", servicioService.findAll());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return "catalogos/servicios/ver";
 	}
 
@@ -399,7 +402,7 @@ public class ServicioController {
 	/**
 	 * Método que obtiene la lista de los beneficios que pertenecen a cada Servicio
 	 * 
-	 * @param id
+	 * @param idServicio
 	 * @return
 	 */
 

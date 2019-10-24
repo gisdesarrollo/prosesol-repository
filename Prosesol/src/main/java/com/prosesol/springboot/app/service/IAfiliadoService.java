@@ -2,6 +2,7 @@ package com.prosesol.springboot.app.service;
 
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
+import com.prosesol.springboot.app.exception.CustomExcelException;
 import com.prosesol.springboot.app.util.Paises;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

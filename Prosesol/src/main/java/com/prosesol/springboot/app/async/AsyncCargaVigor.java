@@ -1,10 +1,13 @@
 package com.prosesol.springboot.app.async;
 
 import com.prosesol.springboot.app.entity.LogCM;
+import com.prosesol.springboot.app.exception.CustomExcelException;
+import com.prosesol.springboot.app.repository.TempAfiliadoRepository;
 import com.prosesol.springboot.app.service.ILogCMService;
 import com.prosesol.springboot.app.view.excel.InsertCargaMasivaCSV;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -25,13 +28,18 @@ public class AsyncCargaVigor {
     @Autowired
     private ILogCMService logCMService;
 
+    @Autowired
+    private TempAfiliadoRepository tempAfiliadoRepository;
+
     @Async("threadCargaVigor")
-    public void procesaArchivoVigorAsync(boolean isVigor, String nombre, byte[] bs, Long idCuentaComercial)
+    public void procesaArchivoVigorAsync(boolean isVigor, String nombre, byte[] bs
+            , Long idCuentaComercial)
             throws InterruptedException, IOException {
 
         System.out.println("Entra al método para la lectura de archivo");
 
         Thread.sleep(5000);
+        tempAfiliadoRepository.insertAfiliadosOnTemp(idCuentaComercial);
 
         int counter = 1;
         int numeroRegistros = 1;
@@ -56,7 +64,8 @@ public class AsyncCargaVigor {
                     campos.put(i, valores[i]);
                 }
 
-                resultado = insertCargaMasivaCSV.evaluarDatosList(isVigor, numeroRegistros, campos, idCuentaComercial);
+                resultado = insertCargaMasivaCSV.evaluarDatosList(isVigor,
+                        numeroRegistros, campos, idCuentaComercial);
 
                 if(counter == 30000) {
                     counter = 0;
@@ -71,6 +80,20 @@ public class AsyncCargaVigor {
 
             generarArchivoLog(nombre, numeroRegistros, log, isVigor);
 
+        }catch(CustomExcelException ce){
+            ce.printStackTrace();
+            List<String> errorLog = new ArrayList<String>();
+
+            for(String res : log){
+                errorLog.add(res);
+            }
+
+            errorLog.add(StringEscapeUtils.unescapeHtml4(ce.getMessage()));
+            tempAfiliadoRepository.updateAfiliadosByAfiliadosTemp();
+            tempAfiliadoRepository.deleteAfiliadosOnTemp();
+
+            generarArchivoLog(nombre, numeroRegistros, errorLog, isVigor);
+
         }finally {
             if(inputStream != null){
                 inputStream.close();
@@ -82,7 +105,8 @@ public class AsyncCargaVigor {
 
         long endTime = System.nanoTime();
 
-        LOG.info("Proceso finalizado en un tiempo (segundos): " + (endTime - startTime) / 1000000000);
+        LOG.info("Proceso finalizado en un tiempo (segundos): " +
+                (endTime - startTime) / 1000000000);
     }
 
     public void generarArchivoLog(String nombre, Integer numeroRegistros, List<String> log,
