@@ -3,6 +3,7 @@ package com.prosesol.springboot.app.service;
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.entity.custom.AfiliadoCustom;
 import com.prosesol.springboot.app.entity.dao.IAfiliadoDao;
+import com.prosesol.springboot.app.exception.CustomExcelException;
 import com.prosesol.springboot.app.repository.AfiliadoRepository;
 import com.prosesol.springboot.app.repository.BeneficiarioRepository;
 import com.prosesol.springboot.app.util.Estados;
@@ -145,7 +146,7 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Override
 	@Transactional
-	public void updateEstatusbyIdCuenta(Long id) {
+	public void updateEstatusbyIdCuenta(Long id){
 		iAfiliadoDao.updateEstatusbyIdCuenta(id);
 	}
 

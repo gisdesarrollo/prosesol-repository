@@ -4,7 +4,9 @@ import com.prosesol.springboot.app.async.AsyncCargaMasiva;
 import com.prosesol.springboot.app.async.AsyncCargaVigor;
 import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.LogCM;
+import com.prosesol.springboot.app.exception.CustomExcelException;
 import com.prosesol.springboot.app.exception.CustomValidatorExcelException;
+import com.prosesol.springboot.app.repository.TempAfiliadoRepository;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.ILogCMService;
@@ -12,7 +14,6 @@ import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -199,6 +200,7 @@ public class CargaMasivaController {
 
                 afiliadoService.updateEstatusbyIdCuenta(cuenta.getId());
 
+
                 int indexOfName = file.getOriginalFilename().indexOf(".");
                 String nombreArchivo = null;
 
@@ -211,7 +213,8 @@ public class CargaMasivaController {
                 logger.info("File Name: " + file.getOriginalFilename());
 
                 byte[] bytes = file.getBytes();
-                asyncCargaVigor.procesaArchivoVigorAsync(isVigor, nombreArchivo, bytes, cuenta.getId());
+                asyncCargaVigor.procesaArchivoVigorAsync(isVigor,
+                nombreArchivo, bytes, cuenta.getId());
 
 
             }else{
@@ -220,8 +223,7 @@ public class CargaMasivaController {
                 return "redirect:/cargaMasiva/vigor";
             }
 
-        } catch (Exception ne) {
-
+        }catch (Exception ne){
             logger.error("Formato incorrecto", ne);
             redirect.addFlashAttribute("error", "Error al momento de realizar la inserción masiva");
 
