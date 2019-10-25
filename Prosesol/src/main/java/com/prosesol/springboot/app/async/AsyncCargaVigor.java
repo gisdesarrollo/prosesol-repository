@@ -90,7 +90,7 @@ public class AsyncCargaVigor {
 
             errorLog.add(StringEscapeUtils.unescapeHtml4(ce.getMessage()));
             tempAfiliadoRepository.updateAfiliadosByAfiliadosTemp();
-            tempAfiliadoRepository.deleteAfiliadosOnTemp();
+            tempAfiliadoRepository.deleteAfiliadosOnTempByFechaActual();
 
             generarArchivoLog(nombre, numeroRegistros, errorLog, isVigor);
 

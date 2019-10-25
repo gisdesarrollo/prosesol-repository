@@ -13,4 +13,7 @@
 	<task:annotation-driven/>
 	<bean id="calcularSaldoScheduler" class="com.prosesol.springboot.app.util.CalcularSaldoScheduler"></bean>
 
+	<task:annotation-driven/>
+	<bean id="calcularSaldoScheduler" class="com.prosesol.springboot.app.util.CalcularSaldoScheduler"></bean>
+
 </beans>

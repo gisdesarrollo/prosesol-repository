@@ -1,7 +1,8 @@
-package com.prosesol.springboot.app.util;
+package com.prosesol.springboot.app.util.scheduler;
 
 import com.prosesol.springboot.app.entity.Afiliado;
 import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.util.CalcularFecha;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

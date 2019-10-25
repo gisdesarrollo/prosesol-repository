@@ -72,6 +72,8 @@ public class InsertCargaMasivaCSV {
 
 	private boolean isValidAfiliado;
 	private boolean isValid;
+	private boolean isInteger;
+	private boolean hasApellidoPaterno;
 	String log = "";
 
 	public String evaluarDatosList(boolean isVigor, Integer counterLinea, Map<Integer, String> campos,
@@ -80,10 +82,10 @@ public class InsertCargaMasivaCSV {
 		Afiliado afiliado = new Afiliado();
 
 		isValidAfiliado = true;
+		hasApellidoPaterno = true;
 
 		rfc = null;
-		boolean isInteger;
-		boolean isValid;
+
 
 		if(campos.size() < 26){
 			isBeneficiario = "No";
@@ -112,39 +114,26 @@ public class InsertCargaMasivaCSV {
 						}
 						break;
 					case 1:
-						if (campo.getValue().length() == 0) {
-							LOG.info(counterLinea + " - " + "El Apellido Paterno no puede quedar vacío");
-							log = counterLinea + " - " + "El Apellido Paterno no puede quedar vacío";
-							isValidAfiliado = false;
-						} else {
-							afiliado.setApellidoPaterno(campo.getValue());
-							isInteger = isInteger(afiliado.getApellidoPaterno());
+						afiliado.setApellidoPaterno(campo.getValue());
+						isInteger = isInteger(afiliado.getApellidoPaterno());
 
-							if(!isInteger){
-								LOG.info(counterLinea + " - " + "Apellido Paterno: " + afiliado.getApellidoPaterno());
-							}else{
-								log = counterLinea + " - " + "El Apellido Paterno no puede contener valores númericos";
-								LOG.info(counterLinea + " - " + "El Apellido Paterno no puede contener valores númericos");
-								isValidAfiliado = false;
-							}
+						if(!isInteger){
+							LOG.info(counterLinea + " - " + "Apellido Paterno: " + afiliado.getApellidoPaterno());
+						}else{
+							log = counterLinea + " - " + "El Apellido Paterno no puede contener valores númericos";
+							LOG.info(counterLinea + " - " + "El Apellido Paterno no puede contener valores númericos");
+							isValidAfiliado = false;
 						}
 						break;
 					case 2:
-						if (campo.getValue().length() == 0) {
-							LOG.info(counterLinea + " - " + "El Apellido Materno no puede quedar vacío");
-							log = counterLinea + " - " + "El Apellido Materno no puede quedar vacío";
+						afiliado.setApellidoMaterno(campo.getValue());
+						isInteger = isInteger(afiliado.getApellidoMaterno());
+						if(!isInteger){
+							LOG.info(counterLinea + " - " + "Apellido Materno: " + afiliado.getApellidoMaterno());
+						}else{
+							LOG.info(counterLinea + " - " + "El Apellido Materno no puede contener valores númericos");
+							log = counterLinea + " - " + "El Apellido Materno no puede contener valores númericos";
 							isValidAfiliado = false;
-						} else {
-							afiliado.setApellidoMaterno(campo.getValue());
-							isInteger = isInteger(afiliado.getApellidoMaterno());
-							if(!isInteger){
-								LOG.info(counterLinea + " - " + "Apellido Materno: " + afiliado.getApellidoMaterno());
-							}else{
-								LOG.info(counterLinea + " - " + "El Apellido Materno no puede contener valores númericos");
-								log = counterLinea + " - " + "El Apellido Materno no puede contener valores númericos";
-								isValidAfiliado = false;
-							}
-
 						}
 						break;
 					case 3:
@@ -271,6 +260,15 @@ public class InsertCargaMasivaCSV {
 									.build();
 
 							afiliado.setRfc(rfc.toString());
+
+							if(afiliado.getApellidoPaterno().equals(null) || afiliado.getApellidoPaterno()
+										.equals("")){
+								afiliado.setApellidoPaterno("-");
+							}
+							if(afiliado.getApellidoMaterno().equals(null) || afiliado.getApellidoMaterno()
+									.equals("")){
+								afiliado.setApellidoMaterno("-");
+							}
 
 							if(!isVigor) {
 
