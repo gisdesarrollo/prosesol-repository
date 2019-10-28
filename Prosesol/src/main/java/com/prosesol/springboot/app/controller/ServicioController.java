@@ -510,4 +510,14 @@ public class ServicioController {
 		}
 	}
 
+	@ModelAttribute("listaTipoPrivacidad")
+	public Map getTipoPrivacidad(){
+		Map<Boolean, String> tipoPrivacidad = new HashMap<Boolean, String>();
+
+		tipoPrivacidad.put(true, "Privado");
+		tipoPrivacidad.put(false, "Público");
+
+		return tipoPrivacidad;
+	}
+
 }

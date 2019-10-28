@@ -202,7 +202,20 @@ public class CargaMasivaController {
 
 
                 int indexOfName = file.getOriginalFilename().indexOf(".");
+                String extension = file.getOriginalFilename().substring(file.getOriginalFilename()
+                        .lastIndexOf(".") + 1);
                 String nombreArchivo = null;
+
+                if(indexOfName != -1){
+                    nombreArchivo = file.getOriginalFilename().substring(0, indexOfName);
+                }
+
+                if(!extension.equals("csv")){
+                    redirect.addFlashAttribute("error",
+                            "El archivo no es de tipo CSV, favor de convertir" +
+                                    " el archivo de tipo CSV");
+                    return "redirect:/cargaMasiva/vigor";
+                }
 
                 if(indexOfName != -1){
                     nombreArchivo = file.getOriginalFilename().substring(0, indexOfName);
