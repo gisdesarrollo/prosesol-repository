@@ -43,18 +43,18 @@
                                                     <div class="clearfix"></div>
                                                     <div class="row">
                                                         <div class="form-group col-md-3">
-                                                            <label for="nombre">Nombre *</label>
+                                                            <label>Nombre *</label>
                                                             <input type="text" th:field="*{nombre}" class="form-control form-control-user">
                                                             <small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
                                                         </div>
 
                                                         <div class="form-group col-md-3">
-                                                            <label for="nota">Nota</label>
+                                                            <label>Nota</label>
                                                             <input type="text" th:field="*{nota}" class="form-control">
                                                         </div>
 
                                                         <div class="form-group col-md-3">
-                                                            <label for="centroContacto">Centro de Asistencia</label>
+                                                            <label>Centro de Asistencia</label>
                                                             <select th:field="*{centroContacto}" class="form-control" id="inputGroupSelect01">
 																	<option value=""></option>
 																	<option th:each="centro : ${centros}"
@@ -68,10 +68,12 @@
 
                                                         <div class="form-group col-md-3">
                                                             <label >Tipo de Servicio*</label>
-                                                            <select th:field="*{tipoPrivacidad}" class="form-control" id="inputGroupSelect01">
+                                                            <select th:field="*{tipoPrivacidad}" class="form-control">
 																		<option value="">Opciones</option>
-																		<option th:value=true>Público</option>
-																		<option th:value=false>Privado</option>
+																		<option th:each="tipo : ${listaTipoPrivacidad}"
+                                                                                th:selected="(*{tipoPrivacidad} == ${tipo.key})"
+                                                                                th:text="${tipo.value}"
+                                                                                th:value="${tipo.key}"></option>
 																	</select>
                                                             <small class="form-text text-danger" th:if="${#fields.hasErrors('tipoPrivacidad')}" th:errors="*{tipoPrivacidad}"></small>
                                                         </div>
