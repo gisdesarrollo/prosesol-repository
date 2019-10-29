@@ -59,9 +59,9 @@ public class CentroContacto implements Serializable{
 	
 	@OneToMany(mappedBy = "centroContacto", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Servicio> servicio;
-	
-	@OneToOne(mappedBy = "centroContacto")
-	private Usuario usuario;
+
+	@OneToMany(mappedBy = "centroContacto",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Usuario> usuario;
 	
 	public CentroContacto() {
 		servicio = new ArrayList<Servicio>();
@@ -146,12 +146,11 @@ public class CentroContacto implements Serializable{
 	public void setServicio(List<Servicio> servicio) {
 		this.servicio = servicio;
 	}
-	
-	public Usuario getUsuario() {
-		return usuario;
-	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(List<Usuario> usuario) {
+		this.usuario = usuario;
+	}
+	public void getUsuario(List<Usuario> usuario) {
 		this.usuario = usuario;
 	}
 
