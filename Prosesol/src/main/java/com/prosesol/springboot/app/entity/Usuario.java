@@ -1,25 +1,12 @@
 package com.prosesol.springboot.app.entity;
 
+import org.springframework.lang.Nullable;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
-
-import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "usuarios")
@@ -45,9 +32,9 @@ public class Usuario implements Serializable{
 	
 	@Column
 	private String email;
-		
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "id_centro_contacto", referencedColumnName = "id_centro_contacto")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_centro_contacto")
 	@Nullable
 	private CentroContacto centroContacto;
 	
