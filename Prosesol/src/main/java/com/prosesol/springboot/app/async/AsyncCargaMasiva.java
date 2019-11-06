@@ -26,7 +26,7 @@ public class AsyncCargaMasiva {
     private ILogCMService logCMService;
 
     @Async("threadCargaMasiva")
-    public void procesaArchivoAsync(boolean isVigor, String nombre, byte[] bs,
+    public void procesaArchivoAsync(boolean isVigor,boolean isConciliacion, String nombre, byte[] bs,
                                     Long idCuentaComercial) throws InterruptedException, IOException{
 
         System.out.println("Entra al método para la lectura de archivo");
@@ -56,7 +56,7 @@ public class AsyncCargaMasiva {
                     campos.put(i, valores[i]);
                 }
 
-                resultado = insertCargaMasivaCSV.evaluarDatosList(isVigor, numeroRegistros, campos, idCuentaComercial);
+                resultado = insertCargaMasivaCSV.evaluarDatosList(isVigor,isConciliacion, numeroRegistros, campos, idCuentaComercial);
 
                 if(counter == 30000) {
                     counter = 0;
@@ -69,7 +69,7 @@ public class AsyncCargaMasiva {
                 log.add(resultado + "\n");
             }
 
-            generarArchivoLog(nombre, numeroRegistros, log, isVigor);
+            generarArchivoLog(nombre, numeroRegistros, log, isVigor,isConciliacion);
 
         }finally {
             if(inputStream != null){
@@ -86,7 +86,7 @@ public class AsyncCargaMasiva {
     }
 
     public void generarArchivoLog(String nombre, Integer numeroRegistros, List<String> log,
-                                  boolean isVigor){
+                                  boolean isVigor,boolean isConciliacion){
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Date fechaCreacion = new Date();
@@ -105,7 +105,7 @@ public class AsyncCargaMasiva {
             String dateFormat = getDateFormat.format(fechaCreacion);
 
             logCM = new LogCM(nombre + "_" + dateFormat + ".txt", fechaCreacion,
-                    numeroRegistros, data, isVigor);
+                    numeroRegistros, data, isVigor,isConciliacion);
 
             logCMService.save(logCM);
         }catch (Exception e){

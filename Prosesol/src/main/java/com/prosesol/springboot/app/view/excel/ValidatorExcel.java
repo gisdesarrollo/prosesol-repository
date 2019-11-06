@@ -392,5 +392,39 @@ public class ValidatorExcel {
 
         return listaSexo;
     }
+    public String[] generarEncabezadoPagos(String[] pagosFields, XSSFSheet sheet)throws CustomValidatorExcelException{
+
+        String[] encabezado = new String[pagosFields.length];
+
+        int rowNum = 0;
+        int cellRowNum = 0;
+
+        try {
+
+            for (int i = 0; i < pagosFields.length; i++) {
+                switch (pagosFields[i]) {
+                    case "rfc":
+                        encabezado[rowNum++] = "Rfc";
+                        break;
+                    case "monto":
+                        encabezado[rowNum++] = "Monto";
+                        break;
+                    case "referenciaBancaria":
+                        encabezado[rowNum++] = "Referencia Bancaria";
+                        break;
+                    case "fechaPago":
+                        encabezado[rowNum++] = "Fecha de Pago";
+                        break;
+                    case "concepto":
+                        encabezado[rowNum++] = "Concepto";
+                        break;    
+                }
+            }
+        }catch (Exception e){
+            throw new CustomValidatorExcelException("Error al momento de generar el archivo");
+        }
+        return encabezado;
+    }
+
 
 }

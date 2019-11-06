@@ -9,5 +9,9 @@ public interface IPagoService {
     public List<Pago> findAll();
 
     public Pago findById(Long id);
+    
+    public String[] getVariablesPagos();
+    
+    public void save(Pago pago);
 
 }

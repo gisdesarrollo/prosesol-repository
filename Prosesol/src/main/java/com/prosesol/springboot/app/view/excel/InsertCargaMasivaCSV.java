@@ -76,7 +76,7 @@ public class InsertCargaMasivaCSV {
 	private boolean hasApellidoPaterno;
 	String log = "";
 
-	public String evaluarDatosList(boolean isVigor, Integer counterLinea, Map<Integer, String> campos,
+	public String evaluarDatosList(boolean isVigor,boolean isConciliacion, Integer counterLinea, Map<Integer, String> campos,
 								   Long idCuentaComercial){
 
 		Afiliado afiliado = new Afiliado();
@@ -508,7 +508,7 @@ public class InsertCargaMasivaCSV {
 			}
 		}
 
-		if(!isVigor){
+		if(!isVigor && !isConciliacion){
 			log = insertAfiliados(isValidAfiliado, afiliado, counterLinea);
 		}else{
 			log = insertAfiliadosVigor(isValidAfiliado, afiliado, counterLinea, idCuentaComercial);

@@ -16,6 +16,7 @@ public class Pago implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pago")
     private Long id;
 
@@ -35,6 +36,9 @@ public class Pago implements Serializable {
 
     @Column(name = "estatus")
     private String estatus;
+    
+    @Column(name= "concepto")
+    private String concepto;
 
     public Long getId() {
         return id;
@@ -83,8 +87,17 @@ public class Pago implements Serializable {
     public void setEstatus(String estatus) {
         this.estatus = estatus;
     }
+    
+    
+    public String getConcepto() {
+		return concepto;
+	}
 
-    @Override
+	public void setConcepto(String concepto) {
+		this.concepto = concepto;
+	}
+
+	@Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 

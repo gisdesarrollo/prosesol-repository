@@ -43,4 +43,10 @@ public class LogCMServiceImpl implements ILogCMService{
     public List<LogCM> findAllLogsVigor() {
         return iLogCMDao.findAllLogsVigor();
     }
+
+	@Override
+	 @Transactional(readOnly = true)
+	public List<LogCM> findAllLogsConciliacion() {
+		 return iLogCMDao.findAllLogsConciliacion();
+	}
 }
