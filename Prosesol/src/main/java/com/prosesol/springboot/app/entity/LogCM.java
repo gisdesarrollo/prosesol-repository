@@ -38,32 +38,15 @@ public class LogCM implements Serializable {
     @Column(name = "is_vigor")
     private boolean isVigor;
 
-    @Column(name = "is_conciliacion")
-    private boolean isConciliacion;
-    
     public LogCM(){};
-    
-    
 
-   public LogCM(String nombre, Date fecha, Integer numeroRegistros, byte[] archivo, boolean isVigor,
-			boolean isConciliacion) {
-		this.nombre = nombre;
-		this.fecha = fecha;
-		this.numeroRegistros = numeroRegistros;
-		this.archivo = archivo;
-		this.isVigor = isVigor;
-		this.isConciliacion = isConciliacion;
-	}
-
-
-
-/* public LogCM(String nombre, Date fecha, Integer numeroRegistros, byte[] archivo, boolean isVigor) {
+    public LogCM(String nombre, Date fecha, Integer numeroRegistros, byte[] archivo, boolean isVigor) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.numeroRegistros = numeroRegistros;
         this.archivo = archivo;
         this.isVigor = isVigor;
-    }*/
+    }
 
     public Long getId() {
         return id;
@@ -112,17 +95,8 @@ public class LogCM implements Serializable {
     public void setVigor(boolean vigor) {
         isVigor = vigor;
     }
-    
 
-    public boolean isConciliacion() {
-		return isConciliacion;
-	}
-
-	public void setConciliacion(boolean isConciliacion) {
-		this.isConciliacion = isConciliacion;
-	}
-
-	@Override
+    @Override
     public String toString() {
         return "LogCM{" +
                 "id=" + id +

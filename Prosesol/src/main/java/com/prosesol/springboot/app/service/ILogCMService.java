@@ -15,7 +15,5 @@ public interface ILogCMService {
     public List<LogCM> findAllLogsAfiliados();
 
     public List<LogCM> findAllLogsVigor();
-    
-    public List<LogCM> findAllLogsConciliacion();
 
 }

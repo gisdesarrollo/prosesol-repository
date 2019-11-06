@@ -32,7 +32,7 @@ public class AsyncCargaVigor {
     private TempAfiliadoRepository tempAfiliadoRepository;
 
     @Async("threadCargaVigor")
-    public void procesaArchivoVigorAsync(boolean isVigor,boolean isConciliacion, String nombre, byte[] bs
+    public void procesaArchivoVigorAsync(boolean isVigor, String nombre, byte[] bs
             , Long idCuentaComercial)
             throws InterruptedException, IOException {
 
@@ -64,7 +64,7 @@ public class AsyncCargaVigor {
                     campos.put(i, valores[i]);
                 }
 
-                resultado = insertCargaMasivaCSV.evaluarDatosList(isVigor,isConciliacion,
+                resultado = insertCargaMasivaCSV.evaluarDatosList(isVigor,
                         numeroRegistros, campos, idCuentaComercial);
 
                 if(counter == 30000) {
@@ -78,7 +78,7 @@ public class AsyncCargaVigor {
                 log.add(resultado + "\n");
             }
 
-            generarArchivoLog(nombre, numeroRegistros, log, isVigor,isConciliacion);
+            generarArchivoLog(nombre, numeroRegistros, log, isVigor);
 
         }catch(CustomExcelException ce){
             ce.printStackTrace();
@@ -92,7 +92,7 @@ public class AsyncCargaVigor {
             tempAfiliadoRepository.updateAfiliadosByAfiliadosTemp();
             tempAfiliadoRepository.deleteAfiliadosOnTempByFechaActual();
 
-            generarArchivoLog(nombre, numeroRegistros, errorLog, isVigor,isConciliacion);
+            generarArchivoLog(nombre, numeroRegistros, errorLog, isVigor);
 
         }finally {
             if(inputStream != null){
@@ -110,7 +110,7 @@ public class AsyncCargaVigor {
     }
 
     public void generarArchivoLog(String nombre, Integer numeroRegistros, List<String> log,
-                                    boolean isVigor,boolean isConciliacion){
+                                    boolean isVigor){
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Date fechaCreacion = new Date();
@@ -129,7 +129,7 @@ public class AsyncCargaVigor {
             String dateFormat = getDateFormat.format(fechaCreacion);
 
             logCM = new LogCM(nombre + "_" + dateFormat + ".txt", fechaCreacion,
-                    numeroRegistros, data, isVigor,isConciliacion);
+                    numeroRegistros, data, isVigor);
 
             logCMService.save(logCM);
         }catch (Exception e){

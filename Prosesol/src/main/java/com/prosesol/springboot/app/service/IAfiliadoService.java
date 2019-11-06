@@ -6,7 +6,6 @@ import com.prosesol.springboot.app.exception.CustomExcelException;
 import com.prosesol.springboot.app.util.Paises;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -50,6 +49,6 @@ public interface IAfiliadoService {
 	public void updateEstatusbyIdCuenta(Long id);
 
 	public void updateEstatusAfiliadoById(Long id);
-	
+
 	public Integer getTotalAfiliados();
 }
