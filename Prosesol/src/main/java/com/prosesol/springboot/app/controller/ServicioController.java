@@ -343,6 +343,7 @@ public class ServicioController {
 	 */
 
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 
 		try {
