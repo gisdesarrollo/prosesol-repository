@@ -32,7 +32,12 @@ public class AsyncConfig implements AsyncConfigurer {
     public Executor threadCargaVigor(){
 	    return new ThreadPoolTaskExecutor();
     }
-
+    
+    @Bean(name = "threadConciliacionPagosAfiliados")
+    public Executor threadConciliacionPagosAfiliados(){
+	    return new ThreadPoolTaskExecutor();
+    }
+    
     @Override
     public Executor getAsyncExecutor() {
         return null;

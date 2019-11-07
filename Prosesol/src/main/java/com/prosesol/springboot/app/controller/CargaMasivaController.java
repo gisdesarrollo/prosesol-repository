@@ -138,7 +138,7 @@ public class CargaMasivaController {
 							 RedirectAttributes redirect) {
 
         boolean isVigor = false;
-
+        boolean isConciliacion = false;
         try {
 
         	  if(!file.isEmpty()){
@@ -164,7 +164,7 @@ public class CargaMasivaController {
         	      logger.info("File Name: " + file.getOriginalFilename());
 
 				  byte[] bytes = file.getBytes();
-				  asyncCargaMasiva.procesaArchivoAsync(isVigor, nombreArchivo, bytes, null);
+				  asyncCargaMasiva.procesaArchivoAsync(isVigor,isConciliacion, nombreArchivo, bytes, null);
 
 
 			  }else{
@@ -193,6 +193,7 @@ public class CargaMasivaController {
                                    HttpServletResponse response, RedirectAttributes redirect) {
 
         boolean isVigor = true;
+        boolean isConciliacion=false;
 
         try {
 
@@ -226,7 +227,7 @@ public class CargaMasivaController {
                 logger.info("File Name: " + file.getOriginalFilename());
 
                 byte[] bytes = file.getBytes();
-                asyncCargaVigor.procesaArchivoVigorAsync(isVigor,
+                asyncCargaVigor.procesaArchivoVigorAsync(isVigor,isConciliacion,
                 nombreArchivo, bytes, cuenta.getId());
 
 
