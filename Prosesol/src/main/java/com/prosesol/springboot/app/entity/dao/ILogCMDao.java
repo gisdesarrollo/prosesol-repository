@@ -8,10 +8,13 @@ import java.util.List;
 
 public interface ILogCMDao extends CrudRepository<LogCM, Long> {
 
-    @Query("select l from LogCM l where l.isVigor is false")
-    public List<LogCM> findAllLogsAfiliados();
+	 @Query("select l from LogCM l where l.isVigor is false and l.isConciliacion is false")
+	    public List<LogCM> findAllLogsAfiliados();
 
-    @Query("select l from LogCM l where l.isVigor is true")
-    public List<LogCM> findAllLogsVigor();
+	  @Query("select l from LogCM l where l.isVigor is true")
+	    public List<LogCM> findAllLogsVigor();
+	    
+	  @Query("select l from LogCM l where l.isVigor is false and l.isConciliacion is true")
+	    public List<LogCM> findAllLogsConciliacion();
 
 }
