@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.Collator;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -373,7 +374,7 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 20:
+					case 21:
 						if(campo.getValue().length() == 0){
 							afiliado.setNumeroInfonavit(null);
 						}else if(campo.getValue().length() != 11){
@@ -385,9 +386,10 @@ public class InsertCargaMasivaCSV {
 							LOG.info(counterLinea + " - " + "Número Infonavit: " + afiliado.getNumeroInfonavit());
 						}
 						break;
-					case 21:
+					case 22:
 						if(campo.getValue().length() == 0){
 							afiliado.setFechaAfiliacion(null);
+							LOG.info(counterLinea + " - " + "FechaAfiliacion: " + afiliado.getFechaAfiliacion());
 						}else{
 							isValid = isValidFormat("dd/MM/yyyy", campo.getValue());
 
@@ -401,7 +403,7 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 22:
+					case 23:
 						if(campo.getValue().length() == 0){
 							LOG.info(counterLinea + " - " + "El servicio no puede quedar vacío");
 							log = counterLinea + " - " + "El servicio no puede quedar vacío";
@@ -419,13 +421,14 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 23:
+					case 24:
 						if(campo.getValue().length() == 0){
 							LOG.info(counterLinea + " - " + "El periodo para el servicios no puede quedar vacío");
 							log = counterLinea + " - " + "El periodo para el servicios no puede quedar vacío";
 							isValidAfiliado = false;
 						}else{
-							Periodicidad periodo = getPeriodoByNombre(campo.getValue());
+							Periodicidad periodo=periodicidadService.findById(Long.parseLong(campo.getValue())); 	
+							//Periodicidad periodo = getPeriodoByNombre(campo.getValue());
 
 							if(periodo != null){
 								afiliado.setPeriodicidad(periodo);
@@ -437,23 +440,24 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 24:
+					case 25:
 						afiliado.setComentarios(campo.getValue());
 						LOG.info(counterLinea + " - " + "Comentarios: " + afiliado.getComentarios());
 						break;
-					case 25:
+					case 26:
 						if(campo.getValue().length() == 0) {
 							isBeneficiario = "No";
 						}else{
 							isBeneficiario = campo.getValue();
 						}
 						break;
-					case 26:
+					case 27:
 						rfcAfiliado = campo.getValue();
 						break;
-					case 27:
+					case 28:
 						if(campo.getValue().length() > 0) {
-							Promotor promotor = getPromotorByNombre(campo.getValue());
+							Promotor promotor=promotorService.findById(Long.parseLong(campo.getValue()));
+							//Promotor promotor = getPromotorByNombre(campo.getValue());
 
 							if(promotor != null){
 								afiliado.setPromotor(promotor);
@@ -465,9 +469,10 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 28:
+					case 29:
 						if(campo.getValue().length() > 0){
-							Cuenta cuenta = getCuentaByNombre(campo.getValue());
+							Cuenta cuenta=cuentaService.findById(Long.parseLong(campo.getValue()));
+							//Cuenta cuenta = getCuentaByNombre(campo.getValue());
 
 							if(cuenta != null){
 								afiliado.setCuenta(cuenta);
@@ -479,9 +484,10 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 29:
+					case 30:
 						if(campo.getValue().length() > 0){
 							corte = Integer.parseInt(campo.getValue());
+
 						}
 						break;
 				}
@@ -579,12 +585,15 @@ public class InsertCargaMasivaCSV {
 						afiliado.setEstatus(1);
 						afiliado.setClave(generarClave.getClave(clave));
 						afiliado.setFechaAlta(new Date());
-
-						if (corte > 0) {
-							Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), corte);
+						if(afiliado.getFechaAfiliacion()==null) {
+							afiliado.setFechaCorte(null);
+						}else {
+							DateFormat formatoFecha = new SimpleDateFormat("dd");
+			                String dia=formatoFecha.format(afiliado.getFechaAfiliacion());
+			                Integer diaCorte = Integer.parseInt(dia);
+							Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
 							afiliado.setFechaCorte(fechaCorte);
 						}
-
 						Double saldoAcumuladoTitular = afiliado.getServicio().getCostoTitular() +
 								afiliado.getServicio().getInscripcionTitular();
 
@@ -676,9 +685,14 @@ public class InsertCargaMasivaCSV {
 						Cuenta cuenta = cuentaService.findById(idCuentaComercial);
 						afiliado.setCuenta(cuenta);
 
-						if (corte > 0) {
-							Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), corte);
-							afiliado.setFechaCorte(fechaCorte);
+					if(afiliado.getFechaAfiliacion()==null) {
+							afiliado.setFechaCorte(null);
+						}else {
+							DateFormat formatoFecha = new SimpleDateFormat("dd");
+			                String dia=formatoFecha.format(afiliado.getFechaAfiliacion());
+			                Integer diaCorte = Integer.parseInt(dia);
+						Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
+						afiliado.setFechaCorte(fechaCorte);
 						}
 
 						Double saldoAcumuladoTitular = afiliado.getServicio().getCostoTitular() +
@@ -804,7 +818,7 @@ public class InsertCargaMasivaCSV {
 	 * @param periodo
 	 * @return
 	 */
-	private Periodicidad getPeriodoByNombre(String periodo){
+	/*private Periodicidad getPeriodoByNombre(String periodo){
 		List<Periodicidad> listPeriodos = periodicidadService.findAll();
 		Periodicidad nPeriodo = new Periodicidad();
 
@@ -816,14 +830,14 @@ public class InsertCargaMasivaCSV {
 		}
 
 		return nPeriodo;
-	}
+	}*/
 
 	/**
 	 * Evalúa si el promotor existe en la BBDD
 	 * @param promotor
 	 * @return
 	 */
-	private Promotor getPromotorByNombre(String promotor){
+	/*private Promotor getPromotorByNombre(String promotor){
 		List<Promotor> listPromotor = promotorService.findAll();
 		Promotor nPromotor = new Promotor();
 
@@ -835,14 +849,14 @@ public class InsertCargaMasivaCSV {
 		}
 
 		return nPromotor;
-	}
+	}*/
 
 	/**
 	 * Evalúa si la cuenta existe en la BBDD
 	 * @param cuenta
 	 * @return
 	 */
-	private Cuenta getCuentaByNombre(String cuenta){
+	/*private Cuenta getCuentaByNombre(String cuenta){
 		List<Cuenta> listCuenta = cuentaService.findAll();
 		Cuenta nCuenta = new Cuenta();
 
@@ -854,7 +868,7 @@ public class InsertCargaMasivaCSV {
 		}
 
 		return nCuenta;
-	}
+	}*/
 
 	/**
 	 * Verifica los campos de tipo string que no sean númericos
