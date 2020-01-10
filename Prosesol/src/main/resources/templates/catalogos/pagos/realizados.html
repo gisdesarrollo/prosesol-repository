@@ -37,7 +37,8 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="pago : ${pagos}">
+                                    <tr th:each="pago : ${pagos}"
+                                        th:if="${pago.estatus} == 'completed'">
                                         <td th:text="${pago.rfc}"></td>
                                         <td th:text="${#numbers.formatDecimal(pago.monto, 0, 2)}"></td>
                                         <td th:text="${pago.referenciaBancaria}"></td>
