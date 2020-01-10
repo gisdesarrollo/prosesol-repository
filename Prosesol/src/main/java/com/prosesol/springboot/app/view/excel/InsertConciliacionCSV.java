@@ -153,7 +153,7 @@ public class InsertConciliacionCSV {
 						log = counterLinea + " - " + "La referencia bancaria no puede quedar vacío";
 						isValidPagos = false;
 					} else {
-						pagos.setReferenciaBancaria(Long.parseLong(campo.getValue()));
+						pagos.setReferenciaBancaria(campo.getValue());
 						LOG.info(counterLinea + " - " + "Referencia Bancaria: " + pagos.getReferenciaBancaria());
 
 					}
@@ -187,18 +187,6 @@ public class InsertConciliacionCSV {
 					}
 
 					break;
-				case 4:
-					pagos.setConcepto(campo.getValue());
-					isInteger = isInteger(pagos.getConcepto());
-					if (!isInteger) {
-						LOG.info(counterLinea + " - " + "Concepto: " + pagos.getConcepto());
-					} else {
-						LOG.info(counterLinea + " - " + "El concepto no puede contener valores númericos");
-						log = counterLinea + " - " + "El concepto no puede contener valores númericos";
-						isValidPagos = false;
-					}
-					break;
-
 				}
 
 				if (isValidPagos) {
@@ -234,7 +222,7 @@ public class InsertConciliacionCSV {
 	 * Método que inserta los pagos del afiliado
 	 * 
 	 * @param isValidPagos
-	 * @param Pago
+	 * @param pagos
 	 * @param counterLinea
 	 * @return
 	 */

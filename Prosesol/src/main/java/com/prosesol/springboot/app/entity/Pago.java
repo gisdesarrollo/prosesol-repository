@@ -27,7 +27,7 @@ public class Pago implements Serializable {
     private Double monto;
 
     @Column(name = "referencia_bancaria")
-    private Long referenciaBancaria;
+    private String referenciaBancaria;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_pago")
@@ -36,9 +36,6 @@ public class Pago implements Serializable {
 
     @Column(name = "estatus")
     private String estatus;
-    
-    @Column(name= "concepto")
-    private String concepto;
 
     public Long getId() {
         return id;
@@ -64,11 +61,11 @@ public class Pago implements Serializable {
         this.monto = monto;
     }
 
-    public Long getReferenciaBancaria() {
+    public String getReferenciaBancaria() {
         return referenciaBancaria;
     }
 
-    public void setReferenciaBancaria(Long referenciaBancaria) {
+    public void setReferenciaBancaria(String referenciaBancaria) {
         this.referenciaBancaria = referenciaBancaria;
     }
 
@@ -87,15 +84,6 @@ public class Pago implements Serializable {
     public void setEstatus(String estatus) {
         this.estatus = estatus;
     }
-    
-    
-    public String getConcepto() {
-		return concepto;
-	}
-
-	public void setConcepto(String concepto) {
-		this.concepto = concepto;
-	}
 
 	@Override
     public String toString() {
