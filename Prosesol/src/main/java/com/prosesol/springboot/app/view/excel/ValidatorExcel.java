@@ -203,7 +203,7 @@ public class ValidatorExcel {
                         sheet.addValidationData(dv);
 
                         break;
-                    case "infonavit":
+                   /* case "infonavit":
                         encabezado[rowNum++] = "¿Cuenta con número infonavit?";
 
                         CellRangeAddressList addressListInfonavit = null;
@@ -224,7 +224,7 @@ public class ValidatorExcel {
                         dv.setSuppressDropDownArrow(true);
 
                         sheet.addValidationData(dv);
-                        break;
+                        break;*/
                     case "numeroInfonavit":
                         encabezado[rowNum++] = "Número de infonavit";
                         break;

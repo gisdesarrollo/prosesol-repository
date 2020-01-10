@@ -374,7 +374,7 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 21:
+					case 20:
 						if(campo.getValue().length() == 0){
 							afiliado.setNumeroInfonavit(null);
 						}else if(campo.getValue().length() != 11){
@@ -386,7 +386,7 @@ public class InsertCargaMasivaCSV {
 							LOG.info(counterLinea + " - " + "Número Infonavit: " + afiliado.getNumeroInfonavit());
 						}
 						break;
-					case 22:
+					case 21:
 						if(campo.getValue().length() == 0){
 							afiliado.setFechaAfiliacion(null);
 							LOG.info(counterLinea + " - " + "FechaAfiliacion: " + afiliado.getFechaAfiliacion());
@@ -403,7 +403,7 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 23:
+					case 22:
 						if(campo.getValue().length() == 0){
 							LOG.info(counterLinea + " - " + "El servicio no puede quedar vacío");
 							log = counterLinea + " - " + "El servicio no puede quedar vacío";
@@ -421,7 +421,7 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 24:
+					case 23:
 						if(campo.getValue().length() == 0){
 							LOG.info(counterLinea + " - " + "El periodo para el servicios no puede quedar vacío");
 							log = counterLinea + " - " + "El periodo para el servicios no puede quedar vacío";
@@ -440,21 +440,21 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 25:
+					case 24:
 						afiliado.setComentarios(campo.getValue());
 						LOG.info(counterLinea + " - " + "Comentarios: " + afiliado.getComentarios());
 						break;
-					case 26:
+					case 25:
 						if(campo.getValue().length() == 0) {
 							isBeneficiario = "No";
 						}else{
 							isBeneficiario = campo.getValue();
 						}
 						break;
-					case 27:
+					case 26:
 						rfcAfiliado = campo.getValue();
 						break;
-					case 28:
+					case 27:
 						if(campo.getValue().length() > 0) {
 							Promotor promotor=promotorService.findById(Long.parseLong(campo.getValue()));
 							//Promotor promotor = getPromotorByNombre(campo.getValue());
@@ -469,7 +469,7 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 29:
+					case 28:
 						if(campo.getValue().length() > 0){
 							Cuenta cuenta=cuentaService.findById(Long.parseLong(campo.getValue()));
 							//Cuenta cuenta = getCuentaByNombre(campo.getValue());
@@ -484,7 +484,7 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 						break;
-					case 30:
+					case 29:
 						if(campo.getValue().length() > 0){
 							corte = Integer.parseInt(campo.getValue());
 
