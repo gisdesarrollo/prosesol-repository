@@ -17,5 +17,7 @@ public interface ILogCMService {
     public List<LogCM> findAllLogsVigor();
     
     public List<LogCM> findAllLogsConciliacion();
+    
+    public void deleteAllLogs(String fecha2,String fecha1);
 
 }

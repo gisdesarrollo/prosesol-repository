@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -49,4 +50,13 @@ public class LogCMServiceImpl implements ILogCMService{
 	public List<LogCM> findAllLogsConciliacion() {
 		 return iLogCMDao.findAllLogsConciliacion();
 	}
+
+	@Override
+	@Transactional
+	public void deleteAllLogs(String fecha_anterior, String fecha_hoy) {
+		iLogCMDao.deleteAllLogs(fecha_anterior, fecha_hoy);
+		
+	}
+
+	
 }
