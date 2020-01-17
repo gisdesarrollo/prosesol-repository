@@ -203,7 +203,7 @@ public class ValidatorExcel {
                         sheet.addValidationData(dv);
 
                         break;
-                    case "infonavit":
+                   /* case "infonavit":
                         encabezado[rowNum++] = "¿Cuenta con número infonavit?";
 
                         CellRangeAddressList addressListInfonavit = null;
@@ -224,17 +224,20 @@ public class ValidatorExcel {
                         dv.setSuppressDropDownArrow(true);
 
                         sheet.addValidationData(dv);
-                        break;
+                        break;*/
                     case "numeroInfonavit":
                         encabezado[rowNum++] = "Número de infonavit";
                         break;
+                    case "fechaAfiliacion":
+                        encabezado[rowNum++] = "Fecha de afiliación";
+                        break;    
                     case "servicio":
                         encabezado[rowNum++] = "Servicio";
                         break;
                     case "periodicidad":
                         encabezado[rowNum++] = "Periodo";
 
-                        CellRangeAddressList addressListPeriodos = null;
+                        /*CellRangeAddressList addressListPeriodos = null;
 
                         cellRowNum = rowNum - 1;
                         List<Periodicidad> listaPeriodos = periodicidadService.findAll();
@@ -256,7 +259,7 @@ public class ValidatorExcel {
 
                         dv.setSuppressDropDownArrow(true);
 
-                        sheet.addValidationData(dv);
+                        sheet.addValidationData(dv);*/
                         break;
                     case "comentarios":
                         encabezado[rowNum++] = "Comentarios";
@@ -290,7 +293,7 @@ public class ValidatorExcel {
                     case "promotor":
                         encabezado[rowNum++] = "Promotor";
 
-                        CellRangeAddressList addressListPromotor = null;
+                        /*CellRangeAddressList addressListPromotor = null;
 
                         cellRowNum = rowNum - 1;
 
@@ -313,13 +316,13 @@ public class ValidatorExcel {
 
                         dv.setSuppressDropDownArrow(true);
 
-                        sheet.addValidationData(dv);
+                        sheet.addValidationData(dv);*/
 
                         break;
                     case "cuenta":
                         encabezado[rowNum++] = "Cuenta";
 
-                        CellRangeAddressList addressListCuenta = null;
+                        /*CellRangeAddressList addressListCuenta = null;
 
                         cellRowNum = rowNum - 1;
                         List<Cuenta> listaCuentas = cuentaService.findAll();
@@ -341,7 +344,7 @@ public class ValidatorExcel {
 
                         dv.setSuppressDropDownArrow(true);
 
-                        sheet.addValidationData(dv);
+                        sheet.addValidationData(dv);*/
 
                         break;
                     case "corte":

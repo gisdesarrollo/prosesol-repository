@@ -36,8 +36,8 @@ public class CalcularFecha {
 	public Date calcularFechas(Periodicidad periodo, Integer corte) {
 		
 		init();
-		
-		switch (periodo.getNombre()) {
+
+		switch (periodo.getPeriodo().toUpperCase()) {
 		case "MENSUAL":
 
 			logger.info("Entra al perido MENSUAL");

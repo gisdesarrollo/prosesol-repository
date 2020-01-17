@@ -88,19 +88,21 @@ public class AsyncCargaMasiva {
     public void generarArchivoLog(String nombre, Integer numeroRegistros, List<String> log,
                                   boolean isVigor,boolean isConciliacion){
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
         Date fechaCreacion = new Date();
 
         LogCM logCM = new LogCM();
 
         try {
-            DataOutputStream dos = new DataOutputStream(bos);
-            for(String str : log){
-                dos.writeUTF(str);
+        	
+            //DataOutputStream dos = new DataOutputStream(bos);
+        	 for(String str : log){
+        		 byteArray.write(str.getBytes());
+            	//dos.writeUTF(str);
             }
 
-            byte[] data = bos.toByteArray();
-
+            byte[] data = byteArray.toByteArray();
+            
             DateFormat getDateFormat = new SimpleDateFormat("dd/MM/yyyy'_'HH:mm:ss");
             String dateFormat = getDateFormat.format(fechaCreacion);
 
@@ -108,12 +110,13 @@ public class AsyncCargaMasiva {
                     numeroRegistros, data, isVigor,isConciliacion);
 
             logCMService.save(logCM);
+            byteArray.close();
         }catch (Exception e){
             e.printStackTrace();
         }
 
         LOG.info("Archivo guardado correctamente");
-
+        
     }
 
 }

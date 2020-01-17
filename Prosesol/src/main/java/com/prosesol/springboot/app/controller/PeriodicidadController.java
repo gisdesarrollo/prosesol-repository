@@ -76,7 +76,7 @@ public class PeriodicidadController {
 		}
 		
 		model.put("periodicidad", periodicidad);
-		
+		model.put("id", id);
 		return "catalogos/periodicidades/editar";
 		
 	}
@@ -90,21 +90,17 @@ public class PeriodicidadController {
 		
 		try {
 			
-			if(periodicidad.getId() > 0) {
-				if(result.hasErrors()) {
-					return "redirect:/periodicidades/editar/" + periodicidad.getId();
-				}
-			}else {
-				if(result.hasErrors()) {
+			if(result.hasErrors()) {
 					return "catalogos/periodicidades/crear";
-				}
 			}
-			
-			messageStatus = (periodicidad.getId() != null) ? "El periodo se ha creado correctamente" : "El periodo se ha editado correctamente";
+								
+			messageStatus = (periodicidad.getId() == null) ? "El periodo se ha creado correctamente" : "El periodo se ha editado correctamente";
 			
 			redirect.addFlashAttribute("success", messageStatus);
 			periodicidadService.save(periodicidad);
 			status.setComplete();
+			
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 			redirect.addFlashAttribute("error", "Ocurrió un error en el sistema, contacte al administrador");
