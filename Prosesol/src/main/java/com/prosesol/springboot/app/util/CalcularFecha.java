@@ -32,7 +32,7 @@ public class CalcularFecha {
 	
 	@Autowired
 	private ValidarMesesImpl validarMeses;
-	
+
 	public Date calcularFechas(Periodicidad periodo, Integer corte) {
 		
 		init();

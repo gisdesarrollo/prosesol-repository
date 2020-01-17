@@ -53,8 +53,8 @@ public class LogCMServiceImpl implements ILogCMService{
 
 	@Override
 	@Transactional
-	public void deleteAllLogs(String fecha_anterior, String fecha_hoy) {
-		iLogCMDao.deleteAllLogs(fecha_anterior, fecha_hoy);
+	public void deleteAllLogs(String fechaInicio,String fechaFin) {
+		iLogCMDao.deleteAllLogs(fechaInicio, fechaFin);
 		
 	}
 

@@ -23,5 +23,5 @@ public interface ILogCMDao extends CrudRepository<LogCM, Long> {
 	  
 	 @Modifying
 	 @Query(value="delete from logs where fecha_creacion between ?1 and ?2", nativeQuery = true)
-	  public void deleteAllLogs(String fecha1,String fecha2);
+	  public void deleteAllLogs(String fechaInicio,String fechaFin);
 }
