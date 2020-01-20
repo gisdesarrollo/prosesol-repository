@@ -18,6 +18,6 @@ public interface ILogCMService {
     
     public List<LogCM> findAllLogsConciliacion();
     
-    public void deleteAllLogs(String fecha2,String fecha1);
+    public void deleteAllLogs(String fechaInicio,String fechaFin);
 
 }

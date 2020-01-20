@@ -11,9 +11,9 @@
 
 
 	<task:annotation-driven/>
-	<bean id="calcularSaldoScheduler" class="com.prosesol.springboot.app.util.CalcularSaldoScheduler"></bean>
+	<bean id="generarSaldoCorteScheduler" class="com.prosesol.springboot.app.util.GenerarSaldoCorteScheduler"></bean>
 
 	<task:annotation-driven/>
-	<bean id="calcularSaldoScheduler" class="com.prosesol.springboot.app.util.CalcularSaldoScheduler"></bean>
+	<bean id="deleteTempAfiliadoScheduler" class="com.prosesol.springboot.app.util.scheduler.DeleteTempAfiliadoScheduler"></bean>
 
 </beans>

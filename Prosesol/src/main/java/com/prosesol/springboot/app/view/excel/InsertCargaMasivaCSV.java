@@ -561,7 +561,7 @@ public class InsertCargaMasivaCSV {
 							saldoAcumuladoTitular = saldoAcumuladoTitular + saldoAcumuladoBeneficiario;
 
 							titular.setSaldoAcumulado(saldoAcumuladoTitular);
-
+							titular.setSaldoCorte(saldoAcumuladoTitular);		
 							afiliado.setServicio(titular.getServicio());
 							afiliado.setCuenta(titular.getCuenta());
 							afiliado.setFechaCorte(titular.getFechaCorte());
@@ -598,7 +598,7 @@ public class InsertCargaMasivaCSV {
 								afiliado.getServicio().getInscripcionTitular();
 
 						afiliado.setSaldoAcumulado(saldoAcumuladoTitular);
-						afiliado.setSaldoCorte(new Double(0.00));
+						afiliado.setSaldoCorte(saldoAcumuladoTitular);
 
 						afiliadoService.save(afiliado);
 					}
