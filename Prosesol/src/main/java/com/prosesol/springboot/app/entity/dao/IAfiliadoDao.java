@@ -33,7 +33,7 @@ public interface IAfiliadoDao extends DataTablesRepository<Afiliado, Long>{
 	@Query(value = "select * from afiliados a where fecha_corte = ?1 and is_beneficiario = false", nativeQuery = true)
 	public List<Afiliado> getAfiliadosByFechaCorte(String fecha);
 
-	@Query(value = "select * from afiliados where fecha_corte <= curdate() and is_beneficiario = false and saldo_corte > 0", nativeQuery = true)
+	@Query(value = "select * from afiliados where is_beneficiario = false and saldo_corte > 0 and fecha_corte<=(select last_day(curdate()))", nativeQuery = true)
 	public List<Afiliado> getAfiliadosPagoPendiente();
 
 	@Modifying
