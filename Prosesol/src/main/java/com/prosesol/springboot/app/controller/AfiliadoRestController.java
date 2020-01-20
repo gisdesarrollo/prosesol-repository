@@ -233,6 +233,7 @@ public class AfiliadoRestController {
                     "}";
 
             response.setStatus(200);
+            response.setContentType("application/x-json;charset=UTF-8");
             response.getWriter().write(json);
         } catch (Exception e) {
             e.printStackTrace();
