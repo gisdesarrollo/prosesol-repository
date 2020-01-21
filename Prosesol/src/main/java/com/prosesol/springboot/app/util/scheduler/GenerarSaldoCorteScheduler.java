@@ -24,9 +24,6 @@ public class GenerarSaldoCorteScheduler {
 
     private Date fechaActual = new Date();
 
-    @Value("${url.api.prosesol.suscripciones}")
-    private String urlApi;
-
     @Autowired
     private IAfiliadoService afiliadoService;
 

@@ -409,15 +409,21 @@ public class InsertCargaMasivaCSV {
 							log = counterLinea + " - " + "El servicio no puede quedar vacío";
 							isValidAfiliado = false;
 						}else{
-							Servicio servicio = servicioService.findById(Long.parseLong(campo.getValue()));
 
-							if(servicio != null){
-								afiliado.setServicio(servicio);
-								LOG.info(counterLinea + " - " + "Servicio: " + afiliado.getServicio().getNombre());
+							if(!isString(campo.getValue())){
+								log = counterLinea + " - " + "Proporcione el id del servicio que se encuentra dentro de " +
+										"la hoja con el nombre 'Servicios' en el template que descargó";
 							}else{
-								LOG.info(counterLinea + " - " + "El servicio " + campo.getValue() + " no existe en el sistema");
-								log = counterLinea + " - " + "El servicio " + campo.getValue() + " no existe en el sistema";
-								isValidAfiliado = false;
+								Servicio servicio = servicioService.findById(Long.parseLong(campo.getValue()));
+
+								if(servicio != null){
+									afiliado.setServicio(servicio);
+									LOG.info(counterLinea + " - " + "Servicio: " + afiliado.getServicio().getNombre());
+								}else{
+									LOG.info(counterLinea + " - " + "El servicio " + campo.getValue() + " no existe en el sistema");
+									log = counterLinea + " - " + "El servicio " + campo.getValue() + " no existe en el sistema";
+									isValidAfiliado = false;
+								}
 							}
 						}
 						break;
@@ -427,16 +433,21 @@ public class InsertCargaMasivaCSV {
 							log = counterLinea + " - " + "El periodo para el servicios no puede quedar vacío";
 							isValidAfiliado = false;
 						}else{
-							Periodicidad periodo=periodicidadService.findById(Long.parseLong(campo.getValue())); 	
-							//Periodicidad periodo = getPeriodoByNombre(campo.getValue());
 
-							if(periodo != null){
-								afiliado.setPeriodicidad(periodo);
-								LOG.info(counterLinea + " - " + "Periodo: " + afiliado.getPeriodicidad().getNombre());
+							if(!isString(campo.getValue())){
+								log = counterLinea + " - " + "Proporcione el id del periodo que se encuentra dentro de " +
+										"la hoja con el nombre 'Periodos' en el template que descargó";
 							}else{
-								LOG.info(counterLinea + " - " + "El periodo " + campo.getValue() + " no existe en el sistema");
-								log = counterLinea + " - " + "El periodo " + campo.getValue() + " no existe en el sistema";
-								isValidAfiliado = false;
+								Periodicidad periodo=periodicidadService.findById(Long.parseLong(campo.getValue()));
+
+								if(periodo != null){
+									afiliado.setPeriodicidad(periodo);
+									LOG.info(counterLinea + " - " + "Periodo: " + afiliado.getPeriodicidad().getNombre());
+								}else{
+									LOG.info(counterLinea + " - " + "El periodo " + campo.getValue() + " no existe en el sistema");
+									log = counterLinea + " - " + "El periodo " + campo.getValue() + " no existe en el sistema";
+									isValidAfiliado = false;
+								}
 							}
 						}
 						break;
@@ -456,31 +467,41 @@ public class InsertCargaMasivaCSV {
 						break;
 					case 27:
 						if(campo.getValue().length() > 0) {
-							Promotor promotor=promotorService.findById(Long.parseLong(campo.getValue()));
-							//Promotor promotor = getPromotorByNombre(campo.getValue());
 
-							if(promotor != null){
-								afiliado.setPromotor(promotor);
-								LOG.info(counterLinea + " - " + "Promotor: " + afiliado.getPromotor().getNombre());
+							if(!isString(campo.getValue())){
+								log = counterLinea + " - " + "Proporcione el id del promotor que se encuentra dentro de " +
+										"la hoja con el nombre 'Promotor' en el template que descargó";
 							}else{
-								LOG.info(counterLinea + " - " + "El promotor " + campo.getValue() + " no existe en el sistema");
-								log = counterLinea + " - " + "El promotor " + campo.getValue() + " no existe en el sistema";
-								isValidAfiliado = false;
+								Promotor promotor = promotorService.findById(Long.parseLong(campo.getValue()));
+
+								if(promotor != null){
+									afiliado.setPromotor(promotor);
+									LOG.info(counterLinea + " - " + "Promotor: " + afiliado.getPromotor().getNombre());
+								}else{
+									LOG.info(counterLinea + " - " + "El promotor " + campo.getValue() + " no existe en el sistema");
+									log = counterLinea + " - " + "El promotor " + campo.getValue() + " no existe en el sistema";
+									isValidAfiliado = false;
+								}
 							}
 						}
 						break;
 					case 28:
 						if(campo.getValue().length() > 0){
-							Cuenta cuenta=cuentaService.findById(Long.parseLong(campo.getValue()));
-							//Cuenta cuenta = getCuentaByNombre(campo.getValue());
 
-							if(cuenta != null){
-								afiliado.setCuenta(cuenta);
-								LOG.info(counterLinea + " - " + "Cuenta: " + afiliado.getCuenta().getRazonSocial());
+							if(!isString(campo.getValue())){
+								log = counterLinea + " - " + "Proporcione el id del cuenta que se encuentra dentro de " +
+										"la hoja con el nombre 'Cuenta' en el template que descargó";
 							}else{
-								LOG.info(counterLinea + " - " + "La cuenta " + campo.getValue() + " no existe en el sistema");
-								log = counterLinea + " - " + "La cuenta " + campo.getValue() + " no existe en el sistema";
-								isValidAfiliado = false;
+								Cuenta cuenta = cuentaService.findById(Long.parseLong(campo.getValue()));
+
+								if(cuenta != null){
+									afiliado.setCuenta(cuenta);
+									LOG.info(counterLinea + " - " + "Cuenta: " + afiliado.getCuenta().getRazonSocial());
+								}else{
+									LOG.info(counterLinea + " - " + "La cuenta " + campo.getValue() + " no existe en el sistema");
+									log = counterLinea + " - " + "La cuenta " + campo.getValue() + " no existe en el sistema";
+									isValidAfiliado = false;
+								}
 							}
 						}
 						break;
@@ -539,9 +560,6 @@ public class InsertCargaMasivaCSV {
 			if(isValidAfiliado) {
 
 				if (afiliado.getServicio() == null || afiliado.getPeriodicidad() == null) {
-					LOG.info(counterLinea + " - " + "Por favor ingrese un tipo de servicio y periodo para el Afiliado");
-					log = counterLinea + " - " + "Por favor ingrese un tipo de servicio y periodo para el Afiliado";
-
 					isValidAfiliado = false;
 				} else {
 					collator.setStrength(Collator.PRIMARY);
@@ -637,9 +655,6 @@ public class InsertCargaMasivaCSV {
 			if(isValidAfiliado) {
 
 				if (afiliado.getServicio() == null || afiliado.getPeriodicidad() == null) {
-					LOG.info(counterLinea + " - " + "Por favor ingrese un tipo de servicio y periodo para el Afiliado");
-					log = counterLinea + " - " + "Por favor ingrese un tipo de servicio y periodo para el Afiliado";
-
 					isValidAfiliado = false;
 				} else {
 					collator.setStrength(Collator.PRIMARY);
@@ -794,82 +809,6 @@ public class InsertCargaMasivaCSV {
 		return isValid;
 	}
 
-//	/**
-//	 * Evalúa si el servicio existe en la BBDD
-//	 * @param servicio
-//	 * @return
-//	 */
-//	private Servicio getServicioById(Long id){
-//		List<Servicio> listServicios = servicioService.findAll();
-//		Servicio nServicio = new Servicio();
-//
-//		for(Servicio s : listServicios){
-//			if(s.getNombre().equals(servicio)){
-//				nServicio = s;
-//				break;
-//			}
-//		}
-//
-//		return nServicio;
-//	}
-
-	/**
-	 * Evalúa si existe el periodo en la BBDD
-	 * @param periodo
-	 * @return
-	 */
-	/*private Periodicidad getPeriodoByNombre(String periodo){
-		List<Periodicidad> listPeriodos = periodicidadService.findAll();
-		Periodicidad nPeriodo = new Periodicidad();
-
-		for(Periodicidad p : listPeriodos){
-			if(p.getNombre().equals(periodo)){
-				nPeriodo = p;
-				break;
-			}
-		}
-
-		return nPeriodo;
-	}*/
-
-	/**
-	 * Evalúa si el promotor existe en la BBDD
-	 * @param promotor
-	 * @return
-	 */
-	/*private Promotor getPromotorByNombre(String promotor){
-		List<Promotor> listPromotor = promotorService.findAll();
-		Promotor nPromotor = new Promotor();
-
-		for(Promotor p : listPromotor){
-			if(p.getNombre().equals(promotor)){
-				nPromotor = p;
-				break;
-			}
-		}
-
-		return nPromotor;
-	}*/
-
-	/**
-	 * Evalúa si la cuenta existe en la BBDD
-	 * @param cuenta
-	 * @return
-	 */
-	/*private Cuenta getCuentaByNombre(String cuenta){
-		List<Cuenta> listCuenta = cuentaService.findAll();
-		Cuenta nCuenta = new Cuenta();
-
-		for(Cuenta c : listCuenta){
-			if(c.getRazonSocial().equals(cuenta)){
-				nCuenta = c;
-				break;
-			}
-		}
-
-		return nCuenta;
-	}*/
-
 	/**
 	 * Verifica los campos de tipo string que no sean númericos
 	 * @param cadena
@@ -881,5 +820,19 @@ public class InsertCargaMasivaCSV {
 		}else{
 			return false;
 		}
+	}
+
+	/**
+	 * Verificación de los campos que soliciten id's
+	 * @param number
+	 * @return
+	 */
+	public boolean isString (String number){
+		try{
+			Long id = Long.parseLong(number);
+		}catch(NumberFormatException ne){
+			return false;
+		}
+		return true;
 	}
 }
