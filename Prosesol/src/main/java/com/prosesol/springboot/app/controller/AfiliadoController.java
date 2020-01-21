@@ -26,6 +26,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -138,7 +141,10 @@ public class AfiliadoController {
 		Double saldoCorte = new Double(0.00);
 		Date date = new Date();
 		Rfc rfc = null;
-
+		DateFormat formatoFecha = new SimpleDateFormat("dd");
+		String dia;
+		Integer diaCorte=0;
+		Date fechaCorte;
 		try {
 
 			if (result.hasErrors()) {
@@ -151,6 +157,14 @@ public class AfiliadoController {
 				} else {
 					afiliado.setIsBeneficiario(false);
 				}
+				if(afiliado.getFechaAfiliacion()==null) {
+					afiliado.setFechaCorte(null);
+					}else {	
+						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
+						diaCorte = Integer.parseInt(dia);
+						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
+						afiliado.setFechaCorte(fechaCorte);
+					}
 				mensajeFlash = "Registro editado con éxito";
 			} else {
 
@@ -174,14 +188,19 @@ public class AfiliadoController {
 
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
-				Date fechaCorte = calcularFechas.calcularFechas(periodicidad, afiliado.getCorte());
-
+				if(afiliado.getFechaAfiliacion()==null) {
+					afiliado.setFechaCorte(null);
+					}else {
+						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
+						diaCorte = Integer.parseInt(dia);
+						fechaCorte = calcularFechas.calcularFechas(periodicidad, diaCorte);
+						afiliado.setFechaCorte(fechaCorte);
+					}			
 				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
 						afiliado.getServicio().getInscripcionTitular();
 
 				afiliado.setSaldoAcumulado(saldoAcumulado);
 				afiliado.setSaldoCorte(saldoCorte);
-				afiliado.setFechaCorte(fechaCorte);
 				afiliado.setFechaAlta(date);
 
 				afiliado.setClave(generarClave.getClave(clave));
