@@ -162,7 +162,7 @@ public class AfiliadoController {
 					}else {	
 						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
 						diaCorte = Integer.parseInt(dia);
-						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
+						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), afiliado.getCorte());
 						afiliado.setFechaCorte(fechaCorte);
 					}
 				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
