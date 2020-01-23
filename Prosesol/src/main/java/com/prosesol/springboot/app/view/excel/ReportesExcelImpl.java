@@ -200,9 +200,11 @@ public class ReportesExcelImpl implements IReportesExcel {
         }
 
     }
-    
+
     /**
      * Método que genera el template conciliación de pagos de afiliados
+     * @param response
+     * @throws CustomValidatorExcelException
      */
 
     @Override
@@ -211,9 +213,7 @@ public class ReportesExcelImpl implements IReportesExcel {
     	 
     	 Workbook workbook = new XSSFWorkbook();
          XSSFSheet sheet = (XSSFSheet) workbook.createSheet("Pagos Afiliados");
-         //XSSFSheet sheetServicios = (XSSFSheet)workbook.createSheet("Servicios");
          Row header = sheet.createRow(0);
-         //Row headerServicio = sheetServicios.createRow(0);
 
          String[] pagosFields = pagoService.getVariablesPagos();
          String[] encabezado = validatorExcel.generarEncabezadoPagos(pagosFields, sheet);
@@ -234,29 +234,9 @@ public class ReportesExcelImpl implements IReportesExcel {
                  cell.setCellStyle(cellStyle);
              }
 
-         /*    Cell cellHeaderServicio = headerServicio.createCell(0);
-             cellHeaderServicio.setCellValue("ID");
-             cellHeaderServicio.setCellStyle(cellStyle);
-
-             Cell cellServicio = headerServicio.createCell(1);
-             cellServicio.setCellValue("Servicios");
-             cellServicio.setCellStyle(cellStyle);
-
              for(int i = 0; i < encabezado.length; i++){
                  sheet.autoSizeColumn(i);
              }
-
-             List<Servicio> listServicios = servicioService.findAll();
-
-             int rowNum = 1;
-             for(Servicio servicio : listServicios){
-                 Row row = sheetServicios.createRow(rowNum++);
-
-                 row.createCell(0).setCellValue(servicio.getId());
-                 row.createCell(1).setCellValue(servicio.getNombre());
-             }
-
-             sheetServicios.autoSizeColumn(0);*/
 
              response.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
              workbook.write(response.getOutputStream());

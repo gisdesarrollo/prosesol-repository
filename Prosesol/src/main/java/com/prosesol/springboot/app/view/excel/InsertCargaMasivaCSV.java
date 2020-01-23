@@ -57,16 +57,8 @@ public class InsertCargaMasivaCSV {
 
     private int corte;
     private Afiliado titular;
-
     private String isBeneficiario;
     private String rfcAfiliado;
-
-    private Date fechaNacimiento;
-
-    private LocalDate localDate;
-
-    private DateTimeFormatter dateTimeFormatter;
-
     private Rfc rfc;
 
     private Collator collator = Collator.getInstance(new Locale("es"));
@@ -512,7 +504,6 @@ public class InsertCargaMasivaCSV {
                     case 29:
                         if (campo.getValue().length() > 0) {
                             corte = Integer.parseInt(campo.getValue());
-
                         }
                         break;
                 }
@@ -608,13 +599,11 @@ public class InsertCargaMasivaCSV {
                         afiliado.setEstatus(1);
                         afiliado.setClave(generarClave.getClave(clave));
                         afiliado.setFechaAlta(new Date());
-                        if (afiliado.getFechaAfiliacion() == null) {
+                        if (afiliado.getPeriodicidad() == null) {
                             afiliado.setFechaCorte(null);
                         } else {
-                            DateFormat formatoFecha = new SimpleDateFormat("dd");
-                            String dia = formatoFecha.format(afiliado.getFechaAfiliacion());
-                            Integer diaCorte = Integer.parseInt(dia);
-                            Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
+                            Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad()
+                                    , corte);
                             afiliado.setFechaCorte(fechaCorte);
                         }
                         Double saldoAcumuladoTitular = afiliado.getServicio().getCostoTitular() +
@@ -706,13 +695,11 @@ public class InsertCargaMasivaCSV {
                         Cuenta cuenta = cuentaService.findById(idCuentaComercial);
                         afiliado.setCuenta(cuenta);
 
-                        if (afiliado.getFechaAfiliacion() == null) {
+                        if (afiliado.getPeriodicidad() == null) {
                             afiliado.setFechaCorte(null);
                         } else {
-                            DateFormat formatoFecha = new SimpleDateFormat("dd");
-                            String dia = formatoFecha.format(afiliado.getFechaAfiliacion());
-                            Integer diaCorte = Integer.parseInt(dia);
-                            Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
+                            Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad()
+                                    , corte);
                             afiliado.setFechaCorte(fechaCorte);
                         }
 

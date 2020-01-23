@@ -1,8 +1,5 @@
 package com.prosesol.springboot.app.view.excel;
 
-import com.prosesol.springboot.app.entity.Cuenta;
-import com.prosesol.springboot.app.entity.Periodicidad;
-import com.prosesol.springboot.app.entity.Promotor;
 import com.prosesol.springboot.app.exception.CustomValidatorExcelException;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 import com.prosesol.springboot.app.service.ICuentaService;
@@ -203,63 +200,17 @@ public class ValidatorExcel {
                         sheet.addValidationData(dv);
 
                         break;
-                   /* case "infonavit":
-                        encabezado[rowNum++] = "¿Cuenta con número infonavit?";
-
-                        CellRangeAddressList addressListInfonavit = null;
-
-                        cellRowNum = rowNum - 1;
-
-                        String[] arrayInfonavit = {"Sí", "No"};
-
-                        dvHelper = new XSSFDataValidationHelper(sheet);
-
-                        for (int x = 1; x < 999; x++) {
-                            addressListInfonavit = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-                        }
-
-                        dvConstraint = dvHelper.createExplicitListConstraint(arrayInfonavit);
-                        dv = dvHelper.createValidation(dvConstraint, addressListInfonavit);
-
-                        dv.setSuppressDropDownArrow(true);
-
-                        sheet.addValidationData(dv);
-                        break;*/
                     case "numeroInfonavit":
                         encabezado[rowNum++] = "Número de infonavit";
                         break;
                     case "fechaAfiliacion":
                         encabezado[rowNum++] = "Fecha de afiliación";
-                        break;    
+                        break;
                     case "servicio":
                         encabezado[rowNum++] = "Servicio";
                         break;
                     case "periodicidad":
                         encabezado[rowNum++] = "Periodo";
-
-                        /*CellRangeAddressList addressListPeriodos = null;
-
-                        cellRowNum = rowNum - 1;
-                        List<Periodicidad> listaPeriodos = periodicidadService.findAll();
-                        String[] arrayPeriodos = new String[listaPeriodos.size()];
-
-                        int rowPeriodos = 0;
-                        for (Periodicidad periodos : listaPeriodos) {
-                            arrayPeriodos[rowPeriodos++] = periodos.getNombre();
-                        }
-
-                        dvHelper = new XSSFDataValidationHelper(sheet);
-
-                        for (int x = 1; x < 999; x++) {
-                            addressListPeriodos = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-                        }
-
-                        dvConstraint = dvHelper.createExplicitListConstraint(arrayPeriodos);
-                        dv = dvHelper.createValidation(dvConstraint, addressListPeriodos);
-
-                        dv.setSuppressDropDownArrow(true);
-
-                        sheet.addValidationData(dv);*/
                         break;
                     case "comentarios":
                         encabezado[rowNum++] = "Comentarios";
@@ -292,60 +243,9 @@ public class ValidatorExcel {
                         break;
                     case "promotor":
                         encabezado[rowNum++] = "Promotor";
-
-                        /*CellRangeAddressList addressListPromotor = null;
-
-                        cellRowNum = rowNum - 1;
-
-                        List<Promotor> listaPromotores = promotorService.findAll();
-                        String[] arrayPromotor = new String[listaPromotores.size()];
-
-                        int rowPromotor = 0;
-                        for (Promotor promotor : listaPromotores) {
-                            arrayPromotor[rowPromotor++] = promotor.getNombre();
-                        }
-
-                        dvHelper = new XSSFDataValidationHelper(sheet);
-
-                        for (int x = 1; x < 999; x++) {
-                            addressListPromotor = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-                        }
-
-                        dvConstraint = dvHelper.createExplicitListConstraint(arrayPromotor);
-                        dv = dvHelper.createValidation(dvConstraint, addressListPromotor);
-
-                        dv.setSuppressDropDownArrow(true);
-
-                        sheet.addValidationData(dv);*/
-
                         break;
                     case "cuenta":
                         encabezado[rowNum++] = "Cuenta";
-
-                        /*CellRangeAddressList addressListCuenta = null;
-
-                        cellRowNum = rowNum - 1;
-                        List<Cuenta> listaCuentas = cuentaService.findAll();
-                        String[] arrayCuentas = new String[listaCuentas.size()];
-
-                        int rowCuentas = 0;
-                        for (Cuenta cuentas : listaCuentas) {
-                            arrayCuentas[rowCuentas++] = cuentas.getRazonSocial();
-                        }
-
-                        dvHelper = new XSSFDataValidationHelper(sheet);
-
-                        for (int x = 1; x < 999; x++) {
-                            addressListCuenta = new CellRangeAddressList(1, x, cellRowNum, cellRowNum);
-                        }
-
-                        dvConstraint = dvHelper.createExplicitListConstraint(arrayCuentas);
-                        dv = dvHelper.createValidation(dvConstraint, addressListCuenta);
-
-                        dv.setSuppressDropDownArrow(true);
-
-                        sheet.addValidationData(dv);*/
-
                         break;
                     case "corte":
                         encabezado[rowNum++] = "Corte";
@@ -400,7 +300,6 @@ public class ValidatorExcel {
         String[] encabezado = new String[pagosFields.length];
 
         int rowNum = 0;
-        int cellRowNum = 0;
 
         try {
 

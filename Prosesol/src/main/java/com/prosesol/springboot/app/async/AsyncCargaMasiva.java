@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,7 +32,7 @@ public class AsyncCargaMasiva {
     public void procesaArchivoAsync(boolean isVigor,boolean isConciliacion, String nombre, byte[] bs,
                                     Long idCuentaComercial) throws InterruptedException, IOException{
 
-        System.out.println("Entra al método para la lectura de archivo");
+        LOG.info("Entra al método para la lectura de archivo");
 
         Thread.sleep(5000);
 
@@ -50,7 +53,6 @@ public class AsyncCargaMasiva {
                 String line = scanner.nextLine();
 
                 String[] valores = line.split(",");
-                int valoresCapturados = valores.length;
 
                 for(int i = 0; i < valores.length; i++){
                     campos.put(i, valores[i]);
