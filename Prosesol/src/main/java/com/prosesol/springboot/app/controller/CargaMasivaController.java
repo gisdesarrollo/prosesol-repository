@@ -116,7 +116,7 @@ public class CargaMasivaController {
         } catch (CustomValidatorExcelException e) {
 
             redirect.addFlashAttribute("error", e.getMessage());
-            System.out.println("Error: " + e.getMessage());
+            logger.error("Error: " , e);
             return "redirect:/cargaMasiva/afiliados";
 
         }
