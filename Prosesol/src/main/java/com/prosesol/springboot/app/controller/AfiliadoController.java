@@ -162,9 +162,14 @@ public class AfiliadoController {
 					}else {	
 						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
 						diaCorte = Integer.parseInt(dia);
-						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
+						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), afiliado.getCorte());
 						afiliado.setFechaCorte(fechaCorte);
 					}
+				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
+						afiliado.getServicio().getInscripcionTitular();
+				afiliado.setSaldoAcumulado(saldoAcumulado);
+				afiliado.setSaldoCorte(saldoAcumulado);
+				
 				mensajeFlash = "Registro editado con éxito";
 			} else {
 
@@ -193,23 +198,22 @@ public class AfiliadoController {
 					}else {
 						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
 						diaCorte = Integer.parseInt(dia);
-						fechaCorte = calcularFechas.calcularFechas(periodicidad, diaCorte);
+						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
 						afiliado.setFechaCorte(fechaCorte);
 					}			
 				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
 						afiliado.getServicio().getInscripcionTitular();
 
 				afiliado.setSaldoAcumulado(saldoAcumulado);
-				afiliado.setSaldoCorte(saldoCorte);
+				afiliado.setSaldoCorte(saldoAcumulado);
 				afiliado.setFechaAlta(date);
 
 				afiliado.setClave(generarClave.getClave(clave));
-				
+				afiliado.setEstatus(2);
 				mensajeFlash = "Registro creado con éxito";
 
 			}
 
-			afiliado.setEstatus(1);
 			logger.info(mensajeFlash);
 
 			afiliadoService.save(afiliado);
