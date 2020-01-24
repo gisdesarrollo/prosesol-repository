@@ -494,18 +494,23 @@ public class Afiliado implements Serializable{
 		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
 	}
 
+	public Boolean getBeneficiario() {
+		return isBeneficiario;
+	}
+
+	public void setBeneficiario(Boolean beneficiario) {
+		isBeneficiario = beneficiario;
+	}
+
 	@Override
 	public String toString() {
 
 		final StringBuilder builder = new StringBuilder();
 
-		for (Beneficiario beneficiario : beneficiarios) {
-
-			builder.append("\n Id Afiliado: ").append("").append(id).append("").append("\n Nombre Afiliado: ")
-					.append("").append(nombre).append(beneficiario).append("\n Tipo servicio: ")
-					.append(servicio.getId()).append("\n Tipo Periodo: ").append(periodicidad.getId());
-
-		}
+		builder.append("ID: ").append(id)
+				.append("Nombre: ").append(nombre)
+				.append("Apellido Paterno: ").append(apellidoPaterno)
+				.append("Apellido Materno: ").append(apellidoMaterno);
 
 		return builder.toString();
 	}

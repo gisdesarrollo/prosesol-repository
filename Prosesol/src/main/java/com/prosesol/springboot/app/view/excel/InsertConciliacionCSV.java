@@ -1,36 +1,28 @@
 package com.prosesol.springboot.app.view.excel;
 
-import java.text.Collator;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
+import com.prosesol.springboot.app.entity.Afiliado;
+import com.prosesol.springboot.app.entity.Pago;
+import com.prosesol.springboot.app.entity.Periodicidad;
+import com.prosesol.springboot.app.exception.CustomExcelException;
+import com.prosesol.springboot.app.repository.AfiliadoRepository;
+import com.prosesol.springboot.app.service.IAfiliadoService;
+import com.prosesol.springboot.app.service.IPagoService;
+import com.prosesol.springboot.app.service.IPeriodicidadService;
+import com.prosesol.springboot.app.service.IServicioService;
+import com.prosesol.springboot.app.util.CalcularFecha;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.josketres.rfcfacil.Rfc;
-import com.prosesol.springboot.app.entity.Afiliado;
-import com.prosesol.springboot.app.entity.Cuenta;
-import com.prosesol.springboot.app.entity.Pago;
-import com.prosesol.springboot.app.entity.Periodicidad;
-import com.prosesol.springboot.app.entity.Promotor;
-import com.prosesol.springboot.app.entity.Servicio;
-import com.prosesol.springboot.app.exception.CustomExcelException;
-import com.prosesol.springboot.app.service.IAfiliadoService;
-import com.prosesol.springboot.app.service.IPagoService;
-import com.prosesol.springboot.app.service.IPeriodicidadService;
-import com.prosesol.springboot.app.service.IServicioService;
-import com.prosesol.springboot.app.util.CalcularFecha;
+import java.text.Collator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Service
 public class InsertConciliacionCSV {
@@ -41,21 +33,14 @@ public class InsertConciliacionCSV {
 	private IAfiliadoService afiliadoService;
 
 	@Autowired
-	private IServicioService servicioService;
+	private IPagoService pagoService;
 
 	@Autowired
-	private IPagoService pagoService;
-	
-	@Autowired
-	private IPeriodicidadService periodicidadService;
-	
-	@Autowired
-	private CalcularFecha calcularFechas;
+	private AfiliadoRepository afiliadoRepository;
 
 	private Collator collator = Collator.getInstance(new Locale("es"));
 	private boolean isValidPagos;
 	private boolean isValid;
-	private boolean isInteger;
 
 	String log = "";
 	
@@ -63,10 +48,9 @@ public class InsertConciliacionCSV {
 	public String evaluarDatosList(boolean isVigor, boolean isConciliacion ,Integer counterLinea, Map<Integer, String> campos) {
 		 
 		Pago pagos = new Pago();
-		Periodicidad periodo = getPeriodoByNombre("MENSUAL");
-	 
-		Integer corte=0;
-		isValidPagos = true;
+		Afiliado afiliado = new Afiliado();
+	 	isValidPagos = true;
+
 		for (Map.Entry<Integer, String> campo : campos.entrySet()) {
 			try {
 
@@ -83,8 +67,8 @@ public class InsertConciliacionCSV {
 						isValidPagos = false;
 						
 					} else {
-						Afiliado bAfiliado = afiliadoService.getAfiliadoByRfc(campo.getValue());
-						if (bAfiliado==null) {
+						afiliado = afiliadoService.getAfiliadoByRfc(campo.getValue());
+						if (afiliado == null) {
 							LOG.info(counterLinea + " - " + "El Rfc del afiliado no se encuentra registrado");
 							log = counterLinea + " - " + "El Rfc del afiliado no se encuentra registrado";
 							isValidPagos = false;
@@ -101,50 +85,8 @@ public class InsertConciliacionCSV {
 						log = counterLinea + " - " + "El monto no puede quedar vacío";
 						isValidPagos = false;
 					} else {
-						//pagos.setMonto(Double.parseDouble(campo.getValue()));
-						Double monto=Double.parseDouble(campo.getValue());
-						Afiliado bPago = afiliadoService.getAfiliadoByRfc(pagos.getRfc());
-						Long idServicio = bPago.getServicio().getId();
-						Long idAfiliado = bPago.getId();
-						// OBTENGO EL SERVICIO QUE TIENE EL AFILIADO
-						Servicio servicio = servicioService.findById(idServicio);
-						//OBTENGO LOS BENEFICIARIOS DEL AFILIADO
-						List<Afiliado> beneficiarios = afiliadoService.getBeneficiarioByIdByIsBeneficiario(idAfiliado);
-						
-						if (bPago.getSaldoAcumulado()==null && bPago.getSaldoCorte()==null || bPago.getSaldoAcumulado()==0 && bPago.getSaldoCorte()==0) {
-							Double saldoAcumulado = servicio.getCostoTitular() + servicio.getInscripcionTitular();
-							//AFILIADO CON BENEFICIARIO
-							if (beneficiarios.size() > 0) {
-								for (Integer x = 0; x < beneficiarios.size(); x++) {
-									
-									saldoAcumulado += servicio.getCostoBeneficiario() + servicio.getInscripcionBeneficiario();
-								}
-								
-								bPago.setSaldoAcumulado(saldoAcumulado);
-								afiliadoService.save(bPago);
-								pagos.setMonto(Double.parseDouble(campo.getValue()));
-									LOG.info(counterLinea + " - " + "Monto: " + pagos.getMonto());
-								} else {
-								//AFILIADO SIN BENEFICIARIO
-								pagos.setMonto(Double.parseDouble(campo.getValue()));
-								LOG.info(counterLinea + " - " + "Monto: " + pagos.getMonto());
-								bPago.setSaldoAcumulado(saldoAcumulado);
-								
-								afiliadoService.save(bPago);
-								}
-						} else if(bPago.getSaldoCorte() == monto) {
-								afiliadoService.save(bPago);
-								pagos.setMonto(Double.parseDouble(campo.getValue()));
-								LOG.info(counterLinea + " - " + "Monto: " + pagos.getMonto());
-								
-						}else if(bPago.getSaldoCorte()>0 && bPago.getSaldoCorte()!=monto) {
-								LOG.info(counterLinea + " - " + "El monto del afiliado comparado con el monto del template no es el"
-										+ " mismo checar el monto : " + campo.getValue());
-								log = counterLinea + " - " + "El monto del afiliado comparado con el monto del template no es el"
-										+ " mismo checar el monto : " + campo.getValue();
-								isValidPagos = false;
-						}
-						
+						pagos.setMonto(Double.parseDouble(campo.getValue()));
+						LOG.info(counterLinea + " - " + "Monto: " + pagos.getMonto());
 					}
 					break;
 				case 2:
@@ -169,16 +111,6 @@ public class InsertConciliacionCSV {
 						if (isValid) {
 							pagos.setFechaPago(new SimpleDateFormat("dd/MM/yyyy").parse(campo.getValue()));
 							LOG.info(counterLinea + " - " + "Fecha de Pago: " + pagos.getFechaPago());
-							//OBTENGO LA FECHA DE CORTE
-							Afiliado bPago = afiliadoService.getAfiliadoByRfc(pagos.getRfc());
-							DateFormat formatoFecha = new SimpleDateFormat("dd");
-			                String dia=formatoFecha.format(pagos.getFechaPago());
-			                corte = Integer.parseInt(dia);
-			                Date fechaCorte = calcularFechas.calcularFechas(periodo,corte);
-							bPago.setFechaCorte(fechaCorte);
-							afiliadoService.save(bPago);
-							
-							
 						} else {
 							log = counterLinea + " - " + "Formato de fecha incorrecto, formato correcto dd/mm/yyyy";
 							LOG.info(counterLinea + " - " + "Formato de fecha incorrecto, formato correcto dd/mm/yyyy");
@@ -212,7 +144,7 @@ public class InsertConciliacionCSV {
 		}
 
 		if (!isVigor && isConciliacion) {
-			log = insertPagosAfiliado(isValidPagos, pagos, counterLinea);
+			log = insertPagosAfiliado(isValidPagos, pagos, counterLinea, afiliado);
 		}
 
 		return log;
@@ -227,15 +159,18 @@ public class InsertConciliacionCSV {
 	 * @return
 	 */
 
-	private String insertPagosAfiliado(boolean isValidPagos, Pago pagos, Integer counterLinea) {
+	private String insertPagosAfiliado(boolean isValidPagos, Pago pagos, Integer counterLinea,
+									   Afiliado afiliado) {
 
 		try {
 
 			if (isValidPagos) {
-				
-				
+
 				pagos.setEstatus("completed");
+				pagos.setTipoTransaccion("Conciliación");
 				pagoService.save(pagos);
+
+				afiliadoRepository.insertRelAfiliadosPagos(afiliado, pagos.getId());
 				
 				if (!isValidPagos) {
 					LOG.info(counterLinea + " - "
@@ -282,25 +217,6 @@ public class InsertConciliacionCSV {
 		}
 
 		return isValid;
-	}
-	
-	/**
-	 * Evalúa si existe el periodo en la BBDD
-	 * @param periodo
-	 * @return
-	 */
-	private Periodicidad getPeriodoByNombre(String periodo){
-		List<Periodicidad> listPeriodos = periodicidadService.findAll();
-		Periodicidad nPeriodo = new Periodicidad();
-
-		for(Periodicidad p : listPeriodos){
-			if(p.getNombre().equals(periodo)){
-				nPeriodo = p;
-				break;
-			}
-		}
-
-		return nPeriodo;
 	}
 
 
