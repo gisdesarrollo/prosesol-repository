@@ -33,17 +33,17 @@
                                         <th>Monto</th>
                                         <th>Referencia Bancaria</th>
                                         <th>Fecha de Pago</th>
-                                        <th>Estatus</th>
+                                        <th>Forma de pago</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="pago : ${pagos}"
-                                        th:if="${pago.estatus} == 'completed'">
-                                        <td th:text="${pago.rfc}"></td>
-                                        <td th:text="${#numbers.formatDecimal(pago.monto, 0, 2)}"></td>
-                                        <td th:text="${pago.referenciaBancaria}"></td>
-                                        <td th:text="${pago.fechaPago}"></td>
-                                        <td th:if="${pago.estatus} == completed">Realizado</td>
+                                        th:if="${pago[5]} == 'completed'">
+                                        <td th:text="${pago[0]}"></td>
+                                        <td th:text="${#numbers.formatDecimal(pago[1], 0, 2)}"></td>
+                                        <td th:text="${pago[2]}"></td>
+                                        <td th:text="${pago[3]}"></td>
+                                        <td th:text="${pago[4]}"></td>
                                     </tr>
                                     </tbody>
                                 </table>

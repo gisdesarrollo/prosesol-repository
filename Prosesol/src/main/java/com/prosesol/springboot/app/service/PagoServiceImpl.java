@@ -46,4 +46,10 @@ public class PagoServiceImpl implements IPagoService {
 	public void save(Pago pago) {
 		pagoDao.save(pago);
 	}
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> getAllPagos() {
+        return pagoDao.getAllPagos();
+    }
 }

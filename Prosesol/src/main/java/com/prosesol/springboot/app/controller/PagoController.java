@@ -25,7 +25,7 @@ public class PagoController {
     public String getPagosRealizados(Model model){
 
         try{
-            model.addAttribute("pagos", pagoService.findAll());
+            model.addAttribute("pagos", pagoService.getAllPagos());
         }catch(Exception e){
             LOG.error("Error al momento de mostrar la lista", e);
             e.printStackTrace();
@@ -38,7 +38,8 @@ public class PagoController {
     public String getPagosPendientes(Model model){
 
         try{
-            model.addAttribute("afiliados", afiliadoService.getAfiliadosPagoPendiente());
+            model.addAttribute("afiliados",
+                    afiliadoService.getAfiliadosPagoPendiente());
         }catch(Exception e){
             LOG.error("Error al momento de mostrar la lista", e);
             e.printStackTrace();
