@@ -5,6 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "pagos")
@@ -36,6 +38,9 @@ public class Pago implements Serializable {
 
     @Column(name = "estatus")
     private String estatus;
+
+    @Column(name = "tipo_transaccion")
+    private String tipoTransaccion;
 
     public Long getId() {
         return id;
@@ -85,7 +90,15 @@ public class Pago implements Serializable {
         this.estatus = estatus;
     }
 
-	@Override
+    public String getTipoTransaccion() {
+        return tipoTransaccion;
+    }
+
+    public void setTipoTransaccion(String tipoTransaccion) {
+        this.tipoTransaccion = tipoTransaccion;
+    }
+
+    @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -94,6 +107,7 @@ public class Pago implements Serializable {
                 .append("Monto: ").append(monto)
                 .append("Referencia Bancaria:" ).append(referenciaBancaria)
                 .append("Fecha de Pago: ").append(fechaPago)
-                .append("Estatus: ").append(estatus).toString();
+                .append("Estatus: ").append(estatus)
+                .append("Tipo Transacción: ").append(tipoTransaccion).toString();
     }
 }

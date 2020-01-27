@@ -125,4 +125,11 @@ public class AfiliadoRepository {
 		return afiliados;
 	}
 
+	@Transactional
+	public void insertRelAfiliadosPagos(Afiliado afiliado, Long idPago){
+		em.createNativeQuery("insert into rel_afiliados_pagos values(?,?)")
+				.setParameter(1, afiliado.getId())
+				.setParameter(2, idPago)
+				.executeUpdate();
+	}
 }

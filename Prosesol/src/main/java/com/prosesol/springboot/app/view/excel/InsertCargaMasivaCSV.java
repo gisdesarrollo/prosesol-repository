@@ -425,8 +425,8 @@ public class InsertCargaMasivaCSV {
                         break;
                     case 23:
                         if (campo.getValue().length() == 0) {
-                            LOG.info(counterLinea + " - " + "El periodo para el servicios no puede quedar vacío");
-                            log = counterLinea + " - " + "El periodo para el servicios no puede quedar vacío";
+                            LOG.info(counterLinea + " - " + "Proporcione un periodo");
+                            log = counterLinea + " - " + "Proporcione un periodo";
                             isValidAfiliado = false;
                         } else {
 
@@ -599,13 +599,9 @@ public class InsertCargaMasivaCSV {
                         afiliado.setEstatus(1);
                         afiliado.setClave(generarClave.getClave(clave));
                         afiliado.setFechaAlta(new Date());
-                        if (afiliado.getPeriodicidad() == null) {
-                            afiliado.setFechaCorte(null);
-                        } else {
-                            Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad()
-                                    , corte);
-                            afiliado.setFechaCorte(fechaCorte);
-                        }
+                        Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad()
+                                , corte);
+                        afiliado.setFechaCorte(fechaCorte);
                         Double saldoAcumuladoTitular = afiliado.getServicio().getCostoTitular() +
                                 afiliado.getServicio().getInscripcionTitular();
 
@@ -695,13 +691,9 @@ public class InsertCargaMasivaCSV {
                         Cuenta cuenta = cuentaService.findById(idCuentaComercial);
                         afiliado.setCuenta(cuenta);
 
-                        if (afiliado.getPeriodicidad() == null) {
-                            afiliado.setFechaCorte(null);
-                        } else {
-                            Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad()
-                                    , corte);
-                            afiliado.setFechaCorte(fechaCorte);
-                        }
+                        Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad()
+                                , corte);
+                        afiliado.setFechaCorte(fechaCorte);
 
                         Double saldoAcumuladoTitular = afiliado.getServicio().getCostoTitular() +
                                 afiliado.getServicio().getInscripcionTitular();

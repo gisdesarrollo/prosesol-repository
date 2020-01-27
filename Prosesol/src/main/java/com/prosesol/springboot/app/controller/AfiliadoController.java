@@ -112,7 +112,9 @@ public class AfiliadoController {
 		logger.info("Editar afiliado: " + id);
 
 		Afiliado afiliado = null;
-
+		DateFormat formatoFecha = new SimpleDateFormat("dd");
+		String dia;
+		Integer diaCorte=0;
 		if (id > 0) {
 			afiliado = afiliadoService.findById(id);
 			if (afiliado == null) {
@@ -123,8 +125,17 @@ public class AfiliadoController {
 			redirect.addFlashAttribute("Error: ", "El id del afiliado no puede ser cero");
 			return "redirect:/afiliados/ver";
 		}
-
+			if(afiliado.getFechaCorte()!=null) {
+				dia=formatoFecha.format(afiliado.getFechaCorte());
+				diaCorte = Integer.parseInt(dia);
+				model.put("diaCorte", diaCorte);
+			
+			}else {
+				dia=null;
+				model.put("diaCorte", dia);
+			}
 		model.put("afiliado", afiliado);
+		
 
 		return "catalogos/afiliados/editar";
 
@@ -157,12 +168,10 @@ public class AfiliadoController {
 				} else {
 					afiliado.setIsBeneficiario(false);
 				}
-				if(afiliado.getFechaAfiliacion()==null) {
+				if(afiliado.getCorte()==null) {
 					afiliado.setFechaCorte(null);
 					}else {	
-						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
-						diaCorte = Integer.parseInt(dia);
-						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), afiliado.getCorte());
+						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(),afiliado.getCorte());
 						afiliado.setFechaCorte(fechaCorte);
 					}
 				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
