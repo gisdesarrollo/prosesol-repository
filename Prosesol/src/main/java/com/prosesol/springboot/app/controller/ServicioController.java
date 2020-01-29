@@ -214,8 +214,12 @@ public class ServicioController {
 
 						relServicioBeneficio.setServicio(servicio);
 						relServicioBeneficio.setBeneficio(nBeneficio);
+						if(descripcion.isEmpty()) {
+							relServicioBeneficio.setDescripcion(null);
+						}else {
 						relServicioBeneficio.setDescripcion(descripcion.get(dIndex));
-
+					}
+						
 						if (titular != null && titular.size() >= countTitular) {
 							if (beneficio == titular.get(tIndex)) {
 								relServicioBeneficio.setTitular(true);
@@ -223,15 +227,26 @@ public class ServicioController {
 								tIndex++;
 								countTitular++;
 							}
+						}else {
+							relServicioBeneficio.setTitular(false);
+							tIndex++;
+							countTitular++;
 						}
-
+						
 						if (beneficiario != null && beneficiario.size() >= countBeneficiario) {
 							if (beneficio == beneficiario.get(bIndex)) {
-								relServicioBeneficio.setTitular(false);
-								relServicioBeneficio.setBeneficiario(true);
+								if(beneficiario.get(bIndex)==titular.get(tIndex-1)) {
+									
+									relServicioBeneficio.setBeneficiario(true);
+								}else {
+									relServicioBeneficio.setTitular(false);
+									relServicioBeneficio.setBeneficiario(true);
+									}
+								
 								bIndex++;
 								countBeneficiario++;
 							}
+							
 						}
 
 						relServicioBeneficioService.save(relServicioBeneficio);
@@ -459,8 +474,7 @@ public class ServicioController {
 			 
 			 boolean isTitular = false;
 			 boolean isBeneficiario = false;
-
-			 if(titular != null && titular.size() > 0 ) {
+			 if(titular!=null && titular.size() > 0) {
 				 for (Long idTitular : titular) {
 					 if (id == idTitular) {
 						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
@@ -473,6 +487,14 @@ public class ServicioController {
 						 isTitular = true;
 						 break;
 					 }
+					 if(id!=idTitular) {
+						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+							 if (entry.getKey() == id) {
+								 relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false, false, entry.getValue());
+								 break;
+							 }
+						 }
+					 }
 				 }
 			 }else{
 				 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
@@ -482,8 +504,7 @@ public class ServicioController {
 					 }
 				 }
 			 }
-
-			 if(beneficiario != null && beneficiario.size() > 0) {
+			 if(beneficiario!=null && beneficiario.size() > 0) {
 				 for (Long idBeneficiario : beneficiario) {
 					 if (id == idBeneficiario) {
 						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
@@ -494,6 +515,16 @@ public class ServicioController {
 						 }
 						 isBeneficiario = true;
 						 break;
+					 }
+					 if(id!=idBeneficiario) {
+						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+							 System.out.println("id: "+id);
+							 System.out.println("entry: "+entry.getKey());
+							 if (entry.getKey() == id) {
+								 relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false, false, entry.getValue());
+								 break;
+							 }
+						 }
 					 }
 				 }
 			 }
@@ -506,7 +537,15 @@ public class ServicioController {
 						}
 				 }			 
 			 }
-			 
+
+			 if(isTitular && !isBeneficiario) {
+				 for(Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+						if(entry.getKey() == id) {
+							relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true, false, entry.getValue());
+							break;
+						}
+				 }			 
+			 }
 			 relServicioBeneficioService.save(relServicioBeneficio);
 		}
 	}

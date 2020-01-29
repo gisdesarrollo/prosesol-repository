@@ -69,8 +69,8 @@
                                                             <label >Tipo de Servicio*</label>
                                                             <select th:field="*{tipoPrivacidad}" class="form-control" id="inputGroupSelect01">
 																		<option value=""></option>
-																		<option th:value=true>Público</option>
-																		<option th:value=false>Privado</option>
+																		<option th:value=false>Público</option>
+																		<option th:value=true>Privado</option>
 																	</select>
                                                             <small class="form-text text-danger" th:if="${#fields.hasErrors('tipoPrivacidad')}" th:errors="*{tipoPrivacidad}"></small>
                                                         </div>
