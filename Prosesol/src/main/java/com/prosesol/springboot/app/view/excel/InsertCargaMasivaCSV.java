@@ -14,12 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.Collator;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -94,6 +92,7 @@ public class InsertCargaMasivaCSV {
                             log = counterLinea + " - " + "El nombre no puede quedar vacío";
                             isValidAfiliado = false;
                         } else {
+
                             afiliado.setNombre(campo.getValue());
                             isInteger = isInteger(afiliado.getNombre());
                             if (!isInteger) {
@@ -142,9 +141,9 @@ public class InsertCargaMasivaCSV {
                                 LOG.info(counterLinea + " - " + "Fecha de Nacimiento: " + afiliado.getFechaNacimiento());
                             } else {
                                 log = counterLinea + " - " + "Formato de fecha incorrecto para la fecha de nacimiento, " +
-										"formato correcto dd/mm/yyyy";
+                                        "formato correcto dd/mm/yyyy";
                                 LOG.info(counterLinea + " - " + "Formato de fecha incorrecto para la fecha de nacimiento, " +
-										"formato correcto dd/mm/yyyy");
+                                        "formato correcto dd/mm/yyyy");
                                 isValidAfiliado = false;
                             }
                         }
@@ -392,9 +391,9 @@ public class InsertCargaMasivaCSV {
                                 LOG.info(counterLinea + " - " + "Fecha de Afiliación: " + afiliado.getFechaAfiliacion());
                             } else {
                                 log = counterLinea + " - " + "Formato de fecha incorrecto para la fecha de afiliación, " +
-										"formato correcto: dd/mm/yyyy";
+                                        "formato correcto: dd/mm/yyyy";
                                 LOG.info(counterLinea + " - " + "Formato de fecha incorrecto para la fecha de afiliación, " +
-										"formato correcto: dd/mm/yyyy");
+                                        "formato correcto: dd/mm/yyyy");
                                 isValidAfiliado = false;
                             }
                         }

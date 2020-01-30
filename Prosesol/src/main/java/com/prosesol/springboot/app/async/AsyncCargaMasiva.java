@@ -30,7 +30,8 @@ public class AsyncCargaMasiva {
 
     @Async("threadCargaMasiva")
     public void procesaArchivoAsync(boolean isVigor,boolean isConciliacion, String nombre, byte[] bs,
-                                    Long idCuentaComercial) throws InterruptedException, IOException{
+                                    Long idCuentaComercial)
+            throws InterruptedException, IOException{
 
         LOG.info("Entra al método para la lectura de archivo");
 
@@ -47,7 +48,7 @@ public class AsyncCargaMasiva {
         InputStream inputStream = new ByteArrayInputStream(bs);
 
         try{
-            scanner = new Scanner(inputStream, "UTF-8");
+            scanner = new Scanner(inputStream);
             scanner.nextLine();
             while(scanner.hasNext()){
                 String line = scanner.nextLine();
@@ -120,5 +121,4 @@ public class AsyncCargaMasiva {
         LOG.info("Archivo guardado correctamente");
         
     }
-
 }
