@@ -149,7 +149,8 @@
                                                                     <span class="text-muted" th:text="${beneficio.descripcion}"></span>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" name="descripcion[]" class="form-control form-control-user">
+                                                                	<input type="hidden" name="beneDescripcion[]" th:value="${beneficio.id}">
+                                                                    <input type="text" name="descripcion[]" value=" " class="form-control form-control-user">
                                                                 </td>
                                                                 <td class="text-center">
                                                                     <input type="checkbox" name="titular[]" th:checked="${titular}" th:value="${beneficio.id}">
