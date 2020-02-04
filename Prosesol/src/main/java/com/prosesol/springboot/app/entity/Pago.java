@@ -22,9 +22,6 @@ public class Pago implements Serializable {
     @Column(name = "id_pago")
     private Long id;
 
-    @Column(name = "rfc")
-    private String rfc;
-
     @Column(name = "monto")
     private Double monto;
 
@@ -48,14 +45,6 @@ public class Pago implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getRfc() {
-        return rfc;
-    }
-
-    public void setRfc(String rfc) {
-        this.rfc = rfc;
     }
 
     public Double getMonto() {
@@ -103,7 +92,6 @@ public class Pago implements Serializable {
         StringBuilder stringBuilder = new StringBuilder();
 
         return stringBuilder.append("Id: ").append(id)
-                .append("RFC: ") .append(rfc)
                 .append("Monto: ").append(monto)
                 .append("Referencia Bancaria:" ).append(referenciaBancaria)
                 .append("Fecha de Pago: ").append(fechaPago)

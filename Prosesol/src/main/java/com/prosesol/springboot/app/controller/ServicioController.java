@@ -162,7 +162,8 @@ public class ServicioController {
 			SessionStatus status, @RequestParam(name = "beneficio[]", required = false) List<Long> idBeneficio,
 			@RequestParam(name = "descripcion[]", required = false) List<String> descripcion,
 			@RequestParam(name = "beneficiario[]", required = false) List<Long> beneficiario,
-			@RequestParam(name = "titular[]", required = false) List<Long> titular) throws Exception {
+			@RequestParam(name = "titular[]", required = false) List<Long> titular,
+			@RequestParam(name = "beneDescripcion[]", required = false) List<Long> beneDescripcion) throws Exception {
 
 		logger.info("Entra al método para guardar o modificar el servicio");
 
@@ -197,7 +198,7 @@ public class ServicioController {
 
 				if (idBeneficio != null && idBeneficio.size() > 0) {
 
-					descripcion.removeAll(Arrays.asList("", null));
+					//descripcion.removeAll(Arrays.asList(" ",""));
 
 					servicio.setEstatus(true);
 					servicioService.save(servicio);
@@ -207,35 +208,119 @@ public class ServicioController {
 					int bIndex = 0;
 					int countTitular = 1;
 					int countBeneficiario = 1;
-
+					String guardoBeneficiario=null;
+					String guardoTitular=null;
+					ArrayList<String> lB = new ArrayList<String>();
+					ArrayList<String> lT = new ArrayList<String>();
 					for (Long beneficio : idBeneficio) {
 
 						Beneficio nBeneficio = beneficioService.findById(beneficio);
 
 						relServicioBeneficio.setServicio(servicio);
 						relServicioBeneficio.setBeneficio(nBeneficio);
-						relServicioBeneficio.setDescripcion(descripcion.get(dIndex));
-
+						
 						if (titular != null && titular.size() >= countTitular) {
 							if (beneficio == titular.get(tIndex)) {
 								relServicioBeneficio.setTitular(true);
 								relServicioBeneficio.setBeneficiario(false);
-								tIndex++;
-								countTitular++;
+								for(Long idbeneficio:beneDescripcion) {
+									if(idbeneficio==beneficio) {
+										if(descripcion.get(dIndex)==" ") {
+											relServicioBeneficio.setDescripcion(descripcion.get(dIndex).trim());
+										}
+										else {
+											relServicioBeneficio.setDescripcion(descripcion.get(dIndex).trim());
+										}
+										
+										break;
+									}
+									dIndex++;
+								}
+								
 							}
+							else if(beneficio!=titular.get(tIndex)){
+							relServicioBeneficio.setTitular(false);
+							guardoTitular=titular.get(tIndex).toString();
+							lT.add(guardoTitular);
+							}
+							dIndex=0;
+							tIndex++;
+							countTitular++;
 						}
-
+							
 						if (beneficiario != null && beneficiario.size() >= countBeneficiario) {
 							if (beneficio == beneficiario.get(bIndex)) {
-								relServicioBeneficio.setTitular(false);
-								relServicioBeneficio.setBeneficiario(true);
+								for(Long idbeneficio:beneDescripcion) {
+									if(idbeneficio==beneficio) {
+										if(descripcion.get(dIndex)==" ") {
+											relServicioBeneficio.setDescripcion(descripcion.get(dIndex).trim());
+										}
+										else {
+											relServicioBeneficio.setDescripcion(descripcion.get(dIndex).trim());
+										}
+										
+										break;
+									}
+									dIndex++;
+									}
+								
+								if(titular==null) {
+									relServicioBeneficio.setBeneficiario(true);
+								}else {								
+								if(beneficiario.get(bIndex)==titular.get(tIndex-1)) {
+									relServicioBeneficio.setBeneficiario(true);
+								}else {
+									relServicioBeneficio.setTitular(false);
+									relServicioBeneficio.setBeneficiario(true);
+									}
+								}
+								
+								bIndex++;
+								countBeneficiario++;
+							}else {
+								relServicioBeneficio.setBeneficiario(false);
+								guardoBeneficiario=beneficiario.get(bIndex).toString();
+								lB.add(guardoBeneficiario);
 								bIndex++;
 								countBeneficiario++;
 							}
+							dIndex=0;
 						}
-
+						if(!lB.isEmpty()) {
+							for(int x=0;x<lB.size();x++) {
+							if(lB.get(x).equals(beneficio.toString()) && !lB.get(x).equals(titular.get(tIndex-1).toString())) {
+								relServicioBeneficio.setTitular(false);
+								relServicioBeneficio.setBeneficiario(true);
+								lB.remove(x); 
+								guardoBeneficiario=null;
+								break;
+							}
+							
+							
+							if(lB.get(x).equals(titular.get(tIndex-1).toString())) {
+								relServicioBeneficio.setBeneficiario(true);
+								relServicioBeneficio.setTitular(true);
+								lB.remove(x);
+								guardoBeneficiario=null;
+								break;
+							}
+							}
+						}
+						
+						if(!lT.isEmpty()) {
+							for(int x=0;x<lT.size();x++) {
+							if(lT.get(x).equals(beneficio.toString())) {
+								relServicioBeneficio.setTitular(true);
+								lT.remove(x);
+								guardoTitular=null;
+								break;
+								}
+							
+							
+							}
+						}
 						relServicioBeneficioService.save(relServicioBeneficio);
-						dIndex++;
+						
 					}
 					
 					flashMessage = "Servicio creado correctamente";
@@ -459,8 +544,7 @@ public class ServicioController {
 			 
 			 boolean isTitular = false;
 			 boolean isBeneficiario = false;
-
-			 if(titular != null && titular.size() > 0 ) {
+			 if(titular!=null && titular.size() > 0) {
 				 for (Long idTitular : titular) {
 					 if (id == idTitular) {
 						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
@@ -473,6 +557,14 @@ public class ServicioController {
 						 isTitular = true;
 						 break;
 					 }
+					 if(id!=idTitular) {
+						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+							 if (entry.getKey() == id) {
+								 relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false, false, entry.getValue());
+								 break;
+							 }
+						 }
+					 }
 				 }
 			 }else{
 				 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
@@ -482,8 +574,7 @@ public class ServicioController {
 					 }
 				 }
 			 }
-
-			 if(beneficiario != null && beneficiario.size() > 0) {
+			 if(beneficiario!=null && beneficiario.size() > 0) {
 				 for (Long idBeneficiario : beneficiario) {
 					 if (id == idBeneficiario) {
 						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
@@ -494,6 +585,16 @@ public class ServicioController {
 						 }
 						 isBeneficiario = true;
 						 break;
+					 }
+					 if(id!=idBeneficiario) {
+						 for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+							 System.out.println("id: "+id);
+							 System.out.println("entry: "+entry.getKey());
+							 if (entry.getKey() == id) {
+								 relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false, false, entry.getValue());
+								 break;
+							 }
+						 }
 					 }
 				 }
 			 }
@@ -506,7 +607,15 @@ public class ServicioController {
 						}
 				 }			 
 			 }
-			 
+
+			 if(isTitular && !isBeneficiario) {
+				 for(Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
+						if(entry.getKey() == id) {
+							relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, true, false, entry.getValue());
+							break;
+						}
+				 }			 
+			 }
 			 relServicioBeneficioService.save(relServicioBeneficio);
 		}
 	}

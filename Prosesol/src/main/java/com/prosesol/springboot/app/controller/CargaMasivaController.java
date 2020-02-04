@@ -4,9 +4,7 @@ import com.prosesol.springboot.app.async.AsyncCargaMasiva;
 import com.prosesol.springboot.app.async.AsyncCargaVigor;
 import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.LogCM;
-import com.prosesol.springboot.app.exception.CustomExcelException;
 import com.prosesol.springboot.app.exception.CustomValidatorExcelException;
-import com.prosesol.springboot.app.repository.TempAfiliadoRepository;
 import com.prosesol.springboot.app.service.IAfiliadoService;
 import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.ILogCMService;
@@ -275,15 +273,4 @@ public class CargaMasivaController {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Obtiene la lista de las cuentas en la BBDD
-     * @return List<Cuenta>
-     */
-    @ModelAttribute("cuentas")
-    public List<Cuenta> getAllCuentas(){
-        List<Cuenta> cuentaList = cuentaService.findAll();
-        return cuentaList;
-    }
-
 }

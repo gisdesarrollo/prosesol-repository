@@ -73,9 +73,6 @@ public class InsertConciliacionCSV {
 							log = counterLinea + " - " + "El Rfc del afiliado no se encuentra registrado";
 							isValidPagos = false;
 
-						} else {
-							pagos.setRfc(campo.getValue());
-							LOG.info(counterLinea + " - " + "RFC: " + pagos.getRfc());
 						}
 					}
 					break;

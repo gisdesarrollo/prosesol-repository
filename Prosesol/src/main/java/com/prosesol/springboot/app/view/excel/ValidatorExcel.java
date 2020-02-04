@@ -297,6 +297,7 @@ public class ValidatorExcel {
     }
     public String[] generarEncabezadoPagos(String[] pagosFields, XSSFSheet sheet)throws CustomValidatorExcelException{
 
+        pagosFields[0] = "rfc";
         String[] encabezado = new String[pagosFields.length];
 
         int rowNum = 0;
@@ -317,9 +318,6 @@ public class ValidatorExcel {
                     case "fechaPago":
                         encabezado[rowNum++] = "Fecha de Pago";
                         break;
-                    case "concepto":
-                        encabezado[rowNum++] = "Concepto";
-                        break;    
                 }
             }
         }catch (Exception e){
