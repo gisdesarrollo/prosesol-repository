@@ -5,16 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "perfiles")
@@ -39,9 +30,8 @@ public class Perfil implements Serializable {
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "perfiles")
 	private Set<Usuario> usuarios;
 
-	@OneToMany(mappedBy = "perfil", fetch = FetchType.LAZY,
-			   cascade = CascadeType.ALL, orphanRemoval = true)
-	private Collection<Role> roles;
+	@OneToOne(mappedBy = "perfil")
+	private Role roles;
 
 	public Perfil() {
 		usuarios = new HashSet<Usuario>();
@@ -87,11 +77,11 @@ public class Perfil implements Serializable {
 		this.usuarios = usuarios;
 	}
 
-	public Collection<Role> getRoles() {
+	public Role getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Collection<Role> roles) {
+	public void setRoles(Role roles) {
 		this.roles = roles;
 	}
 

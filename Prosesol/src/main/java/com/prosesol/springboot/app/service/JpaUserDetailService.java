@@ -37,26 +37,26 @@ public class JpaUserDetailService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		Usuario usuario = usuarioDao.findByUsername(username);
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		try {
+			if (usuario == null) {
+				logger.error("Error login: no existe el usuario " + username);
+				throw new UsernameNotFoundException("Usuario no existe con este nombre: " + username);
+			}
 
-		if (usuario == null) {
-			logger.error("Error login: no existe el usuario " + username);
-			throw new UsernameNotFoundException("Usuario no existe con este nombre: " + username);
-		}
+			Perfil perfil = perfilDao.findPerfilByUsuario(usuario.getId());
 
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+			logger.info("Role ".concat(perfil.getRoles().getNombre()));
+			authorities.add(new SimpleGrantedAuthority(perfil.getRoles().getNombre()));
 
-		Perfil perfil = perfilDao.findPerfilByUsuario(usuario.getId());
+			System.out.println(authorities);
 
-		for (Role roles : perfil.getRoles()) {
-			logger.info("Role ".concat(roles.getNombre()));
-			authorities.add(new SimpleGrantedAuthority(roles.getNombre()));
-		}
-
-		System.out.println(authorities);
-		
-		if (authorities.isEmpty()) {
-			logger.error("Error login: usuario " + username + " no tiene roles asignados");
-			throw new UsernameNotFoundException("Error login: usuario " + username + " no tiene roles asignados");
+			if (authorities.isEmpty()) {
+				logger.error("Error login: usuario " + username + " no tiene roles asignados");
+				throw new UsernameNotFoundException("Error login: usuario " + username + " no tiene roles asignados");
+			}
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 
 		return new User(username, usuario.getPassword(), usuario.getEstatus(), true, true, true, authorities);
