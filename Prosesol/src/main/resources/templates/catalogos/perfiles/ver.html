@@ -15,14 +15,16 @@
 			<li class="breadcrumb-item ">Sistema</li>
 			<li class="breadcrumb-item active">Perfiles</li>
 		</ol>
-
+<div class="layout-container sidemenu-container">
 		<div class="container-fluid">
 			<div class="animated fadeIn">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Perfiles</div>
-							<div class="card-body">
+						<div class="card-body">
+							<div class="card-header"><br>
+							<h5 class="card-title">Perfiles</h5>
+							<!-- <div class="card-body">-->
 								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 									th:href="@{/perfiles/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
@@ -74,15 +76,16 @@
 									</div>
 								</div>
 							</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		</div>
 		</main>
 	</div>
 	<footer th:replace="fragments/footer :: footer"></footer>
-
 </body>
 
 </html>

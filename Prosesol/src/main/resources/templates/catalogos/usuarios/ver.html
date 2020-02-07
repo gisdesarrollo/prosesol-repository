@@ -15,14 +15,18 @@
 			<li class="breadcrumb-item">Sistema</li>
 			<li class="breadcrumb-item active">Usuarios</li>
 		</ol>
-
+ <div class="layout-container sidemenu-container">
 		<div class="container-fluid">
 			<div class="animated fadeIn">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Usuarios</div>
-							<div class="card-body">
+						<div class="card-body">
+							<div class="card-header"><br>
+				    <div class="alert alert-success" th:if="${success!=null}" th:text="${success}"></div> 								
+                        <div class="alert alert-danger" th:if="${error!=null}" th:text="${error}"></div> 							
+							<h5 class="card-title">Usuarios</h5>
+							<!--  <div class="card-body">-->
 								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 									th:href="@{/usuarios/crear}"
 									class="btn btn-square btn-primary btn-sm"><i
@@ -79,10 +83,12 @@
 									</div>
 								</div>
 							</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 		</main>
 	</div>

@@ -15,14 +15,15 @@
 			<li class="breadcrumb-item"><a th:href="@{/usuarios/ver}">Usuarios</a></li>
 			<li class="breadcrumb-item active">Editar</li>
 		</ol>
-
+	<div class="layout-container sidemenu-container">
 		<div class="container-fluid">
 			<div class="animated fadeIn">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Editar Usuario</div>
-							<div class="card-body">
+						<div class="card-body">
+							<div class="card-header">
+							<h5>Editar Usuario</h5>
 								<p>Captura la información necesaria para editar el usuario</p>
 								<p align="right" ><b th:text="'La contraseña del usuario es: '+ '' + ${@environment.getProperty('app.password')}"></b></p>
 								<div class="clearfix"></div>
@@ -104,10 +105,12 @@
 									</div>
 								</div>
 							</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 		</main>
 	</div>

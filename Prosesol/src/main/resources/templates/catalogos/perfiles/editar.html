@@ -15,14 +15,15 @@
 			<li class="breadcrumb-item"><a th:href="@{/perfiles/ver}">Perfiles</a></li>
 			<li class="breadcrumb-item active">Editar</li>
 		</ol>
-
+	<div class="layout-container sidemenu-container">
 		<div class="container-fluid">
 			<div class="animated fadeIn">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
-							<div class="card-header">Editar Perfil</div>
 							<div class="card-body">
+							<div class="card-header">
+							<h5 class="card-title">Editar Perfil</h5>
 								<p>Captura la información solicitada para dar editar el perfil</p>
 								<div class="clearfix"></div>
 								<hr>
@@ -54,7 +55,7 @@
 														th:field="*{roles}" class="custom-select"
 														id="inputGroupSelect01">
 														<option th:each="roles : ${roles}" th:value="${roles.id}"
-															th:text="${roles.nombre}" th:selected="${roles.nombre}" />
+														th:text="${roles.nombre}" th:selected="false" />
 													</select> <small class="form-text text-danger"
 														th:if="${#fields.hasErrors('roles')}"
 														th:errors="*{roles}"></small>
@@ -74,10 +75,12 @@
 									</div>
 								</div>
 							</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 		</main>
 	</div>

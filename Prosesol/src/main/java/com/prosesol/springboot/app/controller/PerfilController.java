@@ -29,103 +29,106 @@ import com.prosesol.springboot.app.service.IRoleService;
 public class PerfilController {
 
 	protected Log logger = LogFactory.getLog(this.getClass());
-	
+
 	@Autowired
 	private IPerfilService perfilService;
-	
+
 	@Autowired
 	private IRoleService roleService;
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@GetMapping(value = "/ver")
 	public String ver(Model model) {
-		
+
 		model.addAttribute("titulo", "Perfiles");
 		model.addAttribute("perfil", perfilService.findAll());
-		
+
 		logger.info("Datos encontrados " + perfilService.findAll().toString());
-		
+
 		return "catalogos/perfiles/ver";
-		
+
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
-		
+
 		Perfil perfil = new Perfil();
-		
+
 		model.put("titulo", "Crear Perfil");
 		model.put("roles", roleService.findAll());
 		model.put("perfil", perfil);
-		
+
 		return "catalogos/perfiles/crear";
-		
+
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
 	public String guardar(@Valid Perfil perfil, BindingResult result, Model model, RedirectAttributes redirect,
-						  SessionStatus status) {
-		
-		
-		if(result.hasErrors()) {
+			SessionStatus status) {
+
+		if (result.hasErrors()) {
 			model.addAttribute("titulo", "Crear Perfil");
 			return "catalogos/perfiles/crear";
 		}
-		
-		if(perfil.getId() != null) {
+
+		if (perfil.getId() != null) {
 			logger.info("Perfil editado con éxito");
-		}else {
+		} else {
 			perfil.setEstatus(true);
 			logger.info("Perfil creado con éxito");
-		}	
-		
+		}
+
 		perfilService.save(perfil);
 		status.setComplete();
-		
+
 		return "redirect:/perfiles/ver";
-		
-		
+
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/editar/{id}")
-	private String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
-		
+	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
+
 		Perfil perfil = null;
-		
-		if(id > 0) {
-			perfil = perfilService.findById(id);
-			if(perfil == null) {
-				model.put("error", "El perfil no existe, ingrese otro id");
-				return "redirect:/perfiles/ver";
+
+		try {
+			if (id > 0) {
+				perfil = perfilService.findById(id);
+				if (perfil == null) {
+					model.put("error", "El perfil no existe, ingrese otro id");
+					return "redirect:/perfiles/ver";
+				}
+			} else {
+				model.put("error", "No existe el perfil con id cero");
 			}
-		}else {
-			model.put("error", "No existe el perfil con id cero");
+
+			model.put("titulo", "Editar perfil");
+			model.put("roles", roleService.findAll());
+			model.put("perfil", perfil);
+
+		} catch (Exception e) {
+			model.put("error", "Error al momento de buscar el perfil");
+			return "redirect:/perfiles/ver";
 		}
-		
-		model.put("titulo", "Editar perfil");
-		model.put("roles", roleService.findAll());
-		model.put("perfil", perfil);
-		
 		return "catalogos/perfiles/editar";
-		
+
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/borrar/{id}")
-	public String borrar(@PathVariable("id")Long id, RedirectAttributes redirect) {
-		
+	public String borrar(@PathVariable("id") Long id, RedirectAttributes redirect) {
+
 		logger.info("Id de Perfil: " + id);
-		
-		if(id > 0) {
-			
-			perfilService.deleteById(id);			
+
+		if (id > 0) {
+
+			perfilService.deleteById(id);
 			logger.info("El perfil se ha borrado correctamente");
 		}
-		
+
 		return "redirect:/perfiles/ver";
 	}
-	
+
 }
