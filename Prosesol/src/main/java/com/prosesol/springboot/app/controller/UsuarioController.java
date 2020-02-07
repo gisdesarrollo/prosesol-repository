@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.prosesol.springboot.app.entity.CentroContacto;
 import com.prosesol.springboot.app.entity.Perfil;
 import com.prosesol.springboot.app.entity.Usuario;
+import com.prosesol.springboot.app.entity.dao.IUsuarioDao;
 import com.prosesol.springboot.app.service.ICentroContactoService;
 import com.prosesol.springboot.app.service.IPerfilService;
 import com.prosesol.springboot.app.service.IUsuarioService;
@@ -33,184 +34,196 @@ import com.prosesol.springboot.app.service.IUsuarioService;
 @SessionAttributes("usuario")
 @RequestMapping("/usuarios")
 public class UsuarioController {
-	
+
 	protected final Log logger = LogFactory.getLog(this.getClass());
-	
+
 	@Value("${app.password}")
 	private String password;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
 	private IUsuarioService usuarioService;
-	
+
+	@Autowired
+	private IUsuarioDao usuarioDao;
+
 	@Autowired
 	private IPerfilService perfilService;
-	
+
 	@Autowired
 	private ICentroContactoService centroContactoService;
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
-				
+
 		logger.info("Entra al método de ver usuario");
 
 		try {
 			model.addAttribute("titulo", "Usuarios");
 			model.addAttribute("usuario", usuarioService.findAll());
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return "catalogos/usuarios/ver";
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
-		
+
 		logger.info("Entra al método crear usuario");
-		
+
 		Usuario usuario = new Usuario();
-		
+
 		model.put("usuario", usuario);
 		model.put("titulo", "Crear Usuario");
-		
+
 		return "catalogos/usuarios/crear";
-		
+
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Usuario usuario, BindingResult result, Model model, 
-							     RedirectAttributes redirect, SessionStatus status) {
-		
-		String passwordUser = null;	
-		
-		for(Perfil perfil : usuario.getPerfiles()) {
-			System.out.println(perfil);
-		}
-		
-		if(result.hasErrors()) {
-			model.addAttribute("titulo", "Crear Usuario");
-			return "catalogos/usuarios/editar";
-		}
-		
-		if(usuario.getId() != null) {
-			logger.info("Registro: " + usuario.getNombre() + " editado con éxito");
-		}else {
-			
-			usuario.setEstatus(true);
-			logger.info("Registro creado con éxito");
-			
-			for(int i = 0;i < 2; i++) {
-				passwordUser = passwordEncoder.encode(password);
+	public String guardar(@Valid Usuario usuario, BindingResult result, Model model, RedirectAttributes redirect,
+			SessionStatus status) {
+
+		String passwordUser = null;
+		try {
+
+			for (Perfil perfil : usuario.getPerfiles()) {
+				System.out.println(perfil);
 			}
-			usuario.setPassword(passwordUser);
-			
+
+			if (result.hasErrors()) {
+				model.addAttribute("titulo", "Crear Usuario");
+				return "catalogos/usuarios/editar";
+			}
+
+			if (usuario.getId() != null) {
+				logger.info("Registro: " + usuario.getNombre() + " editado con éxito");
+				
+			} else {
+				Usuario username = usuarioDao.findByUsername(usuario.getUsername().toString());
+				if (username == null) {
+
+					usuario.setEstatus(true);
+					logger.info("Registro creado con éxito");
+
+					for (int i = 0; i < 2; i++) {
+						passwordUser = passwordEncoder.encode(password);
+					}
+					usuario.setPassword(passwordUser);
+				} else {
+					redirect.addFlashAttribute("error", "Error el usuario ya se encuentra registrado");
+					return "redirect:/usuarios/ver";
+				}
+			}
+
+			usuarioService.save(usuario);
+			status.setComplete();
+			redirect.addFlashAttribute("success", "Registro creado correctamente");
+		} catch (Exception e) {
+			redirect.addFlashAttribute("error", "Error al momento de insertar");
+			return "redirect:/usuarios/ver";
 		}
-		
-		usuarioService.save(usuario);
-		status.setComplete();
-		
 		return "redirect:/usuarios/ver";
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
-		
+
 		Usuario usuario = null;
-		
-		if(id > 0) {
+
+		if (id > 0) {
 			usuario = usuarioService.findById(id);
-			if(usuario == null) {
+			if (usuario == null) {
 				redirect.addFlashAttribute("Error: ", "El id del usuario no existe");
 				return "redirect:/usuarios/ver";
 			}
-		}else {
+		} else {
 			redirect.addFlashAttribute("Error: ", "El id del usuario no puede ser cero");
 			return "redirect:/usuarios/ver";
 		}
-		
+
 		model.put("usuario", usuario);
 		model.put("titulo", "Editar usuario");
-		
+
 		return "catalogos/usuarios/editar";
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/eliminar/{id}")
 	public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
-		
-		if(id > 0) {
+
+		if (id > 0) {
 			usuarioService.delete(id);
 			redirect.addFlashAttribute("success", "Registro eliminado correctamente");
 		}
-		
+
 		return "redirect:/usuarios/ver";
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/password")
 	public String password(Model model) {
-		
+
 		Usuario usuario = new Usuario();
 
 		model.addAttribute("usuario", usuario);
-		
+
 		return "/catalogos/usuarios/password";
 	}
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/cambiar", method = RequestMethod.POST)
-	public String cambiar(@ModelAttribute(name = "username")String username, 
-						  @ModelAttribute(name = "password")String password,
-						  RedirectAttributes redirect, SessionStatus status) {
-		
+	public String cambiar(@ModelAttribute(name = "username") String username,
+			@ModelAttribute(name = "password") String password, RedirectAttributes redirect, SessionStatus status) {
+
 		String passwordUser = null;
 		Usuario usuario = new Usuario();
-		
+
 		try {
-			
+
 			System.out.println(username);
 			System.out.println(password);
-			
+
 			usuario = usuarioService.findByUsername(username);
-			for(int i = 0;i < 2; i++) {
+			for (int i = 0; i < 2; i++) {
 				passwordUser = passwordEncoder.encode(password);
 			}
-			
+
 			usuario.setPassword(passwordUser);
-			
+
 			System.out.println(passwordUser);
 			System.out.println(usuario.toString());
-			
+
 			usuarioService.save(usuario);
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		redirect.addFlashAttribute("success", "Contraseña modificada exitosamente");
-		
+
 		return "redirect:/home";
 	}
-	
+
 	/**
-	 * Método para mostrar los perfiles
-	 * Dentro del list box de crear usuario 
+	 * Método para mostrar los perfiles Dentro del list box de crear usuario
 	 */
-	
+
 	@ModelAttribute("litaPerfiles")
-	public List<Perfil> listaPerfiles(){
+	public List<Perfil> listaPerfiles() {
 		return perfilService.findAll();
 	}
-	
+
 	@ModelAttribute("centros")
-	public List<CentroContacto> listaCentros(){
+	public List<CentroContacto> listaCentros() {
 		return centroContactoService.findAll();
 	}
 }
