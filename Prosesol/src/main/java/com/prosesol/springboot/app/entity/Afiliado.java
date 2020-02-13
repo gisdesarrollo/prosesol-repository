@@ -505,12 +505,12 @@ public class Afiliado implements Serializable{
 		isBeneficiario = beneficiario;
 	}
 
-	public Boolean getISIncripcion() {
+	public Boolean getIsIncripcion() {
 		return isIncripcion;
 	}
 
 	public void setIsIncripcion(Boolean isIncripcion) {
-		isIncripcion = isIncripcion;
+		this.isIncripcion = isIncripcion;
 	}
 
 	@Override
