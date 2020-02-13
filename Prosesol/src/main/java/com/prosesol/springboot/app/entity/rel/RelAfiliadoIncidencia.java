@@ -24,7 +24,7 @@ public class RelAfiliadoIncidencia implements Serializable{
 	private Afiliado afiliado;
 	
 	@Id
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumn(name = "id_incidencia")
 	private Incidencia incidencia;
 	

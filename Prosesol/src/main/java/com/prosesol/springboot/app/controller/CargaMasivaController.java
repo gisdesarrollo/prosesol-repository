@@ -273,4 +273,14 @@ public class CargaMasivaController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Obtiene la lista de las cuentas en la BBDD
+     * @return List<Cuenta>
+     */
+    @ModelAttribute("cuentas")
+    public List<Cuenta> getAllCuentas(){
+        List<Cuenta> cuentaList = cuentaService.findAll();
+        return cuentaList;
+    }
 }

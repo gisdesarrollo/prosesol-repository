@@ -99,7 +99,6 @@ public class BeneficiarioController {
 
 				afiliado.setRfc(rfc.toString());
 
-				System.out.println(rfc.toString());
 			}
 
 			afiliado.setEstatus(1);

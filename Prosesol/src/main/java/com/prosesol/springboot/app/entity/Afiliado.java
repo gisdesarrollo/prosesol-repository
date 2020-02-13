@@ -131,6 +131,9 @@ public class Afiliado implements Serializable{
 	@Column(name = "inscripcion")
 	private Double inscripcion;
 
+	@Column(name = "is_inscripcion")
+	private Boolean isIncripcion;
+
 	@NotNull(message = "Seleccione el tipo de servicio")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_servicio")
@@ -500,6 +503,14 @@ public class Afiliado implements Serializable{
 
 	public void setBeneficiario(Boolean beneficiario) {
 		isBeneficiario = beneficiario;
+	}
+
+	public Boolean getIsIncripcion() {
+		return isIncripcion;
+	}
+
+	public void setIsIncripcion(Boolean isIncripcion) {
+		this.isIncripcion = isIncripcion;
 	}
 
 	@Override
