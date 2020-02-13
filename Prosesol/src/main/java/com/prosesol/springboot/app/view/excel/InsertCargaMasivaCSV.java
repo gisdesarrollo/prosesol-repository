@@ -291,8 +291,15 @@ public class InsertCargaMasivaCSV {
                             log = counterLinea + " - " + "El RFC no cuenta con la longitud correcta";
                             isValidAfiliado = false;
                         } else {
+                        	Afiliado bAfiliado = afiliadoService.getAfiliadoByRfc(campo.getValue());
+                        	if(bAfiliado!=null) {
+                        		LOG.info(counterLinea + " - " + "El afiliado ya se encuentra registrado");
+                                log = counterLinea + " - " + "El afiliado ya se encuentra registrado";
+                                isValidAfiliado = false;
+                        	}else {
                             afiliado.setRfc(campo.getValue());
                             LOG.info(counterLinea + " - " + "RFC: " + afiliado.getRfc());
+                        	}
                         }
                         break;
                     case 13:

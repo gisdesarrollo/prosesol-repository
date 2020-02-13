@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
+import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidenciaBeneficio;
 
 @Entity
 @Table(name = "incidencias")
@@ -66,8 +67,9 @@ public class Incidencia implements Serializable{
 	@DateTimeFormat(pattern = "dd/MM/yy")
 	private Date fechaCreacion;
 	
-	@OneToMany(mappedBy = "incidencia", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "incidencia", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
+	
 	
 	public Incidencia() {
 		relAfiliadoIncidencia = new HashSet<RelAfiliadoIncidencia>();
@@ -166,6 +168,7 @@ public class Incidencia implements Serializable{
 		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
 	}
 	
+
 	public Date getFechaCreacion() {
 		return fechaCreacion;
 	}
