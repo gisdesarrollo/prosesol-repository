@@ -26,6 +26,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -62,7 +64,7 @@ public class IncidenciaController {
 	private IncidenciaXlsx incidenciaXlsx;
 
 	private Long idAfiliado;
-	
+
 	@Secured("ROLE_ASISTENCIA")
 	@GetMapping(value = "/home")
 	public String home() {
@@ -130,7 +132,7 @@ public class IncidenciaController {
 	 * @return
 	 * @throws Exception
 	 */
-	
+
 	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/resultado", method = RequestMethod.POST)
 	public String resultado(@RequestParam(name = "campos[]") String[] campos, Model model, RedirectAttributes redirect)
@@ -187,12 +189,12 @@ public class IncidenciaController {
 			historiales.forEach(historial -> {
 				System.out.println(historial.getDetalle());
 			});
-	
+
 			model.addAttribute("afiliado", afiliado);
 			model.addAttribute("incidencia", incidencia);
 			model.addAttribute("relServicioBeneficios", getBeneficioByAfiliado(afiliado));
 			model.addAttribute("historiales", historiales);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			LOG.error("Error al momento de crear la incidencia", e);
 			e.printStackTrace();
 		}
@@ -212,7 +214,7 @@ public class IncidenciaController {
 					.getRelAfiliadoIncidenciaBeneficioByIdIncidencia(id);
 
 			System.out.println(relAfiliadoIncidenciaBeneficio.size());
-			
+
 			if (relAfiliadoIncidenciaBeneficio != null && relAfiliadoIncidenciaBeneficio.size() > 0) {
 
 				Afiliado afiliado = afiliadoService.findById(relAfiliadoIncidenciaBeneficio.get(0).getIdAfiliado());
@@ -244,15 +246,15 @@ public class IncidenciaController {
 
 					System.out.println(relSB.getBeneficio().toString());
 
-					if (relAfiliadoIncidenciaBeneficio.size() > index && relSB.getBeneficio().getId() ==
-							relAfiliadoIncidenciaBeneficio.get(index).getIdBeneficio()) {
+					if (relAfiliadoIncidenciaBeneficio.size() > index && relSB.getBeneficio()
+							.getId() == relAfiliadoIncidenciaBeneficio.get(index).getIdBeneficio()) {
 
 						RelServicioBeneficio beneficio = new RelServicioBeneficio(relSB.getServicio(),
 								relSB.getBeneficio(), relSB.getTitular(), relSB.getBeneficiario(),
 								relSB.getDescripcion());
 
-						Beneficio nBeneficio = beneficioService.findById(relAfiliadoIncidenciaBeneficio.get(index)
-								.getIdBeneficio());
+						Beneficio nBeneficio = beneficioService
+								.findById(relAfiliadoIncidenciaBeneficio.get(index).getIdBeneficio());
 
 						beneficio.setBeneficio(nBeneficio);
 						relServicioBeneficios.add(beneficio);
@@ -274,33 +276,35 @@ public class IncidenciaController {
 
 				idAfiliado = afiliado.getId();
 
-			}else {
+			} else {
 				incidencia = incidenciaService.findById(id);
-				
+
 				String nombre = incidencia.getNombreAfiliado();
 				String[] nombreCompleto = nombre.split(" ");
-				
+
 				System.out.println(nombreCompleto.length);
-								
-				if(nombreCompleto.length == 3) {
-					
-					System.out.println(nombreCompleto[0] + nombreCompleto[1] +  nombreCompleto[2]);
-					
-					Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0], nombreCompleto[1], nombreCompleto[2]);
+
+				if (nombreCompleto.length == 3) {
+
+					System.out.println(nombreCompleto[0] + nombreCompleto[1] + nombreCompleto[2]);
+
+					Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0],
+							nombreCompleto[1], nombreCompleto[2]);
 					Afiliado afiliado = afiliadoService.findById(claveAfiliado);
-					
+
 					model.addAttribute("afiliado", afiliado);
 					model.addAttribute("incidencia", incidencia);
-					
+
 					idAfiliado = claveAfiliado;
-				}	
-				if(nombreCompleto.length == 4) {
-					Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0] + " " + nombreCompleto[1], nombreCompleto[2], nombreCompleto[3]);
+				}
+				if (nombreCompleto.length == 4) {
+					Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(
+							nombreCompleto[0] + " " + nombreCompleto[1], nombreCompleto[2], nombreCompleto[3]);
 					Afiliado afiliado = afiliadoService.findById(claveAfiliado);
-					
+
 					model.addAttribute("afiliado", afiliado);
 					model.addAttribute("incidencia", incidencia);
-					
+
 					idAfiliado = claveAfiliado;
 				}
 			}
@@ -328,23 +332,23 @@ public class IncidenciaController {
 	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public String guardar(Incidencia incidencia, @ModelAttribute RelServicioBeneficioDto relServicioBeneficios,
-			RedirectAttributes redirect, SessionStatus status) {
+			RedirectAttributes redirect,SessionStatus status) {
 
 		String messageStatus = null;
-		
+
 		try {
 
 			List<RelServicioBeneficio> relServicioBeneficio = relServicioBeneficios.getRelServicioBeneficios();
 			Afiliado afiliado = afiliadoService.findById(idAfiliado);
 
-			incidencia.setNombreAfiliado(afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' '
-					+ afiliado.getApellidoMaterno());
+			incidencia.setNombreAfiliado(
+					afiliado.getNombre() + ' ' + afiliado.getApellidoPaterno() + ' ' + afiliado.getApellidoMaterno());
 
 			if (incidencia.getId() == null) {
 				incidencia.setEstatus(1);
 				incidencia.setFechaCreacion(new Date());
 				messageStatus = "Incidencia creada correctamente";
-			}else{
+			} else {
 				messageStatus = "Incidencia editada correctamente";
 			}
 
@@ -360,35 +364,139 @@ public class IncidenciaController {
 			incidencia.setDetalle(detalle);
 
 			incidenciaService.save(incidencia);
+			List<RelAfiliadoIncidenciaBeneficioCustom> getRelAfiliadoIncidenciaBeneficio = relAfiliadoIncidenciaBeneficioService
+					.getRelAfiliadoIncidenciaBeneficioByIdIncidencia(incidencia.getId());
 
-			if(relServicioBeneficio != null) {
+			if (relServicioBeneficio != null) {
 
 				RelAfiliadoIncidenciaBeneficio relAfiliadoIncidenciaBeneficio = new RelAfiliadoIncidenciaBeneficio();
+				Map<Long, Long> beneficio = new HashMap<Long, Long>();
+				Map<Long, Long> relBeneficio = new HashMap<Long, Long>();
 
 				relServicioBeneficio.removeAll(Arrays.asList(null, null));
+				if (getRelAfiliadoIncidenciaBeneficio.size() != 0) {
+					for (RelAfiliadoIncidenciaBeneficioCustom rel3 : getRelAfiliadoIncidenciaBeneficio) {
+						beneficio.put(rel3.getIdBeneficio(), rel3.getIdIncidencia());
+					}
+					for (RelServicioBeneficio rel4 : relServicioBeneficio) {
+						if (rel4.getBeneficio() == null) {
+						} else {
+							relBeneficio.put(rel4.getBeneficio().getId(), rel4.getBeneficio().getId());
 
-				for (RelServicioBeneficio r : relServicioBeneficio) {
-					if (r.getBeneficio() != null) {
-						relAfiliadoIncidenciaBeneficio.setIncidencia(incidencia);
-						relAfiliadoIncidenciaBeneficio.setAfiliado(afiliado);
-						relAfiliadoIncidenciaBeneficio.setBeneficio(r.getBeneficio());
-						relAfiliadoIncidenciaBeneficio.setFecha(new Date());
+						}
+					}
+					int counterLinea = 1;
+					int bIndex = 0;
+					System.out.println(getRelAfiliadoIncidenciaBeneficio.size());
+					System.out.println(relServicioBeneficio.size());
+					if (getRelAfiliadoIncidenciaBeneficio.size() < relBeneficio.size()) {
 
-						relAfiliadoIncidenciaBeneficioService.save(relAfiliadoIncidenciaBeneficio);
+						if (relBeneficio.size() >= counterLinea) {
+							relAfiliadoIncidenciaBeneficioService.deleteRelAfiliadoIncidenciaById(incidencia.getId());
+							for (Map.Entry<Long, Long> entry2 : relBeneficio.entrySet()) {
+								for (RelServicioBeneficio r : relServicioBeneficio) {
+									if (r.getBeneficio() != null && entry2.getKey() == r.getBeneficio().getId()) {
+										relAfiliadoIncidenciaBeneficio.setIncidencia(incidencia);
+										relAfiliadoIncidenciaBeneficio.setAfiliado(afiliado);
+										relAfiliadoIncidenciaBeneficio.setBeneficio(r.getBeneficio());
+										relAfiliadoIncidenciaBeneficio.setFecha(new Date());
+
+										relAfiliadoIncidenciaBeneficioService.save(relAfiliadoIncidenciaBeneficio);
+										break;
+									}
+								}
+							}
+
+						}
+					} else {
+
+						for (Map.Entry<Long, Long> entry : beneficio.entrySet()) {
+
+							if (entry.getKey() != null) {
+
+								if (relBeneficio.size() >= counterLinea) {
+
+									for (Map.Entry<Long, Long> entry2 : relBeneficio.entrySet()) {
+
+										if (entry2.getKey() != null && entry2.getKey() == entry.getKey()) {
+											relAfiliadoIncidenciaBeneficio.setIncidencia(incidencia);
+											relAfiliadoIncidenciaBeneficio.setAfiliado(afiliado);
+											Beneficio bene = beneficioService.findById(entry2.getKey());
+											relAfiliadoIncidenciaBeneficio.setBeneficio(bene);
+											relAfiliadoIncidenciaBeneficio.setFecha(new Date());
+
+											relAfiliadoIncidenciaBeneficioService.save(relAfiliadoIncidenciaBeneficio);
+											counterLinea++;
+											break;
+										}
+										if (entry.getKey() != entry2.getKey()) {
+											relAfiliadoIncidenciaBeneficioService
+													.deleteRelAfiliadoIncidenciaByIdIncidenciaAndIdBeneneficio(
+															entry.getValue(), entry.getKey());
+
+										}
+
+									}
+
+								} else {
+									relAfiliadoIncidenciaBeneficioService
+											.deleteRelAfiliadoIncidenciaByIdIncidenciaAndIdBeneneficio(entry.getValue(),
+													entry.getKey());
+									RelAfiliadoIncidencia relAfiliadoIncidencia = new RelAfiliadoIncidencia();
+
+									relAfiliadoIncidencia.setIncidencia(incidencia);
+									relAfiliadoIncidencia.setAfiliado(afiliado);
+									relAfiliadoIncidencia.setFecha(new Date());
+
+									relAfiliadoIncidenciaService.save(relAfiliadoIncidencia);
+								}
+							} else {
+								relAfiliadoIncidenciaBeneficioService.deleteRelAfiliadoIncidenciaById(entry.getValue());
+								for (RelServicioBeneficio r : relServicioBeneficio) {
+									if (r.getBeneficio() != null) {
+										relAfiliadoIncidenciaBeneficio.setIncidencia(incidencia);
+										relAfiliadoIncidenciaBeneficio.setAfiliado(afiliado);
+										relAfiliadoIncidenciaBeneficio.setBeneficio(r.getBeneficio());
+										relAfiliadoIncidenciaBeneficio.setFecha(new Date());
+
+										relAfiliadoIncidenciaBeneficioService.save(relAfiliadoIncidenciaBeneficio);
+									}
+								}
+							}
+						}
+					}
+				} else {
+					for (RelServicioBeneficio r : relServicioBeneficio) {
+						if (r.getBeneficio() != null) {
+							relAfiliadoIncidenciaBeneficio.setIncidencia(incidencia);
+							relAfiliadoIncidenciaBeneficio.setAfiliado(afiliado);
+							relAfiliadoIncidenciaBeneficio.setBeneficio(r.getBeneficio());
+							relAfiliadoIncidenciaBeneficio.setFecha(new Date());
+
+							relAfiliadoIncidenciaBeneficioService.save(relAfiliadoIncidenciaBeneficio);
+						}
 					}
 				}
-			}else{
+			} else {
+				if (getRelAfiliadoIncidenciaBeneficio.size() != 0) {
+					for (RelAfiliadoIncidenciaBeneficioCustom rel3 : getRelAfiliadoIncidenciaBeneficio) {
+						relAfiliadoIncidenciaBeneficioService.updateRelAfiliadoIncidencia(null, new Date(),
+								rel3.getIdIncidencia());
+					}
+				} else {
+					RelAfiliadoIncidencia relAfiliadoIncidencia = new RelAfiliadoIncidencia();
 
-				RelAfiliadoIncidencia relAfiliadoIncidencia = new RelAfiliadoIncidencia();
+					relAfiliadoIncidencia.setIncidencia(incidencia);
+					relAfiliadoIncidencia.setAfiliado(afiliado);
+					relAfiliadoIncidencia.setFecha(new Date());
 
-				relAfiliadoIncidencia.setIncidencia(incidencia);
-				relAfiliadoIncidencia.setAfiliado(afiliado);
-				relAfiliadoIncidencia.setFecha(new Date());
-
-				relAfiliadoIncidenciaService.save(relAfiliadoIncidencia);
+					relAfiliadoIncidenciaService.save(relAfiliadoIncidencia);
+				}
 			}
 
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			e.printStackTrace();
 			redirect.addFlashAttribute("error", "Ocurrió un problema en el sistema, contacte al administrador");
 		}
@@ -401,18 +509,50 @@ public class IncidenciaController {
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable("id") Long id, RedirectAttributes redirect) {
 
-		if (id > 0) {
-			incidenciaService.deleteById(id);
-			redirect.addFlashAttribute("success", "El registro se ha eliminado correctamente");
-		} else {
-			redirect.addFlashAttribute("error", "El id no puede ser cero");
+		try {
+
+			if (id > 0) {
+				List<RelAfiliadoIncidenciaBeneficioCustom> relAfiliadoIncidenciaBeneficio = relAfiliadoIncidenciaBeneficioService
+						.getRelAfiliadoIncidenciaBeneficioByIdIncidencia(id);
+				if (relAfiliadoIncidenciaBeneficio.size() < 2) {
+					for (RelAfiliadoIncidenciaBeneficioCustom relElimina : relAfiliadoIncidenciaBeneficio) {
+						if (relElimina.getIdBeneficio() == null) {
+							incidenciaService.deleteById(id);
+							redirect.addFlashAttribute("success", "El registro se ha eliminado correctamente");
+						} else {
+							incidenciaService.deleteById(id);
+							redirect.addFlashAttribute("success", "El registro se ha eliminado correctamente");
+						}
+
+					}
+				}
+
+				if (relAfiliadoIncidenciaBeneficio.size() > 1) {
+					for (RelAfiliadoIncidenciaBeneficioCustom relElimina : relAfiliadoIncidenciaBeneficio) {
+						if (relElimina.getIdBeneficio() != null) {
+							relAfiliadoIncidenciaBeneficioService.deleteRelAfiliadoIncidenciaById(id);
+						} else {
+							relAfiliadoIncidenciaBeneficioService.deleteRelAfiliadoIncidenciaById(id);
+
+						}
+					}
+					incidenciaService.deleteById(id);
+					redirect.addFlashAttribute("success", "El registro se ha eliminado correctamente");
+				}
+			} else {
+				redirect.addFlashAttribute("error", "El id no puede ser cero");
+			}
+		} catch (Exception e) {
+			LOG.error("Ocurrio un error al momento de eliminar la incidencia", e);
+			redirect.addFlashAttribute("error", "Ocurrió un problema en el sistema, contacte al administrador");
+			return "redirect:/incidencias/ver";
 		}
 
-		return "redirect:/incidencias/home";
+		return "redirect:/incidencias/ver";
 	}
 
 	@GetMapping(value = "/excel")
-	public ModelAndView getIncidenciasExcel(){
+	public ModelAndView getIncidenciasExcel() {
 		List<Incidencia> incidencias = incidenciaService.findAll();
 
 		return new ModelAndView(incidenciaXlsx, "incidencias", incidencias);
