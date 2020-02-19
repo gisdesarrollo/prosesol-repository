@@ -75,11 +75,18 @@ public class AfiliadoController {
 
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
-	public String crear(Map<String, Object> model) {
+	public String crear(@ModelAttribute("datos")Afiliado datos,@ModelAttribute("servicio")Servicio id, Map<String, Object> model) {
 
 		Afiliado afiliado = new Afiliado();
 		
-		model.put("afiliado", afiliado);
+		
+		if(datos!=null) {
+				datos.setServicio(id);
+				model.put("afiliado", datos);
+				
+		}else {
+			model.put("afiliado", afiliado);
+		}
 		
 		return "catalogos/afiliados/crear";
 	}
@@ -143,7 +150,7 @@ public class AfiliadoController {
 
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Afiliado afiliado, BindingResult result,
+	public String guardar(@Valid Afiliado afiliado, BindingResult result, @RequestParam(value = "fecha", required = false) boolean corte,
 			Model model, RedirectAttributes redirect, SessionStatus status) {
 
 		Periodicidad periodicidad = new Periodicidad();
@@ -157,23 +164,37 @@ public class AfiliadoController {
 		Integer diaCorte=0;
 		Date fechaCorte;
 		try {
-
+			
 			if (result.hasErrors()) {
+				
 				return "catalogos/afiliados/crear";
 			}
-
 			if (afiliado.getId() != null) {
+				
+				
 				if (afiliado.getIsBeneficiario().equals(true)) {
 					afiliado.setIsBeneficiario(true);
 				} else {
 					afiliado.setIsBeneficiario(false);
 				}
-				if(afiliado.getCorte()==null) {
-					afiliado.setFechaCorte(null);
-					}else {	
-						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(),afiliado.getCorte());
+				if(afiliado.getFechaAfiliacion()==null) {
+					redirect.addFlashAttribute("error", "La fecha de afiliacion no debe quedar vació ");
+					redirect.addFlashAttribute("datos",afiliado);
+					redirect.addFlashAttribute("servicio",afiliado.getServicio().getId());
+					return "redirect:/afiliados/crear";
+					
+				}else {	
+					if(corte) {
+						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), afiliado.getCorte());
+						afiliado.setFechaCorte(fechaCorte);
+							
+					}else {
+						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
+						diaCorte = Integer.parseInt(dia);
+						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
 						afiliado.setFechaCorte(fechaCorte);
 					}
+				}
 				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
 						afiliado.getServicio().getInscripcionTitular();
 				afiliado.setSaldoAcumulado(saldoAcumulado);
@@ -181,7 +202,7 @@ public class AfiliadoController {
 				
 				mensajeFlash = "Registro editado con éxito";
 			} else {
-
+				
 				if(afiliado.getRfc() == null || afiliado.getRfc().equals("")) {
 					LocalDate fechaNacimiento = afiliado.getFechaNacimiento().toInstant()
 												.atZone(ZoneId.systemDefault())
@@ -203,13 +224,23 @@ public class AfiliadoController {
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
 				if(afiliado.getFechaAfiliacion()==null) {
-					afiliado.setFechaCorte(null);
+					redirect.addFlashAttribute("error", "La fecha de afiliacion no debe quedar vació ");
+					redirect.addFlashAttribute("datos",afiliado);
+					redirect.addFlashAttribute("servicio",afiliado.getServicio().getId());
+					return "redirect:/afiliados/crear";
+				}else {
+					
+				if(corte) {
+						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), afiliado.getCorte());
+						afiliado.setFechaCorte(fechaCorte);
+							
 					}else {
 						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
 						diaCorte = Integer.parseInt(dia);
 						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
 						afiliado.setFechaCorte(fechaCorte);
-					}			
+					}
+				}
 				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
 						afiliado.getServicio().getInscripcionTitular();
 
