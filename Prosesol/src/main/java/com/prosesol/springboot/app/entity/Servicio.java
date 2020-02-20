@@ -6,17 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -79,6 +69,9 @@ public class Servicio implements Serializable {
 
 	@OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<RelServicioBeneficio> relServicioBeneficio;
+
+	@OneToOne(mappedBy = "servicio", cascade = CascadeType.ALL)
+	private Plan plan;
 
 	public Servicio() {
 
@@ -198,6 +191,14 @@ public class Servicio implements Serializable {
 
 	public void setTipoPrivacidad(Boolean tipoPrivacidad) {
 		this.tipoPrivacidad = tipoPrivacidad;
+	}
+
+	public Plan getPlan() {
+		return plan;
+	}
+
+	public void setPlan(Plan plan) {
+		this.plan = plan;
 	}
 
 	@Override
