@@ -18,6 +18,8 @@
 						<div class="col-md mb-4">
 							<!-- Card Body -->
 							<div class="card-body bg-white appwork bg-boxshadow-2">
+							<div class="alert alert-success" th:if="${success!=null}" th:text="${success}"></div> 								
+                        <div class="alert alert-danger" th:if="${error!=null}" th:text="${error}"></div> 
 								<h5 class="card-title">Crear Afiliado</h5>
 
 								<div class="clearfix"></div>
@@ -38,7 +40,7 @@
 												type="text" th:field="*{apellidoPaterno}"
 												class="form-control form-control-user"> <small
 												class="form-text text-danger"
-												th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+												th:if="${#fields.hasErrors('apellidoPaterno')}" th:errors="*{apellidoPaterno}"></small>
 										</div>
 
 										<div class="form-group col-md-3">
@@ -52,7 +54,7 @@
 
 										<div class="form-group col-md-3">
 											<label>Fecha de Nacimiento</label> <input
-												type="text" th:field="*{fechaNacimiento}"
+												type="text" th:field="*{fechaNacimiento}" 
 												class="form-control form-control-user" id="fechaNacimiento"
 												placeholder=""> <small class="form-text text-danger"
 												th:if="${#fields.hasErrors('fechaNacimiento')}"
@@ -201,8 +203,8 @@
 										</div>
 
 										<div class="form-group col-md-3">
-											<label>¿Cuénta con crédito Infonavit?</label> <input
-												type="checkbox" id="infonavitCB" /> <span class="cr"><i
+											<label>¿Inscripción?</label> <input style="position:relative;top:40px; right:80px;" th:field="*{isIncripcion}"
+												type="checkbox"  /> <span class="cr"><i
 												class="cr-icon glyphicon glyphicon-ok"></i></span>
 										</div>
 
@@ -239,9 +241,11 @@
 										</div>
 
 										<div class="form-group col-md-3">
-											<label>Fecha de Corte</label> <select
+											<label>Fecha de Corte</label>
+											<input type="checkbox" name="fecha" id="fecha">
+											 <select
 												name="corte" th:field="*{corte}" class="custom-select"
-												id="inputGroupSelect01">
+												id="inputCorte" disabled >
 												<option th:each="corte : ${#numbers.sequence(1, 31)}"
 													th:value="${corte}" th:text="${corte}"
 													th:selected="${corte}" />
