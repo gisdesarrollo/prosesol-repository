@@ -75,19 +75,10 @@ public class AfiliadoController {
 
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear")
-	public String crear(@ModelAttribute("datos")Afiliado datos,@ModelAttribute("servicio")Servicio id, Map<String, Object> model) {
+	public String crear(Map<String, Object> model) {
 
 		Afiliado afiliado = new Afiliado();
-		
-		
-		if(datos!=null) {
-				datos.setServicio(id);
-				model.put("afiliado", datos);
-				
-		}else {
 			model.put("afiliado", afiliado);
-		}
-		
 		return "catalogos/afiliados/crear";
 	}
 
@@ -156,7 +147,6 @@ public class AfiliadoController {
 		Periodicidad periodicidad = new Periodicidad();
 		String mensajeFlash = null;
 		Double saldoAcumulado;
-		Double saldoCorte = new Double(0.00);
 		Date date = new Date();
 		Rfc rfc = null;
 		DateFormat formatoFecha = new SimpleDateFormat("dd");
@@ -178,10 +168,8 @@ public class AfiliadoController {
 					afiliado.setIsBeneficiario(false);
 				}
 				if(afiliado.getFechaAfiliacion()==null) {
-					redirect.addFlashAttribute("error", "La fecha de afiliacion no debe quedar vació ");
-					redirect.addFlashAttribute("datos",afiliado);
-					redirect.addFlashAttribute("servicio",afiliado.getServicio().getId());
-					return "redirect:/afiliados/crear";
+					 model.addAttribute("error", "La fecha de afiliacion no debe quedar vació");
+					return "catalogos/afiliados/crear";
 					
 				}else {	
 					if(corte) {
@@ -224,10 +212,8 @@ public class AfiliadoController {
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
 				if(afiliado.getFechaAfiliacion()==null) {
-					redirect.addFlashAttribute("error", "La fecha de afiliacion no debe quedar vació ");
-					redirect.addFlashAttribute("datos",afiliado);
-					redirect.addFlashAttribute("servicio",afiliado.getServicio().getId());
-					return "redirect:/afiliados/crear";
+					 model.addAttribute("error", "La fecha de afiliacion no debe quedar vació");
+					return "catalogos/afiliados/crear";
 				}else {
 					
 				if(corte) {
