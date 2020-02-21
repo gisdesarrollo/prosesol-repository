@@ -70,9 +70,6 @@ public class Servicio implements Serializable {
 	@OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<RelServicioBeneficio> relServicioBeneficio;
 
-	@OneToOne(mappedBy = "servicio", cascade = CascadeType.ALL)
-	private Plan plan;
-
 	public Servicio() {
 
 	}
@@ -191,14 +188,6 @@ public class Servicio implements Serializable {
 
 	public void setTipoPrivacidad(Boolean tipoPrivacidad) {
 		this.tipoPrivacidad = tipoPrivacidad;
-	}
-
-	public Plan getPlan() {
-		return plan;
-	}
-
-	public void setPlan(Plan plan) {
-		this.plan = plan;
 	}
 
 	@Override
