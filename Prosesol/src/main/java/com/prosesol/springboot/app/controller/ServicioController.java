@@ -4,13 +4,19 @@ import com.prosesol.springboot.app.entity.Beneficio;
 import com.prosesol.springboot.app.entity.CentroContacto;
 import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
-import com.prosesol.springboot.app.service.IBeneficioService;
-import com.prosesol.springboot.app.service.ICentroContactoService;
-import com.prosesol.springboot.app.service.IRelServicioBeneficioService;
-import com.prosesol.springboot.app.service.IServicioService;
+import com.prosesol.springboot.app.exception.CustomUserException;
+import com.prosesol.springboot.app.exception.CustomUserExceptionHandler;
+import com.prosesol.springboot.app.service.*;
+import mx.openpay.client.Plan;
+import mx.openpay.client.core.OpenpayAPI;
+import mx.openpay.client.enums.PlanRepeatUnit;
+import mx.openpay.client.enums.PlanStatusAfterRetry;
+import mx.openpay.client.exceptions.OpenpayServiceException;
+import mx.openpay.client.exceptions.ServiceUnavailableException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +26,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +50,18 @@ public class ServicioController {
 
     @Autowired
     private IRelServicioBeneficioService relServicioBeneficioService;
+
+    @Autowired
+    private IPlanService planService;
+
+    @Value("${openpay.pk}")
+    private String privateKey;
+
+    @Value("${openpay.url}")
+    private String openpayURL;
+
+    @Value("${openpay.id}")
+    private String merchantId;
 
     private Long idServicioGeneral;
 
@@ -161,7 +180,9 @@ public class ServicioController {
                           @RequestParam(name = "descripcion[]", required = false) List<String> descripcion,
                           @RequestParam(name = "beneficiario[]", required = false) List<Long> beneficiario,
                           @RequestParam(name = "titular[]", required = false) List<Long> titular,
-                          @RequestParam(name = "beneDescripcion[]", required = false) List<Long> beneDescripcion) {
+                          @RequestParam(name = "beneDescripcion[]", required = false) List<Long> beneDescripcion,
+                          @RequestParam(value = "isPlan", required = false) String isPlan,
+                          Model model) {
 
         logger.info("Entra al método para guardar o modificar el servicio");
 
@@ -199,7 +220,23 @@ public class ServicioController {
                     //descripcion.removeAll(Arrays.asList(" ",""));
 
                     servicio.setEstatus(true);
-                    servicioService.save(servicio);
+
+                    // Se creará un plan por el servicio si se selecciona el checkbox isValid
+                    if (isPlan != null) {
+                        if (servicio.getCostoTitular() > 0) {
+                            servicio.setIsPlan(true);
+                            servicioService.save(servicio);
+                                guardarPlan(servicio);
+                        } else {
+                            model.addAttribute("error", "El servicio no cuenta con costo " +
+                                    "de servicio");
+                            return "/catalogos/servicios/crear";
+                        }
+
+                    } else {
+                        servicio.setIsPlan(false);
+                        servicioService.save(servicio);
+                    }
 
                     int dIndex = 0;
                     int tIndex = 0;
@@ -323,11 +360,27 @@ public class ServicioController {
                 } else { // Solamente se inserta el servicio
 
                     servicio.setEstatus(true);
-                    servicioService.save(servicio);
+
+                    // Se creará un plan por el servicio si se selecciona el checkbox isValid
+
+                    if (isPlan != null) {
+                        if (servicio.getCostoTitular() > 0) {
+                            servicio.setIsPlan(true);
+                            servicioService.save(servicio);
+                            guardarPlan(servicio);
+                        } else {
+                            model.addAttribute("error", "El servicio no cuenta con costo " +
+                                    "de servicio");
+                            return "/catalogos/servicios/crear";
+                        }
+
+                    } else {
+                        servicio.setIsPlan(false);
+                        servicioService.save(servicio);
+                    }
 
                     flashMessage = "Servicio creado correctamente";
                 }
-
             }
 
             status.setComplete();
@@ -623,5 +676,36 @@ public class ServicioController {
         tipoPrivacidad.put(false, "Público");
 
         return tipoPrivacidad;
+    }
+
+    /**
+     * Se guarda el servicio como plan
+     *
+     * @param servicio
+     */
+
+    private void guardarPlan(Servicio servicio) throws ServiceUnavailableException,
+            OpenpayServiceException{
+
+        OpenpayAPI api = new OpenpayAPI(openpayURL, privateKey, merchantId);
+        Plan plan = new Plan();
+
+        plan.name(servicio.getNombre());
+        plan.amount(BigDecimal.valueOf(servicio.getCostoTitular()));
+        plan.repeatEvery(1, PlanRepeatUnit.MONTH);
+        plan.retryTimes(3);
+        plan.statusAfterRetry(PlanStatusAfterRetry.UNPAID);
+        plan.trialDays(30);
+
+        plan = api.plans().create(plan);
+
+        if (plan.getStatus().equals("active")) {
+            logger.info("Activada");
+            com.prosesol.springboot.app.entity.Plan planProsesol =
+                    new com.prosesol.springboot.app.entity.Plan(servicio, servicio.getNombre(),
+                            plan.getId());
+
+            planService.save(planProsesol);
+        }
     }
 }

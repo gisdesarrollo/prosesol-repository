@@ -60,7 +60,11 @@ public class Servicio implements Serializable {
 	@Column(name = "tipo_privacidad")
 	private Boolean tipoPrivacidad;
 
-	@OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@Column(name = "is_plan")
+	private Boolean isPlan;
+
+	@OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Afiliado> afiliado;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -188,6 +192,14 @@ public class Servicio implements Serializable {
 
 	public void setTipoPrivacidad(Boolean tipoPrivacidad) {
 		this.tipoPrivacidad = tipoPrivacidad;
+	}
+
+	public Boolean getIsPlan() {
+		return isPlan;
+	}
+
+	public void setIsPlan(Boolean isPlan) {
+		this.isPlan = isPlan;
 	}
 
 	@Override
