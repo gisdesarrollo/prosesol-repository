@@ -183,8 +183,14 @@ public class AfiliadoController {
 						afiliado.setFechaCorte(fechaCorte);
 					}
 				}
-				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
-						afiliado.getServicio().getInscripcionTitular();
+				
+				//Agrego costo de inscripción si se inscriben o descuento la inscripción 
+				if(afiliado.getIsIncripcion()) {
+					saldoAcumulado = afiliado.getSaldoAcumulado() +
+							afiliado.getServicio().getInscripcionTitular();
+				}else {
+					saldoAcumulado = afiliado.getSaldoAcumulado() - afiliado.getServicio().getInscripcionTitular();
+				}
 				afiliado.setSaldoAcumulado(saldoAcumulado);
 				afiliado.setSaldoCorte(saldoAcumulado);
 				
@@ -227,8 +233,14 @@ public class AfiliadoController {
 						afiliado.setFechaCorte(fechaCorte);
 					}
 				}
-				saldoAcumulado = afiliado.getServicio().getCostoTitular() +
-						afiliado.getServicio().getInscripcionTitular();
+				//Agrego costo de inscripción si se inscriben 
+				if(afiliado.getIsIncripcion()) {
+					saldoAcumulado = afiliado.getServicio().getCostoTitular() +
+							afiliado.getServicio().getInscripcionTitular();
+				}else {
+					saldoAcumulado = afiliado.getServicio().getCostoTitular();
+				}
+				
 
 				afiliado.setSaldoAcumulado(saldoAcumulado);
 				afiliado.setSaldoCorte(saldoAcumulado);
