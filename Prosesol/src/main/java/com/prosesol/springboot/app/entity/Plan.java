@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author Luis Enrique Morales Soriano
  */
 @Entity
-@Table(name = "planes")
+@Table(name = "planes_openpay")
 public class Plan implements Serializable {
 
     private static final long serialVersionUID = 1L;

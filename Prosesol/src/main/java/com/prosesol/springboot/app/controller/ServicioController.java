@@ -182,6 +182,7 @@ public class ServicioController {
                           @RequestParam(name = "titular[]", required = false) List<Long> titular,
                           @RequestParam(name = "beneDescripcion[]", required = false) List<Long> beneDescripcion,
                           @RequestParam(value = "isPlan", required = false) String isPlan,
+                          @RequestParam(value = "periodosOpenpay", required = false) String periodosOpenpay,
                           Model model) {
 
         logger.info("Entra al método para guardar o modificar el servicio");
@@ -226,7 +227,7 @@ public class ServicioController {
                         if (servicio.getCostoTitular() > 0) {
                             servicio.setIsPlan(true);
                             servicioService.save(servicio);
-                                guardarPlan(servicio);
+                            guardarPlan(servicio, periodosOpenpay);
                         } else {
                             model.addAttribute("error", "El servicio no cuenta con costo " +
                                     "de servicio");
@@ -367,7 +368,7 @@ public class ServicioController {
                         if (servicio.getCostoTitular() > 0) {
                             servicio.setIsPlan(true);
                             servicioService.save(servicio);
-                            guardarPlan(servicio);
+                            guardarPlan(servicio, periodosOpenpay);
                         } else {
                             model.addAttribute("error", "El servicio no cuenta con costo " +
                                     "de servicio");
@@ -684,7 +685,7 @@ public class ServicioController {
      * @param servicio
      */
 
-    private void guardarPlan(Servicio servicio) throws ServiceUnavailableException,
+    private void guardarPlan(Servicio servicio, String periodosOpenpay) throws ServiceUnavailableException,
             OpenpayServiceException{
 
         OpenpayAPI api = new OpenpayAPI(openpayURL, privateKey, merchantId);
@@ -692,7 +693,18 @@ public class ServicioController {
 
         plan.name(servicio.getNombre());
         plan.amount(BigDecimal.valueOf(servicio.getCostoTitular()));
-        plan.repeatEvery(1, PlanRepeatUnit.MONTH);
+
+        switch (periodosOpenpay){
+            case "SEMANAL":
+                plan.repeatEvery(1, PlanRepeatUnit.WEEK);
+                break;
+            case "MENSUAL":
+                plan.repeatEvery(1, PlanRepeatUnit.MONTH);
+                break;
+            case "ANUAL":
+                plan.repeatEvery(1, PlanRepeatUnit.YEAR);
+                break;
+        }
         plan.retryTimes(3);
         plan.statusAfterRetry(PlanStatusAfterRetry.UNPAID);
         plan.trialDays(30);
