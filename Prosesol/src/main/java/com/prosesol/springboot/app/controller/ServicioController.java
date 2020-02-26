@@ -4,6 +4,8 @@ import com.prosesol.springboot.app.entity.Beneficio;
 import com.prosesol.springboot.app.entity.CentroContacto;
 import com.prosesol.springboot.app.entity.Servicio;
 import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
+import com.prosesol.springboot.app.exception.CustomUserException;
+import com.prosesol.springboot.app.exception.CustomUserExceptionHandler;
 import com.prosesol.springboot.app.service.*;
 import mx.openpay.client.Plan;
 import mx.openpay.client.core.OpenpayAPI;
@@ -167,7 +169,6 @@ public class ServicioController {
      * @param beneficiario
      * @param titular
      * @param beneDescripcion
-     * @param isPlan
      * @return
      * @throws Exception
      */
@@ -181,6 +182,7 @@ public class ServicioController {
                           @RequestParam(name = "titular[]", required = false) List<Long> titular,
                           @RequestParam(name = "beneDescripcion[]", required = false) List<Long> beneDescripcion,
                           @RequestParam(value = "isPlan", required = false) String isPlan,
+                          @RequestParam(value = "periodosOpenpay", required = false) String periodosOpenpay,
                           Model model) {
 
         logger.info("Entra al método para guardar o modificar el servicio");
@@ -219,7 +221,23 @@ public class ServicioController {
                     //descripcion.removeAll(Arrays.asList(" ",""));
 
                     servicio.setEstatus(true);
-                    servicioService.save(servicio);
+
+                    // Se creará un plan por el servicio si se selecciona el checkbox isValid
+                    if (isPlan != null) {
+                        if (servicio.getCostoTitular() > 0) {
+                            servicio.setIsPlan(true);
+                            servicioService.save(servicio);
+                            guardarPlan(servicio, periodosOpenpay);
+                        } else {
+                            model.addAttribute("error", "El servicio no cuenta con costo " +
+                                    "de servicio");
+                            return "/catalogos/servicios/crear";
+                        }
+
+                    } else {
+                        servicio.setIsPlan(false);
+                        servicioService.save(servicio);
+                    }
 
                     int dIndex = 0;
                     int tIndex = 0;
@@ -347,23 +365,23 @@ public class ServicioController {
                     // Se creará un plan por el servicio si se selecciona el checkbox isValid
 
                     if (isPlan != null) {
-                        if (servicio.getCostoTitular() > 0 ||
-                                servicio.getCostoBeneficiario() > 0) {
+                        if (servicio.getCostoTitular() > 0) {
+                            servicio.setIsPlan(true);
                             servicioService.save(servicio);
-                            guardarPlan(servicio);
+                            guardarPlan(servicio, periodosOpenpay);
                         } else {
-                            model.addAttribute("error", "El servicio no tiene costo para " +
-                                    "poder agregarlo como plan");
+                            model.addAttribute("error", "El servicio no cuenta con costo " +
+                                    "de servicio");
                             return "/catalogos/servicios/crear";
                         }
 
                     } else {
+                        servicio.setIsPlan(false);
                         servicioService.save(servicio);
                     }
 
                     flashMessage = "Servicio creado correctamente";
                 }
-
             }
 
             status.setComplete();
@@ -667,24 +685,26 @@ public class ServicioController {
      * @param servicio
      */
 
-    private void guardarPlan(Servicio servicio) throws ServiceUnavailableException, OpenpayServiceException {
+    private void guardarPlan(Servicio servicio, String periodosOpenpay) throws ServiceUnavailableException,
+            OpenpayServiceException{
 
         OpenpayAPI api = new OpenpayAPI(openpayURL, privateKey, merchantId);
         Plan plan = new Plan();
-        Double totalServicio = 0.0;
 
         plan.name(servicio.getNombre());
-        if (servicio.getCostoTitular() > 0) {
-        	if(servicio.getCostoBeneficiario() > 0){
-				totalServicio = servicio.getCostoTitular() + servicio.getCostoBeneficiario();
-				plan.amount(BigDecimal.valueOf(totalServicio));
-			}else{
-				plan.amount(BigDecimal.valueOf(servicio.getCostoTitular()));
-			}
-        }  else if (servicio.getCostoBeneficiario() > 0) {
-            plan.amount(BigDecimal.valueOf(servicio.getCostoBeneficiario()));
+        plan.amount(BigDecimal.valueOf(servicio.getCostoTitular()));
+
+        switch (periodosOpenpay){
+            case "SEMANAL":
+                plan.repeatEvery(1, PlanRepeatUnit.WEEK);
+                break;
+            case "MENSUAL":
+                plan.repeatEvery(1, PlanRepeatUnit.MONTH);
+                break;
+            case "ANUAL":
+                plan.repeatEvery(1, PlanRepeatUnit.YEAR);
+                break;
         }
-        plan.repeatEvery(1, PlanRepeatUnit.MONTH);
         plan.retryTimes(3);
         plan.statusAfterRetry(PlanStatusAfterRetry.UNPAID);
         plan.trialDays(30);
@@ -700,5 +720,4 @@ public class ServicioController {
             planService.save(planProsesol);
         }
     }
-
 }

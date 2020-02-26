@@ -1,4 +1,4 @@
-$('#fecha').click(function() {
+$('#diaCorte').click(function() {
 	
 	if (this.checked) {
 		$("#inputCorte").attr("disabled",false);
@@ -7,4 +7,16 @@ $('#fecha').click(function() {
 	}
 		
 
+});
+
+$('#isPlan').click(function(){
+    if (this.checked) {
+    		$("#semanalRadio").attr("disabled", false);
+    		$("#mensualRadio").attr("disabled", false);
+    		$("#anualRadio").attr("disabled", false);
+    	}else{
+    		$("#semanalRadio").attr("disabled", true);
+    		$("#mensualRadio").attr("disabled", true);
+    		$("#anualRadio").attr("disabled", true);
+    	}
 });

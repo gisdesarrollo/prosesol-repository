@@ -3,7 +3,6 @@ package com.prosesol.springboot.app.service;
 import com.prosesol.springboot.app.entity.Plan;
 import com.prosesol.springboot.app.entity.dao.IPlanDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +12,7 @@ import java.util.List;
  * @author Luis Enrique Morales Soriano
  */
 @Service
-public class IPlanServiceImpl implements IPlanService {
+public class PlanServiceImpl implements IPlanService {
 
     @Autowired
     private IPlanDao planDao;
