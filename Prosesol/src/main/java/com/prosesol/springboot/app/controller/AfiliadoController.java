@@ -42,10 +42,10 @@ import java.util.Map;
 public class AfiliadoController {
 
 	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
-	
+
 	@Value("${app.clave}")
 	private String clave;
-	
+
 	@Autowired
 	private IAfiliadoService afiliadoService;
 
@@ -60,29 +60,29 @@ public class AfiliadoController {
 
 	@Autowired
 	private ICuentaService cuentaService;
-	
+
 	@Autowired
 	private CalcularFecha calcularFechas;
 
 	@Autowired
 	private ReportesExcelImpl reportesExcelImpl;
-	
+
 	@Autowired
 	private MessageSource messageSource;
 
 	@Autowired
 	private GenerarClave generarClave;
 
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 
 		Afiliado afiliado = new Afiliado();
-			model.put("afiliado", afiliado);
+		model.put("afiliado", afiliado);
 		return "catalogos/afiliados/crear";
 	}
 
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@GetMapping(value = "/detalle/{id}")
 	public String detalle(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect,
 			Locale locale) {
@@ -102,47 +102,48 @@ public class AfiliadoController {
 
 	}
 
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect,
-						Locale locale) {
+			Locale locale) {
 
 		logger.info("Editar afiliado: " + id);
 
 		Afiliado afiliado = null;
 		DateFormat formatoFecha = new SimpleDateFormat("dd");
 		String dia;
-		Integer diaCorte=0;
+		Integer diaCorte = 0;
 		if (id > 0) {
 			afiliado = afiliadoService.findById(id);
 			if (afiliado == null) {
-				redirect.addFlashAttribute("error", messageSource.getMessage("text.afiliado.ver.db.error", null, locale));
+				redirect.addFlashAttribute("error",
+						messageSource.getMessage("text.afiliado.ver.db.error", null, locale));
 				return "redirect:/afiliados/ver";
 			}
 		} else {
 			redirect.addFlashAttribute("Error: ", "El id del afiliado no puede ser cero");
 			return "redirect:/afiliados/ver";
 		}
-			if(afiliado.getFechaCorte()!=null) {
-				dia=formatoFecha.format(afiliado.getFechaCorte());
-				diaCorte = Integer.parseInt(dia);
-				model.put("diaCorte", diaCorte);
-			
-			}else {
-				dia=null;
-				model.put("diaCorte", dia);
-			}
+		if (afiliado.getFechaCorte() != null) {
+			dia = formatoFecha.format(afiliado.getFechaCorte());
+			diaCorte = Integer.parseInt(dia);
+			model.put("diaCorte", diaCorte);
+
+		} else {
+			dia = null;
+			model.put("diaCorte", dia);
+		}
 		model.put("afiliado", afiliado);
-		
 
 		return "catalogos/afiliados/editar";
 
 	}
 
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Afiliado afiliado, BindingResult result, @RequestParam(value = "fecha", required = false) boolean corte,
-			Model model, RedirectAttributes redirect, SessionStatus status) {
+	public String guardar(@Valid Afiliado afiliado, BindingResult result,
+			@RequestParam(value = "fecha", required = false) boolean corte, Model model, RedirectAttributes redirect,
+			SessionStatus status) {
 
 		Periodicidad periodicidad = new Periodicidad();
 		String mensajeFlash = null;
@@ -151,99 +152,157 @@ public class AfiliadoController {
 		Rfc rfc = null;
 		DateFormat formatoFecha = new SimpleDateFormat("dd");
 		String dia;
-		Integer diaCorte=0;
+		Integer diaCorte = 0;
 		Date fechaCorte;
+		DateFormat formatoMesYear;
+		String fechaAfiliacion;
+		String fechaHoy;
+		Date mYA;
+		Date mYH;
+
 		try {
-			
+
 			if (result.hasErrors()) {
-				
+
 				return "catalogos/afiliados/crear";
 			}
 			if (afiliado.getId() != null) {
-				
-				
+
 				if (afiliado.getIsBeneficiario().equals(true)) {
 					afiliado.setIsBeneficiario(true);
 				} else {
 					afiliado.setIsBeneficiario(false);
 				}
-				if(afiliado.getFechaAfiliacion()==null) {
-					 model.addAttribute("error", "La fecha de afiliacion no debe quedar vació");
+				if (afiliado.getFechaAfiliacion() == null) {
+					model.addAttribute("error", "La fecha de afiliacion no debe quedar vació");
 					return "catalogos/afiliados/crear";
-					
-				}else {	
-					if(corte) {
-						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), afiliado.getCorte());
-						afiliado.setFechaCorte(fechaCorte);
+
+				} else {
+					formatoMesYear = new SimpleDateFormat("MM/yyyy");
+					fechaAfiliacion = formatoMesYear.format(afiliado.getFechaAfiliacion());
+					fechaHoy = formatoMesYear.format(new Date());
+					mYA = formatoMesYear.parse(fechaAfiliacion);
+					mYH = formatoMesYear.parse(fechaHoy);
+					if (corte) {
+						// evalua si esta dentro del mes o año actual
+						if (mYH.equals(mYA)) {
+							fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), afiliado.getCorte());
+							afiliado.setFechaCorte(fechaCorte);
+							afiliado.setSaldoCorte(0.0);
 							
-					}else {
-						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
+						}
+						// evalua si esta fuera del mes o año actual
+						if (mYH.after(mYA)) {
+							fechaCorte = calcularFechas.calcularFechaAtrasada(afiliado.getFechaAfiliacion(),
+									afiliado.getPeriodicidad(), afiliado.getCorte());
+							afiliado.setFechaCorte(fechaCorte);
+							afiliado.setSaldoCorte(0.0);
+						}
+
+					} else {
+						dia = formatoFecha.format(afiliado.getFechaAfiliacion());
 						diaCorte = Integer.parseInt(dia);
-						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
-						afiliado.setFechaCorte(fechaCorte);
+						// evalua si esta dentro del mes o año actual
+						if (mYH.equals(mYA)) {
+							fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
+							afiliado.setFechaCorte(fechaCorte);
+							afiliado.setSaldoCorte(0.0);
+
+						}
+
+						// evalua si esta fuera del mes o año actual
+						if (mYH.after(mYA)) {
+							fechaCorte = calcularFechas.calcularFechaAtrasada(afiliado.getFechaAfiliacion(),
+									afiliado.getPeriodicidad(), diaCorte);
+							afiliado.setFechaCorte(fechaCorte);
+							afiliado.setSaldoCorte(0.0);
+						}
 					}
 				}
-				
-				//Agrego costo de inscripción si se inscriben o descuento la inscripción 
-				if(afiliado.getIsIncripcion()) {
-					saldoAcumulado = afiliado.getSaldoAcumulado() +
-							afiliado.getServicio().getInscripcionTitular();
-				}else {
-					saldoAcumulado = afiliado.getSaldoAcumulado() - afiliado.getServicio().getInscripcionTitular();
+
+				// Agrego costo de inscripción si se inscriben o descuento la inscripción
+				if (afiliado.getIsIncripcion()) {
+					saldoAcumulado = afiliado.getServicio().getCostoTitular() + afiliado.getServicio().getInscripcionTitular();
+				} else {
+					saldoAcumulado = afiliado.getServicio().getCostoTitular();
 				}
 				afiliado.setSaldoAcumulado(saldoAcumulado);
-				afiliado.setSaldoCorte(saldoAcumulado);
-				
+
 				mensajeFlash = "Registro editado con éxito";
 			} else {
-				
-				if(afiliado.getRfc() == null || afiliado.getRfc().equals("")) {
-					LocalDate fechaNacimiento = afiliado.getFechaNacimiento().toInstant()
-												.atZone(ZoneId.systemDefault())
-												.toLocalDate();
-					
-					rfc = new Rfc.Builder()
-								     .name(afiliado.getNombre())
-								     .firstLastName(afiliado.getApellidoPaterno())
-								     .secondLastName(afiliado.getApellidoMaterno())
-								     .birthday(fechaNacimiento.getDayOfMonth(), fechaNacimiento.getMonthValue(), fechaNacimiento.getYear())
-								     .build();
-					
+
+				if (afiliado.getRfc() == null || afiliado.getRfc().equals("")) {
+					LocalDate fechaNacimiento = afiliado.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault())
+							.toLocalDate();
+
+					rfc = new Rfc.Builder().name(afiliado.getNombre()).firstLastName(afiliado.getApellidoPaterno())
+							.secondLastName(afiliado.getApellidoMaterno()).birthday(fechaNacimiento.getDayOfMonth(),
+									fechaNacimiento.getMonthValue(), fechaNacimiento.getYear())
+							.build();
+
 					afiliado.setRfc(rfc.toString());
 
 				}
-				
-				afiliado.setIsBeneficiario(false);			
+
+				afiliado.setIsBeneficiario(false);
 
 				// Calcular la fecha de corte por periodo
 				periodicidad = periodicidadService.findById(afiliado.getPeriodicidad().getId());
-				if(afiliado.getFechaAfiliacion()==null) {
-					 model.addAttribute("error", "La fecha de afiliacion no debe quedar vació");
+				if (afiliado.getFechaAfiliacion() == null) {
+					model.addAttribute("error", "La fecha de afiliacion no debe quedar vació");
 					return "catalogos/afiliados/crear";
-				}else {
-					
-				if(corte) {
-						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), afiliado.getCorte());
-						afiliado.setFechaCorte(fechaCorte);
+				} else {
+					formatoMesYear = new SimpleDateFormat("MM/yyyy");
+					fechaAfiliacion = formatoMesYear.format(afiliado.getFechaAfiliacion());
+					fechaHoy = formatoMesYear.format(new Date());
+					mYA = formatoMesYear.parse(fechaAfiliacion);
+					mYH = formatoMesYear.parse(fechaHoy);
+					if (corte) {
+						// evalua si esta dentro del mes o año actual
+						if (mYH.equals(mYA)) {
+							fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), afiliado.getCorte());
+							afiliado.setFechaCorte(fechaCorte);
+							afiliado.setSaldoCorte(0.0);
 							
-					}else {
-						dia=formatoFecha.format(afiliado.getFechaAfiliacion());
+						}
+						// evalua si esta fuera del mes o año actual
+						if (mYH.after(mYA)) {
+							fechaCorte = calcularFechas.calcularFechaAtrasada(afiliado.getFechaAfiliacion(),
+									afiliado.getPeriodicidad(), afiliado.getCorte());
+							afiliado.setFechaCorte(fechaCorte);
+							afiliado.setSaldoCorte(0.0);
+						}
+
+					} else {
+						dia = formatoFecha.format(afiliado.getFechaAfiliacion());
 						diaCorte = Integer.parseInt(dia);
-						fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
-						afiliado.setFechaCorte(fechaCorte);
+						// evalua si esta dentro del mes o año actual
+						if (mYH.equals(mYA)) {
+							fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
+							afiliado.setFechaCorte(fechaCorte);
+							afiliado.setSaldoCorte(0.0);
+
+							
+						}
+						// evalua si esta fuera del mes o año actual
+						if (mYH.after(mYA)) {
+							fechaCorte = calcularFechas.calcularFechaAtrasada(afiliado.getFechaAfiliacion(),
+									afiliado.getPeriodicidad(), diaCorte);
+							afiliado.setFechaCorte(fechaCorte);
+							afiliado.setSaldoCorte(0.0);
+						}
 					}
+
 				}
-				//Agrego costo de inscripción si se inscriben 
-				if(afiliado.getIsIncripcion()) {
-					saldoAcumulado = afiliado.getServicio().getCostoTitular() +
-							afiliado.getServicio().getInscripcionTitular();
-				}else {
+				// Agrego costo de inscripción si se inscriben
+				if (afiliado.getIsIncripcion()) {
+					saldoAcumulado = afiliado.getServicio().getCostoTitular()
+							+ afiliado.getServicio().getInscripcionTitular();
+				} else {
 					saldoAcumulado = afiliado.getServicio().getCostoTitular();
 				}
-				
 
 				afiliado.setSaldoAcumulado(saldoAcumulado);
-				afiliado.setSaldoCorte(saldoAcumulado);
 				afiliado.setFechaAlta(date);
 
 				afiliado.setClave(generarClave.getClave(clave));
@@ -261,16 +320,16 @@ public class AfiliadoController {
 
 			e.printStackTrace();
 			logger.error("Error al momento de ejecutar el proceso: " + e);
-			
+
 			redirect.addFlashAttribute("error", "El RFC ya existe en la base de datos: " + rfc);
-			
+
 			return "redirect:/afiliados/ver";
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("Error al momento de ejecutar el proceso: " + e);
-			
+
 			redirect.addFlashAttribute("error", "Ocurrió un error al momento de insertar el Afiliado");
-			
+
 			return "redirect:/afiliados/ver";
 		}
 
@@ -278,23 +337,23 @@ public class AfiliadoController {
 		return "redirect:/afiliados/ver";
 	}
 
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
-	public String ver(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+	public String ver(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 
 		Pageable pageRequest = PageRequest.of(page, 10);
-	
+
 		Page<Afiliado> afiliados = afiliadoService.findAll(pageRequest);
-		
+
 		PageRender<Afiliado> pageRender = new PageRender<>("/afiliados/ver", afiliados);
-		
+
 		model.addAttribute("afiliados", afiliados);
 		model.addAttribute("page", pageRender);
-		
+
 		return "catalogos/afiliados/ver";
 	}
-		
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {
 
@@ -311,17 +370,16 @@ public class AfiliadoController {
 	}
 
 	/**
-	 * Método que cambia el estatus del afiliado
-	 * 1.- Activo
-	 * 2.- Inactivo
-	 * 3.- Candidato
+	 * Método que cambia el estatus del afiliado 1.- Activo 2.- Inactivo 3.-
+	 * Candidato
+	 * 
 	 * @param id
 	 * @param redirect
 	 * @param status
 	 * @return
 	 */
-	
-	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/cambiar_estatus/{id}")
 	public String actDesctAfiliado(@PathVariable(value = "id") Long id, RedirectAttributes redirect,
 			SessionStatus status) {
@@ -332,7 +390,7 @@ public class AfiliadoController {
 			afiliado.setEstatus(1);
 		} else if (afiliado.getEstatus() == 1) {
 			afiliado.setEstatus(2);
-		}else if (afiliado.getEstatus() == 2) {
+		} else if (afiliado.getEstatus() == 2) {
 			afiliado.setEstatus(1);
 		}
 

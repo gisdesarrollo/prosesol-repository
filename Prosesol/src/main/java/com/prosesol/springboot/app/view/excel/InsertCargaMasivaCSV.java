@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.Collator;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -58,8 +59,16 @@ public class InsertCargaMasivaCSV {
 	private String isBeneficiario;
 	private String rfcAfiliado;
 	private Rfc rfc;
-
+	private Date fechaCorte;
+	private Integer diaCorte;
+	private String dia;
+	private DateFormat formatoFecha;
 	private Collator collator = Collator.getInstance(new Locale("es"));
+	private DateFormat formatoMesYear;
+	private String fechaAfiliacion;
+	private String fechaHoy;
+	private Date mYA;
+	private Date mYH;
 
 	private boolean isValidAfiliado;
 	private boolean isValid;
@@ -91,23 +100,23 @@ public class InsertCargaMasivaCSV {
 						log = counterLinea + " - " + "El nombre no puede quedar vacío";
 						isValidAfiliado = false;
 					} else {
-							afiliado.setNombre(campo.getValue());
-							isInteger = isInteger(afiliado.getNombre());
-							if (!isInteger) {
-								isValid = containsVocal(afiliado.getNombre());
-								if (isValid) {
-									LOG.info(counterLinea + " - " + "Nombre: " + afiliado.getNombre());
-								}else {
-									log = counterLinea + " - " + "El nombre no contiene una vocal";
-									LOG.info(counterLinea + " - " + "El nombre no contiene una vocal");
-									isValidAfiliado = false;
-								}
-								
+						afiliado.setNombre(campo.getValue());
+						isInteger = isInteger(afiliado.getNombre());
+						if (!isInteger) {
+							isValid = containsVocal(afiliado.getNombre());
+							if (isValid) {
+								LOG.info(counterLinea + " - " + "Nombre: " + afiliado.getNombre());
 							} else {
-								log = counterLinea + " - " + "El nombre no puede contener valores númericos";
-								LOG.info(counterLinea + " - " + "El nombre no puede contener valores númericos");
+								log = counterLinea + " - " + "El nombre no contiene una vocal";
+								LOG.info(counterLinea + " - " + "El nombre no contiene una vocal");
 								isValidAfiliado = false;
 							}
+
+						} else {
+							log = counterLinea + " - " + "El nombre no puede contener valores númericos";
+							LOG.info(counterLinea + " - " + "El nombre no puede contener valores númericos");
+							isValidAfiliado = false;
+						}
 
 					}
 					break;
@@ -119,7 +128,7 @@ public class InsertCargaMasivaCSV {
 						isValid = containsVocal(afiliado.getApellidoPaterno());
 						if (isValid) {
 							LOG.info(counterLinea + " - " + "Apellido Paterno: " + afiliado.getApellidoPaterno());
-						}else {
+						} else {
 							log = counterLinea + " - " + "El Apellido Paterno no contiene una vocal";
 							LOG.info(counterLinea + " - " + "El Apellido Paterno no contiene una vocal");
 							isValidAfiliado = false;
@@ -137,7 +146,7 @@ public class InsertCargaMasivaCSV {
 						isValid = containsVocal(afiliado.getApellidoMaterno());
 						if (isValid) {
 							LOG.info(counterLinea + " - " + "Apellido Materno: " + afiliado.getApellidoMaterno());
-						}else {
+						} else {
 							log = counterLinea + " - " + "El Apellido Materno no contiene una vocal";
 							LOG.info(counterLinea + " - " + "El Apellido Materno no contiene una vocal");
 							isValidAfiliado = false;
@@ -264,14 +273,12 @@ public class InsertCargaMasivaCSV {
 					if (campo.getValue().length() == 0) {
 						LocalDate fechaNac = afiliado.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault())
 								.toLocalDate();
-						
+
 						rfc = new Rfc.Builder().name(afiliado.getNombre()).firstLastName(afiliado.getApellidoPaterno())
 								.secondLastName(afiliado.getApellidoMaterno())
 								.birthday(fechaNac.getDayOfMonth(), fechaNac.getMonthValue(), fechaNac.getYear())
 								.build();
 						afiliado.setRfc(rfc.toString());
-						
-						
 
 						if (afiliado.getApellidoPaterno().equals(null) || afiliado.getApellidoPaterno().equals("")) {
 							afiliado.setApellidoPaterno("-");
@@ -581,80 +588,107 @@ public class InsertCargaMasivaCSV {
 	private String insertAfiliados(boolean isValidAfiliado, Afiliado afiliado, Integer counterLinea) {
 
 		try {
-			
+
 			if (isValidAfiliado) {
 				if (afiliado.getRfc() == null) {
 					LOG.info(counterLinea + " - " + "No se pudo armar el RFC");
 					log = counterLinea + " - " + "No se pudo armar el RFC";
-					isValidAfiliado=false;
-					
-				}else {
-
-				if (afiliado.getServicio() == null || afiliado.getPeriodicidad() == null) {
 					isValidAfiliado = false;
+
 				} else {
-					collator.setStrength(Collator.PRIMARY);
-					if (isBeneficiario.toUpperCase().equals("SÍ")) {
-						afiliado.setIsBeneficiario(true);
-						afiliado.setEstatus(1);
-						afiliado.setIsIncripcion(false);
-						afiliado.setClave(generarClave.getClave(clave));
-						afiliado.setFechaAlta(new Date());
-						titular = afiliadoService.getAfiliadoByRfc(rfcAfiliado);
 
-						if (titular != null) {
+					if (afiliado.getServicio() == null || afiliado.getPeriodicidad() == null) {
+						isValidAfiliado = false;
+					} else {
+						collator.setStrength(Collator.PRIMARY);
+						if (isBeneficiario.toUpperCase().equals("SÍ")) {
+							afiliado.setIsBeneficiario(true);
+							afiliado.setEstatus(1);
+							afiliado.setIsIncripcion(false);
+							afiliado.setClave(generarClave.getClave(clave));
+							afiliado.setFechaAlta(new Date());
+							titular = afiliadoService.getAfiliadoByRfc(rfcAfiliado);
 
-							Double saldoAcumuladoTitular = titular.getSaldoAcumulado();
-							Double saldoAcumuladoBeneficiario = afiliado.getServicio().getCostoBeneficiario();
+							if (titular != null) {
 
-							saldoAcumuladoTitular = saldoAcumuladoTitular + saldoAcumuladoBeneficiario;
+								Double saldoAcumuladoTitular = titular.getSaldoAcumulado();
+								Double saldoAcumuladoBeneficiario = afiliado.getServicio().getCostoBeneficiario();
 
-							titular.setSaldoAcumulado(saldoAcumuladoTitular);
-							titular.setSaldoCorte(saldoAcumuladoTitular);
-							afiliado.setInscripcion(new Double(0.0));
-							afiliado.setServicio(titular.getServicio());
-							afiliado.setCuenta(titular.getCuenta());
-							afiliado.setFechaCorte(titular.getFechaCorte());
-							afiliado.setPeriodicidad(titular.getPeriodicidad());
+								saldoAcumuladoTitular = saldoAcumuladoTitular + saldoAcumuladoBeneficiario;
 
-							afiliadoService.save(afiliado);
-							afiliadoService.save(titular);
-							afiliadoService.insertBeneficiarioUsingJpa(afiliado, titular.getId());
-						} else {
-							log = counterLinea + " - "
-									+ "El beneficiario no se ha insertado ya que el Titular no se ha encontrado"
-									+ " en el sistema";
-							LOG.info(counterLinea + " - "
-									+ "El beneficiario no se ha insertado ya que el Titular no se ha encontrado"
-									+ " en el sistema");
+								titular.setSaldoAcumulado(saldoAcumuladoTitular);
+								titular.setSaldoCorte(saldoAcumuladoTitular);
+								afiliado.setInscripcion(new Double(0.0));
+								afiliado.setServicio(titular.getServicio());
+								afiliado.setCuenta(titular.getCuenta());
+								afiliado.setFechaCorte(titular.getFechaCorte());
+								afiliado.setPeriodicidad(titular.getPeriodicidad());
 
-							isValidAfiliado = false;
+								afiliadoService.save(afiliado);
+								afiliadoService.save(titular);
+								afiliadoService.insertBeneficiarioUsingJpa(afiliado, titular.getId());
+							} else {
+								log = counterLinea + " - "
+										+ "El beneficiario no se ha insertado ya que el Titular no se ha encontrado"
+										+ " en el sistema";
+								LOG.info(counterLinea + " - "
+										+ "El beneficiario no se ha insertado ya que el Titular no se ha encontrado"
+										+ " en el sistema");
+
+								isValidAfiliado = false;
+							}
+
+						} else if (isBeneficiario.toUpperCase().equals("NO")) {
+							afiliado.setIsBeneficiario(false);
+							afiliado.setEstatus(1);
+							afiliado.setIsIncripcion(false);
+							afiliado.setClave(generarClave.getClave(clave));
+							afiliado.setFechaAlta(new Date());
+							if (afiliado.getFechaAfiliacion() == null) {
+								LOG.info(counterLinea + " - " + "La fecha de afiliación no debe quedar vacío ");
+								log = counterLinea + " - " + "La fecha de afiliación no debe quedar vacío";
+								isValidAfiliado = false;
+							} else {
+								formatoMesYear = new SimpleDateFormat("MM/yyyy");
+								fechaAfiliacion = formatoMesYear.format(afiliado.getFechaAfiliacion());
+								fechaHoy = formatoMesYear.format(new Date());
+								mYA = formatoMesYear.parse(fechaAfiliacion);
+								mYH = formatoMesYear.parse(fechaHoy);
+								formatoFecha = new SimpleDateFormat("dd");
+								dia = formatoFecha.format(afiliado.getFechaAfiliacion());
+								diaCorte = Integer.parseInt(dia);
+
+								// evalua si esta dentro del mes o año actual
+								if (mYH.equals(mYA)) {
+									fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), diaCorte);
+									afiliado.setFechaCorte(fechaCorte);
+									afiliado.setSaldoCorte(0.0);
+
+								}
+								// evalua si esta fuera del mes o año actual
+								if (mYH.after(mYA)) {
+									fechaCorte = calcularFechas.calcularFechaAtrasada(afiliado.getFechaAfiliacion(),
+											afiliado.getPeriodicidad(), diaCorte);
+									afiliado.setFechaCorte(fechaCorte);
+									afiliado.setSaldoCorte(0.0);
+								}
+
+								afiliado.setSaldoAcumulado(afiliado.getServicio().getCostoTitular());
+								afiliado.setInscripcion(new Double(0.0));
+
+								afiliadoService.save(afiliado);
+							}
+
 						}
-
-					} else if (isBeneficiario.toUpperCase().equals("NO")) {
-						afiliado.setIsBeneficiario(false);
-						afiliado.setEstatus(1);
-						afiliado.setIsIncripcion(false);
-						afiliado.setClave(generarClave.getClave(clave));
-						afiliado.setFechaAlta(new Date());
-						Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), corte);
-						afiliado.setFechaCorte(fechaCorte);
-
-						afiliado.setSaldoAcumulado(afiliado.getServicio().getCostoTitular());
-						afiliado.setSaldoCorte(afiliado.getServicio().getCostoTitular());
-						afiliado.setInscripcion(new Double(0.0));
-
-						afiliadoService.save(afiliado);
+					}
+					if (!isValidAfiliado) {
+						LOG.info(counterLinea + " - "
+								+ "El afiliado no se ha registrado, verifique los datos que sean correctos");
+					} else {
+						LOG.info(counterLinea + " - " + "El afiliado se ha insertado correctamente");
+						log = counterLinea + " - " + "El afiliado se ha insertado correctamente";
 					}
 				}
-				if (!isValidAfiliado) {
-					LOG.info(counterLinea + " - "
-							+ "El afiliado no se ha registrado, verifique los datos que sean correctos");
-				} else {
-					LOG.info(counterLinea + " - " + "El afiliado se ha insertado correctamente");
-					log = counterLinea + " - " + "El afiliado se ha insertado correctamente";
-				}
-			}
 			} else {
 				LOG.info(counterLinea + " - "
 						+ "El afiliado no se ha registrado, verifique los datos que sean correctos");
@@ -662,7 +696,7 @@ public class InsertCargaMasivaCSV {
 		} catch (Exception e) {
 			LOG.info(counterLinea + " - " + "Error al momento de guardar el Afiliado", e);
 			log = counterLinea + " - " + "Error al momento de guardar el Afiliado: " + e.getMessage();
-			
+
 		}
 
 		return log;
@@ -685,73 +719,73 @@ public class InsertCargaMasivaCSV {
 				if (afiliado.getRfc() == null) {
 					LOG.info(counterLinea + " - " + "No se pudo armar el RFC");
 					log = counterLinea + " - " + "No se pudo armar el RFC";
-					isValidAfiliado=false;
-					
-				}else {
-				if (afiliado.getServicio() == null || afiliado.getPeriodicidad() == null) {
 					isValidAfiliado = false;
+
 				} else {
-					collator.setStrength(Collator.PRIMARY);
-					if (isBeneficiario.toUpperCase().equals("SÍ")) {
-						afiliado.setIsBeneficiario(true);
-						afiliado.setEstatus(1);
-						afiliado.setIsIncripcion(false);
-						afiliado.setClave(generarClave.getClave(clave));
-						afiliado.setFechaAlta(new Date());
-						titular = afiliadoService.getAfiliadoByRfc(rfcAfiliado);
+					if (afiliado.getServicio() == null || afiliado.getPeriodicidad() == null) {
+						isValidAfiliado = false;
+					} else {
+						collator.setStrength(Collator.PRIMARY);
+						if (isBeneficiario.toUpperCase().equals("SÍ")) {
+							afiliado.setIsBeneficiario(true);
+							afiliado.setEstatus(1);
+							afiliado.setIsIncripcion(false);
+							afiliado.setClave(generarClave.getClave(clave));
+							afiliado.setFechaAlta(new Date());
+							titular = afiliadoService.getAfiliadoByRfc(rfcAfiliado);
 
-						if (titular != null) {
+							if (titular != null) {
 
-							titular.setSaldoAcumulado(new Double(0.0));
+								titular.setSaldoAcumulado(new Double(0.0));
+								afiliado.setInscripcion(new Double(0.0));
+
+								afiliado.setServicio(titular.getServicio());
+								afiliado.setCuenta(titular.getCuenta());
+								afiliado.setFechaCorte(titular.getFechaCorte());
+								afiliado.setPeriodicidad(titular.getPeriodicidad());
+
+								afiliadoService.save(afiliado);
+								afiliadoService.save(titular);
+								afiliadoService.insertBeneficiarioUsingJpa(afiliado, titular.getId());
+							} else {
+								log = counterLinea + " - "
+										+ "El beneficiario no se ha insertado ya que el Titular no se ha encontrado"
+										+ " en el sistema";
+								LOG.info(counterLinea + " - "
+										+ "El beneficiario no se ha insertado ya que el Titular no se ha encontrado"
+										+ " en el sistema");
+
+								isValidAfiliado = false;
+							}
+						} else if (isBeneficiario.toUpperCase().equals("NO")) {
+							afiliado.setIsBeneficiario(false);
+							afiliado.setEstatus(1);
+							afiliado.setIsIncripcion(false);
+							afiliado.setClave(generarClave.getClave(clave));
+							afiliado.setFechaAlta(new Date());
+
+							Cuenta cuenta = cuentaService.findById(idCuentaComercial);
+							afiliado.setCuenta(cuenta);
+
+							Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), corte);
+							afiliado.setFechaCorte(fechaCorte);
+
+							afiliado.setSaldoAcumulado(new Double(0.00));
+							afiliado.setSaldoCorte(new Double(0.00));
 							afiliado.setInscripcion(new Double(0.0));
 
-							afiliado.setServicio(titular.getServicio());
-							afiliado.setCuenta(titular.getCuenta());
-							afiliado.setFechaCorte(titular.getFechaCorte());
-							afiliado.setPeriodicidad(titular.getPeriodicidad());
-
 							afiliadoService.save(afiliado);
-							afiliadoService.save(titular);
-							afiliadoService.insertBeneficiarioUsingJpa(afiliado, titular.getId());
-						} else {
-							log = counterLinea + " - "
-									+ "El beneficiario no se ha insertado ya que el Titular no se ha encontrado"
-									+ " en el sistema";
-							LOG.info(counterLinea + " - "
-									+ "El beneficiario no se ha insertado ya que el Titular no se ha encontrado"
-									+ " en el sistema");
-
-							isValidAfiliado = false;
 						}
-					} else if (isBeneficiario.toUpperCase().equals("NO")) {
-						afiliado.setIsBeneficiario(false);
-						afiliado.setEstatus(1);
-						afiliado.setIsIncripcion(false);
-						afiliado.setClave(generarClave.getClave(clave));
-						afiliado.setFechaAlta(new Date());
+					}
 
-						Cuenta cuenta = cuentaService.findById(idCuentaComercial);
-						afiliado.setCuenta(cuenta);
-
-						Date fechaCorte = calcularFechas.calcularFechas(afiliado.getPeriodicidad(), corte);
-						afiliado.setFechaCorte(fechaCorte);
-
-						afiliado.setSaldoAcumulado(new Double(0.00));
-						afiliado.setSaldoCorte(new Double(0.00));
-						afiliado.setInscripcion(new Double(0.0));
-
-						afiliadoService.save(afiliado);
+					if (!isValidAfiliado) {
+						LOG.info(counterLinea + " - "
+								+ "El afiliado no se ha registrado, verifique los datos que sean correctos");
+					} else {
+						LOG.info(counterLinea + " - " + "El afiliado se ha insertado correctamente");
+						log = counterLinea + " - " + "El afiliado se ha insertado correctamente";
 					}
 				}
-
-				if (!isValidAfiliado) {
-					LOG.info(counterLinea + " - "
-							+ "El afiliado no se ha registrado, verifique los datos que sean correctos");
-				} else {
-					LOG.info(counterLinea + " - " + "El afiliado se ha insertado correctamente");
-					log = counterLinea + " - " + "El afiliado se ha insertado correctamente";
-				}
-			}
 			} else {
 				LOG.info(counterLinea + " - "
 						+ "El afiliado no se ha registrado, verifique los datos que sean correctos");
@@ -874,7 +908,7 @@ public class InsertCargaMasivaCSV {
 	public boolean containsVocal(String cadena) {
 
 		int totalVocales = cadena.replaceAll("[^AEIOUaeiouÁÉÍÓÚáéíóú]", "").length();
-		
+
 		if (totalVocales >= 1) {
 			return true;
 		} else {
@@ -882,5 +916,5 @@ public class InsertCargaMasivaCSV {
 		}
 
 	}
-	
+
 }
