@@ -49,8 +49,6 @@ public class GenerarSaldoCorteScheduler {
 
         LOG.info("Hora Actual: " + hour + ":" + minute + ":" + second + " Año en curso: " + year);
 
-        String rfc = null;
-
         for (Afiliado afiliado : afiliados) {
 
             LOG.info("Id Afiliado: " + afiliado.getId());
