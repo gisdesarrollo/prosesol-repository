@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head></head>
+<meta charset="utf-8" />
 <body class="bg-gradient-primary">
 
 	<!-- Ver Usuarios -->
@@ -23,7 +24,7 @@
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de usuarios
+						<i class="fas fa-table"></i> Catï¿½logo de usuarios
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -77,7 +78,7 @@
 						</div>
 					</div>
 					<div class="card-footer small text-muted">
-						Última actualización: <a
+						ï¿½ltima actualizaciï¿½n: <a
 							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
 					</div>
 				</div>
@@ -114,7 +115,7 @@
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de perfiles
+						<i class="fas fa-table"></i> Catï¿½logo de perfiles
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -163,7 +164,7 @@
 						</div>
 					</div>
 					<div class="card-footer small text-muted">
-						Última actualización: <a
+						ï¿½ltima actualizaciï¿½n: <a
 							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
 					</div>
 				</div>
@@ -199,7 +200,7 @@
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de afiliados
+						<i class="fas fa-table"></i> Catï¿½logo de afiliados
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -257,7 +258,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/afiliados/eliminar/} + ${afiliado.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">
+														onclick="return confirm('ï¿½Estï¿½s seguro de que deseas borrar el registro?')">
 													</a> <a class="dropdown-item" th:href="@{/beneficiarios/crear/} + ${afiliado.id}">Agregar Beneficiario
 													</a>
 												</div>
@@ -306,7 +307,7 @@
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de promotores
+						<i class="fas fa-table"></i> Catï¿½logo de promotores
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -319,7 +320,7 @@
 										<th>Apellido Paterno</th>
 										<th>Apellido Materno</th>
 										<th>Fecha de Alta</th>
-										<th>Correo electrónico</th>
+										<th>Correo electrï¿½nico</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
@@ -331,7 +332,7 @@
 										<th>Apellido Paterno</th>
 										<th>Apellido Materno</th>
 										<th>Fecha de Alta</th>
-										<th>Correo electrónico</th>
+										<th>Correo electrï¿½nico</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
 									</tr>
@@ -359,7 +360,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/promotores/eliminar/} + ${promotor.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
+														onclick="return confirm('ï¿½Estï¿½s seguro de que deseas borrar el registro?')">Borrar
 													</a>
 												</div>
 											</div>
@@ -407,7 +408,7 @@
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de cuentas
+						<i class="fas fa-table"></i> Catï¿½logo de cuentas
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -416,11 +417,11 @@
 								<thead>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
-										<th>Razón social</th>
+										<th>Razï¿½n social</th>
 										<th>RFC</th>
-										<th>Dirección</th>
-										<th>Código Postal</th>
-										<th>País</th>
+										<th>Direcciï¿½n</th>
+										<th>Cï¿½digo Postal</th>
+										<th>Paï¿½s</th>
 										<th>Email</th>
 										<th>Fecha Alta</th>
 										<th>Estatus</th>
@@ -430,11 +431,11 @@
 								<tfoot>
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
-										<th>Razón social</th>
+										<th>Razï¿½n social</th>
 										<th>RFC</th>
-										<th>Dirección</th>
-										<th>Código Postal</th>
-										<th>País</th>
+										<th>Direcciï¿½n</th>
+										<th>Cï¿½digo Postal</th>
+										<th>Paï¿½s</th>
 										<th>Email</th>
 										<th>Fecha Alta</th>
 										<th>Estatus</th>
@@ -466,7 +467,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/cuentas/eliminar/} + ${cuenta.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
+														onclick="return confirm('ï¿½Estï¿½s seguro de que deseas borrar el registro?')">Borrar
 													</a>
 												</div>
 											</div>
@@ -477,7 +478,7 @@
 						</div>
 					</div>
 					<div class="card-footer small text-muted">
-						Fecha de Actualización: <a
+						Fecha de Actualizaciï¿½n: <a
 							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
 					</div>
 				</div>
@@ -495,7 +496,7 @@
 	<!-- /#wrapper -->
 	<!-- Ver Cuentas -->
 
-	<!-- Ver Membresías -->
+	<!-- Ver Membresï¿½as -->
 	<div id="wrapper" th:fragment="membresia">
 
 		<ul th:replace="layout/layout :: sidebar"></ul>
@@ -503,18 +504,18 @@
 
 			<nav th:replace="layout/layout :: nav-bar"></nav>
 			<div class="container-fluid">
-				<h1 class="h3 mb-2 text-gray-800">Membresías</h1>
+				<h1 class="h3 mb-2 text-gray-800">Membresï¿½as</h1>
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a
 						sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-						th:href="@{/membresias/crear}">Crear Membresía</a></li>
+						th:href="@{/membresias/crear}">Crear Membresï¿½a</a></li>
 				</ol>
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Catálogo de membresías
+						<i class="fas fa-table"></i> Catï¿½logo de membresï¿½as
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -524,7 +525,7 @@
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre</th>
-										<th>Tipo de membresía</th>
+										<th>Tipo de membresï¿½a</th>
 										<th>Costo</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
@@ -534,7 +535,7 @@
 									<tr>
 										<th sec:authorize="hasRole('ROLE_USUARIO')">Id</th>
 										<th>Nombre</th>
-										<th>Tipo de membresía</th>
+										<th>Tipo de membresï¿½a</th>
 										<th>Costo</th>
 										<th>Estatus</th>
 										<th sec:authorize="hasRole('ROLE_ADMINISTRADOR')"></th>
@@ -561,7 +562,7 @@
 														th:text="'Editar'"> </a> <a class="dropdown-item"
 														th:href="@{/membresias/eliminar/} + ${membresia.id}"
 														th:text="'Borrar'"
-														onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')">Borrar
+														onclick="return confirm('ï¿½Estï¿½s seguro de que deseas borrar el registro?')">Borrar
 													</a>
 												</div>
 											</div>
@@ -572,7 +573,7 @@
 						</div>
 					</div>
 					<div class="card-footer small text-muted">
-						Fecha de Actualización: <a
+						Fecha de Actualizaciï¿½n: <a
 							th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></a>
 					</div>
 				</div>
@@ -588,7 +589,7 @@
 
 	</div>
 	<!-- /#wrapper -->
-	<!-- /Ver Membresías -->
+	<!-- /Ver Membresï¿½as -->
 </body>
 
 </html>

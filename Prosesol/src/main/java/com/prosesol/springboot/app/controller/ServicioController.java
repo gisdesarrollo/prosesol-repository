@@ -202,7 +202,25 @@ public class ServicioController {
             if (servicio.getId() != null) {
 
                 servicio.setEstatus(true);
-                servicioService.save(servicio);
+                // Se creará un plan por el servicio si se selecciona el checkbox isValid
+
+                if (isPlan != null) {
+                    if (servicio.getCostoTitular() > 0) {
+                        servicio.setIsPlan(true);
+                        servicioService.save(servicio);
+                        guardarPlan(servicio, periodosOpenpay);
+                    } else {
+                        model.addAttribute("error", "El servicio no cuenta con costo " +
+                                "de servicio");
+                        return "/catalogos/servicios/crear";
+                    }
+
+                } else if(servicio.getIsPlan()){
+                    servicioService.save(servicio);
+                }else{
+                    servicio.setIsPlan(false);
+                    servicioService.save(servicio);
+                }
 
                 // Verifica si el servicio se editará con todo y beneficios
 
@@ -223,6 +241,7 @@ public class ServicioController {
                     servicio.setEstatus(true);
 
                     // Se creará un plan por el servicio si se selecciona el checkbox isValid
+
                     if (isPlan != null) {
                         if (servicio.getCostoTitular() > 0) {
                             servicio.setIsPlan(true);

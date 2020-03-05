@@ -17,8 +17,8 @@ public class Plan implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_servicio")
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio")
     private Servicio servicio;
 
     @Column(name = "nombre_servicio")
