@@ -10,6 +10,7 @@ HELP.md
 .settings
 .springBeans
 .sts4-cache
+.properties
 
 ### IntelliJ IDEA ###
 .idea
@@ -26,6 +27,5 @@ HELP.md
 /build/
 
 ### MISC ###
-application.properties
 pom.xml
 application-config.xml
