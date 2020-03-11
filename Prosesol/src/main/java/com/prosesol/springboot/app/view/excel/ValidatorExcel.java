@@ -290,12 +290,9 @@ public class ValidatorExcel {
     }
 
     private String[] generateListSexo(){
-
-        String[] listaSexo = {"Masculino", "Femenino"};
-
-        return listaSexo;
+        return new String[] {"Masculino", "Femenino"};
     }
-    public String[] generarEncabezadoPagos(String[] pagosFields, XSSFSheet sheet)throws CustomValidatorExcelException{
+    public String[] generarEncabezadoPagos(String[] pagosFields)throws CustomValidatorExcelException{
 
         pagosFields[0] = "rfc";
         String[] encabezado = new String[pagosFields.length];

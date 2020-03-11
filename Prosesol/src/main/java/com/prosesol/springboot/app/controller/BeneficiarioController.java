@@ -29,7 +29,7 @@ import java.util.Map;
 @RequestMapping("/beneficiarios")
 public class BeneficiarioController {
 
-	protected Log logger = LogFactory.getLog(BeneficiarioController.class);
+	protected final Log LOG = LogFactory.getLog(BeneficiarioController.class);
 
 	@Value("${app.clave}")
 	private String clave;
@@ -62,8 +62,6 @@ public class BeneficiarioController {
 	public String crear(@PathVariable("id")Long id, Map<String, Object> model) {
 		
 		idAfiliado = id;
-		System.out.println(idAfiliado);
-		
 		Afiliado beneficiario = new Afiliado();
 		
 		model.put("afiliado", beneficiario);
@@ -74,8 +72,7 @@ public class BeneficiarioController {
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(Afiliado afiliado, BindingResult result, Model model,
-						  RedirectAttributes redirect, SessionStatus status) {
+	public String guardar(Afiliado afiliado, SessionStatus status) {
 
 		Rfc rfc;
 		
@@ -124,7 +121,7 @@ public class BeneficiarioController {
 			
 		}catch(Exception e) {
 			e.printStackTrace();
-			logger.error("Error al momento de ejecutar el proceso: " + e);
+			LOG.error("Error al momento de ejecutar el proceso: " + e);
 			return "/error/error_500";
 		}
 		

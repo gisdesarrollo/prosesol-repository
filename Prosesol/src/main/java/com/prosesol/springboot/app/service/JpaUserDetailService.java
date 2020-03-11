@@ -30,7 +30,7 @@ public class JpaUserDetailService implements UserDetailsService {
 	@Autowired
 	IPerfilDao perfilDao;
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	@Transactional(readOnly = true)
@@ -40,19 +40,19 @@ public class JpaUserDetailService implements UserDetailsService {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		try {
 			if (usuario == null) {
-				logger.error("Error login: no existe el usuario " + username);
+				LOG.error("Error login: no existe el usuario " + username);
 				throw new UsernameNotFoundException("Usuario no existe con este nombre: " + username);
 			}
 
 			Perfil perfil = perfilDao.findPerfilByUsuario(usuario.getId());
 
-			logger.info("Role ".concat(perfil.getRoles().getNombre()));
+			LOG.info("Role ".concat(perfil.getRoles().getNombre()));
 			authorities.add(new SimpleGrantedAuthority(perfil.getRoles().getNombre()));
 
-			System.out.println(authorities);
+			LOG.info("authorities: " + authorities);
 
 			if (authorities.isEmpty()) {
-				logger.error("Error login: usuario " + username + " no tiene roles asignados");
+				LOG.error("Error login: usuario " + username + " no tiene roles asignados");
 				throw new UsernameNotFoundException("Error login: usuario " + username + " no tiene roles asignados");
 			}
 		}catch (Exception e){

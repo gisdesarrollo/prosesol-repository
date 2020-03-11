@@ -7,6 +7,6 @@ public enum Eventos {
 	TRIMESTRAL,
 	CUATRIMESTRAL,
 	SEMESTRAL,
-	ANUAL;
+	ANUAL
 	
 }

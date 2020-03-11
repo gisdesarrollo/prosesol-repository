@@ -186,10 +186,6 @@ public class IncidenciaController {
 			List<IncidenciaCustom> historiales = incidenciaService.getHistorialIncidenciaByIdAfiliado(id);
 			idAfiliado = id;
 
-			historiales.forEach(historial -> {
-				System.out.println(historial.getDetalle());
-			});
-
 			model.addAttribute("afiliado", afiliado);
 			model.addAttribute("incidencia", incidencia);
 			model.addAttribute("relServicioBeneficios", getBeneficioByAfiliado(afiliado));
@@ -212,8 +208,6 @@ public class IncidenciaController {
 			List<RelServicioBeneficio> relServicioBeneficio = new ArrayList<RelServicioBeneficio>();
 			List<RelAfiliadoIncidenciaBeneficioCustom> relAfiliadoIncidenciaBeneficio = relAfiliadoIncidenciaBeneficioService
 					.getRelAfiliadoIncidenciaBeneficioByIdIncidencia(id);
-
-			System.out.println(relAfiliadoIncidenciaBeneficio.size());
 
 			if (relAfiliadoIncidenciaBeneficio != null && relAfiliadoIncidenciaBeneficio.size() > 0) {
 
@@ -244,7 +238,7 @@ public class IncidenciaController {
 
 				for (RelServicioBeneficio relSB : relServicioBeneficio) {
 
-					System.out.println(relSB.getBeneficio().toString());
+					LOG.info(relSB.getBeneficio().toString());
 
 					if (relAfiliadoIncidenciaBeneficio.size() > index && relSB.getBeneficio()
 							.getId() == relAfiliadoIncidenciaBeneficio.get(index).getIdBeneficio()) {
@@ -282,11 +276,9 @@ public class IncidenciaController {
 				String nombre = incidencia.getNombreAfiliado();
 				String[] nombreCompleto = nombre.split(" ");
 
-				System.out.println(nombreCompleto.length);
+				LOG.info(nombreCompleto.length);
 
 				if (nombreCompleto.length == 3) {
-
-					System.out.println(nombreCompleto[0] + nombreCompleto[1] + nombreCompleto[2]);
 
 					Long claveAfiliado = afiliadoService.getIdAfiliadoByNombreCompleto(nombreCompleto[0],
 							nombreCompleto[1], nombreCompleto[2]);
@@ -332,7 +324,7 @@ public class IncidenciaController {
 	@Secured("ROLE_ASISTENCIA")
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public String guardar(Incidencia incidencia, @ModelAttribute RelServicioBeneficioDto relServicioBeneficios,
-			RedirectAttributes redirect,SessionStatus status) {
+			RedirectAttributes redirect) {
 
 		String messageStatus = null;
 
@@ -386,9 +378,7 @@ public class IncidenciaController {
 						}
 					}
 					int counterLinea = 1;
-					int bIndex = 0;
-					System.out.println(getRelAfiliadoIncidenciaBeneficio.size());
-					System.out.println(relServicioBeneficio.size());
+
 					if (getRelAfiliadoIncidenciaBeneficio.size() < relBeneficio.size()) {
 
 						if (relBeneficio.size() >= counterLinea) {
@@ -566,10 +556,7 @@ public class IncidenciaController {
 	 */
 
 	public List<RelServicioBeneficio> getBeneficioByAfiliado(Afiliado afiliado) {
-
-		List<RelServicioBeneficio> relServicioBeneficios = relServicioBeneficio
-				.getBeneficioByIdAfiliado(afiliado.getId());
-		return relServicioBeneficios;
+		return relServicioBeneficio.getBeneficioByIdAfiliado(afiliado.getId());
 	}
 
 	@ModelAttribute("estatusIncidencia")

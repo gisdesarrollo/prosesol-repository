@@ -36,7 +36,7 @@ public class AsyncCargaVigor {
             , Long idCuentaComercial)
             throws InterruptedException, IOException {
 
-        System.out.println("Entra al método para la lectura de archivo");
+        LOG.info("Entra al método para la lectura de archivo");
 
         Thread.sleep(5000);
         tempAfiliadoRepository.insertAfiliadosOnTemp(idCuentaComercial);

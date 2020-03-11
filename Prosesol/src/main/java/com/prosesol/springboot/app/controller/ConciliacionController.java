@@ -30,7 +30,7 @@ import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 @RequestMapping("/conciliacion")
 public class ConciliacionController {
 	
-	protected static final Log logger = LogFactory.getLog(ConciliacionController.class);
+	protected static final Log LOG = LogFactory.getLog(ConciliacionController.class);
 	
 	 @Autowired
 	    private ReportesExcelImpl reportesExcelImpl;
@@ -80,7 +80,7 @@ public class ConciliacionController {
         } catch (CustomValidatorExcelException e) {
 
             redirect.addFlashAttribute("error", e.getMessage());
-            System.out.println("Error: " + e.getMessage());
+            LOG.info("Error: " + e.getMessage());
             return "redirect:/conciliacion/afiliados";
 
         }
@@ -123,9 +123,9 @@ public class ConciliacionController {
         	          nombreArchivo = file.getOriginalFilename().substring(0, indexOfName);
                   }
 
-        	      logger.info("File Size: " + file.getBytes().length);
-        	      logger.info("File Type: " + file.getContentType());
-        	      logger.info("File Name: " + file.getOriginalFilename());
+                  LOG.info("File Size: " + file.getBytes().length);
+                  LOG.info("File Type: " + file.getContentType());
+                  LOG.info("File Name: " + file.getOriginalFilename());
 
 				  byte[] bytes = file.getBytes();
 				  asyncConciliacion.procesaArchivoAsync(isVigor,isConciliacion, nombreArchivo, bytes);
@@ -139,7 +139,7 @@ public class ConciliacionController {
 
         } catch (Exception ne) {
 
-            logger.error("Formato incorrecto", ne);
+            LOG.error("Formato incorrecto", ne);
             redirect.addFlashAttribute("error", "Error al momento de realizar la inserción de pagos");
 
             return "redirect:/conciliacion/afiliados";

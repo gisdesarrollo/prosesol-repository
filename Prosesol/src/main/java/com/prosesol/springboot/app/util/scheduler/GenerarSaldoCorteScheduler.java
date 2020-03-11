@@ -22,7 +22,7 @@ public class GenerarSaldoCorteScheduler {
 
     private static final Logger LOG = LoggerFactory.getLogger(GenerarSaldoCorteScheduler.class);
 
-    private Date fechaActual = new Date();
+    private final Date fechaActual = new Date();
 
     @Autowired
     private IAfiliadoService afiliadoService;

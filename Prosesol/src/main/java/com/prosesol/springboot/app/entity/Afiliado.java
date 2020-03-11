@@ -173,20 +173,8 @@ public class Afiliado implements Serializable{
 		relAfiliadoIncidencia = new HashSet<RelAfiliadoIncidencia>();
 	}
 
-	public Set<Beneficiario> getBeneficiarios() {
-		return beneficiarios;
-	}
-
-	public void setBeneficiarios(Set<Beneficiario> beneficiarios) {
-		this.beneficiarios = beneficiarios;
-	}	
-
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getNombre() {
@@ -349,24 +337,12 @@ public class Afiliado implements Serializable{
 		this.entidadFederativa = entidadFederativa;
 	}
 
-	public String getInfonavit() {
-		return infonavit;
-	}
-
-	public void setInfonavit(String infonavit) {
-		this.infonavit = infonavit;
-	}
-
 	public Long getNumeroInfonavit() {
 		return numeroInfonavit;
 	}
 
 	public void setNumeroInfonavit(Long numeroInfonavit) {
 		this.numeroInfonavit = numeroInfonavit;
-	}
-
-	public Date getFechaAlta() {
-		return fechaAlta;
 	}
 
 	public void setFechaAlta(Date fechaAlta) {
@@ -403,10 +379,6 @@ public class Afiliado implements Serializable{
 
 	public void setComentarios(String comentarios) {
 		this.comentarios = comentarios;
-	}
-
-	public void addBeneficiario(Beneficiario beneficiario) {
-		beneficiarios.add(beneficiario);
 	}
 
 	public Boolean getIsBeneficiario() {
@@ -457,10 +429,6 @@ public class Afiliado implements Serializable{
 		this.periodicidad = periodicidad;
 	}
 
-	public Double getInscripcion() {
-		return inscripcion;
-	}
-
 	public void setInscripcion(Double inscripcion) {
 		this.inscripcion = inscripcion;
 	}
@@ -483,26 +451,6 @@ public class Afiliado implements Serializable{
 
 	public Integer getCorte() {
 		return corte;
-	}
-
-	public void setCorte(Integer corte) {
-		this.corte = corte;
-	}
-	
-	public Set<RelAfiliadoIncidencia> getRelAfiliadoIncidencia() {
-		return relAfiliadoIncidencia;
-	}
-
-	public void setRelAfiliadoIncidencia(Set<RelAfiliadoIncidencia> relAfiliadoIncidencia) {
-		this.relAfiliadoIncidencia = relAfiliadoIncidencia;
-	}
-
-	public Boolean getBeneficiario() {
-		return isBeneficiario;
-	}
-
-	public void setBeneficiario(Boolean beneficiario) {
-		isBeneficiario = beneficiario;
 	}
 
 	public Boolean getIsIncripcion() {

@@ -41,7 +41,7 @@ public class LogCM implements Serializable {
     @Column(name = "is_conciliacion")
     private boolean isConciliacion;
     
-    public LogCM(){};
+    public LogCM(){}
     
     
 

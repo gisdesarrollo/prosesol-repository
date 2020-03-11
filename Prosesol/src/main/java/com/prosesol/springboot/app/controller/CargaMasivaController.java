@@ -58,8 +58,6 @@ public class CargaMasivaController {
     @GetMapping("/afiliados")
     public String cargaMasiva(Model model, RedirectAttributes redirect) {
 
-        List<LogCM> lLogCm = logCMService.findAllLogsAfiliados();
-
         try{
             model.addAttribute("reportes", logCMService.findAllLogsAfiliados());
         }catch(Exception e){
@@ -82,7 +80,6 @@ public class CargaMasivaController {
     @Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
     @GetMapping("/vigor")
     public String cargaMasivaVigor(Model model, RedirectAttributes redirect){
-        List<LogCM> lLogCm = logCMService.findAllLogsVigor();
 
         try{
 
@@ -280,7 +277,6 @@ public class CargaMasivaController {
      */
     @ModelAttribute("cuentas")
     public List<Cuenta> getAllCuentas(){
-        List<Cuenta> cuentaList = cuentaService.findAll();
-        return cuentaList;
+        return cuentaService.findAll();
     }
 }
