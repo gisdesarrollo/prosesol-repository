@@ -47,10 +47,7 @@ public class PeriodicidadServiceImpl implements IPeriodicidadService{
 	
 	@Override
 	public List<Eventos> getAllEventos() {
-		
-		List<Eventos> eventos = new ArrayList<Eventos>(Arrays.asList(Eventos.values()));
-		
-		return eventos;
+		return new ArrayList<>(Arrays.asList(Eventos.values()));
 	}
 
 	@Override

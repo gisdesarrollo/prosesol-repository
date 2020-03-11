@@ -58,7 +58,7 @@ public class CentroContactoController {
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid CentroContacto centroContacto, BindingResult result, Model model, 
+	public String guardar(@Valid CentroContacto centroContacto, BindingResult result,
 						  RedirectAttributes redirect,  SessionStatus status) {
 		
 		LOG.info("Entra al método de guardar");

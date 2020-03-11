@@ -28,7 +28,7 @@ import com.prosesol.springboot.app.service.IRoleService;
 @RequestMapping("/perfiles")
 public class PerfilController {
 
-	protected Log logger = LogFactory.getLog(this.getClass());
+	protected final Log LOG = LogFactory.getLog(this.getClass());
 
 	@Autowired
 	private IPerfilService perfilService;
@@ -43,7 +43,7 @@ public class PerfilController {
 		model.addAttribute("titulo", "Perfiles");
 		model.addAttribute("perfil", perfilService.findAll());
 
-		logger.info("Datos encontrados " + perfilService.findAll().toString());
+		LOG.info("Datos encontrados " + perfilService.findAll().toString());
 
 		return "catalogos/perfiles/ver";
 
@@ -65,7 +65,7 @@ public class PerfilController {
 
 	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Perfil perfil, BindingResult result, Model model, RedirectAttributes redirect,
+	public String guardar(@Valid Perfil perfil, BindingResult result, Model model,
 			SessionStatus status) {
 
 		if (result.hasErrors()) {
@@ -74,10 +74,10 @@ public class PerfilController {
 		}
 
 		if (perfil.getId() != null) {
-			logger.info("Perfil editado con éxito");
+			LOG.info("Perfil editado con éxito");
 		} else {
 			perfil.setEstatus(true);
-			logger.info("Perfil creado con éxito");
+			LOG.info("Perfil creado con éxito");
 		}
 
 		perfilService.save(perfil);
@@ -89,7 +89,7 @@ public class PerfilController {
 
 	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/editar/{id}")
-	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
+	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model) {
 
 		Perfil perfil = null;
 
@@ -118,14 +118,14 @@ public class PerfilController {
 
 	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/borrar/{id}")
-	public String borrar(@PathVariable("id") Long id, RedirectAttributes redirect) {
+	public String borrar(@PathVariable("id") Long id) {
 
-		logger.info("Id de Perfil: " + id);
+		LOG.info("Id de Perfil: " + id);
 
 		if (id > 0) {
 
 			perfilService.deleteById(id);
-			logger.info("El perfil se ha borrado correctamente");
+			LOG.info("El perfil se ha borrado correctamente");
 		}
 
 		return "redirect:/perfiles/ver";

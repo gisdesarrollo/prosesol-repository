@@ -31,7 +31,6 @@ public class ServicioServiceImpl implements IServicioService {
 	@Transactional
 	public void delete(Long id) {
 		servicioDao.deleteById(id);
-		;
 	}
 
 	@Override

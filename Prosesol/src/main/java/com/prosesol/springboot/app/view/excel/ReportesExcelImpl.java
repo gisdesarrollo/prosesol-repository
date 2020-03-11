@@ -216,7 +216,7 @@ public class ReportesExcelImpl implements IReportesExcel {
          Row header = sheet.createRow(0);
 
          String[] pagosFields = pagoService.getVariablesPagos();
-         String[] encabezado = validatorExcel.generarEncabezadoPagos(pagosFields, sheet);
+         String[] encabezado = validatorExcel.generarEncabezadoPagos(pagosFields);
 
          try {
 

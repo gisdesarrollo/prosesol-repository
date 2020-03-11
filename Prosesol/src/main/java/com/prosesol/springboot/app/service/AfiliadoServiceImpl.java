@@ -82,10 +82,7 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 
 	@Override
 	public List<Paises> getAllPaises() {
-		
-		List<Paises> paises = new ArrayList<Paises>(Arrays.asList(Paises.values()));
-		
-		return paises;
+		return new ArrayList<>(Arrays.asList(Paises.values()));
 	}
 
 	@Override

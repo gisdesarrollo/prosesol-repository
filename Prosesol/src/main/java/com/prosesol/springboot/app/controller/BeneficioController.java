@@ -55,7 +55,7 @@ public class BeneficioController {
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Beneficio beneficio, BindingResult result, Model model, 
+	public String guardar(@Valid Beneficio beneficio, BindingResult result,
 						  RedirectAttributes redirect, SessionStatus status) {
 		
 		LOGGER.info("Guardar Beneficio");

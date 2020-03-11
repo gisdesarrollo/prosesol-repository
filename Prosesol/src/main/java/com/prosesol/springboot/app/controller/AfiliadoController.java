@@ -374,14 +374,13 @@ public class AfiliadoController {
 	 * Candidato
 	 * 
 	 * @param id
-	 * @param redirect
 	 * @param status
 	 * @return
 	 */
 
 	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/cambiar_estatus/{id}")
-	public String actDesctAfiliado(@PathVariable(value = "id") Long id, RedirectAttributes redirect,
+	public String actDesctAfiliado(@PathVariable(value = "id") Long id,
 			SessionStatus status) {
 
 		Afiliado afiliado = afiliadoService.findById(id);

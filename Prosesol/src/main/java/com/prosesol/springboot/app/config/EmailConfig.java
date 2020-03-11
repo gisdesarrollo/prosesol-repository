@@ -10,7 +10,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 //@Configuration
 public class EmailConfig {
 
-	private static String template = "classpath:/templates/";
+	private static final String template = "classpath:/templates/";
 	
 	@Bean
 	public SpringTemplateEngine springTemplateEngine() {

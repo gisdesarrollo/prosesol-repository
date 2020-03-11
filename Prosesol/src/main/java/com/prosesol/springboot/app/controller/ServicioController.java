@@ -524,7 +524,7 @@ public class ServicioController {
     @Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
     @RequestMapping(value = "/crear", method = RequestMethod.POST, params = "action=delete")
     public String borrarBeneficios(@RequestParam(name = "beneficio[]", required = false) List<Long> beneficios,
-                                   Model model, RedirectAttributes redirect) {
+                                   RedirectAttributes redirect) {
         try {
 
             for (Long beneficio : beneficios) {
@@ -561,11 +561,7 @@ public class ServicioController {
      */
 
     public List<RelServicioBeneficio> getRelServicioBeneficioByIdServicio(Long idServicio) {
-
-        List<RelServicioBeneficio> relServicioBeneficio = relServicioBeneficioService
-                .getRelServicioBeneficioByIdServicio(idServicio);
-
-        return relServicioBeneficio;
+        return relServicioBeneficioService.getRelServicioBeneficioByIdServicio(idServicio);
     }
 
     /**
@@ -576,11 +572,7 @@ public class ServicioController {
 
     @ModelAttribute("centros")
     public List<CentroContacto> getAllCentroContacto() {
-
-        List<CentroContacto> centrosContacto = centroContactoService.findAll();
-
-        return centrosContacto;
-
+        return centroContactoService.findAll();
     }
 
     /**
@@ -656,8 +648,6 @@ public class ServicioController {
                     }
                     if (id != idBeneficiario) {
                         for (Map.Entry<Long, String> entry : beneficioDescripcion.entrySet()) {
-                            System.out.println("id: " + id);
-                            System.out.println("entry: " + entry.getKey());
                             if (entry.getKey() == id) {
                                 relServicioBeneficio = new RelServicioBeneficio(servicio, beneficio, false, false, entry.getValue());
                                 break;

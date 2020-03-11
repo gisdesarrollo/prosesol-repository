@@ -61,7 +61,7 @@ public class PeriodicidadController {
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, 
-			Map<String, Object> model, RedirectAttributes redirect) {
+			Map<String, Object> model) {
 		
 		Periodicidad periodicidad = null;
 		
@@ -83,7 +83,7 @@ public class PeriodicidadController {
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "crear", method = RequestMethod.POST)
-	public String guardar(@Valid Periodicidad periodicidad, BindingResult result, Model model, 
+	public String guardar(@Valid Periodicidad periodicidad, BindingResult result,
 						  RedirectAttributes redirect, SessionStatus status) {
 		
 		String messageStatus = "";

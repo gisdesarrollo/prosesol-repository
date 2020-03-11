@@ -63,7 +63,7 @@ public class InsertCargaMasivaCSV {
 	private Integer diaCorte;
 	private String dia;
 	private DateFormat formatoFecha;
-	private Collator collator = Collator.getInstance(new Locale("es"));
+	private final Collator collator = Collator.getInstance(new Locale("es"));
 	private DateFormat formatoMesYear;
 	private String fechaAfiliacion;
 	private String fechaHoy;

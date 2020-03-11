@@ -35,7 +35,7 @@ import com.prosesol.springboot.app.service.IUsuarioService;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-	protected final Log logger = LogFactory.getLog(this.getClass());
+	protected final Log LOG = LogFactory.getLog(this.getClass());
 
 	@Value("${app.password}")
 	private String password;
@@ -59,7 +59,7 @@ public class UsuarioController {
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 
-		logger.info("Entra al método de ver usuario");
+		LOG.info("Entra al método de ver usuario");
 
 		try {
 			model.addAttribute("titulo", "Usuarios");
@@ -75,7 +75,7 @@ public class UsuarioController {
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
 
-		logger.info("Entra al método crear usuario");
+		LOG.info("Entra al método crear usuario");
 
 		Usuario usuario = new Usuario();
 
@@ -94,24 +94,20 @@ public class UsuarioController {
 		String passwordUser = null;
 		try {
 
-			for (Perfil perfil : usuario.getPerfiles()) {
-				System.out.println(perfil);
-			}
-
 			if (result.hasErrors()) {
 				model.addAttribute("titulo", "Crear Usuario");
 				return "catalogos/usuarios/editar";
 			}
 
 			if (usuario.getId() != null) {
-				logger.info("Registro: " + usuario.getNombre() + " editado con éxito");
+				LOG.info("Registro: " + usuario.getNombre() + " editado con éxito");
 				
 			} else {
 				Usuario username = usuarioDao.findByUsername(usuario.getUsername().toString());
 				if (username == null) {
 
 					usuario.setEstatus(true);
-					logger.info("Registro creado con éxito");
+					LOG.info("Registro creado con éxito");
 
 					for (int i = 0; i < 2; i++) {
 						passwordUser = passwordEncoder.encode(password);
@@ -182,15 +178,15 @@ public class UsuarioController {
 	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/cambiar", method = RequestMethod.POST)
 	public String cambiar(@ModelAttribute(name = "username") String username,
-			@ModelAttribute(name = "password") String password, RedirectAttributes redirect, SessionStatus status) {
+			@ModelAttribute(name = "password") String password, RedirectAttributes redirect) {
 
 		String passwordUser = null;
 		Usuario usuario = new Usuario();
 
 		try {
 
-			System.out.println(username);
-			System.out.println(password);
+			LOG.info("USERNAME: " + username);
+			LOG.info("PASSWORD: " + password);
 
 			usuario = usuarioService.findByUsername(username);
 			for (int i = 0; i < 2; i++) {
@@ -199,8 +195,8 @@ public class UsuarioController {
 
 			usuario.setPassword(passwordUser);
 
-			System.out.println(passwordUser);
-			System.out.println(usuario.toString());
+			LOG.info("USERNAME: " + username);
+			LOG.info("PASSWORD CODIFIED: " + passwordUser);
 
 			usuarioService.save(usuario);
 

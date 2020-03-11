@@ -40,7 +40,7 @@ public class LoginController {
 	@GetMapping(value = {"login", "/home", "/"})
 	public String login(@RequestParam(value = "error", required = false)String error, 
 			@RequestParam(value = "logout", required = false)String logout,
-			Model model,  Principal principal, RedirectAttributes redirect) {
+			Model model,  Principal principal) {
 				
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		

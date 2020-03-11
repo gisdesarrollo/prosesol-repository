@@ -38,7 +38,7 @@ public class CuentaServiceImpl implements ICuentaService{
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		cuentaDao.deleteById(id);;
+		cuentaDao.deleteById(id);
 		
 	}
 
