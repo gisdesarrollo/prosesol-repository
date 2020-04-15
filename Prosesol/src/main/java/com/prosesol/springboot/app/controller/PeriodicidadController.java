@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,13 +33,13 @@ public class PeriodicidadController {
 	@Autowired 
 	private IPeriodicidadService periodicidadService;
 	
-	private final Log LOGGER = LogFactory.getLog(this.getClass());
+	private final Log LOG = LogFactory.getLog(this.getClass());
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
 	public String ver(Model model) {
 		
-		LOGGER.info("Entra al método ver periodo");
+		LOG.info("Entra al método ver periodo");
 		
 		model.addAttribute("periodicidad", periodicidadService.findAll());
 		
@@ -68,7 +69,7 @@ public class PeriodicidadController {
 		if(id > 0) {
 			periodicidad = periodicidadService.findById(id);
 			if(periodicidad == null) {
-				LOGGER.error("No se ha podido encontrar la periodicidad en la base de datos");
+				LOG.error("No se ha podido encontrar la periodicidad en la base de datos");
 				return "redirect:/periodicidades/ver";
 			}
 		}else {
@@ -123,6 +124,12 @@ public class PeriodicidadController {
 				return "catalogos/periodicidades/ver";
 			}
 			
+		}catch(DataIntegrityViolationException dae) {
+			LOG.error("Error: ", dae);
+			redirect.addFlashAttribute("error", "El periodo no se puede eliminar porque " +
+					"está asociado a uno o más afiliados");
+
+			return "redirect:/periodicidades/ver";
 		}catch(Exception e) {
 			e.printStackTrace();
 			redirect.addFlashAttribute("error", "Ocurrió un problema en el sistema, contacte al administrador");
@@ -131,7 +138,7 @@ public class PeriodicidadController {
 		}
 		
 		redirect.addFlashAttribute("success", "El periodo se ha eliminado correctamente");
-		
+
 		return "redirect:/periodicidades/ver";
 		
 	}
