@@ -145,6 +145,9 @@ public class Candidato implements Serializable{
 
 	@Column(name = "inscripcion")
 	private Double inscripcion;
+	
+	@Column(name = "is_inscripcion")
+	private Boolean isIncripcion;
 
 	@NotNull(message = "Seleccione el tipo de servicio")
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -473,6 +476,14 @@ public class Candidato implements Serializable{
 
 	public void setInscripcion(Double inscripcion) {
 		this.inscripcion = inscripcion;
+	}
+	
+	public Boolean getIsIncripcion() {
+		return isIncripcion;
+	}
+
+	public void setIsIncripcion(Boolean isIncripcion) {
+		this.isIncripcion = isIncripcion;
 	}
 
 	public Promotor getPromotor() {

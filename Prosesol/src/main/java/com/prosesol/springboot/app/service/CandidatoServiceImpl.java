@@ -65,4 +65,11 @@ public class CandidatoServiceImpl implements ICandidatoService{
 		candidatoRepository.insertCandidatoIntoAfiliado(candidato);
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public List<Candidato> getCandidatoBySearchNombreCompleto(String nombre, String apellidoPaterno,
+			String apellidoMaterno) {
+		return candidatoDao.getCandidatoBySearchNombreCompleto(nombre, apellidoPaterno, apellidoMaterno) ;
+	}
+
 }

@@ -2,6 +2,7 @@ package com.prosesol.springboot.app.controller;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -203,11 +204,12 @@ public class CandidatoController {
 			candidato.setEstatus(1);
 			candidato.setIsBeneficiario(false);
 			candidato.setClave(generarClave.getClave(clave));
+			candidato.setFechaAlta(new Date());
+			candidato.setSaldoAcumulado(candidato.getServicio().getCostoTitular() + candidato.getServicio().getInscripcionTitular());
+			candidato.setSaldoCorte(candidato.getServicio().getCostoTitular() + candidato.getServicio().getInscripcionTitular());
 
 			candidatoService.insertCandidatoIntoAfiliado(candidato);
-
-			candidato.setEstatus(4);
-			candidatoService.save(candidato);
+			candidatoService.deleteById(id);
 
 			flashMessage = "El candidato se ha activo con número de clave: " + candidato.getClave();
 

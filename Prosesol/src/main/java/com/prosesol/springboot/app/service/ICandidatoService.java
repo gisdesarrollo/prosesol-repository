@@ -21,4 +21,7 @@ public interface ICandidatoService {
 
 	public void insertCandidatoIntoAfiliado(Candidato id);
 	
+	public List<Candidato> getCandidatoBySearchNombreCompleto(String nombre, String apellidoPaterno,
+			String apellidoMaterno);
+	
 }
