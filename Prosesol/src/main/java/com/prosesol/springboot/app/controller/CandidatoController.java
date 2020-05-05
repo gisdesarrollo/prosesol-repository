@@ -2,9 +2,7 @@ package com.prosesol.springboot.app.controller;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
-
 import javax.validation.Valid;
 
 import com.josketres.rfcfacil.Rfc;
@@ -54,10 +52,7 @@ public class CandidatoController {
 
 	@Autowired
 	private ICuentaService cuentaService;
-
-	@Autowired
-	private IAfiliadoService afiliadoService;
-
+	
 	@Autowired
 	private GenerarClave generarClave;
 	
@@ -197,26 +192,26 @@ public class CandidatoController {
 	@RequestMapping(value = "/estatus/{id}")
 	public String activarCandidato(@PathVariable("id") Long id, RedirectAttributes redirect, SessionStatus status){
 
-		Candidato candidato = candidatoService.findById(id);
 		String flashMessage = "";
+		boolean storedProcedureM;
 		try{
-
-			candidato.setEstatus(1);
-			candidato.setIsBeneficiario(false);
-			candidato.setClave(generarClave.getClave(clave));
-			candidato.setFechaAlta(new Date());
-			candidato.setSaldoAcumulado(candidato.getServicio().getCostoTitular() + candidato.getServicio().getInscripcionTitular());
-			candidato.setSaldoCorte(candidato.getServicio().getCostoTitular() + candidato.getServicio().getInscripcionTitular());
-
-			candidatoService.insertCandidatoIntoAfiliado(candidato);
-			candidatoService.deleteById(id);
-
-			flashMessage = "El candidato se ha activo con número de clave: " + candidato.getClave();
+			
+			String claveAfiliado=generarClave.getClave(clave);
+			storedProcedureM = candidatoService.insertaCandidatoIntoAfiliado(id,claveAfiliado);
+			if(storedProcedureM) {
+				 candidatoService.deleteById(id);
+					 
+			}else {
+				redirect.addFlashAttribute("error","El candidato no se pudo encontrar");
+						return "redirect:/candidatos/ver";
+			}
+							
+			flashMessage = "El candidato se ha activo con número de clave: " + claveAfiliado;
 
 			status.setComplete();
 		}catch (Exception e){
 			LOG.error("Error al momento de activar al candidato", e);
-			redirect.addFlashAttribute("error", "Error a momento de activar al candidato");
+			redirect.addFlashAttribute("error","Error a momento de activar al candidato" );
 			return "redirect:/candidatos/ver";
 		}
 

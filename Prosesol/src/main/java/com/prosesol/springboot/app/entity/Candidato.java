@@ -21,12 +21,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
-import com.prosesol.springboot.app.util.AfiliadoAsistencia;
 
 @Entity
 @Table(name = "candidatos")
@@ -153,7 +150,8 @@ public class Candidato implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_servicio")
 	private Servicio servicio;
-
+	
+	@NotNull(message = "Seleccione el periodo del servicio")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_periodicidad")
 	private Periodicidad periodicidad;
