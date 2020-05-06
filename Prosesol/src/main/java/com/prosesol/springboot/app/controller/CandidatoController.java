@@ -193,22 +193,21 @@ public class CandidatoController {
 	public String activarCandidato(@PathVariable("id") Long id, RedirectAttributes redirect, SessionStatus status){
 
 		String flashMessage = "";
-		boolean storedProcedureM;
+		final boolean IS_VALID;
 		try{
 			
-			String claveAfiliado=generarClave.getClave(clave);
-			storedProcedureM = candidatoService.insertaCandidatoIntoAfiliado(id,claveAfiliado);
-			if(storedProcedureM) {
+			String claveAfiliado = generarClave.getClave(clave);
+			IS_VALID = candidatoService.insertaCandidatoIntoAfiliado(id, claveAfiliado);
+			if(IS_VALID) {
 				 candidatoService.deleteById(id);
-					 
 			}else {
 				redirect.addFlashAttribute("error","El candidato no se pudo encontrar");
 						return "redirect:/candidatos/ver";
 			}
 							
 			flashMessage = "El candidato se ha activo con número de clave: " + claveAfiliado;
-
 			status.setComplete();
+
 		}catch (Exception e){
 			LOG.error("Error al momento de activar al candidato", e);
 			redirect.addFlashAttribute("error","Error a momento de activar al candidato" );
