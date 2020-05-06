@@ -51,7 +51,8 @@ public class CandidatoRepository {
             "id_cta_comercial,\n" +
             "id_periodicidad,\n" +
             "id_promotor,\n" +
-            "id_servicio\n" +
+            "id_servicio,\n" +
+            "is_inscripcion\n" +
             "from candidatos where id_candidato = ?1";
 
     @Transactional

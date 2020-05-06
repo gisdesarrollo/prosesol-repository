@@ -3,8 +3,8 @@ package com.prosesol.springboot.app.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import com.prosesol.springboot.app.repository.InsertaCandidatoIntoAfiliadoRepository;
 
-import com.prosesol.springboot.app.repository.CandidatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +19,13 @@ public class CandidatoServiceImpl implements ICandidatoService{
 
 	@Autowired
 	private ICandidatoDao candidatoDao;
+	
 
-	@Autowired
+	/*@Autowired
 	private CandidatoRepository candidatoRepository;
+	*/
+	@Autowired
+	private InsertaCandidatoIntoAfiliadoRepository candidatoRepository;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -60,9 +64,22 @@ public class CandidatoServiceImpl implements ICandidatoService{
 		return new ArrayList<>(Arrays.asList(Paises.values()));
 	}
 
-	@Override
+	/*@Override
 	public void insertCandidatoIntoAfiliado(Candidato candidato) {
 		candidatoRepository.insertCandidatoIntoAfiliado(candidato);
+	}*/
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<Candidato> getCandidatoBySearchNombreCompleto(String nombre, String apellidoPaterno,
+			String apellidoMaterno) {
+		return candidatoDao.getCandidatoBySearchNombreCompleto(nombre, apellidoPaterno, apellidoMaterno) ;
 	}
+
+	@Override
+	public boolean insertaCandidatoIntoAfiliado(Long idCandidato,String clave ) {
+		return candidatoRepository.insertAfiliado(idCandidato,clave);
+		
+	}	
 
 }

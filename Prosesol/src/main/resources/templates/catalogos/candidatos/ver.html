@@ -33,7 +33,7 @@
 							<hr>
 
 							<div>
-								<table class="table table-bordered" id="dataTable">
+								<table class="table table-bordered" id="candidatos">
 									<thead>
 									<tr>
 										<th>Opciones</th>
@@ -46,43 +46,6 @@
 										<th>RFC</th>
 									</tr>
 									</thead>
-									<tbody>
-									<tr th:each="candidato : ${candidatos}" th:if="${candidato.estatus} == 3">
-										<td>
-											<div class="dropdown">
-												<button class="btn btn-info btn-xs dropdown-toggle"
-														type="button" id="dropdownMenuButton"
-														data-toggle="dropdown" aria-haspopup="true"
-														aria-expanded="false">
-													<i class="fas fa-stream"></i>
-												</button>
-												<div class="dropdown-menu animated--fade-in"
-													 aria-labelledby="dropdownMenuButton">
-
-													<a class="dropdown-item"
-													   th:href="@{/candidatos/editar/} + ${candidato.id}"
-													   th:text="'Editar'"> </a>
-
-													<a class="dropdown-item"
-													   th:href="@{/candidatos/estatus/} + ${candidato.id}"
-													   th:text="'Activar'"> </a>
-
-													<a class="dropdown-item border-top text-danger"
-													   th:href="@{/candidatos/eliminar/} + ${candidato.id}"
-													   th:text="'Borrar'"
-													   onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')"></a>
-												</div>
-											</div>
-										</td>
-										<td th:text="${candidato.nombre}"></td>
-										<td th:text="${candidato.apellidoPaterno}"></td>
-										<td th:text="${candidato.apellidoMaterno}"></td>
-										<td th:text="${candidato.email}"></td>
-										<td th:text="${candidato.telefonoFijo}"></td>
-										<td th:text="${candidato.telefonoMovil}"></td>
-										<td th:text="${candidato.rfc}"></td>
-									</tr>
-									</tbody>
 								</table>
 
 							</div>

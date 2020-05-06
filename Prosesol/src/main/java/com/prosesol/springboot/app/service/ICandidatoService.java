@@ -1,7 +1,6 @@
 package com.prosesol.springboot.app.service;
 
 import java.util.List;
-
 import com.prosesol.springboot.app.entity.Candidato;
 import com.prosesol.springboot.app.util.Paises;
 
@@ -19,6 +18,12 @@ public interface ICandidatoService {
 	
 	public List<Paises> getAllPaises();
 
-	public void insertCandidatoIntoAfiliado(Candidato id);
+	//public void insertCandidatoIntoAfiliado(Candidato id);
+	
+	public List<Candidato> getCandidatoBySearchNombreCompleto(String nombre, String apellidoPaterno,
+			String apellidoMaterno);
+	
+	public boolean insertaCandidatoIntoAfiliado(Long idCandidato,String clave);
+	
 	
 }
