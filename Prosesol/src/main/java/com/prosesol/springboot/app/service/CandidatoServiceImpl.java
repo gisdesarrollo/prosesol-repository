@@ -19,11 +19,7 @@ public class CandidatoServiceImpl implements ICandidatoService{
 
 	@Autowired
 	private ICandidatoDao candidatoDao;
-	
 
-	/*@Autowired
-	private CandidatoRepository candidatoRepository;
-	*/
 	@Autowired
 	private InsertaCandidatoIntoAfiliadoRepository candidatoRepository;
 	

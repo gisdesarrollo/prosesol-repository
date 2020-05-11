@@ -25,7 +25,7 @@ public class DeleteLogSheduler {
 	@Autowired
 	private ILogCMService logService;
 	
-	@Scheduled(cron = "0 0 12 * * SAT",zone = "America/Mexico_City")
+	@Scheduled(cron = "0 0 12 * * WED",zone = "America/Mexico_City")
 	public void deleteLogs() {
 		Calendar semana = Calendar.getInstance();
 		semana.add(Calendar.DATE,-6);
