@@ -13,5 +13,4 @@ public interface ICandidatoDao extends DataTablesRepository<Candidato, Long>{
             "and a.apellido_materno like %?3%", nativeQuery = true)
 	public List<Candidato> getCandidatoBySearchNombreCompleto(String nombre, String apellidoPaterno,
 														String apellidoMaterno);
-
 }

@@ -60,11 +60,6 @@ public class CandidatoServiceImpl implements ICandidatoService{
 		return new ArrayList<>(Arrays.asList(Paises.values()));
 	}
 
-	/*@Override
-	public void insertCandidatoIntoAfiliado(Candidato candidato) {
-		candidatoRepository.insertCandidatoIntoAfiliado(candidato);
-	}*/
-
 	@Override
 	@Transactional(readOnly=true)
 	public List<Candidato> getCandidatoBySearchNombreCompleto(String nombre, String apellidoPaterno,
