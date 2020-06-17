@@ -196,7 +196,6 @@ public class UsuarioController {
 			usuario.setPassword(passwordUser);
 
 			LOG.info("USERNAME: " + username);
-			LOG.info("PASSWORD CODIFIED: " + passwordUser);
 
 			usuarioService.save(usuario);
 

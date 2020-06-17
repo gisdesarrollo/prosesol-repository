@@ -50,5 +50,10 @@ public class UsuarioServiceImpl implements IUsuarioService{
 		return usuarioDao.findByUsername(username);
 	}
 
+	@Override
+	public Usuario findUsuarioByEmail(String email) {
+		return usuarioDao.findUsuarioByEmail(email);
+	}
+
 
 }
