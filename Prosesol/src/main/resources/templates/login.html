@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:fragment="head">
 <meta charset="UTF-8">
 <meta name="description" content="Colors">
@@ -296,7 +297,7 @@ input:placeholder {
 				<img th:src="@{/img/logos/logo.png}" id="icon"
 					alt="User Icon" />
 			</div>
-
+			<div th:replace="fragments/navbar :: div-messages"></div>
 			<!-- Login Form -->
 			<form class="user" th:action="@{/login}" method="post">
 			
@@ -305,12 +306,12 @@ input:placeholder {
 				<input type="password" id="password" class="fadeIn third" name="password" placeholder="Contraseña">
 			
 				<input type="submit" class="fadeIn fourth" value="Log In">
-			
+
 			</form>
 
 			<!-- Remind Passowrd -->
 			<div id="formFooter">
-				<a class="underlineHover" href="#">Forgot Password?</a>
+				<a class="btn btn-default" th:href="@{/restaurar}">¿Olvidó su contraseña?</a>
 			</div> 
 
 		</div>

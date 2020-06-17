@@ -65,7 +65,7 @@ public class LoginController {
 		}
 		
 		if(logout != null) {
-			model.addAttribute("success", "Ha cerrado sesi�n con �xito");
+			model.addAttribute("success", "Ha cerrado sesión con éxito");
 		}
 		return "login";
 	}

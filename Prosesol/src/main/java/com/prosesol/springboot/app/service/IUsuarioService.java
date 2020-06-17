@@ -17,4 +17,8 @@ public interface IUsuarioService {
 	public void updateRelUsuarioPerfil(Long idPerfil, Long idUsuario);
 	
 	public Usuario findByUsername(String username);
+
+	public Usuario findUsuarioByEmail(String email);
+
+
 }
