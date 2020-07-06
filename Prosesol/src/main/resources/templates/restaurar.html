@@ -307,12 +307,12 @@ input:placeholder {
                    th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
 
             <input type="password" id="password" class="fadeIn third" name="password"
-                   placeholder="Contraseña" th:field="*{password}">
+                   placeholder="Nueva Contraseña" th:field="*{password}">
             <small class="form-text text-danger"
                    th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
 
             <input type="password" id="repeatPassword" class="fadeIn third" name="repeatPassword"
-                   placeholder="Nueva Contraseña" th:field="*{repeatPassword}">
+                   placeholder="Repetir Contraseña" th:field="*{repeatPassword}">
             <small class="form-text text-danger"
                    th:if="${#fields.hasErrors('repeatPassword')}" th:errors="*{repeatPassword}"></small>
 
