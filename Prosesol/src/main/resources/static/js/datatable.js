@@ -31,6 +31,8 @@ $(function(){
 		},{
 			data : 'saldoAcumulado'
 		},{
+			data : 'fechaAlta'
+		},{
 		    data : "isBeneficiario"
 		},{
 		    data: 'estatus'

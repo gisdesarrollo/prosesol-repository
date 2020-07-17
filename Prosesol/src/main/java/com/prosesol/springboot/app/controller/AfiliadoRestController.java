@@ -65,6 +65,7 @@ public class AfiliadoRestController {
                         "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
                         "\"rfc\" :" + "\"" + afiliado.getRfc() + "\", " +
                         "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                        "\"fechaAlta\" :" + "\"" +(afiliado.getFechaAlta() !=null ? afiliado.getFechaAlta() : "") + "\", " +
                         "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
                         "\"estatus\" : " + "\"" + estatus + "\", " +
                         "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
@@ -104,6 +105,7 @@ public class AfiliadoRestController {
                                     "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
                                     "\"rfc\" :" + "\"" + afiliado.getRfc() + "\", " +
                                     "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                                    "\"fechaAlta\" :" + "\"" +(afiliado.getFechaAlta() !=null ? afiliado.getFechaAlta() : "") + "\", " +
                                     "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
                                     "\"estatus\" : " + "\"" + estatus + "\", " +
                                     "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
@@ -140,6 +142,7 @@ public class AfiliadoRestController {
                                     "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
                                     "\"rfc\" :" + "\"" + afiliado.getRfc() + "\", " +
                                     "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                                    "\"fechaAlta\" :" + "\"" +(afiliado.getFechaAlta() !=null ? afiliado.getFechaAlta() : "") + "\", " +
                                     "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
                                     "\"estatus\" : " + "\"" + estatus + "\", " +
                                     "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
@@ -173,6 +176,7 @@ public class AfiliadoRestController {
                                         "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
                                         "\"rfc\" :" + "\"" + afiliado.getRfc() + "\", " +
                                         "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                                        "\"fechaAlta\" :" + "\"" +(afiliado.getFechaAlta() !=null ? afiliado.getFechaAlta() : "") + "\", " +
                                         "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
                                         "\"estatus\" : " + "\"" + estatus + "\", " +
                                         "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +
@@ -210,6 +214,7 @@ public class AfiliadoRestController {
                                     "\"clave\" :" + "\"" + afiliado.getClave() + "\", " +
                                     "\"rfc\" :" + "\"" + afiliado.getRfc() + "\", " +
                                     "\"saldoAcumulado\" : " + "\"" + (afiliado.getSaldoAcumulado() != null ? afiliado.getSaldoAcumulado() : saldoAcumulado) + "\", " +
+                                    "\"fechaAlta\" :" + "\"" +(afiliado.getFechaAlta() !=null ? afiliado.getFechaAlta() : "") + "\", " +
                                     "\"isBeneficiario\" : " + "\"" + (afiliado.getIsBeneficiario().equals(true) ? "Beneficiario" : "Titular") + "\", " +
                                     "\"estatus\" : " + "\"" + estatus + "\", " +
                                     "\"servicio\" : {" + "\"nombre\" : " + "\"" + afiliado.getServicio().getNombre() + "\"}," +

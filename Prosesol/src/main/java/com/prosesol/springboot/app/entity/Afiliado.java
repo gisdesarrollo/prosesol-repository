@@ -344,6 +344,10 @@ public class Afiliado implements Serializable{
 	public void setNumeroInfonavit(Long numeroInfonavit) {
 		this.numeroInfonavit = numeroInfonavit;
 	}
+	
+	public Date getFechaAlta() {
+		return fechaAlta;
+	}
 
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
