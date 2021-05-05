@@ -4,6 +4,9 @@ $(function(){
 		'ajax' : '/data/afiliados',
 		'processing' : true,
 		'serverSide' : true,
+		'scrollY': true,
+        'scrollX': true,
+        'scrollCollapse': true,
 		'paging' : true,
 		columns : [{
             data : 'id',

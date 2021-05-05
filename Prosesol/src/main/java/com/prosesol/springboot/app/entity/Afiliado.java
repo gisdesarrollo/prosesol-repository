@@ -92,7 +92,7 @@ public class Afiliado implements Serializable{
 	private String municipio;
 
 	@Column(name = "codigo_postal")
-	private Long codigoPostal;
+	private String codigoPostal;
 
 	@Column(name = "entidad_federativa", length = 3)
 	private String entidadFederativa;
@@ -321,11 +321,11 @@ public class Afiliado implements Serializable{
 		this.municipio = municipio;
 	}
 
-	public Long getCodigoPostal() {
+	public String getCodigoPostal() {
 		return codigoPostal;
 	}
 
-	public void setCodigoPostal(Long codigoPostal) {
+	public void setCodigoPostal(String codigoPostal) {
 		this.codigoPostal = codigoPostal;
 	}
 

@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
@@ -376,8 +377,16 @@ public class InsertCargaMasivaCSV {
 						log = counterLinea + " - " + "El código postal no cuenta con los dígitos correctos";
 						isValidAfiliado = false;
 					} else {
-						afiliado.setCodigoPostal(Long.parseLong(campo.getValue()));
-						LOG.info(counterLinea + " - " + "Código Postal: " + afiliado.getCodigoPostal());
+						Pattern pat = Pattern.compile("[0-9]*");
+					     Matcher mat = pat.matcher(campo.getValue());
+					     if(mat.matches()) {
+					    	 afiliado.setCodigoPostal(campo.getValue());
+								LOG.info(counterLinea + " - " + "Código Postal: " + afiliado.getCodigoPostal()); 
+					     }else {
+					    	 LOG.info(counterLinea + " - " + "El código postal solo deben ser numeros");
+					    	 log = counterLinea + " - " + "El código postal solo deben ser numeros";
+					    	 isValidAfiliado = false;
+					     }
 					}
 					break;
 				case 19:
