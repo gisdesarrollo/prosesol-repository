@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.OutputStream;
 import java.util.List;
 
@@ -157,11 +158,10 @@ public class CargaMasivaController {
         	      logger.info("File Size: " + file.getBytes().length);
         	      logger.info("File Type: " + file.getContentType());
         	      logger.info("File Name: " + file.getOriginalFilename());
-
-				  byte[] bytes = file.getBytes();
-				  asyncCargaMasiva.procesaArchivoAsync(isVigor,isConciliacion, nombreArchivo, bytes, null);
-
-
+        	      
+        	      byte[] bytes = new String(file.getBytes(),"ISO-8859-1").getBytes("UTF-8"); 
+    			  asyncCargaMasiva.procesaArchivoAsync(isVigor,isConciliacion, nombreArchivo, bytes, null);
+        	    	 	 
 			  }else{
         	      redirect.addFlashAttribute("warning", "Por favor, seleccione" +
                           " un archivo");
