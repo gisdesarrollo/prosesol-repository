@@ -3,16 +3,19 @@ package com.prosesol.springboot.app.async;
 import com.prosesol.springboot.app.entity.LogCM;
 import com.prosesol.springboot.app.service.ILogCMService;
 import com.prosesol.springboot.app.view.excel.InsertCargaMasivaCSV;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -46,21 +49,21 @@ public class AsyncCargaMasiva {
         Map<Integer, String> campos = new HashMap<Integer, String>();
         Scanner scanner = null;
         InputStream inputStream = new ByteArrayInputStream(bs);
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
 
         try{
-            scanner = new Scanner(inputStream);
-            scanner.nextLine();
-            while(scanner.hasNext()){
-                String line = scanner.nextLine();
-
-                String[] valores = line.split(",");
-
-                for(int i = 0; i < valores.length; i++){
-                    campos.put(i, valores[i]);
-                }
-
+        	 String cadena ="";
+        	 in.readLine();
+        	 String[] valores = null;
+        	 while ((cadena = in.readLine()) != null) {
+        		 
+        		 valores = cadena.split(",");
+        		 for(Integer i = 0; i< valores.length; i++) {
+        			 campos.put(i, valores[i]);
+        		 }
+        		 
                 resultado = insertCargaMasivaCSV.evaluarDatosList(isVigor,isConciliacion, numeroRegistros, campos, idCuentaComercial);
-
+               
                 if(counter == 30000) {
                     counter = 0;
                     Thread.sleep(10000);
@@ -81,6 +84,7 @@ public class AsyncCargaMasiva {
             if(scanner != null){
                 scanner.close();
             }
+            in.close();
         }
 
         long endTime = System.nanoTime();
