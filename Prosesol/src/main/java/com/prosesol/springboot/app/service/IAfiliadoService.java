@@ -6,6 +6,7 @@ import com.prosesol.springboot.app.exception.CustomExcelException;
 import com.prosesol.springboot.app.util.Paises;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -41,6 +42,14 @@ public interface IAfiliadoService {
 
 	public List<Afiliado> getAfiliadoBySearchNombreCompleto(String nombre, String apellidoPaterno,
 															String apellidoMaterno);
+	
+	public List<Afiliado> getAfiliadoBySearchNombreCompletoAndActivos(String nombre, String apellidoPaterno,
+			String apellidoMaterno,int estatus );
+
+	public List<Afiliado> getAfiliadoBySearchNombreCompletoAndVencidos(String nombre, String apellidoPaterno,
+			String apellidoMaterno,int estatus ,int saldoAcumulado);
+
+
 
 	public List<Afiliado> getAfiliadosByFechaCorte(String fecha);
 

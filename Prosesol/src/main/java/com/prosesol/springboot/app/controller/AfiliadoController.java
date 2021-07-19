@@ -2,7 +2,9 @@ package com.prosesol.springboot.app.controller;
 
 import com.josketres.rfcfacil.Rfc;
 import com.prosesol.springboot.app.entity.*;
+import com.prosesol.springboot.app.entity.rel.RelServicioBeneficio;
 import com.prosesol.springboot.app.service.*;
+import com.prosesol.springboot.app.services.EmailService;
 import com.prosesol.springboot.app.util.CalcularFecha;
 import com.prosesol.springboot.app.util.GenerarClave;
 import com.prosesol.springboot.app.util.Paises;
@@ -10,6 +12,8 @@ import com.prosesol.springboot.app.util.paginator.PageRender;
 import com.prosesol.springboot.app.view.excel.ReportesExcelImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -20,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -27,11 +32,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -42,7 +50,12 @@ import java.util.Map;
 public class AfiliadoController {
 
 	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
-
+	
+	// private final static int ID_TEMPLATE_FT = 1606126;
+	// private final static int ID_TEMPLATE_IB = 1606124;
+	// private final static int ID_TEMPLATE_PI = 1606129;
+	// private final static int ID_TEMPLATE_PM= 1606131;
+	// private final static int ID_TEMPLATE_BA =3053146;
 	@Value("${app.clave}")
 	private String clave;
 
@@ -60,7 +73,10 @@ public class AfiliadoController {
 
 	@Autowired
 	private ICuentaService cuentaService;
-
+	
+	/*@Autowired
+	private IRelServicioBeneficioService relServicioBeneficio;
+*/
 	@Autowired
 	private CalcularFecha calcularFechas;
 
@@ -72,7 +88,11 @@ public class AfiliadoController {
 
 	@Autowired
 	private GenerarClave generarClave;
-
+	
+	 @Autowired
+	 private EmailService emailController;
+	 
+	 
 	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/crear")
 	public String crear(Map<String, Object> model) {
@@ -308,11 +328,43 @@ public class AfiliadoController {
 				afiliado.setClave(generarClave.getClave(clave));
 				afiliado.setEstatus(2);
 				mensajeFlash = "Registro creado con éxito";
+				
+				// Envío email bienvenida
+				/*if (afiliado.getEmail()!=null) {
+					List<String> correos = new ArrayList<>();
+					List<File> adjuntos = new ArrayList<>();
+					List<Integer> templates;
+					Map<String, String> modelo = new LinkedHashMap<>();
+                   modelo.put("nombre", afiliado.getNombre() + " " + afiliado.getApellidoPaterno() +
+                           " " + afiliado.getApellidoMaterno());
+                   modelo.put("servicio", afiliado.getServicio().getNombre());
+                   modelo.put("rfc", afiliado.getRfc());
 
+                   correos.add(afiliado.getEmail());
+                   templates = emailController.getTemplateMailjet();
+                   JSONObject OBeneficioD = new JSONObject();
+                   JSONArray ABeneficioD = new JSONArray();
+                   JSONObject OBeneficios = new JSONObject();
+                   List<RelServicioBeneficio> relServcioBeneficio = relServicioBeneficio.getRelServicioBeneficioByIdServicio(afiliado.getServicio().getId());
+                   		for(RelServicioBeneficio relSB : relServcioBeneficio) {
+                   			ABeneficioD.put(OBeneficioD.put("nombre",relSB.getBeneficio().getNombre()).put("descripcion",relSB.getBeneficio().getDescripcion()));
+                   		}*/
+                  // OBeneficios.put("beneficios", ABeneficioD);
+                  // modelo.put("beneficios", ABeneficioD.toString());
+                  // if (afiliado.getServicio().getId() == idIndividual) {
+                   //    for (Integer idTemplate : templates) {
+                    //       if (idTemplate.equals(ID_TEMPLATE_IB)) {
+                             //  adjuntos.add(ResourceUtils.getFile(archivoPlanIndividual));
+                              // logger.info("Enviando email de bienvenido afiliado...");
+                              // emailController.sendMailJet(modelo,ID_TEMPLATE_BA,adjuntos,correos);
+                               
+                           //}
+                       //}
+                  // }
+				//}
 			}
-
+			 
 			logger.info(mensajeFlash);
-
 			afiliadoService.save(afiliado);
 			status.setComplete();
 
@@ -352,7 +404,21 @@ public class AfiliadoController {
 
 		return "catalogos/afiliados/ver";
 	}
+	
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
+	@RequestMapping(value = "/activos", method = RequestMethod.GET)
+	public String verActivos(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 
+		return "catalogos/afiliados/verActivos";
+	}
+	
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
+	@RequestMapping(value = "/vencidos", method = RequestMethod.GET)
+	public String verVencidos(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+
+		return "catalogos/afiliados/verVencidos";
+	}
+	
 	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes redirect) {

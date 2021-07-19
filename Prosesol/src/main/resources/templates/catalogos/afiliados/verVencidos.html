@@ -21,9 +21,9 @@
 							<!-- Card Body -->
 							<div class="card-body bg-white appwork bg-boxshadow-2">
 								<div th:replace="fragments/navbar :: div-messages"></div>
-								<h5 class="card-title">Afiliados Totales</h5>
+								<h5 class="card-title">Afiliados Vencidos</h5>
 								<div class="card-subtitle text-muted">Lista de
-									afiliados totales de la plantilla Prosesol</div>
+									afiliados vencidos de la plantilla Prosesol</div>
 
 								<a sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
 									th:href="@{/afiliados/crear}"
@@ -32,7 +32,7 @@
 
 								<div class="clearfix"></div>
 								<hr>
-								<input type="hidden" value="true" id="totales">
+									<input type="hidden" value="true" id="vencidos">
 								<div>
 									<table id="afiliados"
 										class="table table-bordered">

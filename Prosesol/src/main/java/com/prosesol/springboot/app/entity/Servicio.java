@@ -45,11 +45,11 @@ public class Servicio implements Serializable {
 	@Column(name = "costo_titular")
 	private Double costoTitular;
 
-	@NotNull(message = "{text.servicio.inscripcionBeneficiario}")
+	//@NotNull(message = "{text.servicio.inscripcionBeneficiario}")
 	@Column(name = "inscripcion_beneficiario")
 	private Double inscripcionBeneficiario;
 
-	@NotNull(message = "{text.servicio.costoBeneficiario}")
+	//@NotNull(message = "{text.servicio.costoBeneficiario}")
 	@Column(name = "costo_beneficiario")
 	private Double costoBeneficiario;
 

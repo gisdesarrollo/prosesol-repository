@@ -37,8 +37,8 @@
                                             <tr>
                                                 <th>Opciones</th>
                                                 <th>Nombre</th>
-                                                <th>Costo Titular</th>
-                                                <th>Costo Beneficiario</th>
+                                                <th>Costo Servicio</th>
+                                                <!--<th>Costo Beneficiario</th>-->
                                                 <th>Estatus</th>
                                             </tr>
                                         </thead>
@@ -72,11 +72,11 @@
                                                     <br> Periodo: <span class="text-muted pull-right" th:text="${servicio.costoTitular}"></span>
                                                 </td>
                                                 
-                                                <td>
+                                                <!-- <td>
                                                     Inscripción: <span class="text-muted pull-right" th:text="${servicio.inscripcionBeneficiario}"></span>
 													<br> 
 													Periodo: <span class="text-muted pull-right" th:text="${servicio.costoBeneficiario}"></span>
-												</td>
+												</td>-->
 																								
 												<td>
 													<span th:text="${servicio.estatus} ? 'Activo' : 'Inactivo'"></span>

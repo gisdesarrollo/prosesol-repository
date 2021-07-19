@@ -78,10 +78,12 @@ public class Afiliado implements Serializable{
 
 	@Column(name = "telefono_fijo")
 	private Long telefonoFijo;
-
+	
+	@NotNull(message = "El teléfono móvil no debe quedar vacío")
 	@Column(name = "telefono_movil")
 	private Long telefonoMovil;
-
+	
+	@NotEmpty(message = "El correo electrónico no debe quedar vacío")
 	@Column(name = "email")
 	private String email;
 

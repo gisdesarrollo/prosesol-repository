@@ -29,14 +29,13 @@
 									th:object="${afiliado}" method="post">
 									<div class="row">
 										<div class="form-group col-md-3">
-											<label>Nombre</label> <input type="text"
+											<label>Nombre</label><span style="color:red;">*</span><input type="text"
 												th:field="*{nombre}" class="form-control form-control-user">
 											<small class="form-text text-danger"
 												th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
 										</div>
-
 										<div class="form-group col-md-3">
-											<label>Apellido Paterno</label> <input
+											<label>Apellido Paterno</label><span style="color:red;">*</span><input
 												type="text" th:field="*{apellidoPaterno}"
 												class="form-control form-control-user"> <small
 												class="form-text text-danger"
@@ -44,7 +43,7 @@
 										</div>
 
 										<div class="form-group col-md-3">
-											<label>Apelido Materno</label> <input
+											<label>Apelido Materno</label><span style="color:red;">*</span> <input
 												type="text" th:field="*{apellidoMaterno}"
 												class="form-control form-control-user"> <small
 												class="form-text text-danger"
@@ -52,9 +51,9 @@
 												th:errors="*{apellidoMaterno}"></small>
 										</div>
 
-										<div class="form-group col-md-3">
-											<label>Fecha de Nacimiento</label> <input
-												type="text" th:field="*{fechaNacimiento}" 
+										<div class="form-group col-md-3" >
+											<label>Fecha de Nacimiento</label><span style="color:red;">*</span> <input
+												type="text" th:field="*{fechaNacimiento}"  autocomplete="off"
 												class="form-control form-control-user" id="fechaNacimiento"
 												placeholder=""> <small class="form-text text-danger"
 												th:if="${#fields.hasErrors('fechaNacimiento')}"
@@ -73,7 +72,7 @@
 
 										<div class="form-group col-md-3">
 											<label>Estado Civil</label> <select
-												th:field="*{estadoCivil}" class="custom-select"
+												th:field="*{estadoCivil}" class="form-control"
 												id="inputGroupSelect01">
 												<option th:value="'Soltero'" th:selected>Soltero(a)</option>
 												<option th:value="'Casado'">Casado(a)</option>
@@ -96,7 +95,7 @@
 
 										<div class="form-group col-md-3">
 											<label>Sexo</label> <select th:field="*{sexo}"
-												class="custom-select" id="inputGroupSelect01">
+												class="form-control" id="inputGroupSelect01">
 												<option th:value="'Masculino'" th:selected>Masculino</option>
 												<option th:value="'Femenino'">Femenino</option>
 											</select><small class="form-text text-danger"
@@ -105,7 +104,7 @@
 
 										<div class="form-group col-md-3">
 											<label>País</label> <select name="pais"
-												th:field="*{pais}" class="custom-select"
+												th:field="*{pais}" class="form-control"
 												id="inputGroupSelect01">
 												<option th:each="pais : ${paises}" th:value="${pais}"
 													th:text="${pais}" th:selected="${pais.MEX}" />
@@ -148,7 +147,7 @@
 										</div>
 
 										<div class="form-group col-md-3">
-											<label>Teléfono móvil</label><input type="text"
+											<label>Teléfono móvil</label><span style="color:red;">*</span><input type="text"
 												th:field="*{telefonoMovil}"
 												class="form-control form-control-user" placeholder="">
 											<small class="form-text text-danger"
@@ -157,7 +156,7 @@
 										</div>
 
 										<div class="form-group col-md-3">
-											<label>Correo electrónico</label><input
+											<label>Correo electrónico</label><span style="color:red;">*</span><input
 												type="email" th:field="*{email}"
 												class="form-control form-control-user" placeholder="">
 											<small class="form-text text-danger"
@@ -185,7 +184,7 @@
 										<div class="form-group col-md-3">
 											<label>Entidad Federativa</label> <select
 												name="entidadFederativa" th:field="*{entidadFederativa}"
-												class="custom-select" id="inputGroupSelect01">
+												class="form-control" id="inputGroupSelect01">
 												<option th:each="estado : ${estados}" th:value="${estado}"
 													th:text="${estado}" th:selected="false" />
 											</select><small class="form-text text-danger"
@@ -219,8 +218,8 @@
 										</div>
 
 										<div class="form-group col-md-3">
-											<label>Servicio</label> <select name="servicio"
-												th:field="*{servicio}" class="custom-select"
+											<label>Servicio</label><span style="color:red;">*</span> <select name="servicio"
+												th:field="*{servicio}" class="form-control"
 												id="inputGroupSelect01">
 												<option value="">Ninguno</option>
 												<option th:each="servicio : ${servicios}"
@@ -232,8 +231,8 @@
 										</div>
 
 										<div class="form-group col-md-3">
-											<label>Fecha de Afiliacion</label> <input
-												type="text" th:field="*{fechaAfiliacion}"
+											<label>Fecha de Afiliacion</label><span style="color:red;">*</span><input
+												type="text" th:field="*{fechaAfiliacion}" autocomplete="off"
 												class="form-control form-control-user" id="fechaAfiliacion"
 												placeholder=""> <small class="form-text text-danger"
 												th:if="${#fields.hasErrors('fechaAfiliacion')}"
@@ -244,7 +243,7 @@
 											<label>Fecha de Corte</label>
 											<input type="checkbox" name="fecha" id="diaCorte">
 											 <select
-												name="corte" th:field="*{corte}" class="custom-select"
+												name="corte" th:field="*{corte}" class="form-control"
 												id="inputCorte" disabled >
 												<option th:each="corte : ${#numbers.sequence(1, 31)}"
 													th:value="${corte}" th:text="${corte}"
@@ -254,8 +253,8 @@
 										</div>
 
 										<div class="form-group col-md-3">
-											<label>Periodos</label> <select name="periodo"
-												th:field="*{periodicidad}" class="custom-select"
+											<label>Periodos</label><span style="color:red;">*</span> <select name="periodo"
+												th:field="*{periodicidad}" class="form-control"
 												id="inputGroupSelect01">
 												<option value="">Ninguno</option>
 												<option th:each="periodo : ${periodos}"
@@ -277,10 +276,10 @@
 
 										<div class="form-group col-md-3">
 											<label>Promotor</label> <select name="promotor"
-												th:field="*{promotor}" class="custom-select" id="promotores">
+												th:field="*{promotor}" class="form-control" id="promotores">
 												<option th:value="0" selected>Ninguno</option>
 												<option th:each="promotor : ${promotores}"
-													th:value="${promotor.id}" th:text="${promotor.nombre}"
+													th:value="${promotor.id}" th:text="${promotor.nombre}+' '+${promotor.apellidoPaterno}+' '+${promotor.apellidoMaterno}"
 													th:selected="false" />
 											</select> <small class="form-text text-danger"
 												th:if="${#fields.hasErrors('promotor')}"
@@ -289,7 +288,7 @@
 
 										<div class="form-group col-md-3">
 											<label>Cuenta</label> <select name="cuenta"
-												th:field="*{cuenta}" class="custom-select" id="cuentas">
+												th:field="*{cuenta}" class="form-control" id="cuentas">
 												<option value="">Ninguno</option>
 												<option th:each="cuenta : ${cuentas}"
 													th:value="${cuenta.id}" th:text="${cuenta.razonSocial}"
