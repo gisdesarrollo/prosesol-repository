@@ -47,6 +47,10 @@
                                                             <input type="text" th:field="*{nombre}" class="form-control form-control-user">
                                                             <small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
                                                         </div>
+                                                        <div class="form-group col-md-3">
+                                                            <label>ID servicio</label>
+                                                            <input type="text" th:field="*{id}" class="form-control form-control-user" readonly>
+                                                        </div>
 
                                                         <div class="form-group col-md-3">
                                                             <label>Nota</label>
@@ -80,7 +84,7 @@
 
                                                     </div>
 
-                                                    <h5 class="mt-15">Costos de Titular</h5>
+                                                    <h5 class="mt-15">Costos del Servicio</h5>
                                                     <div class="clearfix"></div>
                                                     <div class="row">
                                                         <div class="form-group col-md-3">
@@ -94,23 +98,7 @@
                                                             <input type="text" name="costoTitular" th:field="*{costoTitular}" value="0.00" class="form-control form-control-user">
                                                             <small class="form-text text-danger" th:if="${#fields.hasErrors('costoTitular')}" th:errors="*{costoTitular}"></small>
                                                         </div>
-                                                    </div>
-
-                                                    <h5 class="mt-15">Costos de Beneficiario</h5>
-                                                    <div class="clearfix"></div>
-                                                    <div class="row">
-                                                        <div class="form-group col-md-3">
-                                                            <label >Costo de Inscripción *</label>
-                                                            <input type="text" name="inscripcionBeneficiario" th:field="*{inscripcionBeneficiario}" value="0.00" class="form-control form-control-user">
-                                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('inscripcionBeneficiario')}" th:errors="*{inscripcionBeneficiario}"></small>
-                                                        </div>
-
-                                                        <div class="form-group col-md-3">
-                                                            <label >Costo de Servicio *</label>
-                                                            <input type="text" name="costoBeneficiario" th:field="*{costoBeneficiario}" value="0.00" class="form-control form-control-user">
-                                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('costoBeneficiario')}" th:errors="*{costoBeneficiario}"></small>
-                                                        </div>
-
+                                                       
                                                         <div class="form-group col-md-3" th:if="${servicio.isPlan} != true">
                                                             <div class="clearfix"></div>
                                                             <label>¿Habilitar como plan?</label> <input
@@ -169,18 +157,23 @@
                                                                 <th>
                                                                     Instrucción de beneficio para incidencias.
                                                                 </th>
-                                                                <th class="text-center">
+                                                                <!--<th class="text-center">
                                                                     Disponible para Titular
                                                                 </th>
                                                                 <th class="text-center">
                                                                     Disponible para Beneficiario
-                                                                </th>
+                                                                </th>-->
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr th:each="beneficio, iterStat : ${relServicioBeneficios}">
                                                                 <td class="text-center">
-                                                                    <input class="cbBeneficio" type="checkbox" name="beneficio[]" th:value="${beneficio.getBeneficio().getId()}">
+                                                                	<span th:if="${beneficio.getDescripcion()!=null}">
+                                                                		<input class="cbBeneficio" type="checkbox" name="beneficio[]" th:value="${beneficio.getBeneficio().getId()}" checked>
+                                                                	</span>
+                                                                	<span th:unless="${beneficio.getDescripcion()!=null }">		
+                                                                    	<input class="cbBeneficio" type="checkbox" name="beneficio[]" th:value="${beneficio.getBeneficio().getId()}">
+                                                                	</span>
                                                                 </td>
                                                                 <td>
                                                                     <label th:text="${beneficio.getBeneficio().getNombre()}"></label>
@@ -190,12 +183,12 @@
                                                                 <td>
                                                                     <input type="text" name="descripcion[]" class="form-control form-control-user" th:value="${beneficio.getDescripcion()}">
                                                                 </td>
-                                                                <td class="text-center">
+                                                                <!--<td class="text-center">
                                                                     <input type="checkbox" name="titular[]" th:checked="${beneficio.getTitular()}" th:value="${beneficio.getBeneficio().getId()}">
                                                                 </td>
                                                                 <td class="text-center">
                                                                     <input type="checkbox" name="beneficiario[]" th:checked="${beneficio.getBeneficiario()}" th:value=${beneficio.getBeneficio().getId()}>
-                                                                </td>
+                                                                </td>-->
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -209,7 +202,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <button type="submit" class="btn btn-primary btn-square btnEliminarBeneficios" name="action" value="delete">Eliminar Beneficio</button>
+                                            <!--<button type="submit" class="btn btn-primary btn-square btnEliminarBeneficios" name="action" value="delete">Eliminar Beneficio</button>-->
                                             <button type="submit" class="btn btn-primary btn-square float-right" name="action" value="save">Guardar Servicio</button>
                                         </div>
                                     </div>
@@ -227,7 +220,7 @@
         </div>
 
     </div>
-    </div>
+    <!--</div>-->
     <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 

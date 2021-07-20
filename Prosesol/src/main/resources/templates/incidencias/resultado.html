@@ -52,9 +52,11 @@
 													<td th:case="2" style="color: #ea3808" th:text="Inactivo"></td>
 													<td th:case="3" style="color: #bbb63d " th:text="Candidato"></td>
 													<td>
-														<a th:href="@{/incidencias/crear/} + ${afiliado.id}"
-														   class="btn btn-square btn-primary btn-sm">
-														   Crear Incidencia</a>
+														<span th:if="${afiliado.estatus != 2}">
+															<a th:href="@{/incidencias/crear/} + ${afiliado.id}"
+														   	class="btn btn-square btn-primary btn-sm">
+														   	Crear Incidencia</a>
+														</span>
 													</td>
 												</tr>
 											</tbody>

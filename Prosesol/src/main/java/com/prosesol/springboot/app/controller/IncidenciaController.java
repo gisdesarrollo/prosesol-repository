@@ -244,7 +244,7 @@ public class IncidenciaController {
 							.getId() == relAfiliadoIncidenciaBeneficio.get(index).getIdBeneficio()) {
 
 						RelServicioBeneficio beneficio = new RelServicioBeneficio(relSB.getServicio(),
-								relSB.getBeneficio(), relSB.getTitular(), relSB.getBeneficiario(),
+								relSB.getBeneficio(),
 								relSB.getDescripcion());
 
 						Beneficio nBeneficio = beneficioService
@@ -344,7 +344,7 @@ public class IncidenciaController {
 				messageStatus = "Incidencia editada correctamente";
 			}
 
-			DateFormat df = new SimpleDateFormat("HH:mm a");
+			DateFormat df = new SimpleDateFormat("HH:mm a", new Locale("es_ES") );
 			Date date = null;
 
 			date = df.parse(incidencia.getHora());
@@ -352,7 +352,6 @@ public class IncidenciaController {
 			incidencia.setHora(hora);
 
 			String detalle = incidencia.getDetalle();
-			detalle = detalle.replaceAll("\\<.*?\\>", "");
 			incidencia.setDetalle(detalle);
 
 			incidenciaService.save(incidencia);

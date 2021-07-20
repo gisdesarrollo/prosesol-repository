@@ -164,7 +164,7 @@ public class UsuarioController {
 		return "redirect:/usuarios/ver";
 	}
 
-	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO", "ROLE_ASISTENCIA" })
 	@RequestMapping(value = "/password")
 	public String password(Model model) {
 
@@ -175,7 +175,7 @@ public class UsuarioController {
 		return "/catalogos/usuarios/password";
 	}
 
-	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
+	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO", "ROLE_ASISTENCIA" })
 	@RequestMapping(value = "/cambiar", method = RequestMethod.POST)
 	public String cambiar(@ModelAttribute(name = "username") String username,
 			@ModelAttribute(name = "password") String password, RedirectAttributes redirect) {

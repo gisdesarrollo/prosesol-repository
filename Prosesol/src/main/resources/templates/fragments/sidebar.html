@@ -36,11 +36,20 @@
 <!--							<li><a th:href="@{/#}"><i class="fas fa-hands-helping"></i>-->
 <!--									Centro de Asistencia</a></li>-->
 
-							<li><a th:href="@{/afiliados/ver}"><i class="fas fa-user"></i>
-									Afiliados</a></li>
+							<!--  <li><a th:href="@{/afiliados/ver}"><i class="fas fa-user"></i>
+									Afiliados</a></li>-->
 
-							<li><a th:href="@{/candidatos/ver}"><i class="fas fa-user-plus"></i>
-									Candidatos</a></li>
+							<!--  <li><a th:href="@{/candidatos/ver}"><i class="fas fa-user-plus"></i>
+									Candidatos</a></li>-->
+									
+							<li><a href="#"><i class="fas fa-book"></i> Catálogo Afiliado</a>
+								<ul class="dropdown">
+											<li><a th:href="@{/afiliados/activos}">- Afiliados Activos</a></li>
+											<li><a th:href="@{/afiliados/ver}">- Afiliados Totales</a></li>
+											<li><a th:href="@{/afiliados/vencidos}">- Afiliados Vencidos </a></li>
+											<li><a th:href="@{/candidatos/ver}">- Candidatos </a></li>
+										
+								</ul></li>
 
 							<li><a href="#"><i class="fas fa-book"></i> Catálogos</a>
 								<ul class="dropdown">

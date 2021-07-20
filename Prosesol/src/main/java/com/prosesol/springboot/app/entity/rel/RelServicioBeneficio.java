@@ -34,12 +34,12 @@ public class RelServicioBeneficio implements Serializable {
 	@JoinColumn(name = "id_beneficio")
 	private Beneficio beneficio;
 	
-	@Column(name = "titular")
+	/*@Column(name = "titular")
 	private Boolean titular;
 	
 	@Column(name = "beneficiario")
 	private Boolean beneficiario;
-
+	*/
 	@Column(name = "descripcion")
 	private String descripcion;
 	
@@ -47,12 +47,11 @@ public class RelServicioBeneficio implements Serializable {
 		
 	}
 	
-	public RelServicioBeneficio(Servicio servicio, Beneficio beneficio, Boolean titular, Boolean beneficiario,
-			String descripcion) {
+	public RelServicioBeneficio(Servicio servicio, Beneficio beneficio,String descripcion) {
 		this.servicio = servicio;
 		this.beneficio = beneficio;
-		this.titular = titular;
-		this.beneficiario = beneficiario;
+		//this.titular = titular;
+		//this.beneficiario = beneficiario;
 		this.descripcion = descripcion;
 	}
 
@@ -80,7 +79,7 @@ public class RelServicioBeneficio implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public Boolean getTitular() {
+	/*public Boolean getTitular() {
 		return titular;
 	}
 
@@ -94,6 +93,6 @@ public class RelServicioBeneficio implements Serializable {
 
 	public void setBeneficiario(Boolean beneficiario) {
 		this.beneficiario = beneficiario;
-	}
+	}*/
 
 }

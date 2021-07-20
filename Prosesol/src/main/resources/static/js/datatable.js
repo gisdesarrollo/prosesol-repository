@@ -1,7 +1,21 @@
+
+	
 $(function(){
+	var url;
+	 var AActivos = $("#activa").val();
+	 var ATotales = $("#totales").val();
+	 var AVencidos = $("#vencidos").val();
+	 if(AActivos!=undefined){ 
+		 url='/data/activos';
+	 }else if(ATotales!=undefined){
+		 url='/data/afiliados'
+	 }else if(AVencidos!=undefined){
+		 url = '/data/vencidos'
+	 }
+		
 
 	$('#afiliados').DataTable({
-		'ajax' : '/data/afiliados',
+		'ajax' : url,
 		'processing' : true,
 		'serverSide' : true,
 		'scrollY': true,
@@ -45,9 +59,8 @@ $(function(){
 		dataSrc : ""
 
 	});
-
-
-
+	
+	
 	$('#afiliados tbody').on('click', '#editar', function(e){
 		var tr = $(this).closest("tr");
 		var data = $('#afiliados').DataTable().row(tr).data();

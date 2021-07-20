@@ -158,5 +158,17 @@ public class AfiliadoServiceImpl implements IAfiliadoService{
 		return iAfiliadoDao.getTotalAfiliados();
 	}
 
+	@Override
+	public List<Afiliado> getAfiliadoBySearchNombreCompletoAndActivos(String nombre, String apellidoPaterno,
+			String apellidoMaterno, int estatus) {
+		return iAfiliadoDao.getAfiliadoBySearchNombreCompletoAndActivos(nombre, apellidoPaterno, apellidoMaterno, estatus);
+	}
+
+	@Override
+	public List<Afiliado> getAfiliadoBySearchNombreCompletoAndVencidos(String nombre, String apellidoPaterno,
+			String apellidoMaterno, int estatus, int saldoAcumulado) {
+		return iAfiliadoDao.getAfiliadoBySearchNombreCompletoAndVencidos(nombre, apellidoPaterno, apellidoMaterno, estatus, saldoAcumulado);
+	}
+
 
 }
