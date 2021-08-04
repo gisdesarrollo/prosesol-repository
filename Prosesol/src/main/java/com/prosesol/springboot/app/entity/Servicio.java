@@ -76,7 +76,16 @@ public class Servicio implements Serializable {
 
 	@OneToOne(mappedBy = "servicio")
 	private Plan plan;
-
+	
+	@Column(name="nombre_proveedor")
+	private String nombreProveedor;
+	
+	@Column(name="telefono")
+	private String telefono;
+	
+	@Column(name="correo")
+	private String correo;
+	
 	public Servicio() {
 
 	}
@@ -211,6 +220,30 @@ public class Servicio implements Serializable {
 
 	public void setPlan(Plan plan) {
 		this.plan = plan;
+	}
+
+	public String getNombreProveedor() {
+		return nombreProveedor;
+	}
+
+	public void setNombreProveedor(String nombreProveedor) {
+		this.nombreProveedor = nombreProveedor;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}
 
 	@Override
