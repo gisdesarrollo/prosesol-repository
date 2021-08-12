@@ -53,7 +53,7 @@ public class EmailService {
 	 * @throws MailjetSocketTimeoutException
 	 * @throws IOException
 	 */
-	public void sendMailJet( Map<String, String> model, int idTemplate, List<File> attachments, List<String> correos)
+	public void sendMailJet( Map<String, String> model, int idTemplate, List<String> correos, JSONArray beneficios)
 			throws MailjetException, MailjetSocketTimeoutException, IOException {
 
 		JSONArray arrayDatos = new JSONArray();
@@ -69,10 +69,11 @@ public class EmailService {
 			JSONObject jsonObjectParameters = new JSONObject();
 				for (Map.Entry<String, String> parametros : model.entrySet()) {
 					jsonObjectParameters.put(parametros.getKey(), parametros.getValue());
-					if(parametros.getKey().equals("nombre")) {
+					if(parametros.getKey().equals("afiliado")) {
 						nombreD=parametros.getValue();
 					}
 				}
+				jsonObjectParameters.put("beneficios", beneficios);
 		// Arreglo para el envío de correos
 			JSONObject to = new JSONObject();
 			JSONArray toArray = new JSONArray();
@@ -89,20 +90,6 @@ public class EmailService {
 		
 		almacena.put(Emailv31.Message.VARIABLES, jsonObjectParameters);
 
-		JSONObject attachment = new JSONObject();
-		JSONArray jsonArrayAdjuntos = new JSONArray();
-		//archivos adjuntos para el template
-		if (attachments.size() > 0) {
-			for (File adjunto : attachments) {
-
-				String archivo = archivos.encode(adjunto);
-				attachment.put("ContentType", "application/pdf");
-				attachment.put("Filename", "bienvenido.pdf");
-				attachment.put("Base64Content", archivo);
-			}
-			jsonArrayAdjuntos.put(attachment);
-			almacena.put(Emailv31.Message.ATTACHMENTS, jsonArrayAdjuntos);
-		}
 		arrayDatos.put(almacena);
 		request.property(Emailv31.MESSAGES, arrayDatos);
 
@@ -113,7 +100,6 @@ public class EmailService {
 			LOG.error("Error el correo no se pudo enviar: "+response.getData());
 		}
 		
-
 	}
 
 	public List getTemplateMailjet() throws MailjetException, MailjetSocketTimeoutException {

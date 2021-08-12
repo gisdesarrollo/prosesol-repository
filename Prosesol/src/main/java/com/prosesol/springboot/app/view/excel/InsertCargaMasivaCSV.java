@@ -337,17 +337,19 @@ public class InsertCargaMasivaCSV {
 					break;
 				case 14:
 					if (campo.getValue().length() == 0) {
-						afiliado.setTelefonoMovil(null);
-						LOG.info(counterLinea + " - " + "Telefono móvil: " + afiliado.getTelefonoMovil());
-					} else {
-						afiliado.setTelefonoMovil(Long.parseLong(campo.getValue()));
-						LOG.info(counterLinea + " - " + "Telefono móvil: " + afiliado.getTelefonoMovil());
+						LOG.info(counterLinea + " - " + "El telefono movil no puede quedar vacío");
+						log = counterLinea + " - " + "El telefono movil no puede quedar vacío";
+						isValidAfiliado = false;
+						} else {
+							afiliado.setTelefonoMovil(Long.parseLong(campo.getValue()));
+							LOG.info(counterLinea + " - " + "Telefono móvil: " + afiliado.getTelefonoMovil());
 					}
 					break;
 				case 15:
 					if (campo.getValue().length() == 0) {
-						afiliado.setEmail(null);
-						LOG.info(counterLinea + " - " + "Email: " + afiliado.getEmail());
+						LOG.info(counterLinea + " - " + "El email no puede quedar vacío");
+						log = counterLinea + " - " + "El email no puede quedar vacío";
+						isValidAfiliado = false;
 					} else {
 						isValid = isValidEmail(campo.getValue());
 

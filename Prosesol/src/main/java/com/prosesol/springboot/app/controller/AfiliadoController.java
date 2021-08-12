@@ -51,12 +51,9 @@ public class AfiliadoController {
 
 	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
 	
-	// private final static int ID_TEMPLATE_FT = 1606126;
-	// private final static int ID_TEMPLATE_IB = 1606124;
-	// private final static int ID_TEMPLATE_PI = 1606129;
-	// private final static int ID_TEMPLATE_PM= 1606131;
-	// private final static int ID_TEMPLATE_BA =3053146;
-	@Value("${app.clave}")
+	private final static int ID_TEMPLATE_BA =3053146;
+	
+	 @Value("${app.clave}")
 	private String clave;
 
 	@Autowired
@@ -74,9 +71,9 @@ public class AfiliadoController {
 	@Autowired
 	private ICuentaService cuentaService;
 	
-	/*@Autowired
-	private IRelServicioBeneficioService relServicioBeneficio;
-*/
+	@Autowired
+	private IBeneficioService BeneficioService;
+
 	@Autowired
 	private CalcularFecha calcularFechas;
 
@@ -91,7 +88,7 @@ public class AfiliadoController {
 	
 	 @Autowired
 	 private EmailService emailController;
-	 
+
 	 
 	@Secured({ "ROLE_ADMINISTRADOR", "ROLE_USUARIO" })
 	@RequestMapping(value = "/crear")
@@ -179,7 +176,9 @@ public class AfiliadoController {
 		String fechaHoy;
 		Date mYA;
 		Date mYH;
-
+		List<String> correos = new ArrayList<>();
+		Map<String, String> modelo = new LinkedHashMap<>();
+		JSONArray ABeneficioD = new JSONArray();
 		try {
 
 			if (result.hasErrors()) {
@@ -330,43 +329,32 @@ public class AfiliadoController {
 				mensajeFlash = "Registro creado con éxito";
 				
 				// Envío email bienvenida
-				/*if (afiliado.getEmail()!=null) {
-					List<String> correos = new ArrayList<>();
-					List<File> adjuntos = new ArrayList<>();
-					List<Integer> templates;
-					Map<String, String> modelo = new LinkedHashMap<>();
-                   modelo.put("nombre", afiliado.getNombre() + " " + afiliado.getApellidoPaterno() +
+				if (afiliado.getEmail()!=null) {
+					
+                   modelo.put("afiliado", afiliado.getNombre() + " " + afiliado.getApellidoPaterno() +
                            " " + afiliado.getApellidoMaterno());
                    modelo.put("servicio", afiliado.getServicio().getNombre());
                    modelo.put("rfc", afiliado.getRfc());
-
+                   modelo.put("proveedor", afiliado.getServicio().getNombreProveedor());
+                   modelo.put("telefono", afiliado.getServicio().getTelefono());
+                   modelo.put("correo", afiliado.getServicio().getCorreo());
+                   modelo.put("nota", afiliado.getServicio().getNota());
                    correos.add(afiliado.getEmail());
-                   templates = emailController.getTemplateMailjet();
-                   JSONObject OBeneficioD = new JSONObject();
-                   JSONArray ABeneficioD = new JSONArray();
-                   JSONObject OBeneficios = new JSONObject();
-                   List<RelServicioBeneficio> relServcioBeneficio = relServicioBeneficio.getRelServicioBeneficioByIdServicio(afiliado.getServicio().getId());
-                   		for(RelServicioBeneficio relSB : relServcioBeneficio) {
-                   			ABeneficioD.put(OBeneficioD.put("nombre",relSB.getBeneficio().getNombre()).put("descripcion",relSB.getBeneficio().getDescripcion()));
-                   		}*/
-                  // OBeneficios.put("beneficios", ABeneficioD);
-                  // modelo.put("beneficios", ABeneficioD.toString());
-                  // if (afiliado.getServicio().getId() == idIndividual) {
-                   //    for (Integer idTemplate : templates) {
-                    //       if (idTemplate.equals(ID_TEMPLATE_IB)) {
-                             //  adjuntos.add(ResourceUtils.getFile(archivoPlanIndividual));
-                              // logger.info("Enviando email de bienvenido afiliado...");
-                              // emailController.sendMailJet(modelo,ID_TEMPLATE_BA,adjuntos,correos);
-                               
-                           //}
-                       //}
-                  // }
-				//}
+                   List<Beneficio> relServcioBeneficio = BeneficioService.getBeneficiosByIdServicio(afiliado.getServicio().getId());
+                   		for(Beneficio bene : relServcioBeneficio) {
+                   			ABeneficioD.put(getBeneficios(bene.getNombre(), bene.getDescripcion()));
+                   		}                                                          
+				}
 			}
 			 
 			logger.info(mensajeFlash);
 			afiliadoService.save(afiliado);
-			status.setComplete();
+			modelo.put("id",afiliado.getId().toString());
+			 logger.info("Enviando email de bienvenido afiliado..."); 
+			 emailController.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD);
+			 status.setComplete();
+            	 
+			
 
 		} catch (DataIntegrityViolationException e) {
 
@@ -458,6 +446,12 @@ public class AfiliadoController {
 		} else if (afiliado.getEstatus() == 2) {
 			afiliado.setEstatus(1);
 		}
+		if(afiliado.getEmail()==null || afiliado.getEmail().equals("")) {
+			afiliado.setEmail("email_ficticio@gmail.com");
+		}
+		if(afiliado.getTelefonoMovil()==null || afiliado.getTelefonoMovil()==0) {
+			afiliado.setTelefonoMovil(5555555555l);
+		}
 
 		afiliadoService.save(afiliado);
 		status.setComplete();
@@ -530,6 +524,14 @@ public class AfiliadoController {
 	@ModelAttribute("cuentas")
 	public List<Cuenta> getAllCuentas() {
 		return cuentaService.findAll();
+	}
+	
+	public JSONObject getBeneficios(String name, String descripcion) {
+		
+		JSONObject OBeneficioD = new JSONObject();
+			OBeneficioD.put("nombre",name);
+			OBeneficioD.put("descripcion",descripcion);
+		   return OBeneficioD ;
 	}
 
 }
