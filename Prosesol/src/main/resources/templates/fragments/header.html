@@ -14,9 +14,15 @@
 
 			<!-- logo -->
 			<a href="/home" class="logo"> <span class="big-logo"> <img
-					th:src="@{/img/logos/logo.png}" alt="">
+					th:src="@{/img/logos/logo.png}" alt="" sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
 			</span> <span class="small-logo"> <img th:src="@{/img/logos/logo.png}"
-					alt="">
+					alt="" sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
+			</span>
+			</a>
+			<a href="/home" class="logo"> <span class="big-logo"> <img
+					th:src="@{/img/logos/moneygram.jfif}" alt="" sec:authorize="hasRole('ROLE_MONEYGRAM')">
+			</span> <span class="small-logo"> <img th:src="@{/img/logos/moneygram.jfif}"
+												   alt="" sec:authorize="hasRole('ROLE_MONEYGRAM')">
 			</span>
 			</a>
 
