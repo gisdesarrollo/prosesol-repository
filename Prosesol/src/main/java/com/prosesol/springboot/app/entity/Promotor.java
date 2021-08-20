@@ -4,21 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -65,6 +51,10 @@ public class Promotor implements Serializable {
 	@JoinTable(name = "rel_promotores_cuentas", joinColumns = @JoinColumn(name = "id_promotor"), inverseJoinColumns = @JoinColumn(name = "id_cta_comercial"), uniqueConstraints = @UniqueConstraint(columnNames = {
 			"id_promotor", "id_cta_comercial" }))
 	private Set<Cuenta> cuentas;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_empresa", referencedColumnName = "id_cat_empresa")
+	private Empresa empresa;
 
 	public Long getId() {
 		return id;
@@ -146,4 +136,11 @@ public class Promotor implements Serializable {
 		this.afiliado = afiliado;
 	}
 
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
 }

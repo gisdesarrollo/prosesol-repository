@@ -1,6 +1,7 @@
 package com.prosesol.springboot.app.entity;
 
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
+import com.prosesol.springboot.app.entity.rel.RelAfiliadoMoneygram;
 import com.prosesol.springboot.app.util.AfiliadoAsistencia;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -166,6 +167,10 @@ public class Afiliado implements Serializable{
 	
 	@OneToMany(mappedBy = "afiliado", fetch = FetchType.LAZY)
 	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "id_afiliado")
+	private Set<RelAfiliadoMoneygram> relAfiliadoMoneygram;
 
 	@Transient
 	private Integer corte;
@@ -465,6 +470,14 @@ public class Afiliado implements Serializable{
 
 	public void setIsIncripcion(Boolean isIncripcion) {
 		this.isIncripcion = isIncripcion;
+	}
+
+	public Set<RelAfiliadoMoneygram> getRelAfiliadoMoneygram() {
+		return relAfiliadoMoneygram;
+	}
+
+	public void setRelAfiliadoMoneygram(Set<RelAfiliadoMoneygram> relAfiliadoMoneygram) {
+		this.relAfiliadoMoneygram = relAfiliadoMoneygram;
 	}
 
 	@Override

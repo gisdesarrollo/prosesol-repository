@@ -136,5 +136,5 @@ public class PromotorController {
 		
 		return "redirect:/promotores/ver";
 	}
-	
+
 }
