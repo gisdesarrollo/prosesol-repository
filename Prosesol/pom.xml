@@ -15,9 +15,9 @@
 	<name>Prosesol</name>
 	<description>Proyecto de Prosesol</description>
 
-	<properties>
-		<java.version>11</java.version>
-	</properties>
+<!--	<properties>-->
+<!--		<java.version>11</java.version>-->
+<!--	</properties>-->
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
@@ -165,13 +165,4 @@
             <version>4.2.0</version>
         </dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>

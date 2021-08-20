@@ -2,7 +2,8 @@ package com.prosesol.springboot.app.entity.composite.id;
 
 import java.io.Serializable;
 
-public class RelAfiliadoIncidenciaId implements Serializable{
+public class
+RelAfiliadoIncidenciaId implements Serializable{
 
 	/**
 	 * 

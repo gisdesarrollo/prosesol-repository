@@ -24,6 +24,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	private static boolean IS_ADMIN = false;
 	private static boolean IS_USUARIO = false;
 	private static boolean IS_ASISTENCIA = false;
+	private static boolean IS_PROMOTOR = false;
+	private static boolean IS_EMPRESA = false;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -57,6 +59,10 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 				IS_USUARIO = true;
 			}else if(authority.getAuthority().equals("ROLE_ASISTENCIA")) {
 				IS_ASISTENCIA = true;
+			}else if(authority.getAuthority().equals("ROLE_PROMOTOR")){
+				IS_PROMOTOR = true;
+			}else if(authority.getAuthority().equals("ROLE_EMPRESA")){
+				IS_EMPRESA = true;
 			}
 		});
 		
@@ -64,7 +70,9 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 			return "/home";
 		}else if(IS_ASISTENCIA) {
 			return "/home";
-		}else {
+		}else if(IS_PROMOTOR || IS_EMPRESA){
+			return "/moneygram";
+		}else{
 			throw new IllegalStateException();
 		}
 		
