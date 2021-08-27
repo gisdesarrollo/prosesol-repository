@@ -10,4 +10,8 @@ public interface IRelAfiliadoMoneygramService {
     public List<RelAfiliadoMoneygram> getAfiliadoMoneygramList(Afiliado afiliado);
 
     public void save(RelAfiliadoMoneygram relAfiliadoMoneygram);
+
+//    public List<RelAfiliadoMoneygram> getAfiliadosByIdPromotor(Long id);
+
+    public List<RelAfiliadoMoneygram> findAll();
 }

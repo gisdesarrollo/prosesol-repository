@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/head :: head"></head>
+<meta charset="utf-8" />
+<body
+        class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+<header th:replace="fragments/header :: header"></header>
+<div class="app-body">
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <main class="main">
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item ">Home</li>
+            <li class="breadcrumb-item ">Sistema</li>
+            <li class="breadcrumb-item active">Afiliados</li>
+        </ol>
+        <div class="layout-container sidemenu-container">
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-header"><br>
+                                        <h5 class="card-title">Afiliados contratados en Moneygram</h5>
+                                        <!-- <div class="card-body">-->
+                                        <a th:href="@{/moneygram/crear}"
+                                           class="btn btn-square btn-primary btn-sm"><i
+                                                class="fas fa-user-plus"></i> Nuevo Afiliado</a>
+
+                                        <div class="clearfix"></div>
+                                        <hr>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered table-condensed" id="dataTable">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Id Moneygram</th>
+                                                        <th>Nombre del afiliado</th>
+                                                        <th>Nombre del contratante</th>
+                                                        <th>Email</th>
+                                                        <th>Teléfono</th>
+<!--                                                        <th sec:authorize="hasRole('ROLE_PROMOTOR')"></th>-->
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="afiliadoMoneygram : ${afiliadoMoneygram}">
+                                                        <td th:text="${afiliadoMoneygram.idMoneygram}"></td>
+                                                        <td th:text="${afiliadoMoneygram.afiliado.nombre} + ' '
+                                                            + ${afiliadoMoneygram.afiliado.apellidoPaterno} + ' '
+                                                            + ${afiliadoMoneygram.afiliado.apellidoMaterno}"></td>
+                                                        <td th:text="${afiliadoMoneygram.nombreContratante}"></td>
+                                                        <td th:text="${afiliadoMoneygram.email}"></td>
+                                                        <td th:text="${afiliadoMoneygram.telefono}"></td>
+<!--                                                        <td sec:authorize="hasRole('ROLE_PROMOTOR')">-->
+<!--                                                            <div class="dropdown mb-4">-->
+<!--                                                                <button class="btn btn-primary btn-sm dropdown-toggle"-->
+<!--                                                                        type="button" id="dropdownMenuButton"-->
+<!--                                                                        data-toggle="dropdown" aria-haspopup="true"-->
+<!--                                                                        aria-expanded="false">Opciones</button>-->
+<!--                                                                <div class="dropdown-menu animated&#45;&#45;fade-in"-->
+<!--                                                                     aria-labelledby="dropdownMenuButton">-->
+<!--                                                                    <a class="dropdown-item"-->
+<!--                                                                       th:href="@{/perfiles/editar/} + ${perfil.id}"-->
+<!--                                                                       th:text="'Editar'"> </a>-->
+<!--                                                                    <a class="dropdown-item"-->
+<!--                                                                       th:href="@{/perfiles/borrar/} + ${perfil.id}"-->
+<!--                                                                       th:text="Borrar"> </a>-->
+<!--                                                                </div>-->
+<!--                                                            </div>-->
+<!--                                                        </td>-->
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+
+</html>

@@ -287,6 +287,15 @@
                   </div>
 
                   <div class="form-group col-md-3">
+                    <label>Clave promotor</label><input type="text"
+                                                       th:field="*{promotor.clave}"
+                                                       class="form-control form-control-user" placeholder="Código de 3 dígitos" maxlength="3">
+                    <small class="form-text text-danger"
+                           th:if="${#fields.hasErrors('promotor.clave')}"
+                           th:errors="*{promotor.clave}"></small>
+                  </div>
+
+                  <div class="form-group col-md-3">
                     <label>Cuenta</label> <select name="cuenta"
                                                   th:field="*{cuenta}" class="form-control" id="cuentas">
                     <option value="">Ninguno</option>
@@ -304,7 +313,7 @@
                            th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
                   </div>
                   <div class="form-group col-md-3">
-                    <label>Email</label><input
+                    <label>Email Contratante</label><input
                           type="text" th:field="${relAfiliadoMoneygram.email}"
                           class="form-control form-control-user"> <small
                           class="form-text text-danger"></small>
