@@ -10,7 +10,7 @@ public class RelAfiliadoMoneygram {
 
     @Id
     @Column(name = "id_moneygram")
-    private long idMoneygram;
+    private String idMoneygram;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_afiliado")
@@ -25,11 +25,11 @@ public class RelAfiliadoMoneygram {
     @Column(name = "telefono")
     private long telefono;
 
-    public long getIdMoneygram() {
+    public String getIdMoneygram() {
         return idMoneygram;
     }
 
-    public void setIdMoneygram(long idMoneygram) {
+    public void setIdMoneygram(String idMoneygram) {
         this.idMoneygram = idMoneygram;
     }
 

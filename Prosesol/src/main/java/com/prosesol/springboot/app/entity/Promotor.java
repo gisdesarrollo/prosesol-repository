@@ -44,6 +44,9 @@ public class Promotor implements Serializable {
 	@Column(name = "estatus")
 	private Boolean estatus;
 
+	@Column(name = "clave")
+	private String clave;
+
 	@OneToMany(mappedBy = "promotor", fetch = FetchType.LAZY)
 	private Set<Afiliado> afiliado;
 
@@ -142,5 +145,13 @@ public class Promotor implements Serializable {
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public String getClave() {
+		return clave;
+	}
+
+	public void setClave(String clave) {
+		this.clave = clave;
 	}
 }

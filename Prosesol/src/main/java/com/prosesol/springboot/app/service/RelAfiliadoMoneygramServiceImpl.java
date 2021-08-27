@@ -27,5 +27,17 @@ public class RelAfiliadoMoneygramServiceImpl implements IRelAfiliadoMoneygramSer
         relAfiliadoMoneygramDao.save(relAfiliadoMoneygram);
     }
 
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<RelAfiliadoMoneygram> getAfiliadosByIdPromotor(Long id) {
+//        return relAfiliadoMoneygramDao.getAfiliadosByIdPromotor(id);
+//    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<RelAfiliadoMoneygram> findAll() {
+        return (List)relAfiliadoMoneygramDao.findAll();
+    }
+
 
 }

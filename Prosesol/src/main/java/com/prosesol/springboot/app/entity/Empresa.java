@@ -17,6 +17,9 @@ public class Empresa {
     @Column(name = "clave")
     private String clave;
 
+    @Column(name = "consecutivo")
+    private Long consecutivo;
+
     public long getId() {
         return id;
     }
@@ -39,5 +42,13 @@ public class Empresa {
 
     public void setClave(String clave) {
         this.clave = clave;
+    }
+
+    public Long getConsecutivo() {
+        return consecutivo;
+    }
+
+    public void setConsecutivo(Long consecutivo) {
+        this.consecutivo = consecutivo;
     }
 }
