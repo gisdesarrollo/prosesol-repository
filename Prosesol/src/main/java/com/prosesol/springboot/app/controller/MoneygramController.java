@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -138,9 +141,19 @@ public class MoneygramController {
 
     @Secured({"ROLE_PROMOTOR"})
     @GetMapping(value = "/ver")
-    public String ver(Model model){
+    public String ver(Model model, Authentication authentication){
 
-        model.addAttribute("afiliadoMoneygram", relAfiliadoMoneygramService.findAll());
+        String username = authentication.getName();
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        authorities.forEach(authority ->{
+            if(authority.getAuthority().equals("ROLE_PROMOTOR")){
+                model.addAttribute("afiliadoMoneygram", relAfiliadoMoneygramService.getAfiliadosByUsername(username));
+            }
+        });
+
+
 
         return "moneygram/ver";
     }
