@@ -56,7 +56,7 @@ public class LoginController {
 					url = "/incidencias/home";
 				}else if(authority.getAuthority().equals("ROLE_PROMOTOR") ||
 						authority.getAuthority().equals("ROLE_EMPRESA")){
-					url = "/moneygram/home";
+					url = "redirect:/moneygram/ver";
 				}
 			});
 			

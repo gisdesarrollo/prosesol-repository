@@ -27,11 +27,11 @@ public class RelAfiliadoMoneygramServiceImpl implements IRelAfiliadoMoneygramSer
         relAfiliadoMoneygramDao.save(relAfiliadoMoneygram);
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public List<RelAfiliadoMoneygram> getAfiliadosByIdPromotor(Long id) {
-//        return relAfiliadoMoneygramDao.getAfiliadosByIdPromotor(id);
-//    }
+    @Override
+    @Transactional
+    public List<RelAfiliadoMoneygram> getAfiliadosByUsername(String username) {
+        return relAfiliadoMoneygramDao.getAfiliadosByUsername(username);
+    }
 
     @Override
     @Transactional(readOnly = true)
