@@ -15,7 +15,7 @@ public interface IRelAfiliadoMoneygramDao extends CrudRepository<RelAfiliadoMone
     @Query("select r from RelAfiliadoMoneygram r, Afiliado a where r.afiliado.id = a.id ")
     public List<RelAfiliadoMoneygram> getAfiliadoMoneygramList(Afiliado afiliado);
 
-//    @Query("select ram from RelAfiliadoMoneygram ram, Afiliado a, Promotor p, where ram.id = a.id and a.promotor.id = p.id" +
-//            " and p.id = ?1")
-//    public List<RelAfiliadoMoneygram> getAfiliadosByIdPromotor(@Param("id") Long id);
+    @Query("select r from RelAfiliadoMoneygram r, Afiliado a, Promotor p where r.afiliado = a " +
+            "and a.promotor = p and p.nombre like %:username%")
+    public List<RelAfiliadoMoneygram> getAfiliadosByUsername(@Param("username") String username);
 }
