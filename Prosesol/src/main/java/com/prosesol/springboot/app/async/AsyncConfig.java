@@ -38,6 +38,11 @@ public class AsyncConfig implements AsyncConfigurer {
 	    return new ThreadPoolTaskExecutor();
     }
     
+    @Bean(name = "threadCargaMoneygram")
+    public Executor threadCargaMoneygram(){
+	    return new ThreadPoolTaskExecutor();
+    }
+    
     @Override
     public Executor getAsyncExecutor() {
         return null;

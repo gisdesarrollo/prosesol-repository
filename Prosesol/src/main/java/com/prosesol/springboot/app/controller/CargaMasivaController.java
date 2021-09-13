@@ -1,6 +1,7 @@
 package com.prosesol.springboot.app.controller;
 
 import com.prosesol.springboot.app.async.AsyncCargaMasiva;
+import com.prosesol.springboot.app.async.AsyncCargaMoneygram;
 import com.prosesol.springboot.app.async.AsyncCargaVigor;
 import com.prosesol.springboot.app.entity.Cuenta;
 import com.prosesol.springboot.app.entity.LogCM;
@@ -38,6 +39,9 @@ public class CargaMasivaController {
 
     @Autowired
     private AsyncCargaVigor asyncCargaVigor;
+    
+    @Autowired
+    private AsyncCargaMoneygram asyncCargaMoneygram;
 
     @Autowired
     private ILogCMService logCMService;
@@ -95,6 +99,30 @@ public class CargaMasivaController {
 
         return "cargaMasiva/vigor";
     }
+    
+    /**
+     * Vista de la Carga Masiva afiliado moneygram
+     * @param model
+     * @param redirect
+     * @return
+     */
+    @Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+    @GetMapping("/moneygram")
+    public String cargaMasivaMoneygram(Model model, RedirectAttributes redirect){
+
+        try{
+
+            model.addAttribute("reportes", logCMService.findAllLogsMoneygram());
+
+        }catch(Exception e){
+            e.printStackTrace();
+            redirect.addFlashAttribute("error: ", "Error al momento de generar" +
+                    "la tabla");
+            return "redirect:/cargaMasiva/reportes";
+        }
+
+        return "cargaMasiva/moneygram";
+    }
 
     /**
      * Descarga el archivo tanto para afiliados como para vigor
@@ -114,6 +142,25 @@ public class CargaMasivaController {
             redirect.addFlashAttribute("error", e.getMessage());
             logger.error("Error: " , e);
             return "redirect:/cargaMasiva/afiliados";
+
+        }
+
+        return null;
+    }
+    
+    @Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+    @GetMapping("/templateMoneygramXlsx")
+    public String descargarTemplateMoneygram(HttpServletResponse response, RedirectAttributes redirect) {
+
+        try {
+
+            reportesExcelImpl.generarTemplateAfiliadoMoneygramXlsx(response);
+
+        } catch (CustomValidatorExcelException e) {
+
+            redirect.addFlashAttribute("error", e.getMessage());
+            logger.error("Error: " , e);
+            return "redirect:/cargaMasiva/moneygram";
 
         }
 
@@ -221,7 +268,7 @@ public class CargaMasivaController {
                 logger.info("File Type: " + file.getContentType());
                 logger.info("File Name: " + file.getOriginalFilename());
 
-                byte[] bytes = file.getBytes();
+                byte[] bytes = new String(file.getBytes(),"ISO-8859-1").getBytes("UTF-8");
                 asyncCargaVigor.procesaArchivoVigorAsync(isVigor,isConciliacion,
                 nombreArchivo, bytes, cuenta.getId());
 
@@ -243,6 +290,71 @@ public class CargaMasivaController {
         return "redirect:/afiliados/ver";
 
     }
+    
+    @Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
+    @RequestMapping(value = "/upload/moneygram", method = RequestMethod.POST)
+    public String uploadCargaMoneygram(@ModelAttribute("cuenta")Cuenta cuenta,
+                                   @RequestParam("file") MultipartFile file,
+                                   HttpServletResponse response, RedirectAttributes redirect) {
+
+        boolean isVigor = false;
+        boolean isConciliacion = false;
+        boolean isMoneygram = true;
+
+        try {
+
+            if(!file.isEmpty()){
+
+                afiliadoService.updateEstatusbyIdCuenta(cuenta.getId());
+
+
+                int indexOfName = file.getOriginalFilename().indexOf(".");
+                String extension = file.getOriginalFilename().substring(file.getOriginalFilename()
+                        .lastIndexOf(".") + 1);
+                String nombreArchivo = null;
+
+                if(indexOfName != -1){
+                    nombreArchivo = file.getOriginalFilename().substring(0, indexOfName);
+                }
+
+                if(!extension.equals("csv")){
+                    redirect.addFlashAttribute("error",
+                            "El archivo no es de tipo CSV, favor de convertir" +
+                                    " el archivo de tipo CSV");
+                    return "redirect:/cargaMasiva/vigor";
+                }
+
+                if(indexOfName != -1){
+                    nombreArchivo = file.getOriginalFilename().substring(0, indexOfName);
+                }
+
+                logger.info("File Size: " + file.getBytes().length);
+                logger.info("File Type: " + file.getContentType());
+                logger.info("File Name: " + file.getOriginalFilename());
+
+                byte[] bytes = new String(file.getBytes(),"ISO-8859-1").getBytes("UTF-8");
+                asyncCargaMoneygram.procesaArchivoMoneygramAsync(isVigor,isConciliacion,isMoneygram,
+                nombreArchivo, bytes);
+	
+
+            }else{
+                redirect.addFlashAttribute("warning", "Por favor, seleccione" +
+                        " un archivo");
+                return "redirect:/cargaMasiva/moneygram";
+            }
+
+        }catch (Exception ne){
+            logger.error("Formato incorrecto", ne);
+            redirect.addFlashAttribute("error", "Error al momento de realizar la inserción masiva");
+
+            return "redirect:/cargaMasiva/moneygram";
+        }
+
+        redirect.addFlashAttribute("info", "El archivo se está procesando");
+        return "redirect:/afiliados/ver";
+
+    }
+
 
     /**
      * Descarga el reporte tanto para afiliados como para vigor

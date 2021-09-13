@@ -50,19 +50,18 @@ public class AsyncCargaVigor {
         Map<Integer, String> campos = new HashMap<Integer, String>();
         Scanner scanner = null;
         InputStream inputStream = new ByteArrayInputStream(bs);
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
 
         try{
-            scanner = new Scanner(inputStream, "UTF-8");
-            scanner.nextLine();
-            while(scanner.hasNext()){
-                String line = scanner.nextLine();
-
-                String[] valores = line.split(",");
-                int valoresCapturados = valores.length;
-
-                for(int i = 0; i < valores.length; i++){
-                    campos.put(i, valores[i]);
-                }
+        	String cadena ="";
+       	 	in.readLine();
+       	 	String[] valores = null;
+       	 	while ((cadena = in.readLine()) != null) {
+       		 
+       	 		valores = cadena.split(",");
+       	 		for(Integer i = 0; i< valores.length; i++) {
+       	 			campos.put(i, valores[i]);
+       	 		}
 
                 resultado = insertCargaMasivaCSV.evaluarDatosList(isVigor,isConciliacion,
                         numeroRegistros, campos, idCuentaComercial);
@@ -77,7 +76,7 @@ public class AsyncCargaVigor {
 
                 log.add(resultado + "\n");
             }
-
+       	 	numeroRegistros--;
             generarArchivoLog(nombre, numeroRegistros, log, isVigor,isConciliacion);
 
         }catch(CustomExcelException ce){
@@ -119,10 +118,9 @@ public class AsyncCargaVigor {
         
         try {
         	
-            //DataOutputStream dos = new DataOutputStream(bos);
             for(String str : log){
             	byteArray.write(str.getBytes());
-                //dos.writeUTF(str);
+               
             }
 
             byte[] data = byteArray.toByteArray();
@@ -131,7 +129,7 @@ public class AsyncCargaVigor {
             String dateFormat = getDateFormat.format(fechaCreacion);
 
             logCM = new LogCM(nombre + "_" + dateFormat + ".txt", fechaCreacion,
-                    numeroRegistros, data, isVigor,isConciliacion);
+                    numeroRegistros, data, isVigor,isConciliacion,false);
 
             logCMService.save(logCM);
             byteArray.close();

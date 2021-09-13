@@ -14,4 +14,6 @@ public interface IRelAfiliadoMoneygramService {
 //    public List<RelAfiliadoMoneygram> getAfiliadosByIdPromotor(Long id);
 
     public List<RelAfiliadoMoneygram> findAll();
+    
+   	public String[] getVariablesRelAfiliadoMoneygram();
 }

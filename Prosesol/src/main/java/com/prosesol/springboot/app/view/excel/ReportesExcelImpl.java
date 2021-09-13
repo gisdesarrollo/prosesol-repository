@@ -10,6 +10,7 @@ import com.prosesol.springboot.app.service.ICuentaService;
 import com.prosesol.springboot.app.service.IPagoService;
 import com.prosesol.springboot.app.service.IPeriodicidadService;
 import com.prosesol.springboot.app.service.IPromotorService;
+import com.prosesol.springboot.app.service.IRelAfiliadoMoneygramService;
 import com.prosesol.springboot.app.service.IReportesExcel;
 import com.prosesol.springboot.app.service.IServicioService;
 import org.apache.commons.logging.Log;
@@ -53,6 +54,9 @@ public class ReportesExcelImpl implements IReportesExcel {
     
     @Autowired
     private IPagoService pagoService;
+    
+    @Autowired
+    private IRelAfiliadoMoneygramService relAfiliadoMoneygramService;
 
     /**
      * Método que genera el template de carga masiva
@@ -250,6 +254,157 @@ public class ReportesExcelImpl implements IReportesExcel {
          }
     }
     
+    /**
+     * Método que genera el template afiliados moneygram
+     * @param response
+     * @throws CustomValidatorExcelException
+     */
+
+    @Override
+    public void generarTemplateAfiliadoMoneygramXlsx(HttpServletResponse response) throws CustomValidatorExcelException{
+    	 FILENAME = "template.xlsx";
+    	 
+    	 Workbook workbook = new XSSFWorkbook();
+         XSSFSheet sheet = (XSSFSheet) workbook.createSheet("Afiliados Moneygram");
+         XSSFSheet sheetServicios = (XSSFSheet)workbook.createSheet("Servicios");
+         XSSFSheet sheetPeriodo = (XSSFSheet)workbook.createSheet("Periodos");
+         XSSFSheet sheetPromotor = (XSSFSheet)workbook.createSheet("Promotor");
+         XSSFSheet sheetCuenta = (XSSFSheet)workbook.createSheet("Cuenta");
+         Row header = sheet.createRow(0);
+         Row headerServicio = sheetServicios.createRow(0);
+         Row headerPeriodo = sheetPeriodo.createRow(0);
+         Row headerPromotor = sheetPromotor.createRow(0);
+         Row headerCuenta = sheetCuenta.createRow(0);
+
+         String[] afiliadoFields = afiliadoService.getVariablesAfiliado();
+         String[] relAfiliadoMoneygramFields = relAfiliadoMoneygramService.getVariablesRelAfiliadoMoneygram();
+         String[] encabezado = validatorExcel.generarEncabezadoMoneygram(afiliadoFields,relAfiliadoMoneygramFields, sheet);
+
+         try {
+
+             Font headerFont = workbook.createFont();
+             headerFont.setBold(true);
+             headerFont.setFontHeightInPoints((short)14);
+             headerFont.setColor(IndexedColors.BLACK.getIndex());
+
+             CellStyle cellStyle = workbook.createCellStyle();
+             cellStyle.setFont(headerFont);
+
+             for(int i = 0; i < encabezado.length; i++) {
+                 Cell cell = header.createCell(i);
+                 cell.setCellValue(encabezado[i]);
+                 cell.setCellStyle(cellStyle);
+             }
+
+             for(int i = 0; i < encabezado.length; i++){
+                 sheet.autoSizeColumn(i);
+             }
+             
+           //datos de pestaña servicios
+             Cell cellHeaderServicio = headerServicio.createCell(0);
+             cellHeaderServicio.setCellValue("ID");
+             cellHeaderServicio.setCellStyle(cellStyle);
+
+             Cell cellServicio = headerServicio.createCell(1);
+             cellServicio.setCellValue("Servicios");
+             cellServicio.setCellStyle(cellStyle);
+
+             for(int i = 0; i < encabezado.length; i++){
+                 sheet.autoSizeColumn(i);
+             }
+
+             List<Servicio> listServicios = servicioService.findAll();
+
+             int rowNum = 1;
+             for(Servicio servicio : listServicios){
+                 Row row = sheetServicios.createRow(rowNum++);
+
+                 row.createCell(0).setCellValue(servicio.getId());
+                 row.createCell(1).setCellValue(servicio.getNombre());
+             }
+
+             sheetServicios.autoSizeColumn(0);
+             
+             //datos de pestaña periodo
+             Cell cellHeaderPeriodo = headerPeriodo.createCell(0);
+             cellHeaderPeriodo.setCellValue("ID");
+             cellHeaderPeriodo.setCellStyle(cellStyle);
+
+             Cell cellPeriodo = headerPeriodo.createCell(1);
+             cellPeriodo.setCellValue("Periodos");
+             cellPeriodo.setCellStyle(cellStyle);
+             
+             for(int i = 0; i < encabezado.length; i++){
+                 sheet.autoSizeColumn(i);
+             }
+             
+             List<Periodicidad> listPeriodos = periodicidadService.findAll();
+             int rowNumPeriodo = 1;
+             for(Periodicidad periodo : listPeriodos){
+                 Row row = sheetPeriodo.createRow(rowNumPeriodo++);
+
+                 row.createCell(0).setCellValue(periodo.getId());
+                 row.createCell(1).setCellValue(periodo.getPeriodo());
+             }
+             sheetPeriodo.autoSizeColumn(0);
+             
+             //datos de pestaña promotor
+             Cell cellHeaderPromotor = headerPromotor.createCell(0);
+             cellHeaderPromotor.setCellValue("ID");
+             cellHeaderPromotor.setCellStyle(cellStyle);
+
+             Cell cellPromotor = headerPromotor.createCell(1);
+             cellPromotor.setCellValue("Promotor");
+             cellPromotor.setCellStyle(cellStyle);
+             
+             for(int i = 0; i < encabezado.length; i++){
+                 sheet.autoSizeColumn(i);
+             }
+             
+             List<Promotor> listPromotor = promotorService.findAll();
+             int rowNumPromotor = 1;
+             for(Promotor promotor : listPromotor){
+                 Row row = sheetPromotor.createRow(rowNumPromotor++);
+
+                 row.createCell(0).setCellValue(promotor.getId());
+                 row.createCell(1).setCellValue(promotor.getNombre());
+             }
+             sheetPromotor.autoSizeColumn(0);
+             
+             //datos de pestaña cuenta
+             Cell cellHeaderCuenta = headerCuenta.createCell(0);
+             cellHeaderCuenta.setCellValue("ID");
+             cellHeaderCuenta.setCellStyle(cellStyle);
+
+             Cell cellCuenta = headerCuenta.createCell(1);
+             cellCuenta.setCellValue("Cuenta");
+             cellCuenta.setCellStyle(cellStyle);
+             
+             for(int i = 0; i < encabezado.length; i++){
+                 sheet.autoSizeColumn(i);
+             }
+             
+             List<Cuenta> listCuentas = cuentaService.findAll();
+             int rowNumCuenta = 1;
+             for(Cuenta cuenta : listCuentas){
+                 Row row = sheetCuenta.createRow(rowNumCuenta++);
+
+                 row.createCell(0).setCellValue(cuenta.getId());
+                 row.createCell(1).setCellValue(cuenta.getRazonSocial());
+             }
+             sheetCuenta.autoSizeColumn(0);
 
 
+             response.setHeader("Content-disposition", "attachment; filename=" + FILENAME);
+             workbook.write(response.getOutputStream());
+
+             workbook.close();
+
+         } catch (CustomValidatorExcelException e) {
+             e.printStackTrace();
+         }catch(IOException ie){
+             throw new CustomValidatorExcelException(ie.getMessage());
+         }
+    }
+    
 }
