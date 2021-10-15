@@ -1143,10 +1143,11 @@ public class InsertCargaMasivaCSV {
 					break;
 				case 20:
 					if (campo.getValue().length() == 0) {
-						afiliado.setFechaAfiliacion(null);
-						LOG.info(counterLinea + " - " + "FechaAfiliacion: " + afiliado.getFechaAfiliacion());
-					} else {
-						isValid = isValidFormat("dd/MM/yyyy", campo.getValue());
+							LOG.info(counterLinea + " - " + "La fecha de afiliación no puede quedar vacío");
+							log = counterLinea + " - " + "La fecha de afiliación no puede quedar vacío";
+							isValidAfiliado = false;
+						} else {
+							isValid = isValidFormat("dd/MM/yyyy", campo.getValue());
 
 						if (isValid) {
 							afiliado.setFechaAfiliacion(new SimpleDateFormat("dd/MM/yyyy").parse(campo.getValue()));
