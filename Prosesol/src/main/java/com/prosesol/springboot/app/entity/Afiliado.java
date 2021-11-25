@@ -1,5 +1,6 @@
 package com.prosesol.springboot.app.entity;
 
+import com.mysql.cj.x.protobuf.MysqlxCursor.Fetch;
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoIncidencia;
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoMoneygram;
 import com.prosesol.springboot.app.util.AfiliadoAsistencia;
@@ -168,8 +169,7 @@ public class Afiliado implements Serializable{
 	@OneToMany(mappedBy = "afiliado", fetch = FetchType.LAZY)
 	private Set<RelAfiliadoIncidencia> relAfiliadoIncidencia;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "id_afiliado")
+	@OneToMany(mappedBy = "afiliado",fetch= FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<RelAfiliadoMoneygram> relAfiliadoMoneygram;
 
 	@Transient
@@ -178,6 +178,7 @@ public class Afiliado implements Serializable{
 	public Afiliado() {
 		beneficiarios = new HashSet<Beneficiario>();
 		relAfiliadoIncidencia = new HashSet<RelAfiliadoIncidencia>();
+		relAfiliadoMoneygram = new HashSet<RelAfiliadoMoneygram>();
 	}
 
 	public Long getId() {

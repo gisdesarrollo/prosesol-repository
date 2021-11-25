@@ -15,4 +15,6 @@ public interface IRelAfiliadoMoneygramService {
     public List<RelAfiliadoMoneygram> getAfiliadosByUsername(String username);
 
     public List<RelAfiliadoMoneygram> findAll();
+    
+   	public String[] getVariablesRelAfiliadoMoneygram();
 }

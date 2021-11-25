@@ -38,7 +38,7 @@ public class LoginController {
 	private String url;
 	
 	@GetMapping(value = {"login", "/home", "/", "/moneygram"})
-	public String login(@RequestParam(value = "error", required = false)String error, 
+	public  String login(@RequestParam(value = "error", required = false)String error, 
 			@RequestParam(value = "logout", required = false)String logout,
 			Model model,  Principal principal) {
 				

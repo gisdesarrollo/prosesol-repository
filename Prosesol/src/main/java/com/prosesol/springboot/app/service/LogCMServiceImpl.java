@@ -58,5 +58,10 @@ public class LogCMServiceImpl implements ILogCMService{
 		
 	}
 
+	@Override
+	public List<LogCM> findAllLogsMoneygram() {
+		return iLogCMDao.findAllLogsMoneygram();
+	}
+
 	
 }

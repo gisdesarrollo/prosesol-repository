@@ -41,18 +41,22 @@ public class LogCM implements Serializable {
     @Column(name = "is_conciliacion")
     private boolean isConciliacion;
     
+    @Column(name = "is_moneygram")
+    private boolean isMoneygram;
+    
     public LogCM(){}
     
     
 
    public LogCM(String nombre, Date fecha, Integer numeroRegistros, byte[] archivo, boolean isVigor,
-			boolean isConciliacion) {
+			boolean isConciliacion,boolean isMoneygram) {
 		this.nombre = nombre;
 		this.fecha = fecha;
 		this.numeroRegistros = numeroRegistros;
 		this.archivo = archivo;
 		this.isVigor = isVigor;
 		this.isConciliacion = isConciliacion;
+		this.isMoneygram = isMoneygram;
 	}
 
 
@@ -121,6 +125,16 @@ public class LogCM implements Serializable {
 	public void setConciliacion(boolean isConciliacion) {
 		this.isConciliacion = isConciliacion;
 	}
+	
+	public boolean isMoneygram() {
+		return isMoneygram;
+	}
+
+	public void setMoneygram(boolean isMoneygram) {
+		this.isMoneygram = isMoneygram;
+	}
+
+
 
 	@Override
     public String toString() {

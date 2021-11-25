@@ -74,7 +74,7 @@ public class AsyncCargaMasiva {
 
                 log.add(resultado + "\n");
             }
-
+        	numeroRegistros--;
             generarArchivoLog(nombre, numeroRegistros, log, isVigor,isConciliacion);
 
         }finally {
@@ -114,7 +114,7 @@ public class AsyncCargaMasiva {
             String dateFormat = getDateFormat.format(fechaCreacion);
 
             logCM = new LogCM(nombre + "_" + dateFormat + ".txt", fechaCreacion,
-                    numeroRegistros, data, isVigor,isConciliacion);
+                    numeroRegistros, data, isVigor,isConciliacion,false);
 
             logCMService.save(logCM);
             byteArray.close();

@@ -339,6 +339,7 @@ public class AfiliadoController {
                    modelo.put("telefono", afiliado.getServicio().getTelefono());
                    modelo.put("correo", afiliado.getServicio().getCorreo());
                    modelo.put("nota", afiliado.getServicio().getNota());
+                   modelo.put("id",afiliado.getClave());
                    correos.add(afiliado.getEmail());
                    List<Beneficio> relServcioBeneficio = BeneficioService.getBeneficiosByIdServicio(afiliado.getServicio().getId());
                    		for(Beneficio bene : relServcioBeneficio) {
@@ -349,7 +350,6 @@ public class AfiliadoController {
 			 
 			logger.info(mensajeFlash);
 			afiliadoService.save(afiliado);
-			modelo.put("id",afiliado.getId().toString());
 			 logger.info("Enviando email de bienvenido afiliado..."); 
 			 emailController.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD);
 			 status.setComplete();
