@@ -8,6 +8,8 @@ import com.prosesol.springboot.app.services.EmailService;
 import com.prosesol.springboot.app.util.Paises;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -65,6 +67,9 @@ public class MoneygramController {
 
     @Autowired
     private EmailService emailService;
+    
+    @Autowired
+   	private IBeneficioService BeneficioService;
 
     @Secured("ROLE_PROMOTOR")
     @GetMapping(value = "/home")
@@ -104,8 +109,10 @@ public class MoneygramController {
         Parametro parametro = parametroService.findById(ID_MONEYGRAM);
         String emailAfiliado = afiliado.getEmail();
         String emailContratante = relAfiliadoMoneygram.getEmailContratante();
-        Map<String, String> datosEmail = new HashMap<>(); 
         List<String> correos = new ArrayList<>();
+		Map<String, String> modelo = new LinkedHashMap<>();
+		JSONArray ABeneficioD = new JSONArray();
+        
         
         try{
             
@@ -143,22 +150,28 @@ public class MoneygramController {
 
             status.setComplete();
             
-            // Enviar correo de bienvenida
-            if(afiliado.getEmail() != null){
-                datosEmail.put("afiliado", afiliado.getNombre() + " " + afiliado.getApellidoPaterno() +
-                        " " + afiliado.getApellidoMaterno());
-                datosEmail.put("servicio", afiliado.getServicio().getNombre());
-                datosEmail.put("rfc", afiliado.getRfc());
-                datosEmail.put("proveedor", afiliado.getServicio().getNombreProveedor());
-                datosEmail.put("telefono", afiliado.getServicio().getTelefono());
-                datosEmail.put("correo", afiliado.getServicio().getCorreo());
-                datosEmail.put("nota", afiliado.getServicio().getNota());
-                datosEmail.put("id",afiliado.getClave());
-                correos.add(afiliado.getEmail());
-
-                logger.info("Enviando email de bienvenido afiliado...");
-                emailService.sendMailJet(datosEmail, ID_TEMPLATE_BA, correos, null);
-            }
+         // Envío email bienvenida
+         			if (afiliado.getEmail()!=null) {
+         				
+                        modelo.put("afiliado", afiliado.getNombre() + " " + afiliado.getApellidoPaterno() +
+                                " " + afiliado.getApellidoMaterno());
+                        modelo.put("servicio", afiliado.getServicio().getNombre());
+                        modelo.put("rfc", afiliado.getRfc());
+                        modelo.put("proveedor", afiliado.getServicio().getNombreProveedor());
+                        modelo.put("telefono", afiliado.getServicio().getTelefono());
+                        modelo.put("correo", afiliado.getServicio().getCorreo());
+                        modelo.put("nota", afiliado.getServicio().getNota());
+                        modelo.put("id",afiliado.getClave());
+                        modelo.put("idMoneygram",relAfiliadoMoneygram.getIdMoneygram());
+                        modelo.put("costoServicio", afiliado.getServicio().getCostoTitular().toString());
+                        modelo.put("valida","1");
+                        correos.add(emailAfiliado);
+                        List<Beneficio> relServcioBeneficio = BeneficioService.getBeneficiosByIdServicio(afiliado.getServicio().getId());
+                        		for(Beneficio bene : relServcioBeneficio) {
+                        			ABeneficioD.put(getBeneficios(bene.getNombre(), bene.getDescripcion()));
+                        		}                                                          
+         			}
+         			emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD);
 
         } catch (Exception e){
             e.printStackTrace();
@@ -273,5 +286,13 @@ public class MoneygramController {
     public List<Paises> getAllPaises() {
         return afiliadoService.getAllPaises();
     }
+    
+public JSONObject getBeneficios(String name, String descripcion) {
+		
+		JSONObject OBeneficioD = new JSONObject();
+			OBeneficioD.put("nombre",name);
+			OBeneficioD.put("descripcion",descripcion);
+		   return OBeneficioD ;
+	}
 
 }
