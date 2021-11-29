@@ -41,8 +41,8 @@
                                                         <th>Id Moneygram</th>
                                                         <th>Nombre del afiliado</th>
                                                         <th>Nombre del contratante</th>
-                                                        <th>Email</th>
-                                                        <th>Teléfono</th>
+                                                        <th>Email Contratante</th>
+                                                        <th>Teléfono Contratante</th>
 <!--                                                        <th sec:authorize="hasRole('ROLE_PROMOTOR')"></th>-->
                                                     </tr>
                                                     </thead>
@@ -53,8 +53,8 @@
                                                             + ${afiliadoMoneygram.afiliado.apellidoPaterno} + ' '
                                                             + ${afiliadoMoneygram.afiliado.apellidoMaterno}"></td>
                                                         <td th:text="${afiliadoMoneygram.nombreContratante}"></td>
-                                                        <td th:text="${afiliadoMoneygram.email}"></td>
-                                                        <td th:text="${afiliadoMoneygram.telefono}"></td>
+                                                        <td th:text="${afiliadoMoneygram.emailContratante}"></td>
+                                                        <td th:text="${afiliadoMoneygram.telefonoContratante}"></td>
 <!--                                                        <td sec:authorize="hasRole('ROLE_PROMOTOR')">-->
 <!--                                                            <div class="dropdown mb-4">-->
 <!--                                                                <button class="btn btn-primary btn-sm dropdown-toggle"-->

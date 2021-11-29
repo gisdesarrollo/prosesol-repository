@@ -58,9 +58,9 @@
 										
 										<div class="form-group col-md-4">
 											<label >Correo Electrónico</label>
-											<input type="text"
+											<input type="email"
 												th:field="*{email}"
-												class="form-control form-control-user">
+												class="form-control form-control-user" required>
 										</div>
 										
 										<div class="form-group col-md-4">
@@ -68,6 +68,16 @@
 											<input type="text"
 												th:field="*{clave}"
 												class="form-control form-control-user">
+										</div>
+
+										<div class="form-group col-md-3">
+											<label>Empresa</label> <select name="empresa"
+																		th:field="*{empresa}" class="form-control"
+																		id="inputGroupSelect01">
+											<option th:each="empresa : ${empresas}" th:value="${empresa.id}"
+													th:text="${empresa.nombre}" th:selected="false" />
+										</select> <small class="form-text text-danger"
+														 th:if="${#fields.hasErrors('empresa')}" th:errors="*{empresa}"></small>
 										</div>
 									</div>
 
