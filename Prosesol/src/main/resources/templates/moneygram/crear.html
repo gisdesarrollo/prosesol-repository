@@ -30,14 +30,14 @@
                 <div class="row">
                   <div class="form-group col-md-3">
                     <label>Nombre</label><span style="color:red;">*</span><input type="text"
-                                                                                 th:field="*{nombre}" class="form-control form-control-user">
+                                                                                 th:field="*{nombre}" class="form-control form-control-user" required>
                     <small class="form-text text-danger"
                            th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
                   </div>
                   <div class="form-group col-md-3">
                     <label>Apellido Paterno</label><span style="color:red;">*</span><input
                           type="text" th:field="*{apellidoPaterno}"
-                          class="form-control form-control-user"> <small
+                          class="form-control form-control-user" required> <small
                           class="form-text text-danger"
                           th:if="${#fields.hasErrors('apellidoPaterno')}" th:errors="*{apellidoPaterno}"></small>
                   </div>
@@ -45,7 +45,7 @@
                   <div class="form-group col-md-3">
                     <label>Apelido Materno</label><span style="color:red;">*</span> <input
                           type="text" th:field="*{apellidoMaterno}"
-                          class="form-control form-control-user"> <small
+                          class="form-control form-control-user" required> <small
                           class="form-text text-danger"
                           th:if="${#fields.hasErrors('apellidoMaterno')}"
                           th:errors="*{apellidoMaterno}"></small>
@@ -55,7 +55,7 @@
                     <label>Fecha de Nacimiento</label><span style="color:red;">*</span> <input
                           type="text" th:field="*{fechaNacimiento}"  autocomplete="off"
                           class="form-control form-control-user" id="fechaNacimiento"
-                          placeholder=""> <small class="form-text text-danger"
+                          placeholder="" required> <small class="form-text text-danger"
                                                  th:if="${#fields.hasErrors('fechaNacimiento')}"
                                                  th:errors="*{fechaNacimiento}"></small>
                   </div>
@@ -130,9 +130,9 @@
                   </div>
 
                   <div class="form-group col-md-3">
-                    <label>RFC</label><input type="text"
+                    <label>RFC</label><span style="color:red;">*</span><input type="text"
                                              th:field="*{rfc}"
-                                             class="form-control form-control-user rfcText"> <small
+                                             class="form-control form-control-user rfcText" required> <small
                           class="form-text text-danger"
                           th:if="${#fields.hasErrors('rfc')}" th:errors="*{rfc}"></small>
                   </div>
@@ -158,7 +158,7 @@
                   <div class="form-group col-md-3">
                     <label>Correo electrónico</label><span style="color:red;">*</span><input
                           type="email" th:field="*{email}"
-                          class="form-control form-control-user" placeholder="">
+                          class="form-control form-control-user" placeholder="" required>
                     <small class="form-text text-danger"
                            th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
                   </div>
@@ -275,24 +275,20 @@
                   </div>
 
                   <div class="form-group col-md-3">
-                    <label>Promotor</label> <select name="promotor"
-                                                    th:field="*{promotor}" class="form-control" id="promotores">
-                    <option th:value="0" selected>Ninguno</option>
-                    <option th:each="promotor : ${promotores}"
-                            th:value="${promotor.id}" th:text="${promotor.nombre}+' '+${promotor.apellidoPaterno}+' '+${promotor.apellidoMaterno}"
-                            th:selected="false" />
-                  </select> <small class="form-text text-danger"
-                                   th:if="${#fields.hasErrors('promotor')}"
-                                   th:errors="*{promotor}"></small>
+                    <label>Promotor</label><input type="text"
+                                                        th:field="${usuarioPromotor.nombre}"
+                                                        th:name="${usuarioPromotor.nombre}"
+                                                        th:id="${usuarioPromotor.nombre}"
+                                                        class="form-control form-control-user" disabled>
                   </div>
 
                   <div class="form-group col-md-3">
+                    <input type="hidden" th:field="${usuarioPromotor.id}" th:name="${usuarioPromotor.id}">
                     <label>Clave promotor</label><input type="text"
-                                                       th:field="*{promotor.clave}"
-                                                       class="form-control form-control-user" placeholder="Código de 3 dígitos" maxlength="3">
-                    <small class="form-text text-danger"
-                           th:if="${#fields.hasErrors('promotor.clave')}"
-                           th:errors="*{promotor.clave}"></small>
+                                                       th:field="${usuarioPromotor.clave}"
+                                                        th:name="${usuarioPromotor.clave}"
+                                                        th:id="${usuarioPromotor.clave}"
+                                                       class="form-control form-control-user" disabled>
                   </div>
 
                   <div class="form-group col-md-3">
@@ -307,23 +303,25 @@
                   </div>
 
                   <div class="form-group col-md-3">
-                    <label>Nombre Contratante</label><span style="color:red;">*</span><input type="text"
-                                                                                             th:field="${relAfiliadoMoneygram.nombreContratante}" class="form-control form-control-user">
-                    <small class="form-text text-danger"
-                           th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+                    <label>Nombre Contratante</label><span style="color:red;">*</span>
+                    <input type="text"
+                           th:field="${relAfiliadoMoneygram.nombreContratante}" class="form-control form-control-user" required>
                   </div>
                   <div class="form-group col-md-3">
-                    <label>Email Contratante</label><input
-                          type="text" th:field="${relAfiliadoMoneygram.email}"
-                          class="form-control form-control-user"> <small
-                          class="form-text text-danger"></small>
+                    <label>Email Contratante</label><span style="color:red;">*</span>
+                    <input
+                          type="text" th:field="${relAfiliadoMoneygram.emailContratante}" th:name="${relAfiliadoMoneygram.emailContratante}"
+                          th:id="${relAfiliadoMoneygram.emailContratante}"
+                          class="form-control form-control-user" required>
                   </div>
 
                   <div class="form-group col-md-3">
-                    <label>Telefono</label><input
-                          type="text" th:field="${relAfiliadoMoneygram.telefono}"
-                          class="form-control form-control-user"> <small
-                          class="form-text text-danger"></small>
+                    <label>Celular contratante</label><span style="color:red;">*</span>
+                    <input
+                          type="text" th:field="${relAfiliadoMoneygram.telefonoContratante}"
+                          th:name="${relAfiliadoMoneygram.telefonoContratante}"
+                          th:id="${relAfiliadoMoneygram.telefonoContratante}"
+                          class="form-control form-control-user" required>
                   </div>
                 </div>
 

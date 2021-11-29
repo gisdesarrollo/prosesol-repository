@@ -9,7 +9,7 @@ public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cat_empresa")
-    private long id;
+    private Long id;
 
     @Column(name = "nombre")
     private String nombre;
@@ -20,11 +20,17 @@ public class Empresa {
     @Column(name = "consecutivo")
     private Long consecutivo;
 
-    public long getId() {
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "rfc")
+    private String rfc;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -50,5 +56,21 @@ public class Empresa {
 
     public void setConsecutivo(Long consecutivo) {
         this.consecutivo = consecutivo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRfc() {
+        return rfc;
+    }
+
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
     }
 }

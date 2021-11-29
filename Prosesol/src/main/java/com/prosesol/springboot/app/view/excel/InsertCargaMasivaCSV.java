@@ -1284,8 +1284,8 @@ public class InsertCargaMasivaCSV {
 					break;
 				case 28:
 					if(campo.getValue().length() > 0) {
-						relAfiMoneygram.setEmail(campo.getValue());
-						LOG.info(counterLinea + " - " + "Correo electronico: " + relAfiMoneygram.getEmail());
+						relAfiMoneygram.setEmailContratante(campo.getValue());
+						LOG.info(counterLinea + " - " + "Correo electronico: " + relAfiMoneygram.getEmailContratante());
 					}else {
 						LOG.info(counterLinea + " - " + "El correo electrónico no puede quedar vacío");
 						log = counterLinea + " - " + "El correo electrónico no puede quedar vacío";
@@ -1294,8 +1294,8 @@ public class InsertCargaMasivaCSV {
 					break;
 				case 29:
 					if(campo.getValue().length() > 0) {
-						relAfiMoneygram.setTelefono(Long.parseLong(campo.getValue()));
-						LOG.info(counterLinea + " - " + "Telefono móvil: " + relAfiMoneygram.getTelefono());
+						relAfiMoneygram.setTelefonoContratante(Long.parseLong(campo.getValue()));
+						LOG.info(counterLinea + " - " + "Telefono móvil: " + relAfiMoneygram.getTelefonoContratante());
 					}else {
 						LOG.info(counterLinea + " - " + "El teléfono móvil no puede quedar vacío");
 						log = counterLinea + " - " + "El teléfono móvil no puede quedar vacío";
@@ -1366,7 +1366,8 @@ public class InsertCargaMasivaCSV {
 								isValidAfiliado=false;
 							}else {
 
-								if(relAfiMoneygram.getNombreContratante()!=null && relAfiMoneygram.getEmail()!=null && relAfiMoneygram.getTelefono()>0) {
+								if(relAfiMoneygram.getNombreContratante()!=null && relAfiMoneygram.getEmailContratante()!=null
+										&& relAfiMoneygram.getTelefonoContratante()>0) {
 									afiliadoService.save(afiliado);
 									relAfiMoneygram.setAfiliado(afiliado);
 									relAfiMoneygram.setIdMoneygram(idMoneygram);

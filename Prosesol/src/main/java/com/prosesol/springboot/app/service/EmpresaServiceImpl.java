@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class EmpresaServiceImpl implements IEmpresaService{
 
@@ -22,6 +24,16 @@ public class EmpresaServiceImpl implements IEmpresaService{
     @Transactional
     public void save(Empresa empresa) {
         empresaDao.save(empresa);
+    }
+
+    @Override
+    public void delete(Empresa empresa) {
+        empresaDao.delete(empresa);
+    }
+
+    @Override
+    public List<Empresa> findAll() {
+        return (List<Empresa>) empresaDao.findAll();
     }
 
 

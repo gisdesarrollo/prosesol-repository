@@ -1,27 +1,31 @@
 package com.prosesol.springboot.app.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.prosesol.springboot.app.entity.Empresa;
+import com.prosesol.springboot.app.entity.Perfil;
+import com.prosesol.springboot.app.entity.Usuario;
+import com.prosesol.springboot.app.entity.rel.RelUsuarioPerfil;
+import com.prosesol.springboot.app.entity.rel.RelUsuarioPromotor;
+import com.prosesol.springboot.app.service.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.prosesol.springboot.app.entity.Promotor;
-import com.prosesol.springboot.app.service.IPromotorService;
 
 @Controller
 @SessionAttributes("promotor")
@@ -29,9 +33,29 @@ import com.prosesol.springboot.app.service.IPromotorService;
 public class PromotorController {
 
 	protected final Log logger = LogFactory.getLog(this.getClass());
+
+	private final static String CLAVE_USUARIO = "12345";
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private IPromotorService promotorService;
+
+	@Autowired
+	private IEmpresaService empresaService;
+
+	@Autowired
+	private IRelUsuarioPromotorService relUsuarioPromotorService;
+
+	@Autowired
+	private IUsuarioService usuarioService;
+
+	@Autowired
+	private IRelUsuarioPerfilService usuarioPerfilService;
+
+	@Autowired
+	private IPerfilService perfilService;
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/ver", method = RequestMethod.GET)
@@ -58,8 +82,16 @@ public class PromotorController {
 	
 	@Secured({"ROLE_ADMINISTRADOR", "ROLE_USUARIO"})
 	@RequestMapping(value = "/crear", method = RequestMethod.POST)
-	public String guardar(@Valid Promotor promotor, BindingResult result, Model model, RedirectAttributes redirect,
+	public String guardar(@Valid Promotor promotor,
+						  BindingResult result,
+						  Model model, RedirectAttributes redirect,
 						 SessionStatus status) {
+
+		Usuario usuario = new Usuario();
+		Perfil perfil = perfilService.findById(4L);
+
+		RelUsuarioPromotor relUsuarioPromotor = new RelUsuarioPromotor();
+		RelUsuarioPerfil relUsuarioPerfil = new RelUsuarioPerfil();
 		
 		try {
 			if(result.hasErrors()) {
@@ -74,6 +106,36 @@ public class PromotorController {
 			
 			promotorService.save(promotor);
 			status.setComplete();
+
+			// Creación del promotor como usuario
+
+			usuario.setEmail(promotor.getEmail());
+			usuario.setUsername(promotor.getEmail());
+			usuario.setEstatus(true);
+			usuario.setNombre(promotor.getNombre() + ' ' + promotor.getApellidoPaterno() + ' ' + promotor.getApellidoMaterno());
+
+			// Encriptación del password
+			String passwordUser = null;
+			for (int i = 0; i < 2; i++) {
+				passwordUser = passwordEncoder.encode(CLAVE_USUARIO);
+			}
+
+			usuario.setPassword(passwordUser);
+			usuarioService.save(usuario);
+
+			// Guardar relación usuario promotor
+			relUsuarioPromotor.setPromotor(promotor);
+			relUsuarioPromotor.setUsuario(usuario);
+
+			relUsuarioPromotorService.save(relUsuarioPromotor);
+
+			// Guardar relación usuario perfil
+			relUsuarioPerfil.setPerfil(perfil);
+			relUsuarioPerfil.setUsuario(usuario);
+
+			usuarioPerfilService.save(relUsuarioPerfil);
+
+
 			redirect.addFlashAttribute("success", flashMessage);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -135,6 +197,11 @@ public class PromotorController {
 		}
 		
 		return "redirect:/promotores/ver";
+	}
+
+	@ModelAttribute(name = "empresas")
+	public List<Empresa> getAllEmpresas(){
+		return empresaService.findAll();
 	}
 
 }
