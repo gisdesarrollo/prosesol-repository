@@ -77,10 +77,11 @@ public class EmailService {
 		// Arreglo para el envío de correos
 			JSONObject to = new JSONObject();
 			JSONArray toArray = new JSONArray();
-			for (String correo : correos) {
+				for (String correo : correos) {
 					to.put("Email", correo);
 					to.put("Name", nombreD);
 				}
+				
 			toArray.put(to);
 			almacena.put(Emailv31.Message.TO, toArray);
 			almacena.put(Emailv31.Message.TEMPLATEID, idTemplate);

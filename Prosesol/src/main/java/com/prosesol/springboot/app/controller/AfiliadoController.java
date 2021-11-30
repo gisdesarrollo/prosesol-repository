@@ -340,6 +340,8 @@ public class AfiliadoController {
                    modelo.put("correo", afiliado.getServicio().getCorreo());
                    modelo.put("nota", afiliado.getServicio().getNota());
                    modelo.put("id",afiliado.getClave());
+                   modelo.put("valida","0");
+                   
                    correos.add(afiliado.getEmail());
                    List<Beneficio> relServcioBeneficio = BeneficioService.getBeneficiosByIdServicio(afiliado.getServicio().getId());
                    		for(Beneficio bene : relServcioBeneficio) {

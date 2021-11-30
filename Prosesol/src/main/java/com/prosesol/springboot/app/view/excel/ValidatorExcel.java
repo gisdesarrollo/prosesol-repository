@@ -546,10 +546,10 @@ public class ValidatorExcel {
                     case "nombreContratante":
                         encabezado[rowNum++] = "Nombre contratante";
                         break;
-                    case "email":
+                    case "emailContratante":
                         encabezado[rowNum++] = "Correo electrónico";
                         break;
-                    case "telefono":
+                    case "telefonoContratante":
                         encabezado[rowNum++] = "Teléfono";
                         break;
                     

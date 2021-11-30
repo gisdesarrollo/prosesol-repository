@@ -5,11 +5,14 @@ import com.prosesol.springboot.app.entity.*;
 import com.prosesol.springboot.app.entity.rel.RelAfiliadoMoneygram;
 import com.prosesol.springboot.app.exception.CustomExcelException;
 import com.prosesol.springboot.app.service.*;
+import com.prosesol.springboot.app.services.EmailService;
 import com.prosesol.springboot.app.util.CalcularFecha;
 import com.prosesol.springboot.app.util.GenerarClave;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +23,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,6 +36,8 @@ import java.util.regex.Pattern;
 public class InsertCargaMasivaCSV {
 
 	protected final Log LOG = LogFactory.getLog(InsertCargaMasivaCSV.class);
+	
+	private final static int ID_TEMPLATE_BA = 3053146;
 
 	@Value("${app.clave}")
 	private String clave;
@@ -64,6 +71,12 @@ public class InsertCargaMasivaCSV {
 	
 	@Autowired
 	private IParametroService parametroService;
+	
+	@Autowired
+	private EmailService emailService;
+	    
+	 @Autowired
+	 private IBeneficioService BeneficioService;
 
 	private int corte;
 	private Afiliado titular;
@@ -1332,6 +1345,10 @@ public class InsertCargaMasivaCSV {
 	}
 	
 	private String insertAfiliadosMoneygram(boolean isValidAfiliado, Afiliado afiliado,RelAfiliadoMoneygram relAfiMoneygram, Integer counterLinea) {
+		 List<String> correos = new ArrayList<>();
+		 List<String> correoContratante = new ArrayList<>();
+			Map<String, String> modelo = new LinkedHashMap<>();
+			JSONArray ABeneficioD = new JSONArray();
 		try {
 
 			if (isValidAfiliado) {
@@ -1372,6 +1389,33 @@ public class InsertCargaMasivaCSV {
 									relAfiMoneygram.setAfiliado(afiliado);
 									relAfiMoneygram.setIdMoneygram(idMoneygram);
 									relAfiMoneygramService.save(relAfiMoneygram);
+									// Envío email bienvenida
+				         			if (afiliado.getEmail()!=null && relAfiMoneygram.getEmailContratante()!=null) {
+				         				
+				                        modelo.put("afiliado", afiliado.getNombre() + " " + afiliado.getApellidoPaterno() +
+				                                " " + afiliado.getApellidoMaterno());
+				                        modelo.put("servicio", afiliado.getServicio().getNombre());
+				                        modelo.put("rfc", afiliado.getRfc());
+				                        modelo.put("proveedor", afiliado.getServicio().getNombreProveedor());
+				                        modelo.put("telefono", afiliado.getServicio().getTelefono());
+				                        modelo.put("correo", afiliado.getServicio().getCorreo());
+				                        modelo.put("nota", afiliado.getServicio().getNota());
+				                        modelo.put("id",afiliado.getClave());
+				                        modelo.put("idMoneygram",relAfiMoneygram.getIdMoneygram());
+				                        modelo.put("costoServicio", afiliado.getServicio().getCostoTitular().toString());
+				                        modelo.put("valida","1");
+				                        correos.add(afiliado.getEmail());
+				                        correoContratante.add(relAfiMoneygram.getEmailContratante());
+				                        List<Beneficio> relServcioBeneficio = BeneficioService.getBeneficiosByIdServicio(afiliado.getServicio().getId());
+				                        		for(Beneficio bene : relServcioBeneficio) {
+				                        			ABeneficioD.put(getBeneficios(bene.getNombre(), bene.getDescripcion()));
+				                        		}   
+				                        		//email afiliado
+				                        emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD);
+				                        //email contratante
+				                        emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correoContratante,ABeneficioD);
+				         			}
+				         			
 								}else {
 									LOG.info(counterLinea + " - " +"los datos nombre contratante,correo elétronico y telefóno no deben venir vacíos");
 									log = counterLinea + "-" +"Los datos nombre contratante,correo elétronico y telefóno no deben venir vacíos ";
@@ -1550,6 +1594,13 @@ public class InsertCargaMasivaCSV {
 			return false;
 		}
 
+	}
+public JSONObject getBeneficios(String name, String descripcion) {
+		
+		JSONObject OBeneficioD = new JSONObject();
+			OBeneficioD.put("nombre",name);
+			OBeneficioD.put("descripcion",descripcion);
+		   return OBeneficioD ;
 	}
 
 }
