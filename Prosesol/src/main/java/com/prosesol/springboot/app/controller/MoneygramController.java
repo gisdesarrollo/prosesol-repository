@@ -5,6 +5,7 @@ import com.prosesol.springboot.app.entity.rel.RelAfiliadoMoneygram;
 import com.prosesol.springboot.app.entity.rel.RelUsuarioPromotor;
 import com.prosesol.springboot.app.service.*;
 import com.prosesol.springboot.app.services.EmailService;
+import com.prosesol.springboot.app.util.GenerarClave;
 import com.prosesol.springboot.app.util.Paises;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,7 +32,7 @@ public class MoneygramController {
 
     protected final long ID_MONEYGRAM = 1L;
 
-    protected final int PADDING_SIZE = 10;
+    protected final int PADDING_SIZE = 9;
 
     private final static int ID_TEMPLATE_BA = 3053146;
 
@@ -70,6 +71,9 @@ public class MoneygramController {
     
     @Autowired
    	private IBeneficioService BeneficioService;
+    
+    @Autowired
+	private GenerarClave generarClave;
 
     @Secured("ROLE_PROMOTOR")
     @GetMapping(value = "/home")
@@ -137,12 +141,12 @@ public class MoneygramController {
             empresaService.save(empresa);
 
             String consecutivo = String.format("%0" + PADDING_SIZE + "d", consecutivoEmpresa);
-
+            afiliado.setClave(generarClave.getClave(clave));
             afiliado.setEmail(emailAfiliado);
             afiliado.setPromotor(promotor);
             afiliadoService.save(afiliado);
-
-            String idMoneygram = valor + clave + clavePromotor + consecutivo;
+            String valueValidation ="0"; 
+            String idMoneygram = valor + clave + clavePromotor + valueValidation + consecutivo;
             relAfiliadoMoneygram.setAfiliado(afiliado);
             relAfiliadoMoneygram.setIdMoneygram(idMoneygram);
             relAfiliadoMoneygram.setEmailContratante(emailContratante);

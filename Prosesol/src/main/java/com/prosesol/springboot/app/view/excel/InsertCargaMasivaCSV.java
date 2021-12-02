@@ -100,7 +100,7 @@ public class InsertCargaMasivaCSV {
 	private boolean hasApellidoPaterno;
 	String log = "";
 	protected final long ID_MONEYGRAM = 1L;
-	protected final int PADDING_SIZE = 10;
+	protected final int PADDING_SIZE = 9;
 	
 	public String evaluarDatosList(boolean isVigor, boolean isConciliacion, Integer counterLinea,
 			Map<Integer, String> campos, Long idCuentaComercial) {
@@ -1470,8 +1470,9 @@ public class InsertCargaMasivaCSV {
 
         empresa.setConsecutivo(consecutivoEmpresa);
         empresaService.save(empresa);
+        String valueValidation="0";
         	String consecutivo = String.format("%0" + PADDING_SIZE + "d", consecutivoEmpresa);
-        	 idMoneygram = valor + clave + clavePromotor + consecutivo;
+        	 idMoneygram = valor + clave + clavePromotor + valueValidation + consecutivo;
         	
 		return idMoneygram;
 		
