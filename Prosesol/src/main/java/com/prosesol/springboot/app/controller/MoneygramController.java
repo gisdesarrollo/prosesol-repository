@@ -32,7 +32,7 @@ public class MoneygramController {
 
     protected final long ID_MONEYGRAM = 1L;
 
-    protected final int PADDING_SIZE = 9;
+    protected final int PADDING_SIZE = 8;
 
     private final static int ID_TEMPLATE_BA = 3053146;
 
