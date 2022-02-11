@@ -38,6 +38,9 @@ public class Pago implements Serializable {
 
     @Column(name = "tipo_transaccion")
     private String tipoTransaccion;
+    
+    @Column(name = "id_transaccion")
+    private String claveTransaccion;
 
     public Long getId() {
         return id;

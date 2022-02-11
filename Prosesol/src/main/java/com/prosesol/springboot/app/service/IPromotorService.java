@@ -16,4 +16,5 @@ public interface IPromotorService {
 	
 	public String[] getVariablesPromotor();
 	
+	public Promotor findByClave(String clave);
 }

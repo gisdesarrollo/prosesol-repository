@@ -15,4 +15,6 @@ public interface IPagoService {
     public void save(Pago pago);
 
     public List<String> getAllPagos();
+    
+    public List<Pago> getAllPagosCompleted();
 }

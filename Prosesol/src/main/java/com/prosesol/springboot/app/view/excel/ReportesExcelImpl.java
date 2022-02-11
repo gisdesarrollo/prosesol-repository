@@ -72,7 +72,7 @@ public class ReportesExcelImpl implements IReportesExcel {
         XSSFSheet sheetServicios = (XSSFSheet)workbook.createSheet("Servicios");
         XSSFSheet sheetPeriodo = (XSSFSheet)workbook.createSheet("Periodos");
         XSSFSheet sheetPromotor = (XSSFSheet)workbook.createSheet("Promotor");
-        XSSFSheet sheetCuenta = (XSSFSheet)workbook.createSheet("Cuenta");
+        XSSFSheet sheetCuenta = (XSSFSheet)workbook.createSheet("Cuenta Comercial");
         Row header = sheet.createRow(0);
         Row headerServicio = sheetServicios.createRow(0);
         Row headerPeriodo = sheetPeriodo.createRow(0);
@@ -100,7 +100,7 @@ public class ReportesExcelImpl implements IReportesExcel {
             
             //datos de pestaña servicios
             Cell cellHeaderServicio = headerServicio.createCell(0);
-            cellHeaderServicio.setCellValue("ID");
+            cellHeaderServicio.setCellValue("CLAVE");
             cellHeaderServicio.setCellStyle(cellStyle);
 
             Cell cellServicio = headerServicio.createCell(1);
@@ -125,7 +125,7 @@ public class ReportesExcelImpl implements IReportesExcel {
             
             //datos de pestaña periodo
             Cell cellHeaderPeriodo = headerPeriodo.createCell(0);
-            cellHeaderPeriodo.setCellValue("ID");
+            cellHeaderPeriodo.setCellValue("CLAVE");
             cellHeaderPeriodo.setCellStyle(cellStyle);
 
             Cell cellPeriodo = headerPeriodo.createCell(1);
@@ -148,7 +148,7 @@ public class ReportesExcelImpl implements IReportesExcel {
             
             //datos de pestaña promotor
             Cell cellHeaderPromotor = headerPromotor.createCell(0);
-            cellHeaderPromotor.setCellValue("ID");
+            cellHeaderPromotor.setCellValue("CLAVE");
             cellHeaderPromotor.setCellStyle(cellStyle);
 
             Cell cellPromotor = headerPromotor.createCell(1);
@@ -164,18 +164,18 @@ public class ReportesExcelImpl implements IReportesExcel {
             for(Promotor promotor : listPromotor){
                 Row row = sheetPromotor.createRow(rowNumPromotor++);
 
-                row.createCell(0).setCellValue(promotor.getId());
+                row.createCell(0).setCellValue(promotor.getClave());
                 row.createCell(1).setCellValue(promotor.getNombre());
             }
             sheetPromotor.autoSizeColumn(0);
             
             //datos de pestaña cuenta
             Cell cellHeaderCuenta = headerCuenta.createCell(0);
-            cellHeaderCuenta.setCellValue("ID");
+            cellHeaderCuenta.setCellValue("CLAVE");
             cellHeaderCuenta.setCellStyle(cellStyle);
 
             Cell cellCuenta = headerCuenta.createCell(1);
-            cellCuenta.setCellValue("Cuenta");
+            cellCuenta.setCellValue("Cuenta Comercial");
             cellCuenta.setCellStyle(cellStyle);
             
             for(int i = 0; i < encabezado.length; i++){
@@ -269,7 +269,7 @@ public class ReportesExcelImpl implements IReportesExcel {
          XSSFSheet sheetServicios = (XSSFSheet)workbook.createSheet("Servicios");
          XSSFSheet sheetPeriodo = (XSSFSheet)workbook.createSheet("Periodos");
          XSSFSheet sheetPromotor = (XSSFSheet)workbook.createSheet("Promotor");
-         XSSFSheet sheetCuenta = (XSSFSheet)workbook.createSheet("Cuenta");
+         XSSFSheet sheetCuenta = (XSSFSheet)workbook.createSheet("Cuenta Comercial");
          Row header = sheet.createRow(0);
          Row headerServicio = sheetServicios.createRow(0);
          Row headerPeriodo = sheetPeriodo.createRow(0);
@@ -302,7 +302,7 @@ public class ReportesExcelImpl implements IReportesExcel {
              
            //datos de pestaña servicios
              Cell cellHeaderServicio = headerServicio.createCell(0);
-             cellHeaderServicio.setCellValue("ID");
+             cellHeaderServicio.setCellValue("CLAVE");
              cellHeaderServicio.setCellStyle(cellStyle);
 
              Cell cellServicio = headerServicio.createCell(1);
@@ -327,7 +327,7 @@ public class ReportesExcelImpl implements IReportesExcel {
              
              //datos de pestaña periodo
              Cell cellHeaderPeriodo = headerPeriodo.createCell(0);
-             cellHeaderPeriodo.setCellValue("ID");
+             cellHeaderPeriodo.setCellValue("CLAVE");
              cellHeaderPeriodo.setCellStyle(cellStyle);
 
              Cell cellPeriodo = headerPeriodo.createCell(1);
@@ -350,7 +350,7 @@ public class ReportesExcelImpl implements IReportesExcel {
              
              //datos de pestaña promotor
              Cell cellHeaderPromotor = headerPromotor.createCell(0);
-             cellHeaderPromotor.setCellValue("ID");
+             cellHeaderPromotor.setCellValue("CLAVE");
              cellHeaderPromotor.setCellStyle(cellStyle);
 
              Cell cellPromotor = headerPromotor.createCell(1);
@@ -366,18 +366,18 @@ public class ReportesExcelImpl implements IReportesExcel {
              for(Promotor promotor : listPromotor){
                  Row row = sheetPromotor.createRow(rowNumPromotor++);
 
-                 row.createCell(0).setCellValue(promotor.getId());
+                 row.createCell(0).setCellValue(promotor.getClave());
                  row.createCell(1).setCellValue(promotor.getNombre());
              }
              sheetPromotor.autoSizeColumn(0);
              
              //datos de pestaña cuenta
              Cell cellHeaderCuenta = headerCuenta.createCell(0);
-             cellHeaderCuenta.setCellValue("ID");
+             cellHeaderCuenta.setCellValue("CLAVE");
              cellHeaderCuenta.setCellStyle(cellStyle);
 
              Cell cellCuenta = headerCuenta.createCell(1);
-             cellCuenta.setCellValue("Cuenta");
+             cellCuenta.setCellValue("Cuenta Comercial");
              cellCuenta.setCellStyle(cellStyle);
              
              for(int i = 0; i < encabezado.length; i++){

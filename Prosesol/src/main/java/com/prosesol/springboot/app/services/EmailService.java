@@ -53,7 +53,7 @@ public class EmailService {
 	 * @throws MailjetSocketTimeoutException
 	 * @throws IOException
 	 */
-	public void sendMailJet( Map<String, String> model, int idTemplate, List<String> correos, JSONArray beneficios)
+	public void sendMailJet( Map<String, String> model, int idTemplate, List<String> correos, JSONArray beneficios,String valida )
 			throws MailjetException, MailjetSocketTimeoutException, IOException {
 
 		JSONArray arrayDatos = new JSONArray();
@@ -62,8 +62,13 @@ public class EmailService {
 		client = new MailjetClient(mailJetApiKey, mailJetSecretPassword, new ClientOptions("v3.1"));
 		request = new MailjetRequest(Emailv31.resource);
 			JSONObject from = new JSONObject();
+			if(valida == "true") {
+				from.put("Email", "contacto@assismex.com");
+				from.put("Name", "Assismex");
+			}else {
 				from.put("Email", "contacto@prosesol.org");
 				from.put("Name", "Prosesol");
+			}
 			almacena.put(Emailv31.Message.FROM, from);
 		// Parámetros dinámicos para el template
 			JSONObject jsonObjectParameters = new JSONObject();
@@ -86,8 +91,16 @@ public class EmailService {
 			almacena.put(Emailv31.Message.TO, toArray);
 			almacena.put(Emailv31.Message.TEMPLATEID, idTemplate);
 			almacena.put(Emailv31.Message.TEMPLATELANGUAGE, true);
-			almacena.put(Emailv31.Message.SUBJECT, "Prosesol");
-		
+			if(valida == "true") {
+				almacena.put(Emailv31.Message.SUBJECT, "Bienvenido a Casa Salud");
+			}else {
+				almacena.put(Emailv31.Message.SUBJECT, "Prosesol");
+			}
+			//recibe errores de template por email
+			/*almacena.put(Emailv31.Message.TEMPLATEERROR_DELIVERY, true);
+            almacena.put(Emailv31.Message.TEMPLATEERROR_REPORTING, new JSONObject()
+                    .put("Email", "alexander.garcia@gisconsultoria.com")
+                    .put("Name", "recipient name"));*/
 		
 		almacena.put(Emailv31.Message.VARIABLES, jsonObjectParameters);
 

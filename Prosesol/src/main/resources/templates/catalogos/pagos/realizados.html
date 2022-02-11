@@ -25,25 +25,35 @@
                             <div class="clearfix"></div>
                             <hr>
 
-                            <div>
-                                <table class="table table-bordered" id="dataTable">
+                            <div class="row">
+                                <table class="table-bordered" id="dataTable" style="width:100%;margin: 0 auto;" >
                                     <thead>
-                                    <tr>
+                                    <tr style=" text-align: center;">
                                         <th>RFC</th>
+                                        <th>Nombre Completo</th>
+                                        <th>Servicio</th>
+                                        <th>Cuenta Comercial</th>
                                         <th>Monto</th>
                                         <th>Referencia Bancaria</th>
                                         <th>Fecha de Pago</th>
                                         <th>Forma de pago</th>
+                                        <th>Estatus</th>
+                                        <th>Clave Transacción</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="pago : ${pagos}"
-                                        th:if="${pago[5]} == 'completed'">
+                                    <tr style=" text-align: center;" th:each="pago : ${pagos}"
+                                        >
                                         <td th:text="${pago[0]}"></td>
+                                        <td th:text="${pago[7]} +' '+${pago[8]} + ' '+${pago[9]} "></td>
+                                        <td th:text="${pago[10]}"></td>
+                                        <td th:text="${pago[11]}"></td>
                                         <td th:text="${#numbers.formatDecimal(pago[1], 0, 2)}"></td>
                                         <td th:text="${pago[2]}"></td>
                                         <td th:text="${pago[3]}"></td>
                                         <td th:text="${pago[4]}"></td>
+                                        <td th:text="${pago[5]}"></td>
+                                        <td th:text="${pago[6]}"></td>
                                     </tr>
                                     </tbody>
                                 </table>

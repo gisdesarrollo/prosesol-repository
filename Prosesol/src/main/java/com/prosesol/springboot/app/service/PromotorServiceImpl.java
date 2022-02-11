@@ -53,4 +53,9 @@ public class PromotorServiceImpl implements IPromotorService {
 		return variablesPromotor;
 	}
 
+	@Override
+	public Promotor findByClave(String clave) {
+		return promotorDao.findByClave(clave);
+	}
+
 }

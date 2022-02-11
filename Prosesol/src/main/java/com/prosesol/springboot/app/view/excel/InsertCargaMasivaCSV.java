@@ -6,6 +6,7 @@ import com.prosesol.springboot.app.entity.rel.RelAfiliadoMoneygram;
 import com.prosesol.springboot.app.exception.CustomExcelException;
 import com.prosesol.springboot.app.service.*;
 import com.prosesol.springboot.app.services.EmailService;
+import com.prosesol.springboot.app.services.IdMoneygramService;
 import com.prosesol.springboot.app.util.CalcularFecha;
 import com.prosesol.springboot.app.util.GenerarClave;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -67,16 +68,13 @@ public class InsertCargaMasivaCSV {
 	private IRelAfiliadoMoneygramService relAfiMoneygramService;
 	
 	@Autowired
-	private IEmpresaService empresaService;
-	
-	@Autowired
-	private IParametroService parametroService;
-	
-	@Autowired
 	private EmailService emailService;
 	    
 	 @Autowired
 	 private IBeneficioService BeneficioService;
+	 
+	 @Autowired
+	 private IdMoneygramService moneygramService;
 
 	private int corte;
 	private Afiliado titular;
@@ -99,8 +97,6 @@ public class InsertCargaMasivaCSV {
 	private boolean isInteger;
 	private boolean hasApellidoPaterno;
 	String log = "";
-	protected final long ID_MONEYGRAM = 1L;
-	protected final int PADDING_SIZE = 9;
 	
 	public String evaluarDatosList(boolean isVigor, boolean isConciliacion, Integer counterLinea,
 			Map<Integer, String> campos, Long idCuentaComercial) {
@@ -478,8 +474,9 @@ public class InsertCargaMasivaCSV {
 					} else {
 
 						if (!isString(campo.getValue())) {
-							log = counterLinea + " - " + "Proporcione el id del servicio que se encuentra dentro de "
+							log = counterLinea + " - " + "Proporcione la clave del servicio que se encuentra dentro de "
 									+ "la hoja con el nombre 'Servicios' en el template que descargó";
+							isValidAfiliado = false;
 						} else {
 							Servicio servicio = servicioService.findById(Long.parseLong(campo.getValue()));
 
@@ -504,8 +501,9 @@ public class InsertCargaMasivaCSV {
 					} else {
 
 						if (!isString(campo.getValue())) {
-							log = counterLinea + " - " + "Proporcione el id del periodo que se encuentra dentro de "
+							log = counterLinea + " - " + "Proporcione la clave del periodo que se encuentra dentro de "
 									+ "la hoja con el nombre 'Periodos' en el template que descargó";
+							isValidAfiliado = false;
 						} else {
 							Periodicidad periodo = periodicidadService.findById(Long.parseLong(campo.getValue()));
 
@@ -540,11 +538,12 @@ public class InsertCargaMasivaCSV {
 					if (campo.getValue().length() > 0) {
 
 						if (!isString(campo.getValue())) {
-							log = counterLinea + " - " + "Proporcione el id del promotor que se encuentra dentro de "
+							log = counterLinea + " - " + "Proporcione la clave del promotor que se encuentra dentro de "
 									+ "la hoja con el nombre 'Promotor' en el template que descargó";
+							isValidAfiliado = false;
 						} else {
-							Promotor promotor = promotorService.findById(Long.parseLong(campo.getValue()));
-
+							/*Promotor promotor = promotorService.findById(Long.parseLong(campo.getValue()));*/
+							Promotor promotor = promotorService.findByClave(campo.getValue());
 							if (promotor != null) {
 								afiliado.setPromotor(promotor);
 								LOG.info(counterLinea + " - " + "Promotor: " + afiliado.getPromotor().getNombre());
@@ -562,8 +561,9 @@ public class InsertCargaMasivaCSV {
 					if (campo.getValue().length() > 0) {
 
 						if (!isString(campo.getValue())) {
-							log = counterLinea + " - " + "Proporcione el id del cuenta que se encuentra dentro de "
-									+ "la hoja con el nombre 'Cuenta' en el template que descargó";
+							log = counterLinea + " - " + "Proporcione la clave del cuenta que se encuentra dentro de "
+									+ "la hoja con el nombre 'Cuenta Comercial' en el template que descargó";
+							isValidAfiliado = false;
 						} else {
 							Cuenta cuenta = cuentaService.findById(Long.parseLong(campo.getValue()));
 
@@ -1182,8 +1182,9 @@ public class InsertCargaMasivaCSV {
 					} else {
 
 						if (!isString(campo.getValue())) {
-							log = counterLinea + " - " + "Proporcione el id del servicio que se encuentra dentro de "
+							log = counterLinea + " - " + "Proporcione la clave del servicio que se encuentra dentro de "
 									+ "la hoja con el nombre 'Servicios' en el template que descargó";
+							isValidAfiliado = false;
 						} else {
 							Servicio servicio = servicioService.findById(Long.parseLong(campo.getValue()));
 
@@ -1208,8 +1209,9 @@ public class InsertCargaMasivaCSV {
 					} else {
 
 						if (!isString(campo.getValue())) {
-							log = counterLinea + " - " + "Proporcione el id del periodo que se encuentra dentro de "
+							log = counterLinea + " - " + "Proporcione la clave del periodo que se encuentra dentro de "
 									+ "la hoja con el nombre 'Periodos' en el template que descargó";
+							isValidAfiliado = false;
 						} else {
 							Periodicidad periodo = periodicidadService.findById(Long.parseLong(campo.getValue()));
 
@@ -1234,11 +1236,12 @@ public class InsertCargaMasivaCSV {
 					if (campo.getValue().length() > 0) {
 
 						if (!isString(campo.getValue())) {
-							log = counterLinea + " - " + "Proporcione el id del promotor que se encuentra dentro de "
+							log = counterLinea + " - " + "Proporcione la clave del promotor que se encuentra dentro de "
 									+ "la hoja con el nombre 'Promotor' en el template que descargó";
+							isValidAfiliado = false;
 						} else {
-							Promotor promotor = promotorService.findById(Long.parseLong(campo.getValue()));
-
+							//Promotor promotor = promotorService.findById(Long.parseLong(campo.getValue()));
+							Promotor promotor = promotorService.findByClave(campo.getValue());
 							if (promotor != null) {
 								afiliado.setPromotor(promotor);
 								LOG.info(counterLinea + " - " + "Promotor: " + afiliado.getPromotor().getNombre());
@@ -1251,7 +1254,7 @@ public class InsertCargaMasivaCSV {
 							}
 						}
 					}else {
-						log = counterLinea + " - " + "Proporcione el id del periodo que se encuentra dentro de "
+						log = counterLinea + " - " + "Proporcione la clave del periodo que se encuentra dentro de "
 								+ "la hoja con el nombre 'Periodos' en el template que descargó";
 						isValidAfiliado = false;
 					}
@@ -1260,8 +1263,9 @@ public class InsertCargaMasivaCSV {
 					if (campo.getValue().length() > 0) {
 
 						if (!isString(campo.getValue())) {
-							log = counterLinea + " - " + "Proporcione el id del cuenta que se encuentra dentro de "
-									+ "la hoja con el nombre 'Cuenta' en el template que descargó";
+							log = counterLinea + " - " + "Proporcione la clave del cuenta que se encuentra dentro de "
+									+ "la hoja con el nombre 'Cuenta Comercial' en el template que descargó";
+							isValidAfiliado = false;
 						} else {
 							Cuenta cuenta = cuentaService.findById(Long.parseLong(campo.getValue()));
 
@@ -1376,7 +1380,7 @@ public class InsertCargaMasivaCSV {
 							afiliado.setSaldoCorte(new Double(0.00));
 							afiliado.setInscripcion(new Double(0.0));
 							//genera idMoneygram
-							String idMoneygram=generaIdMoneygram(afiliado);
+							String idMoneygram = moneygramService.generaIdMoneygram(afiliado,null);
 							if(idMoneygram==null) {
 								LOG.info(counterLinea + " - " +"No se pudo generar el idMoneygram para el afiliado: "+afiliado.getNombre() +" "+afiliado.getApellidoPaterno()+" "+afiliado.getApellidoMaterno());
 								log = counterLinea + "-" +"No se pudo generar el idMoneygram para el afiliado: "+afiliado.getNombre() +" "+afiliado.getApellidoPaterno()+" "+afiliado.getApellidoMaterno();
@@ -1389,21 +1393,41 @@ public class InsertCargaMasivaCSV {
 									relAfiMoneygram.setAfiliado(afiliado);
 									relAfiMoneygram.setIdMoneygram(idMoneygram);
 									relAfiMoneygramService.save(relAfiMoneygram);
+									
+									
+									 //substring
+						            String valid = idMoneygram.substring(10, 11);
+						            String posicionLeft = idMoneygram.substring(0, 10);
+						            String posicionRight = idMoneygram.substring(11, 20);
+						           
+						            //valid 0
+									 String moneygramSplit = null;
+									 idMoneygram = posicionLeft + "0" + posicionRight;
+									 moneygramSplit = splitMoneygram(idMoneygram);
+									 //valid 1
+									 String moneygramSplitValid = null; 
+									 idMoneygram = posicionLeft + "1" + posicionRight;
+							         moneygramSplitValid = splitMoneygram(idMoneygram);
+							         
 									// Envío email bienvenida
 				         			if (afiliado.getEmail()!=null && relAfiMoneygram.getEmailContratante()!=null) {
-				         				
+				         				String valida = "true";
+				         				Double costoTitularInscripcion = afiliado.getServicio().getCostoTitular() + afiliado.getServicio().getInscripcionTitular() ;
 				                        modelo.put("afiliado", afiliado.getNombre() + " " + afiliado.getApellidoPaterno() +
 				                                " " + afiliado.getApellidoMaterno());
 				                        modelo.put("servicio", afiliado.getServicio().getNombre());
 				                        modelo.put("rfc", afiliado.getRfc());
 				                        modelo.put("proveedor", afiliado.getServicio().getNombreProveedor());
-				                        modelo.put("telefono", afiliado.getServicio().getTelefono());
+				                        //modelo.put("telefono", afiliado.getServicio().getTelefono());
 				                        modelo.put("correo", afiliado.getServicio().getCorreo());
 				                        modelo.put("nota", afiliado.getServicio().getNota());
 				                        modelo.put("id",afiliado.getClave());
-				                        modelo.put("idMoneygram",relAfiMoneygram.getIdMoneygram());
+				                        modelo.put("idMoneygram",moneygramSplit);
+				                        modelo.put("idMoneygramValid", moneygramSplitValid);
+				                        modelo.put("contratante", relAfiMoneygram.getNombreContratante());
 				                        modelo.put("costoServicio", afiliado.getServicio().getCostoTitular().toString());
-				                        modelo.put("valida","1");
+				                        modelo.put("costoSIncripcion", costoTitularInscripcion.toString());
+				                       // modelo.put("valida",valida);
 				                        correos.add(afiliado.getEmail());
 				                        correoContratante.add(relAfiMoneygram.getEmailContratante());
 				                        List<Beneficio> relServcioBeneficio = BeneficioService.getBeneficiosByIdServicio(afiliado.getServicio().getId());
@@ -1411,9 +1435,9 @@ public class InsertCargaMasivaCSV {
 				                        			ABeneficioD.put(getBeneficios(bene.getNombre(), bene.getDescripcion()));
 				                        		}   
 				                        		//email afiliado
-				                        emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD);
+				                        emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD,valida);
 				                        //email contratante
-				                        emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correoContratante,ABeneficioD);
+				                        emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correoContratante,ABeneficioD,valida);
 				         			}
 				         			
 								}else {
@@ -1446,37 +1470,7 @@ public class InsertCargaMasivaCSV {
 		return log;
 	}
 
-	
-	private String generaIdMoneygram(Afiliado afiliado) {
-		String idMoneygram= null;
-		Empresa empresa = empresaService.findById(afiliado.getPromotor().getEmpresa().getId());
-        Parametro parametro = parametroService.findById(ID_MONEYGRAM);
-        
-        if(empresa == null || parametro == null){
-            LOG.error("error: El id de la empresa no se ha encontrado");
-            return idMoneygram;
-        }
-        String valor = parametro.getValor();
-        String clave = empresa.getClave();
-        String clavePromotor = afiliado.getPromotor().getClave();
-        Long consecutivoEmpresa = empresa.getConsecutivo();
-        
-     // Verificar si la empresa trae un consecutivo
-        	if(consecutivoEmpresa == null){
-        		consecutivoEmpresa = 1L;
-        	}else{
-        		consecutivoEmpresa = consecutivoEmpresa + 1;
-        	}
 
-        empresa.setConsecutivo(consecutivoEmpresa);
-        empresaService.save(empresa);
-        String valueValidation="0";
-        	String consecutivo = String.format("%0" + PADDING_SIZE + "d", consecutivoEmpresa);
-        	 idMoneygram = valor + clave + clavePromotor + valueValidation + consecutivo;
-        	
-		return idMoneygram;
-		
-	}
 
 	/**
 	 * Evalúa si el formato de fecha es el correcto
@@ -1565,7 +1559,7 @@ public class InsertCargaMasivaCSV {
 	}
 
 	/**
-	 * Verificación de los campos que soliciten id's
+	 * Verificación de los campos que soliciten Clave
 	 *
 	 * @param number
 	 * @return
@@ -1603,5 +1597,17 @@ public JSONObject getBeneficios(String name, String descripcion) {
 			OBeneficioD.put("descripcion",descripcion);
 		   return OBeneficioD ;
 	}
+
+public String splitMoneygram(String idMoneygram) {
+	
+	String moneygramSplit = null;
+	 String []array = idMoneygram.split("(?<=\\G....)"); 
+     if(array.length == 5) {
+  	   moneygramSplit = array[0] +"-"+array[1]+"-"+array[2]+"-"+array[3]+"-"+array[4];
+     }else {
+  	   moneygramSplit = idMoneygram;
+     }
+	return moneygramSplit;
+}
 
 }

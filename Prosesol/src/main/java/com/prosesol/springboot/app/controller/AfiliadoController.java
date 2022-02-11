@@ -51,7 +51,7 @@ public class AfiliadoController {
 
 	protected static final Log logger = LogFactory.getLog(AfiliadoController.class);
 	
-	private final static int ID_TEMPLATE_BA =3053146;
+	private final static int ID_TEMPLATE_BA =3469976;
 	
 	 @Value("${app.clave}")
 	private String clave;
@@ -176,6 +176,7 @@ public class AfiliadoController {
 		String fechaHoy;
 		Date mYA;
 		Date mYH;
+		String valida = "false";
 		List<String> correos = new ArrayList<>();
 		Map<String, String> modelo = new LinkedHashMap<>();
 		JSONArray ABeneficioD = new JSONArray();
@@ -340,7 +341,8 @@ public class AfiliadoController {
                    modelo.put("correo", afiliado.getServicio().getCorreo());
                    modelo.put("nota", afiliado.getServicio().getNota());
                    modelo.put("id",afiliado.getClave());
-                   modelo.put("valida","0");
+                   //modelo.put("contratante", "desc");
+                  // modelo.put("valida",valida);
                    
                    correos.add(afiliado.getEmail());
                    List<Beneficio> relServcioBeneficio = BeneficioService.getBeneficiosByIdServicio(afiliado.getServicio().getId());
@@ -353,7 +355,7 @@ public class AfiliadoController {
 			logger.info(mensajeFlash);
 			afiliadoService.save(afiliado);
 			 logger.info("Enviando email de bienvenido afiliado..."); 
-			 emailController.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD);
+			 emailController.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD,valida);
 			 status.setComplete();
             	 
 			

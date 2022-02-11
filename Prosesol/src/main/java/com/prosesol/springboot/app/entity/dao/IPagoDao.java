@@ -8,9 +8,15 @@ import java.util.List;
 
 public interface IPagoDao extends CrudRepository<Pago, Long> {
 
-    @Query(value = "select a.rfc, p.monto, p.referencia_bancaria, p.fecha_pago, p.tipo_transaccion, " +
-            "p.estatus from afiliados a, rel_afiliados_pagos rap, pagos p where a.id_afiliado = rap.id_afiliado " +
-            "and rap.id_pago = p.id_pago", nativeQuery = true)
+    @Query(value = "select a.rfc, p.monto, p.referencia_bancaria, p.fecha_pago, p.tipo_transaccion,"
+    		+ "p.estatus,p.id_transaccion,a.nombre,a.apellido_paterno,a.apellido_materno,coalesce(se.nombre,'default_value') as sNombre,cm.razon_social  from afiliados a, rel_afiliados_pagos rap, pagos p,servicios se,cuentas_comerciales cm "
+    		+ " where a.id_afiliado = rap.id_afiliado " +
+            "and rap.id_pago = p.id_pago and a.id_servicio = se.id_servicio "
+            + "and a.id_cta_comercial = cm.id_cta_comercial and p.estatus = 'completed' ", nativeQuery = true)
     public List<String> getAllPagos();
+    
+    @Query(value= "select * from pagos p "
+    		+ "where  p.estatus = 'Completed' and p.tipo_transaccion = 'Moneygram'",nativeQuery = true)
+    public List<Pago> getAllPagosCompleted();
 
 }

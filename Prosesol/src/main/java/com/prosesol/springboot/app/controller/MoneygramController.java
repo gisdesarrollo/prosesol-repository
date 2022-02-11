@@ -5,6 +5,7 @@ import com.prosesol.springboot.app.entity.rel.RelAfiliadoMoneygram;
 import com.prosesol.springboot.app.entity.rel.RelUsuarioPromotor;
 import com.prosesol.springboot.app.service.*;
 import com.prosesol.springboot.app.services.EmailService;
+import com.prosesol.springboot.app.services.IdMoneygramService;
 import com.prosesol.springboot.app.util.GenerarClave;
 import com.prosesol.springboot.app.util.Paises;
 import org.apache.commons.logging.Log;
@@ -12,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,11 +32,11 @@ public class MoneygramController {
 
     protected static final Log logger = LogFactory.getLog(MoneygramController.class);
 
-    protected final long ID_MONEYGRAM = 1L;
-
-    protected final int PADDING_SIZE = 8;
-
     private final static int ID_TEMPLATE_BA = 3053146;
+    
+
+	@Value("${app.clave}")
+	private String clave;
 
     @Autowired
     private IRelAfiliadoMoneygramService relAfiliadoMoneygramService;
@@ -74,6 +76,9 @@ public class MoneygramController {
     
     @Autowired
 	private GenerarClave generarClave;
+    
+    @Autowired
+	private IdMoneygramService moneygramService;
 
     @Secured("ROLE_PROMOTOR")
     @GetMapping(value = "/home")
@@ -109,52 +114,56 @@ public class MoneygramController {
                           @ModelAttribute(name = "usuarioPromotor") Promotor promotor, RedirectAttributes redirect,
                           SessionStatus status, Authentication authentication){
 
-        Empresa empresa = empresaService.findById(promotor.getEmpresa().getId());
-        Parametro parametro = parametroService.findById(ID_MONEYGRAM);
         String emailAfiliado = afiliado.getEmail();
+        Empresa empresa = empresaService.findById(promotor.getEmpresa().getId());
         String emailContratante = relAfiliadoMoneygram.getEmailContratante();
         List<String> correos = new ArrayList<>();
 		Map<String, String> modelo = new LinkedHashMap<>();
 		JSONArray ABeneficioD = new JSONArray();
+		 List<String> correoContratante = new ArrayList<>();
         
         
         try{
+           
+            String idMoneygram = moneygramService.generaIdMoneygram(afiliado,promotor);
             
-            if(empresa == null || parametro == null){
-                redirect.addFlashAttribute("error", "El id de la empresa no se ha encontrado");
+            if(idMoneygram == null) {
+            	redirect.addFlashAttribute("error", "No se pudo crear el ID MONEYGRAM");
                 return "redirect:/moneygram/crear";
             }
-
-            String valor = parametro.getValor();
-            String clave = empresa.getClave();
-            String clavePromotor = promotor.getClave();
-            Long consecutivoEmpresa = empresa.getConsecutivo();
-
-            // Verificar si la empresa trae un consecutivo
-            if(consecutivoEmpresa == null){
-                consecutivoEmpresa = 1L;
-            }else{
-                consecutivoEmpresa = consecutivoEmpresa + 1;
-            }
-
-            empresa.setConsecutivo(consecutivoEmpresa);
-            empresaService.save(empresa);
-
-            String consecutivo = String.format("%0" + PADDING_SIZE + "d", consecutivoEmpresa);
+            String moneygramSplit = null;
+            String moneygramSplitValid = null;
+          //set validacion
+            String valid = idMoneygram.substring(10, 11);
+            String posicionLeft = idMoneygram.substring(0, 10);
+            String posicionRight = idMoneygram.substring(11, 20);
+           
+            
+            //validacion 0
+            idMoneygram = posicionLeft + "0" + posicionRight;
+            moneygramSplit =  splitMoneygram(idMoneygram);
+           
+           
+           //validacion 1
+           idMoneygram = posicionLeft + "1" + posicionRight;
+           moneygramSplitValid = splitMoneygram(idMoneygram);
+           
             afiliado.setClave(generarClave.getClave(clave));
             afiliado.setEmail(emailAfiliado);
             afiliado.setPromotor(promotor);
             afiliadoService.save(afiliado);
-            String valueValidation ="0"; 
-            String idMoneygram = valor + clave + clavePromotor + valueValidation + consecutivo;
             relAfiliadoMoneygram.setAfiliado(afiliado);
             relAfiliadoMoneygram.setIdMoneygram(idMoneygram);
             relAfiliadoMoneygram.setEmailContratante(emailContratante);
             relAfiliadoMoneygramService.save(relAfiliadoMoneygram);
 
             status.setComplete();
-            
+          
+            //costos servicio
+           
+            Double costoTitularInscripcion = afiliado.getServicio().getCostoTitular() + afiliado.getServicio().getInscripcionTitular() ;
          // Envío email bienvenida
+            String valida = "true"; 
          			if (afiliado.getEmail()!=null) {
          				
                         modelo.put("afiliado", afiliado.getNombre() + " " + afiliado.getApellidoPaterno() +
@@ -162,20 +171,26 @@ public class MoneygramController {
                         modelo.put("servicio", afiliado.getServicio().getNombre());
                         modelo.put("rfc", afiliado.getRfc());
                         modelo.put("proveedor", afiliado.getServicio().getNombreProveedor());
-                        modelo.put("telefono", afiliado.getServicio().getTelefono());
+                        //modelo.put("telefono", afiliado.getServicio().getTelefono());
                         modelo.put("correo", afiliado.getServicio().getCorreo());
                         modelo.put("nota", afiliado.getServicio().getNota());
                         modelo.put("id",afiliado.getClave());
-                        modelo.put("idMoneygram",relAfiliadoMoneygram.getIdMoneygram());
+                        modelo.put("idMoneygram",moneygramSplit);
+                        modelo.put("idMoneygramValid", moneygramSplitValid);
+                        modelo.put("contratante", relAfiliadoMoneygram.getNombreContratante());
                         modelo.put("costoServicio", afiliado.getServicio().getCostoTitular().toString());
-                        modelo.put("valida","1");
+                        modelo.put("costoSIncripcion", costoTitularInscripcion.toString());
                         correos.add(emailAfiliado);
+                        correoContratante.add(relAfiliadoMoneygram.getEmailContratante());
                         List<Beneficio> relServcioBeneficio = BeneficioService.getBeneficiosByIdServicio(afiliado.getServicio().getId());
                         		for(Beneficio bene : relServcioBeneficio) {
                         			ABeneficioD.put(getBeneficios(bene.getNombre(), bene.getDescripcion()));
                         		}                                                          
          			}
-         			emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD);
+         			//email afiliado
+         			emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correos,ABeneficioD,valida);
+         			//email contratante
+                    emailService.sendMailJet(modelo,ID_TEMPLATE_BA,correoContratante,ABeneficioD,valida);
 
         } catch (Exception e){
             e.printStackTrace();
@@ -298,5 +313,17 @@ public JSONObject getBeneficios(String name, String descripcion) {
 			OBeneficioD.put("descripcion",descripcion);
 		   return OBeneficioD ;
 	}
+
+public String splitMoneygram(String idMoneygram) {
+	
+	String moneygramSplit = null;
+	 String []array = idMoneygram.split("(?<=\\G....)"); 
+     if(array.length == 5) {
+  	   moneygramSplit = array[0] +"-"+array[1]+"-"+array[2]+"-"+array[3]+"-"+array[4];
+     }else {
+  	   moneygramSplit = idMoneygram;
+     }
+	return moneygramSplit;
+}
 
 }

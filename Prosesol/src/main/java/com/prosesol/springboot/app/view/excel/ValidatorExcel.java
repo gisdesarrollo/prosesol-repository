@@ -245,7 +245,7 @@ public class ValidatorExcel {
                         encabezado[rowNum++] = "Promotor";
                         break;
                     case "cuenta":
-                        encabezado[rowNum++] = "Cuenta";
+                        encabezado[rowNum++] = "Cuenta Comercial";
                         break;
                     case "corte":
                         encabezado[rowNum++] = "Corte";
@@ -502,7 +502,7 @@ public class ValidatorExcel {
                         encabezado[rowNum++] = "Promotor";
                         break;
                     case "cuenta":
-                        encabezado[rowNum++] = "Cuenta";
+                        encabezado[rowNum++] = "Cuenta Comercial";
                         break;
                     case "corte":
                         encabezado[rowNum++] = "Corte";
@@ -547,10 +547,10 @@ public class ValidatorExcel {
                         encabezado[rowNum++] = "Nombre contratante";
                         break;
                     case "emailContratante":
-                        encabezado[rowNum++] = "Correo electrónico";
+                        encabezado[rowNum++] = "Correo electrónico Contratante";
                         break;
                     case "telefonoContratante":
-                        encabezado[rowNum++] = "Teléfono";
+                        encabezado[rowNum++] = "Teléfono Contratante";
                         break;
                     
                 }

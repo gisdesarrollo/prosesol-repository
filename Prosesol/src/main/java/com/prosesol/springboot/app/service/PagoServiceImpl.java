@@ -52,4 +52,9 @@ public class PagoServiceImpl implements IPagoService {
     public List<String> getAllPagos() {
         return pagoDao.getAllPagos();
     }
+
+	@Override
+	public List<Pago> getAllPagosCompleted() {
+		return pagoDao.getAllPagosCompleted();
+	}
 }
