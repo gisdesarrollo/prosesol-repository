@@ -16,5 +16,7 @@ public interface IPagoService {
 
     public List<String> getAllPagos();
     
-    public List<Pago> getAllPagosCompleted();
+    public List<String> getPagosByFechaInicialAndFechaFinal(String fechaInicial,String fechaFinal);
+    
+    public List<String> getPagosByFechasAndFormaPago(String fechaInicial,String fechaFinal,String formaPago);
 }

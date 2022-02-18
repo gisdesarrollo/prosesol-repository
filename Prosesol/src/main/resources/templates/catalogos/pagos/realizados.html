@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head"></head>
+<head th:replace="fragments/head :: head">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.5.1/b-colvis-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/fh-3.1.3/r-2.2.1/sc-1.4.4/sl-1.2.5/datatables.min.css" />
+   
+</head>
 <meta charset="utf-8" />
 <body>
 <div class="page-wrapper">
@@ -24,9 +27,40 @@
 
                             <div class="clearfix"></div>
                             <hr>
+							<form th:action="@{/pagos/buscar}" method="post" id="formBusquedaPagos">
+								<div class="row">
+									<div class="form-group col-md-3">
+										<label >Fecha Inicial</label> <input type="text" id="fechaInicial"
+											name="fechaInicial" placeholder="DD/MM/YYYY" required="required" autocomplete="off" class="form-control form-control-user">
+									</div>
+									<div class="form-group col-md-3">
+										<label >Fecha Final</label> <input type="text" id="fechaFinal"
+											name="fechaFinal" placeholder="DD/MM/YYYY" required="required" autocomplete="off" class="form-control form-control-user">
+									</div>
+									<div class="form-group col-md-3">
+											<label>Forma de Pago</label> <select
+												name="formaPago" class="form-control"
+												id="formaPago">
+												<option th:value="'seleccionar'" th:selected>Seleccionar</option>
+												<option th:value="'Conciliacion'">Conciliación</option>
+												<option th:value="'Pago con tarjeta'">Pago con tarjeta</option>
+												<option th:value="'Moneygram'">Moneygram</option>
+												<option th:value="'Referencia en tienda'">Referencia en tienda</option>
+											</select>
+										</div>
+										<div class="clearfix"></div>
 
-                            <div class="row">
-                                <table class="table-bordered" id="dataTable" style="width:100%;margin: 0 auto;" >
+									<div class="col-sm-12 pull-right">
+										<button type="submit" id="busqueda"
+											class="btn btn-primary btn-square float-right">Buscar</button>
+									</div>
+									</div>
+							</form>
+							<div class="clearfix"></div>
+							<hr>
+							
+                            <div class="row"  th:if="${pagos!=null and !pagos.empty}">
+                                <table class="table-bordered" id="dataTablePagos" style="width:100%;margin: 0 auto;" >
                                     <thead>
                                     <tr style=" text-align: center;">
                                         <th>RFC</th>
@@ -72,6 +106,12 @@
     </div>
 </div>
 <footer th:replace="fragments/footer :: footer"></footer>
+<!-- datatable lalo apbox  -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>	
+		<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.5.1/b-colvis-1.5.1/b-flash-1.5.1/b-html5-1.5.1/b-print-1.5.1/fh-3.1.3/r-2.2.1/sc-1.4.4/sl-1.2.5/datatables.min.js"></script>
+		
 </body>
 
 </html>

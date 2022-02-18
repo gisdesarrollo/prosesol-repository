@@ -15,3 +15,20 @@ $(document).ready(function() {
         
     });
 });
+
+$(document).ready(function() {
+	$('#fechaInicial').datepicker({
+        format: 'dd/mm/yyyy',
+        language: "es-ES",
+        autoHide: true
+        
+    });
+});
+$(document).ready(function() {
+	$('#fechaFinal').datepicker({
+        format: 'dd/mm/yyyy',
+        language: "es-ES",
+        autoHide: true
+        
+    });
+});

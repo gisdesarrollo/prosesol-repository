@@ -54,7 +54,14 @@ public class PagoServiceImpl implements IPagoService {
     }
 
 	@Override
-	public List<Pago> getAllPagosCompleted() {
-		return pagoDao.getAllPagosCompleted();
+	public List<String> getPagosByFechaInicialAndFechaFinal(String fechaInicial, String fechaFinal) {
+		return pagoDao.getPagosByFechaInicialAndFechaFinal(fechaInicial, fechaFinal);
 	}
+
+	@Override
+	public List<String> getPagosByFechasAndFormaPago(String fechaInicial, String fechaFinal, String formaPago) {
+		return pagoDao.getPagosByFechasAndFormaPago(fechaInicial, fechaFinal, formaPago);
+	}
+
+	
 }
