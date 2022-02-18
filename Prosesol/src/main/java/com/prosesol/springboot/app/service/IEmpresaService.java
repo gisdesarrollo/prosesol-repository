@@ -9,8 +9,9 @@ public interface IEmpresaService {
     public Empresa findById(Long id);
 
     public void save(Empresa empresa);
-
-    public void delete(Empresa empresa);
+    
+    //modificado
+    public void delete(Long id);
 
     public List<Empresa> findAll();
 }

@@ -1,7 +1,12 @@
 package com.prosesol.springboot.app.controller;
 
 import com.prosesol.springboot.app.entity.Empresa;
+import com.prosesol.springboot.app.entity.Promotor;
 import com.prosesol.springboot.app.service.IEmpresaService;
+import com.prosesol.springboot.app.service.IPromotorService;
+
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,8 @@ public class EmpresasController {
 
     @Autowired
     private IEmpresaService empresaService;
+    
+
 
     @Secured({"ROLE_ADMINISTRADOR"})
     @RequestMapping(value = "/crear")
@@ -37,7 +44,7 @@ public class EmpresasController {
     @RequestMapping(value = "/crear", method = RequestMethod.POST)
     public String crear(@ModelAttribute(name = "empresa")Empresa empresa,
                         SessionStatus status, RedirectAttributes redirectAttributes){
-
+    	//posiblemete sirva para dar mensaje de editar
         try {
 
             if(empresa.getId() != null){
@@ -66,20 +73,46 @@ public class EmpresasController {
 
         return "catalogos/empresas/ver";
     }
-
+    
+    //evelio
     @Secured({"ROLE_ADMINISTRADOR"})
-    @RequestMapping(value = "/borrar", method = RequestMethod.DELETE)
-    public String borrar(@ModelAttribute(name = "empresa") Empresa empresa, RedirectAttributes redirect){
+    @RequestMapping(value = "borrar/{id}")
+    public String borrar(@PathVariable(value = "id") Long id, RedirectAttributes redirect){
         try{
-            empresaService.delete(empresa);
+        	if(id>0) {
+        		empresaService.delete(id);
+        		redirect.addFlashAttribute("success", "Registro eliminado correctamente");
+        	}
+            
         }catch (DataIntegrityViolationException dive){
             dive.printStackTrace();
             redirect.addFlashAttribute("error", "No se puede eliminar la empresa");
-
             return "redirect:/empresas/ver";
         }
-
-        return "catalogos/empresas/ver";
+        return "redirect:/empresas/ver";
     }
+    @Secured({"ROLE_ADMINISTRADOR"})
+	@RequestMapping(value = "/editar/{id}")
+	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes redirect) {
+
+    	Empresa empresa = null;
+
+		if (id > 0) {
+			empresa = empresaService.findById(id);
+			if (empresa == null) {
+				redirect.addFlashAttribute("Error: ", "El id del promotor no existe");
+				return "redirect:/empresas/ver";
+			}
+		} else {
+			redirect.addFlashAttribute("Error: ", "El id del promotor no puede ser cero");
+			return "redirect:/empresas/ver";
+		}
+
+		model.put("empresa", empresa);
+		
+		return "catalogos/empresas/editar";
+		
+
+	}
 
 }

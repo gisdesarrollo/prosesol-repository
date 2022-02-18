@@ -39,24 +39,39 @@
                                                 <table class="table table-bordered table-condensed" id="dataTable">
                                                     <thead>
                                                     <tr>
-                                                        <th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>
+                                                        <!--  <th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Id</th>-->
+                                                        <th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Opciones</th>
                                                         <th>Nombre Empresa</th>
                                                         <th>Clave</th>
                                                         <th>Email</th>
                                                         <th>RFC</th>
-                                                        <th sec:authorize="hasRole('ROLE_ADMINISTRADOR')">Opciones</th>
+                                                        
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <tr th:each="empresa : ${empresas}">
-                                                        <td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
-                                                            th:text="${empresa.id}"></td>
-                                                        <td th:text="${empresa.nombre}"></td>
-                                                        <td th:text="${empresa.clave}"></td>
-                                                        <td th:text="${empresa.email}"></td>
-                                                        <td th:text="${empresa.rfc}"></td>
-                                                        <td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
-                                                            <div class="dropdown mb-4">
+                                                    <td sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
+                                                        	<div class="dropdown">
+														<button class="btn btn-info btn-xs dropdown-toggle"
+															type="button" id="dropdownMenuButton"
+															data-toggle="dropdown" aria-haspopup="true"
+															aria-expanded="false">
+															<i class="fas fa-stream"></i>
+														</button>
+														<div class="dropdown-menu animated--fade-in"
+															aria-labelledby="dropdownMenuButton">
+																														
+															<a class="dropdown-item"
+																th:href="@{/empresas/editar/} + ${empresa.id}"
+																th:text="'Editar'"> </a> 
+
+															<a class="dropdown-item border-top text-danger"
+																th:href="@{/empresas/borrar/} + ${empresa.id}"
+																th:text="'Borrar'"
+																onclick="return confirm('¿Estás seguro de que deseas borrar el registro?')"></a>
+														</div>
+													</div>	
+                                                            <!--  <div class="dropdown mb-4">
                                                                 <button class="btn btn-primary btn-sm dropdown-toggle"
                                                                         type="button" id="dropdownMenuButton"
                                                                         data-toggle="dropdown" aria-haspopup="true"
@@ -70,8 +85,15 @@
                                                                        th:href="@{/empresas/borrar/} + ${empresa.id}"
                                                                        th:text="Borrar"> </a>
                                                                 </div>
-                                                            </div>
+                                                            </div>-->
                                                         </td>
+                                                        <!--  <td sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+                                                            th:text="${empresa.id}"></td>-->
+                                                        <td th:text="${empresa.nombre}"></td>
+                                                        <td th:text="${empresa.clave}"></td>
+                                                        <td th:text="${empresa.email}"></td>
+                                                        <td th:text="${empresa.rfc}"></td>
+                                                        
                                                     </tr>
                                                     </tbody>
                                                 </table>

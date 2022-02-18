@@ -25,10 +25,11 @@ public class EmpresaServiceImpl implements IEmpresaService{
     public void save(Empresa empresa) {
         empresaDao.save(empresa);
     }
-
+    
+    //modificado
     @Override
-    public void delete(Empresa empresa) {
-        empresaDao.delete(empresa);
+    public void delete(Long id) {
+        empresaDao.deleteById(id);
     }
 
     @Override
